@@ -9,16 +9,12 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-add_action( 'after_setup_theme', 'mrzaib_wc_compat', 1 );
-function mrzaib_wc_compat() {
-	if ( class_exists( 'WooCommerce' ) ) {
-		return;
-	}
-	foreach ( array( 'is_woocommerce', 'is_shop', 'is_product', 'is_product_category', 'is_product_tag', 'is_product_taxonomy', 'is_cart', 'is_checkout', 'is_account_page', 'is_wc_endpoint_url' ) as $fn ) {
-		if ( ! function_exists( $fn ) ) {
-			eval( 'function ' . $fn . '() { return false; }' ); // phpcs:ignore
-		}
-	}
+/**
+ * WooCommerce conditional tag that is safe when WooCommerce is inactive.
+ * Never declare WooCommerce's own function names here: activating WooCommerce would then crash.
+ */
+function mrzaib_is( $tag ) {
+	return function_exists( $tag ) ? (bool) call_user_func( $tag ) : false;
 }
 
 add_action( 'admin_notices', function () {

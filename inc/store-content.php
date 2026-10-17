@@ -301,7 +301,7 @@ add_action( 'wp_head', function () {
 		if ( ! $desc ) {
 			$desc = wp_trim_words( wp_strip_all_tags( get_post_field( 'post_excerpt', $id ) ), 28, '' );
 		}
-	} elseif ( is_product_category() ) {
+	} elseif ( mrzaib_is( 'is_product_category' ) ) {
 		$t    = get_queried_object();
 		$desc = $t && $t->description ? $t->description : '';
 		$keys = $t ? $t->name . ' perfume, ' . $t->name . ' perfume Pakistan, MR ZAIB ' . $t->name : '';
