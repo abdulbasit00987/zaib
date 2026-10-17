@@ -30,18 +30,20 @@
       hdrRaf = requestAnimationFrame(function () { hdrRaf = requestAnimationFrame(function () { $h.addClass('is-open'); }); });
     } else if (!c && $h.hasClass('is-compact') && y <= start - 1) {
       cancelAnimationFrame(hdrRaf);
-      $h.removeClass('is-compact is-open');
+      $h.removeClass('is-compact is-open nav-show');
     }
     $h.toggleClass('is-stuck', c);
   }
   hdrSize(); hdrScroll();
-  // Compact header menu icon (desktop), like reference: scrolls back to the top so the
-  // full header with its nav row shows again, instead of opening the side drawer.
+  // Compact header menu icon (desktop), like reference: slides the nav row down under the
+  // header and the icon turns into a cross; clicking the cross slides it back up.
+  $h.find('.menu-toggle').append('<svg class="mz-x" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M5 5l14 14M19 5L5 19"/></svg>');
   document.addEventListener('click', function (e) {
     var t = e.target.closest && e.target.closest('.site-header .menu-toggle');
     if (t && $h.hasClass('is-compact') && window.innerWidth >= 990) {
       e.preventDefault(); e.stopImmediatePropagation();
-      window.scrollTo({ top: 0, behavior: 'smooth' });
+      $h.toggleClass('nav-show');
+      t.setAttribute('aria-expanded', $h.hasClass('nav-show') ? 'true' : 'false');
     }
   }, true);
   $(window).on('scroll', hdrScroll).on('resize load', function () { if (!$h.hasClass('is-compact')) { $wrap.css('height', ''); hdrSize(); } hdrScroll(); });

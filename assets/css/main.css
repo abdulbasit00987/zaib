@@ -1031,3 +1031,12 @@ body{overflow-x:clip}
 /* Mini cart drawer: closed panel was 30px wider than its off-screen offset, leaving a strip + shadow on the right edge */
 #apbd-mini-cart-container .apbd-nmca-vt-content.vitepos-nmca-r:not(.apbd-nmca-vt-is-show){right:-110vw!important;box-shadow:none!important;visibility:hidden}
 #apbd-mini-cart-container .apbd-nmca-vt-content.vitepos-nmca-r.apbd-nmca-vt-is-show{right:0!important;visibility:visible}
+/* Compact header (desktop): menu icon slides the nav row down from under the header, icon becomes a cross */
+.menu-toggle .mz-x{display:none;width:20px;height:20px}
+@media(min-width:990px){
+  .site-header.is-compact .header-inner{position:relative;z-index:2;background:#000}
+  .site-header.is-compact .main-nav{display:block;position:absolute;left:0;right:0;top:100%;z-index:1;background:#000;border-top:1px solid rgba(255,255,255,.12);transform:translateY(-100%);visibility:hidden;transition:transform .35s cubic-bezier(.2,.7,.2,1),visibility 0s linear .35s}
+  .site-header.is-compact.nav-show .main-nav{transform:none;visibility:visible;transition:transform .35s cubic-bezier(.2,.7,.2,1),visibility 0s}
+  .site-header.is-compact.nav-show .menu-toggle svg:not(.mz-x){display:none}
+  .site-header.is-compact.nav-show .menu-toggle .mz-x{display:block}
+}
