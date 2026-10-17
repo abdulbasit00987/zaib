@@ -1020,3 +1020,14 @@ body.mzp-on{overflow:hidden}
 .search-form-pill.mz-search.is-focus{box-shadow:none}
 .search-form-pill.mz-search input:focus{outline:0;box-shadow:none}
 .mz-predictive{left:-1px;top:calc(100% + 11px)}
+/* Sticky header like reference: pins after the header scrolls away and slides in smoothly */
+.header-wrap{background:#000}
+.site-header.is-compact{position:fixed;top:0;left:0;right:0;animation:none;transform:translate3d(0,-100%,0);transition:transform .35s cubic-bezier(.2,.7,.2,1);will-change:transform}
+.site-header.is-compact.is-open{transform:translate3d(0,0,0)}
+/* Hide the page scrollbar strip on the right (page still scrolls) */
+html{scrollbar-width:none;-ms-overflow-style:none}
+html::-webkit-scrollbar,body::-webkit-scrollbar{width:0;height:0;display:none}
+body{overflow-x:clip}
+/* Mini cart drawer: closed panel was 30px wider than its off-screen offset, leaving a strip + shadow on the right edge */
+#apbd-mini-cart-container .apbd-nmca-vt-content.vitepos-nmca-r:not(.apbd-nmca-vt-is-show){right:-110vw!important;box-shadow:none!important;visibility:hidden}
+#apbd-mini-cart-container .apbd-nmca-vt-content.vitepos-nmca-r.apbd-nmca-vt-is-show{right:0!important;visibility:visible}

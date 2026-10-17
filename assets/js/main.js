@@ -17,16 +17,25 @@
   var $h = $('[data-header]');
   /* Compact sticky header (like reference): after the announcement bar scrolls away
      the header pins to the top as one row, the nav row hides and a menu icon appears. */
-  var $wrap = $('[data-header-wrap]'), $ann = $('.announcement-bar');
+  var $wrap = $('[data-header-wrap]'), $ann = $('.announcement-bar'), hdrRaf = 0;
   function hdrSize() { if (!$h.hasClass('is-compact')) $wrap.css('height', $h.outerHeight()); }
   function hdrScroll() {
-    var start = $ann.length ? $ann.outerHeight() : 0;
-    var c = window.scrollY > start;
-    if (c !== $h.hasClass('is-compact')) { hdrSize(); $h.toggleClass('is-compact', c); }
-    $h.toggleClass('is-stuck', window.scrollY > 10);
+    // Pin only after the full header has scrolled out of view, then slide the
+    // compact row in smoothly (no jump, no blank gap under it).
+    var start = ($ann.length ? $ann.outerHeight() : 0) + $wrap.outerHeight();
+    var y = window.scrollY, c = y > start;
+    if (c && !$h.hasClass('is-compact')) {
+      hdrSize(); $h.addClass('is-compact');
+      cancelAnimationFrame(hdrRaf);
+      hdrRaf = requestAnimationFrame(function () { hdrRaf = requestAnimationFrame(function () { $h.addClass('is-open'); }); });
+    } else if (!c && $h.hasClass('is-compact') && y <= start - 1) {
+      cancelAnimationFrame(hdrRaf);
+      $h.removeClass('is-compact is-open');
+    }
+    $h.toggleClass('is-stuck', c);
   }
   hdrSize(); hdrScroll();
-  $(window).on('scroll', hdrScroll).on('resize load', function () { $h.removeClass('is-compact'); $wrap.css('height', ''); hdrSize(); hdrScroll(); });
+  $(window).on('scroll', hdrScroll).on('resize load', function () { if (!$h.hasClass('is-compact')) { $wrap.css('height', ''); hdrSize(); } hdrScroll(); });
 
   /* Drawers & search */
   function openEl(id) {
