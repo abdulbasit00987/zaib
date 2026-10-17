@@ -147,6 +147,7 @@ require MRZAIB_DIR . '/inc/wc-compat.php';
 require MRZAIB_DIR . '/inc/search-suggest.php';
 require MRZAIB_DIR . '/inc/customizer.php';
 require MRZAIB_DIR . '/inc/menus.php';
+require MRZAIB_DIR . '/inc/mobile-nav.php';
 require MRZAIB_DIR . '/inc/woocommerce.php';
 require MRZAIB_DIR . '/inc/product-ui.php';
 require MRZAIB_DIR . '/inc/reviews.php';

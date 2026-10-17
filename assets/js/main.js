@@ -35,35 +35,58 @@
     $h.toggleClass('is-stuck', c);
   }
   hdrSize(); hdrScroll();
-  // Mobile/tablet menu (like reference): hamburger on the right drops the menu down under the header.
+  // Mobile menu (<=768px, like reference): hamburger on the right drops a glass drawer down from
+  // under the header with promo cards, tabs, accordions and customer care; icon morphs into a cross.
   var $mnav = $h.find('.mobile-nav');
-  $mnav.find('li.menu-item-has-children, li.page_item_has_children').each(function () {
-    var $li = $(this);
-    if (!$li.children('.mnav-sub-toggle').length) {
-      $li.children('a').after('<button type="button" class="mnav-sub-toggle" aria-label="Open"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.8"><path d="m6 9 6 6 6-6"/></svg></button>');
-    }
-  });
-  $mnav.on('click', '.mnav-sub-toggle', function (e) {
-    e.preventDefault();
-    var $li = $(this).parent();
-    $li.toggleClass('is-open');
-    $(this).attr('aria-expanded', $li.hasClass('is-open') ? 'true' : 'false');
-  });
   function mnavSet(open) {
+    if (open) {
+      closeHSearch();
+      var r = $h.find('.header-inner')[0].getBoundingClientRect();
+      $mnav[0].style.setProperty('--mz-mnav-h', Math.max(200, window.innerHeight - r.bottom) + 'px');
+    }
     $h.toggleClass('mnav-open', open);
-    $('body').toggleClass('mnav-lock', open);
-    $h.find('.mnav-toggle').attr('aria-expanded', open ? 'true' : 'false');
+    $('html').toggleClass('mnav-lock', open);
+    $mnav.attr('aria-hidden', open ? 'false' : 'true');
+    $h.find('.mnav-toggle').attr('aria-expanded', open ? 'true' : 'false').attr('aria-label', open ? 'Close menu' : 'Menu');
   }
   $h.on('click', '.mnav-toggle', function (e) { e.preventDefault(); mnavSet(!$h.hasClass('mnav-open')); });
-  $(window).on('resize', function () { if (window.innerWidth >= 990 && $h.hasClass('mnav-open')) mnavSet(false); });
-  $(document).on('keydown', function (e) { if (e.key === 'Escape' && $h.hasClass('mnav-open')) mnavSet(false); });
+  $mnav.on('click', '.drawer-tab-btn', function () {
+    var id = $(this).data('tab');
+    $mnav.find('.drawer-tab-btn').removeClass('active'); $(this).addClass('active');
+    $mnav.find('.tab-panel').removeClass('active'); $mnav.find('#' + id).addClass('active');
+    if (this.scrollIntoView) this.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
+  });
+  $mnav.on('click', '.drawer-menu-row[data-acc]', function (e) {
+    if ($(e.target).closest('a').length) return; // the label itself navigates
+    $(this).toggleClass('is-open');
+  });
+  $(window).on('resize', function () { if (window.innerWidth > 768 && $h.hasClass('mnav-open')) mnavSet(false); });
+  $(document).on('keydown', function (e) { if (e.key === 'Escape') { if ($h.hasClass('mnav-open')) mnavSet(false); closeHSearch(); } });
+
+  // Mobile search (<=768px, like reference): opens in place over the header row.
+  function closeHSearch() {
+    if (!$h.hasClass('hsearch-open')) return;
+    $h.removeClass('hsearch-open');
+    $h.find('.mz-hsearch input[type=search]').trigger('blur');
+    $('.mzp-screen').attr('hidden', true); $('body').removeClass('mzp-on');
+    $h.find('.mz-hsearch .mz-predictive').attr('hidden', true).empty();
+    $h.find('.mz-hsearch form').removeClass('is-open is-focus');
+  }
+  $h.on('click', '.mz-hs-open', function (e) {
+    e.preventDefault(); e.stopImmediatePropagation();
+    if ($h.hasClass('mnav-open')) mnavSet(false);
+    $h.addClass('hsearch-open');
+    setTimeout(function () { $h.find('.mz-hsearch input[type=search]').trigger('focus'); }, 30);
+  });
+  $h.on('click', '.mz-hsearch .mz-search-close', function (e) { e.preventDefault(); closeHSearch(); });
+  $(document).on('click', '.mzp-screen', function () { closeHSearch(); });
 
   // Compact header menu icon (desktop), like reference: slides the nav row down under the
   // header and the icon turns into a cross; clicking the cross slides it back up.
   $h.find('.menu-toggle').append('<svg class="mz-x" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M5 5l14 14M19 5L5 19"/></svg>');
   document.addEventListener('click', function (e) {
     var t = e.target.closest && e.target.closest('.site-header .menu-toggle');
-    if (t && $h.hasClass('is-compact') && window.innerWidth >= 990) {
+    if (t && $h.hasClass('is-compact') && window.innerWidth >= 769) {
       e.preventDefault(); e.stopImmediatePropagation();
       $h.toggleClass('nav-show');
       t.setAttribute('aria-expanded', $h.hasClass('nav-show') ? 'true' : 'false');

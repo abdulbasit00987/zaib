@@ -35,7 +35,7 @@ if ( $announcements ) :
 	<div class="container header-inner">
 		<div class="header-left">
 			<button class="icon-btn menu-toggle" data-open="drawer-menu" aria-label="<?php esc_attr_e( 'Menu', 'mrzaib' ); ?>"><?php echo mrzaib_icon( 'menu' ); // phpcs:ignore ?></button>
-			<button class="icon-btn search-toggle hide-desktop" data-open="search-overlay" aria-label="<?php esc_attr_e( 'Search', 'mrzaib' ); ?>"><?php echo mrzaib_icon( 'search' ); // phpcs:ignore ?></button>
+			<button class="icon-btn search-toggle hide-desktop mz-hs-open" aria-controls="mz-hsearch" aria-label="<?php esc_attr_e( 'Search', 'mrzaib' ); ?>"><?php echo mrzaib_icon( 'search' ); // phpcs:ignore ?></button>
 			<div class="header-search hide-mobile"><?php mrzaib_search_form(); ?></div>
 		</div>
 		<div class="header-logo">
@@ -54,7 +54,6 @@ if ( $announcements ) :
 			<?php if ( is_front_page() ) : ?></h1><?php endif; ?>
 		</div>
 		<div class="header-right">
-			<button class="icon-btn search-toggle hide-desktop mz-m-search" data-open="search-overlay" aria-label="<?php esc_attr_e( 'Search', 'mrzaib' ); ?>"><?php echo mrzaib_icon( 'search' ); // phpcs:ignore ?></button>
 			<?php if ( class_exists( 'WooCommerce' ) ) : ?>
 				<a class="icon-btn account-btn hide-mobile" href="<?php echo esc_url( function_exists( 'wc_get_page_permalink' ) ? wc_get_page_permalink( 'myaccount' ) : wp_login_url() ); ?>" aria-label="<?php esc_attr_e( 'Account', 'mrzaib' ); ?>"><?php echo mrzaib_icon( 'user' ); // phpcs:ignore ?></a>
 				<?php $mz_count = function_exists( 'WC' ) && WC()->cart ? WC()->cart->get_cart_contents_count() : 0; ?>
@@ -63,7 +62,7 @@ if ( $announcements ) :
 					<span class="cart-label hide-mobile"><?php esc_html_e( 'Cart', 'mrzaib' ); ?></span>
 				</a>
 			<?php endif; ?>
-			<button class="icon-btn mnav-toggle hide-desktop" aria-expanded="false" aria-controls="mobile-nav" aria-label="<?php esc_attr_e( 'Menu', 'mrzaib' ); ?>"><span class="mnav-ico-open"><?php echo mrzaib_icon( 'menu' ); // phpcs:ignore ?></span><span class="mnav-ico-close"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M5 5l14 14M19 5L5 19"/></svg></span></button>
+			<button class="icon-btn mnav-toggle hide-desktop" aria-expanded="false" aria-controls="mobile-nav" aria-label="<?php esc_attr_e( 'Menu', 'mrzaib' ); ?>"><svg viewBox="0 0 64 64" width="22" height="22" fill="none" stroke="currentColor" stroke-width="3" aria-hidden="true"><path d="M7 15h51"/><path d="M7 32h43"/><path d="M7 49h51"/></svg></button>
 		</div>
 	</div>
 	<nav class="main-nav hide-mobile" aria-label="<?php esc_attr_e( 'Main', 'mrzaib' ); ?>">
@@ -77,20 +76,8 @@ if ( $announcements ) :
 			?>
 		</div>
 	</nav>
-	<nav class="mobile-nav" id="mobile-nav" aria-label="<?php esc_attr_e( 'Mobile', 'mrzaib' ); ?>">
-		<div class="mobile-nav-inner">
-			<?php
-			if ( has_nav_menu( 'primary' ) ) {
-				wp_nav_menu( array( 'theme_location' => 'primary', 'container' => false, 'menu_id' => 'mobile-menu-list', 'menu_class' => 'menu mobile-menu', 'depth' => 3 ) );
-			} else {
-				mrzaib_fallback_menu();
-			}
-			?>
-			<?php if ( class_exists( 'WooCommerce' ) ) : ?>
-			<a class="mobile-nav-account" href="<?php echo esc_url( function_exists( 'wc_get_page_permalink' ) ? wc_get_page_permalink( 'myaccount' ) : wp_login_url() ); ?>"><?php echo mrzaib_icon( 'user' ); // phpcs:ignore ?><span><?php echo is_user_logged_in() ? esc_html__( 'My account', 'mrzaib' ) : esc_html__( 'Log in', 'mrzaib' ); ?></span></a>
-			<?php endif; ?>
-		</div>
-	</nav>
+	<div class="mz-hsearch" id="mz-hsearch"><div class="container"><?php mrzaib_search_form( 'search-form-header-m' ); ?></div></div>
+	<div class="mobile-nav" id="mobile-nav" aria-hidden="true"><div class="mobile-nav-animate"><?php mrzaib_mobile_nav(); ?></div></div>
 </header>
 </div>
 
