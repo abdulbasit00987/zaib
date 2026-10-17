@@ -1,0 +1,207 @@
+<?php
+/**
+ * Product page, Quick View modal and cart drawer UI (reference-style layout).
+ *
+ * - PDP info column order: title, price, rating, subtitle, size pills, qty stepper,
+ *   USP list + tax note, Add to cart, trust badges; accordions below.
+ * - Quick View (Reno QuickView plugin) uses the same info order.
+ * - Cart drawer (Mini Cart Drawer plugin) gets a free-shipping progress bar fragment.
+ * - Gallery: "Product Gallery Slider, Additional Variation Images for WooCommerce" plugin,
+ *   thumbnails on the left (configured by mrzaib_configure_gallery_plugin()).
+ *
+ * @package mrzaib
+ */
+defined( 'ABSPATH' ) || exit;
+
+if ( ! class_exists( 'WooCommerce' ) ) {
+	return;
+}
+
+/** USP list + tax/shipping note (sits between quantity and Add to cart). */
+function mrzaib_usp_block() {
+	$free = mrzaib_opt( 'free_ship', '3000' );
+	$ship = get_page_by_path( 'shipping-policy' );
+	$ship = $ship ? get_permalink( $ship ) : '#';
+	echo '<div class="mz-usp">';
+	echo '<ul class="mz-usp-list">';
+	echo '<li>' . mrzaib_icon( 'return' ) . esc_html__( '15 Days Easy Returns', 'mrzaib' ) . '</li>';
+	echo '<li>' . mrzaib_icon( 'truck' ) . sprintf( esc_html__( 'Free Delivery on orders over Rs. %s', 'mrzaib' ), esc_html( $free ) ) . '</li>';
+	echo '<li>' . mrzaib_icon( 'star' ) . esc_html__( 'Long Lasting Premium Fragrance', 'mrzaib' ) . '</li>';
+	echo '<li>' . mrzaib_icon( 'shield' ) . esc_html__( 'Cash on Delivery All Over Pakistan', 'mrzaib' ) . '</li>';
+	echo '</ul>';
+	echo '<p class="mz-tax-note">' . esc_html__( 'Tax included.', 'mrzaib' ) . ' <a href="' . esc_url( $ship ) . '">' . esc_html__( 'Shipping', 'mrzaib' ) . '</a> ' . esc_html__( 'calculated at checkout.', 'mrzaib' ) . '</p>';
+	echo '</div>';
+}
+add_action( 'woocommerce_after_add_to_cart_quantity', 'mrzaib_usp_block', 20 );
+
+function mrzaib_subtitle_line() {
+	$sub = get_post_meta( get_the_ID(), '_mrzaib_subtitle', true );
+	if ( $sub ) {
+		echo '<p class="product-subtitle">' . esc_html( $sub ) . '</p>';
+	}
+}
+
+/** Trust badges under Add to cart. */
+function mrzaib_trust_badges() {
+	echo '<ul class="mz-badges">';
+	echo '<li>' . mrzaib_icon( 'drop' ) . '<span>' . esc_html__( 'Safe Ingredients', 'mrzaib' ) . '</span></li>';
+	echo '<li>' . mrzaib_icon( 'star' ) . '<span>' . esc_html__( 'High EDP Concentration', 'mrzaib' ) . '</span></li>';
+	echo '<li>' . mrzaib_icon( 'clock' ) . '<span>' . esc_html__( 'Long Maceration', 'mrzaib' ) . '</span></li>';
+	echo '</ul>';
+}
+
+/* --- Single product summary order --- */
+add_action( 'init', function () {
+	remove_action( 'woocommerce_single_product_summary', 'woocommerce_template_single_rating', 10 );
+	remove_action( 'woocommerce_single_product_summary', 'woocommerce_template_single_price', 10 );
+	remove_action( 'woocommerce_single_product_summary', 'woocommerce_template_single_excerpt', 20 );
+	remove_action( 'woocommerce_single_product_summary', 'woocommerce_template_single_meta', 40 );
+	remove_action( 'woocommerce_single_product_summary', 'woocommerce_template_single_sharing', 50 );
+	add_action( 'woocommerce_single_product_summary', 'woocommerce_template_single_price', 7 );
+	add_action( 'woocommerce_single_product_summary', 'woocommerce_template_single_rating', 8 );
+	add_action( 'woocommerce_single_product_summary', 'mrzaib_subtitle_line', 9 );
+	add_action( 'woocommerce_single_product_summary', 'mrzaib_trust_badges', 35 );
+
+	/* Tabs -> accordions */
+	remove_action( 'woocommerce_after_single_product_summary', 'woocommerce_output_product_data_tabs', 10 );
+	add_action( 'woocommerce_after_single_product_summary', 'mrzaib_product_accordions', 10 );
+}, 20 );
+
+/** Accordions (Description, Fragrance Notes, Shipping Information, Reviews). */
+function mrzaib_product_accordions() {
+	$tabs = apply_filters( 'woocommerce_product_tabs', array() );
+	unset( $tabs['additional_information'] );
+	$tabs['mrzaib_shipping'] = array(
+		'title'    => __( 'Shipping Information', 'mrzaib' ),
+		'priority' => 40,
+		'callback' => function () {
+			$free = mrzaib_opt( 'free_ship', '3000' );
+			echo '<p>' . sprintf( esc_html__( 'We deliver all over Pakistan in 2 to 5 working days. Free delivery on orders over Rs. %s, otherwise a flat delivery fee applies. Cash on Delivery is available on every order.', 'mrzaib' ), esc_html( $free ) ) . '</p>';
+		},
+	);
+	uasort( $tabs, function ( $a, $b ) { return ( $a['priority'] ?? 50 ) <=> ( $b['priority'] ?? 50 ); } );
+	if ( ! $tabs ) {
+		return;
+	}
+	echo '<div class="mz-accordions">';
+	$first = true;
+	foreach ( $tabs as $key => $tab ) {
+		if ( empty( $tab['callback'] ) ) {
+			continue;
+		}
+		$title = wp_strip_all_tags( apply_filters( 'woocommerce_product_' . $key . '_tab_title', $tab['title'], $key ) );
+		echo '<details class="mz-acc mz-acc-' . esc_attr( $key ) . '"' . ( $first ? ' open' : '' ) . '><summary>' . esc_html( $title ) . '<span class="mz-acc-ico"></span></summary><div class="mz-acc-body">';
+		call_user_func( $tab['callback'], $key, $tab );
+		echo '</div></details>';
+		$first = false;
+	}
+	echo '</div>';
+}
+/* Description tab: no duplicate "Description" heading inside the accordion. */
+add_filter( 'woocommerce_product_description_heading', '__return_empty_string' );
+add_filter( 'woocommerce_product_reviews_heading', '__return_empty_string' );
+
+/* --- Quick View modal content (Reno QuickView) --- */
+add_action( 'init', function () {
+	if ( ! class_exists( 'SP_WQV_Popup' ) && ! has_action( 'wqv_product_content' ) ) {
+		return;
+	}
+	remove_all_actions( 'wqv_product_content' );
+	add_action( 'wqv_product_content', 'woocommerce_template_single_title', 5 );
+	add_action( 'wqv_product_content', 'woocommerce_template_single_price', 10 );
+	add_action( 'wqv_product_content', 'mrzaib_subtitle_line', 15 );
+	add_action( 'wqv_product_content', 'woocommerce_template_single_add_to_cart', 25 );
+	add_action( 'wqv_product_content', 'mrzaib_quickview_details', 30 );
+}, 30 );
+
+function mrzaib_quickview_details() {
+	global $product;
+	if ( ! $product ) {
+		return;
+	}
+	$notes = get_post_meta( $product->get_id(), '_mrzaib_notes', true );
+	if ( $notes ) {
+		echo '<details class="mz-acc" open><summary>' . esc_html__( 'Fragrance Notes', 'mrzaib' ) . '<span class="mz-acc-ico"></span></summary><div class="mz-acc-body"><ul class="mz-notes-list">';
+		foreach ( (array) $notes as $label => $val ) {
+			echo '<li><strong>' . esc_html( $label ) . ':</strong> ' . esc_html( $val ) . '</li>';
+		}
+		echo '</ul></div></details>';
+	}
+	$desc = $product->get_short_description();
+	if ( $desc ) {
+		echo '<details class="mz-acc"><summary>' . esc_html__( 'Description', 'mrzaib' ) . '<span class="mz-acc-ico"></span></summary><div class="mz-acc-body">' . wp_kses_post( wpautop( $desc ) ) . '</div></details>';
+	}
+}
+
+/* --- Free-shipping progress bar (cart drawer) --- */
+function mrzaib_freeship_html() {
+	if ( ! WC()->cart ) {
+		return '<div class="mz-freeship"></div>';
+	}
+	$min   = (float) mrzaib_opt( 'free_ship', '3000' );
+	$total = (float) WC()->cart->get_displayed_subtotal();
+	$count = WC()->cart->get_cart_contents_count();
+	if ( $min <= 0 || ! $count ) {
+		return '<div class="mz-freeship is-empty"></div>';
+	}
+	$left = max( 0, $min - $total );
+	$pct  = min( 100, round( $total / $min * 100 ) );
+	$msg  = $left > 0
+		/* translators: %s amount left */
+		? sprintf( __( 'Add %s more for Free Delivery.', 'mrzaib' ), '<strong>' . wc_price( $left ) . '</strong>' )
+		: __( 'Congratulations! You have unlocked Free Delivery.', 'mrzaib' );
+	return '<div class="mz-freeship' . ( $left > 0 ? '' : ' is-done' ) . '"><p>' . wp_kses_post( $msg ) . '</p><div class="mz-freeship-track"><span style="width:' . esc_attr( $pct ) . '%"></span></div></div>';
+}
+add_filter( 'woocommerce_add_to_cart_fragments', function ( $f ) {
+	$f['#mz-freeship-holder .mz-freeship'] = mrzaib_freeship_html();
+	return $f;
+} );
+add_action( 'wp_footer', function () {
+	echo '<div id="mz-freeship-holder" hidden>' . mrzaib_freeship_html() . '</div>'; // phpcs:ignore
+} );
+
+/* --- Gallery plugin: thumbnails left, lightbox on, no zoom/arrows/dots (like the reference) --- */
+function mrzaib_configure_gallery_plugin() {
+	$o = get_option( 'wpgs_form' );
+	$o = is_array( $o ) ? $o : array();
+	$o = array_merge( $o, array(
+		'slider_animation'                => 'false',
+		'slider_lazy_laod'                => 'disable',
+		'slider_infinity'                 => '0',
+		'slider_adaptiveHeight'           => '1',
+		'slider_dragging'                 => '1',
+		'slider_autoplay'                 => '0',
+		'dots'                            => '0',
+		'slider_nav'                      => '0',
+		'lightbox_picker'                 => '1',
+		'image_zoom'                      => '0',
+		'thumb_position'                  => 'left',
+		'thumbnails_tabs_thumb_position'  => 'left',
+		'thumbnails_mobile_thumb_position' => 'bottom',
+		'thumb_to_show'                   => 6,
+		'thumb_scroll_by'                 => 1,
+		'thumb_nav'                       => '1',
+		'thumbnails_layout'               => 'border',
+		'thumb_border_non_active_color'   => '#e8e5e0',
+		'thumb_border_active_color'       => '#111111',
+		'thumbnails_tabs_thumb_to_show'   => 5,
+		'thumbnails_tabs_thumb_scroll_by' => 1,
+		'thumbnails_mobile_thumb_to_show' => 5,
+		'thumbnails_mobile_thumb_scroll_by' => 1,
+		'thumbnails_lightbox'             => '0',
+		'variation_slide'                 => '1',
+		'additional_gallery_load'         => 'if_have_gallery',
+	) );
+	update_option( 'wpgs_form', $o );
+}
+
+/* When free shipping qualifies, hide the paid flat rate so totals match the free-delivery bar. */
+add_filter( 'woocommerce_package_rates', function ( $rates ) {
+	$free = array();
+	foreach ( $rates as $id => $rate ) {
+		if ( 'free_shipping' === $rate->method_id ) {
+			$free[ $id ] = $rate;
+		}
+	}
+	return $free ? $free : $rates;
+}, 100 );
