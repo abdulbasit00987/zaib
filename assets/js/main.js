@@ -35,6 +35,15 @@
     $h.toggleClass('is-stuck', c);
   }
   hdrSize(); hdrScroll();
+  // Compact header menu icon (desktop), like reference: scrolls back to the top so the
+  // full header with its nav row shows again, instead of opening the side drawer.
+  document.addEventListener('click', function (e) {
+    var t = e.target.closest && e.target.closest('.site-header .menu-toggle');
+    if (t && $h.hasClass('is-compact') && window.innerWidth >= 990) {
+      e.preventDefault(); e.stopImmediatePropagation();
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+  }, true);
   $(window).on('scroll', hdrScroll).on('resize load', function () { if (!$h.hasClass('is-compact')) { $wrap.css('height', ''); hdrSize(); } hdrScroll(); });
 
   /* Drawers & search */
