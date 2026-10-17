@@ -35,6 +35,29 @@
     $h.toggleClass('is-stuck', c);
   }
   hdrSize(); hdrScroll();
+  // Mobile/tablet menu (like reference): hamburger on the right drops the menu down under the header.
+  var $mnav = $h.find('.mobile-nav');
+  $mnav.find('li.menu-item-has-children, li.page_item_has_children').each(function () {
+    var $li = $(this);
+    if (!$li.children('.mnav-sub-toggle').length) {
+      $li.children('a').after('<button type="button" class="mnav-sub-toggle" aria-label="Open"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.8"><path d="m6 9 6 6 6-6"/></svg></button>');
+    }
+  });
+  $mnav.on('click', '.mnav-sub-toggle', function (e) {
+    e.preventDefault();
+    var $li = $(this).parent();
+    $li.toggleClass('is-open');
+    $(this).attr('aria-expanded', $li.hasClass('is-open') ? 'true' : 'false');
+  });
+  function mnavSet(open) {
+    $h.toggleClass('mnav-open', open);
+    $('body').toggleClass('mnav-lock', open);
+    $h.find('.mnav-toggle').attr('aria-expanded', open ? 'true' : 'false');
+  }
+  $h.on('click', '.mnav-toggle', function (e) { e.preventDefault(); mnavSet(!$h.hasClass('mnav-open')); });
+  $(window).on('resize', function () { if (window.innerWidth >= 990 && $h.hasClass('mnav-open')) mnavSet(false); });
+  $(document).on('keydown', function (e) { if (e.key === 'Escape' && $h.hasClass('mnav-open')) mnavSet(false); });
+
   // Compact header menu icon (desktop), like reference: slides the nav row down under the
   // header and the icon turns into a cross; clicking the cross slides it back up.
   $h.find('.menu-toggle').append('<svg class="mz-x" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M5 5l14 14M19 5L5 19"/></svg>');
