@@ -143,6 +143,7 @@ function mrzaib_icon( $name ) {
 /* ------------------------------------------------------------------
  * Includes
  * ------------------------------------------------------------------ */
+require MRZAIB_DIR . '/inc/wc-compat.php';
 require MRZAIB_DIR . '/inc/customizer.php';
 require MRZAIB_DIR . '/inc/menus.php';
 require MRZAIB_DIR . '/inc/woocommerce.php';

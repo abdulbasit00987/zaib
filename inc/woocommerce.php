@@ -10,9 +10,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 if ( ! class_exists( 'WooCommerce' ) ) {
-	// Minimal stubs so the theme works without WooCommerce active.
-	function mrzaib_product_card( $product ) {}
-	function mrzaib_products_query( $args = array() ) { return array(); }
+	// Helper functions below are declared at compile time and guard themselves.
 	return;
 }
 
@@ -73,6 +71,9 @@ add_filter( 'woocommerce_add_to_cart_fragments', function ( $f ) {
  */
 function mrzaib_products_query( $args = array() ) {
 	$defaults = array( 'limit' => 4, 'status' => 'publish', 'orderby' => 'menu_order', 'order' => 'ASC' );
+	if ( ! function_exists( 'wc_get_products' ) ) {
+		return array();
+	}
 	$args     = wp_parse_args( $args, $defaults );
 	if ( ! empty( $args['category'] ) && ! term_exists( $args['category'][0], 'product_cat' ) ) {
 		unset( $args['category'] );
@@ -84,7 +85,7 @@ function mrzaib_products_query( $args = array() ) {
  * Product card (homepage + shop loop).
  */
 function mrzaib_product_card( $product ) {
-	if ( ! $product ) {
+	if ( ! $product || ! class_exists( 'WooCommerce' ) ) {
 		return;
 	}
 	$GLOBALS['product'] = $product;

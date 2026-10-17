@@ -55,10 +55,10 @@ if ( $announcements ) :
 		</div>
 		<div class="header-right">
 			<?php if ( class_exists( 'WooCommerce' ) ) : ?>
-				<a class="icon-btn hide-mobile" href="<?php echo esc_url( wc_get_page_permalink( 'myaccount' ) ); ?>" aria-label="<?php esc_attr_e( 'Account', 'mrzaib' ); ?>"><?php echo mrzaib_icon( 'user' ); // phpcs:ignore ?></a>
-				<a class="icon-btn cart-toggle" href="<?php echo esc_url( wc_get_cart_url() ); ?>" data-open="drawer-cart" aria-label="<?php esc_attr_e( 'Cart', 'mrzaib' ); ?>">
+				<a class="icon-btn hide-mobile" href="<?php echo esc_url( function_exists( 'wc_get_page_permalink' ) ? wc_get_page_permalink( 'myaccount' ) : wp_login_url() ); ?>" aria-label="<?php esc_attr_e( 'Account', 'mrzaib' ); ?>"><?php echo mrzaib_icon( 'user' ); // phpcs:ignore ?></a>
+				<a class="icon-btn cart-toggle" href="<?php echo esc_url( function_exists( 'wc_get_cart_url' ) ? wc_get_cart_url() : home_url( '/' ) ); ?>" data-open="drawer-cart" aria-label="<?php esc_attr_e( 'Cart', 'mrzaib' ); ?>">
 					<?php echo mrzaib_icon( 'bag' ); // phpcs:ignore ?>
-					<span class="cart-count"><?php echo esc_html( WC()->cart ? WC()->cart->get_cart_contents_count() : 0 ); ?></span>
+					<span class="cart-count"><?php echo esc_html( function_exists( 'WC' ) && WC()->cart ? WC()->cart->get_cart_contents_count() : 0 ); ?></span>
 					<span class="cart-label hide-mobile"><?php esc_html_e( 'Cart', 'mrzaib' ); ?></span>
 				</a>
 			<?php endif; ?>

@@ -135,7 +135,7 @@ function mrzaib_quickview_details() {
 
 /* --- Free-shipping progress bar (cart drawer) --- */
 function mrzaib_freeship_html() {
-	if ( ! WC()->cart ) {
+	if ( ! function_exists( 'WC' ) || ! WC()->cart ) {
 		return '<div class="mz-freeship"></div>';
 	}
 	$min   = (float) mrzaib_opt( 'free_ship', '3000' );

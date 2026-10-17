@@ -213,6 +213,11 @@ function mrzaib_setup_page() {
 	}
 	$done = false;
 	$log  = array();
+	if ( isset( $_POST['mrzaib_woo'] ) && check_admin_referer( 'mrzaib_woo' ) ) {
+		@set_time_limit( 300 ); // phpcs:ignore
+		echo '<div class="notice notice-info"><p>' . esc_html( mrzaib_install_plugin( 'woocommerce', 'woocommerce/woocommerce.php', 'WooCommerce' ) ) . '</p></div>';
+		echo '<script>setTimeout(function(){location.href=' . wp_json_encode( admin_url( 'themes.php?page=mrzaib-setup' ) ) . ';},1500);</script>';
+	}
 	if ( isset( $_POST['mrzaib_cardplugins'] ) && check_admin_referer( 'mrzaib_cardplugins' ) ) {
 		echo '<div class="notice notice-info"><p>' . esc_html( mrzaib_install_card_plugins() ) . '</p></div>';
 	}
@@ -231,6 +236,7 @@ function mrzaib_setup_page() {
 		<p style="font-size:15px;max-width:720px">This removes all old dummy data (demo perfumes, demo categories, demo blog posts, demo images and menus) and sets up your real MR ZAIB store: categories <strong>Men, Women, Unisex, Ethereal, Tester</strong>, your perfumes <strong>Kahn-vahl</strong> (Men) and <strong>Arvon</strong> (Unisex) with photos, notes, descriptions and SEO keywords, the homepage banners, pages and menus. It also sets PKR currency and Cash on Delivery. Products you added yourself are not touched.</p>
 		<?php if ( ! $woo ) : ?>
 			<div class="notice notice-error inline"><p><strong>WooCommerce is required.</strong> Install &amp; activate it first: <a href="<?php echo esc_url( admin_url( 'plugin-install.php?s=woocommerce&tab=search&type=term' ) ); ?>">Plugins &rarr; Add New &rarr; WooCommerce</a>. Then come back here.</p></div>
+			<form method="post"><?php wp_nonce_field( 'mrzaib_woo' ); ?><p><button class="button button-primary" name="mrzaib_woo" value="1">Install &amp; Activate WooCommerce</button></p></form>
 		<?php endif; ?>
 		<?php if ( $done ) : ?>
 			<div class="notice notice-success inline"><p><strong>Store set up!</strong> <a href="<?php echo esc_url( home_url( '/' ) ); ?>" target="_blank">View your website &rarr;</a></p></div>
