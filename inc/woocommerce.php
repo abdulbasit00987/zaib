@@ -56,7 +56,8 @@ add_filter( 'woocommerce_product_tabs', function ( $tabs ) {
 /* Cart count + mini cart fragments */
 add_filter( 'woocommerce_add_to_cart_fragments', function ( $f ) {
 	ob_start();
-	echo '<span class="cart-count">' . esc_html( WC()->cart->get_cart_contents_count() ) . '</span>';
+	$c = WC()->cart->get_cart_contents_count();
+	echo '<span class="cart-count' . ( $c ? '' : ' is-empty' ) . '">' . esc_html( $c ) . '</span>';
 	$f['span.cart-count'] = ob_get_clean();
 	ob_start();
 	echo '<div class="drawer-cart-body">';

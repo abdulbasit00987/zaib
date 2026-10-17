@@ -257,3 +257,48 @@
     this.reset();
   });
 })(jQuery);
+
+/* Predictive search (reference-style dropdown) */
+jQuery(function ($) {
+  if (!window.MRZAIB) return;
+  var $screen = $('<div class="mzp-screen" hidden></div>').appendTo('body');
+  var timer, xhr, cache = {};
+  function close($f) {
+    ($f || $('form[data-predictive].is-open')).each(function () {
+      $(this).removeClass('is-open is-focus').find('.mz-predictive').attr('hidden', true).empty();
+      $(this).find('input[type=search]').attr('aria-expanded', 'false');
+    });
+    $screen.attr('hidden', true); $('body').removeClass('mzp-on');
+  }
+  function show($f, html) {
+    var $p = $f.find('.mz-predictive');
+    if (!html) { close($f); return; }
+    $p.html(html).removeAttr('hidden'); $f.addClass('is-open');
+    $f.find('input[type=search]').attr('aria-expanded', 'true');
+    if (!$f.closest('.search-overlay').length) { $screen.removeAttr('hidden'); $('body').addClass('mzp-on'); }
+  }
+  $(document).on('focus', 'form[data-predictive] input[type=search]', function () {
+    var $f = $(this).closest('form').addClass('is-focus');
+    if ($.trim(this.value)) $(this).trigger('input');
+  });
+  $(document).on('input', 'form[data-predictive] input[type=search]', function () {
+    var $f = $(this).closest('form'), q = $.trim(this.value);
+    clearTimeout(timer);
+    if (!q) { close($f); $f.addClass('is-focus'); return; }
+    if (cache[q]) { show($f, cache[q]); return; }
+    timer = setTimeout(function () {
+      if (xhr) xhr.abort();
+      xhr = $.getJSON(MRZAIB.ajax, { action: 'mrzaib_suggest', q: q }, function (r) {
+        cache[q] = r.html; show($f, r.html);
+      });
+    }, 220);
+  });
+  $(document).on('click', '.mz-search-close', function () {
+    var $f = $(this).closest('form'); $f.find('input[type=search]').val('').trigger('blur'); close($f); $f.removeClass('is-focus');
+  });
+  $screen.on('click', function () { close(); $('form[data-predictive]').removeClass('is-focus'); });
+  $(document).on('keydown', function (e) { if (e.key === 'Escape') { close(); $('form[data-predictive]').removeClass('is-focus'); } });
+  $(document).on('click', function (e) {
+    if (!$(e.target).closest('form[data-predictive]').length) $('form[data-predictive]').not('.is-open').removeClass('is-focus');
+  });
+});

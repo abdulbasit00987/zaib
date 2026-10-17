@@ -102,8 +102,8 @@ function mrzaib_icon( $name ) {
 	$i = array(
 		'menu'    => '<svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M3 6h18M3 12h18M3 18h18"/></svg>',
 		'search'  => '<svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>',
-		'user'    => '<svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="12" cy="8" r="4"/><path d="M4 21c1.5-4 4.5-6 8-6s6.5 2 8 6"/></svg>',
-		'bag'     => '<svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M5 8h14l-1 13H6L5 8Z"/><path d="M9 8V6a3 3 0 0 1 6 0v2"/></svg>',
+		'user'    => '<svg viewBox="0 0 20 20" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="10" cy="6.5" r="3.5"/><path d="M3 18c.8-3.6 3.6-5.6 7-5.6s6.2 2 7 5.6"/></svg>',
+		'bag'     => '<svg viewBox="0 0 20 20" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"><path d="M3.5 6.5h13l-.9 11H4.4l-.9-11Z"/><path d="M7 8.5V5.5a3 3 0 0 1 6 0v3" stroke-linecap="round"/></svg>',
 		'eye'     => '<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M2 12s3.6-7 10-7 10 7 10 7-3.6 7-10 7S2 12 2 12Z"/><circle cx="12" cy="12" r="3"/></svg>',
 		'cartadd' => '<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M5 8h14l-1 13H6L5 8Z"/><path d="M9 8V6a3 3 0 0 1 6 0v2"/><path d="M12 12v5M9.5 14.5h5"/></svg>',
 		'fcart'   => '<svg viewBox="0 0 64 64" width="58" height="58" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round" stroke-linecap="round"><path d="M4 10h8l7 30h32l6-22H15"/><circle cx="23" cy="50" r="4"/><circle cx="46" cy="50" r="4"/><path d="M26 26h22M28 33h18"/></svg>',
@@ -144,6 +144,7 @@ function mrzaib_icon( $name ) {
  * Includes
  * ------------------------------------------------------------------ */
 require MRZAIB_DIR . '/inc/wc-compat.php';
+require MRZAIB_DIR . '/inc/search-suggest.php';
 require MRZAIB_DIR . '/inc/customizer.php';
 require MRZAIB_DIR . '/inc/menus.php';
 require MRZAIB_DIR . '/inc/woocommerce.php';
@@ -177,17 +178,13 @@ add_filter( 'excerpt_length', function () { return 22; } );
  * WooCommerce product search.
  */
 function mrzaib_search_form( $class = 'search-form-pill' ) {
-	if ( function_exists( 'aws_get_search_form' ) ) {
-		echo '<div class="mrzaib-aws ' . esc_attr( $class ) . '">';
-		aws_get_search_form( true );
-		echo '</div>';
-		return;
-	}
 	?>
-	<form role="search" method="get" action="<?php echo esc_url( home_url( '/' ) ); ?>" class="<?php echo esc_attr( $class ); ?>">
-		<input type="search" name="s" placeholder="<?php esc_attr_e( 'Search', 'mrzaib' ); ?>" value="<?php echo esc_attr( get_search_query() ); ?>" aria-label="<?php esc_attr_e( 'Search', 'mrzaib' ); ?>">
+	<form role="search" method="get" action="<?php echo esc_url( home_url( '/' ) ); ?>" class="mz-search <?php echo esc_attr( $class ); ?>" data-predictive>
+		<input type="search" name="s" placeholder="<?php esc_attr_e( 'Search', 'mrzaib' ); ?>" value="<?php echo esc_attr( get_search_query() ); ?>" aria-label="<?php esc_attr_e( 'Search', 'mrzaib' ); ?>" autocomplete="off" role="combobox" aria-expanded="false" aria-haspopup="listbox">
 		<?php if ( class_exists( 'WooCommerce' ) ) : ?><input type="hidden" name="post_type" value="product"><?php endif; ?>
-		<button type="submit" aria-label="<?php esc_attr_e( 'Search', 'mrzaib' ); ?>"><?php echo mrzaib_icon( 'search' ); // phpcs:ignore ?></button>
+		<button type="submit" class="mz-search-go" aria-label="<?php esc_attr_e( 'Search', 'mrzaib' ); ?>"><?php echo mrzaib_icon( 'search' ); // phpcs:ignore ?></button>
+		<button type="button" class="mz-search-close" aria-label="<?php esc_attr_e( 'Close search', 'mrzaib' ); ?>"><?php echo mrzaib_icon( 'close' ); // phpcs:ignore ?></button>
+		<div class="mz-predictive" role="listbox" hidden></div>
 	</form>
 	<?php
 }
