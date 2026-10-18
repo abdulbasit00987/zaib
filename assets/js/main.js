@@ -108,28 +108,63 @@
     $body.removeClass('drawer-lock');
   }
   $(document).on('click', '[data-open]', function (e) {
-    if ($(this).is('.cart-toggle') && pluginCart()) return;
+    if ($(this).is('.cart-toggle')) return;
     if (openEl($(this).data('open'))) e.preventDefault();
   });
   $(document).on('click', '[data-close]', function (e) { e.preventDefault(); closeAll(); });
   $(document).on('keyup', function (e) { if (e.key === 'Escape') closeAll(); });
 
-  /* Cart drawer: uses "Mini Cart Drawer for WooCommerce" plugin when active, else the theme drawer */
-  function pluginCart() { return !!(window.apbd_nmca || document.getElementById('apbd-mini-cart-container')); }
+  /* Header cart dropdown (reference style): slides in from the right under the header, no overlay */
+  function pluginCart() { return false; }
+  var $hc = $('#mz-hcart');
+  function hcartTop() {
+    var hdr = document.querySelector('.site-header'); if (!hdr || !$hc.length) return;
+    var b = Math.max(0, hdr.getBoundingClientRect().bottom);
+    $hc[0].style.top = b + 'px';
+  }
   function openCart() {
-    if (pluginCart()) { window.postMessage({ type: 'mc_open', status: 'CS' }, '*'); return true; }
-    return openEl('drawer-cart');
+    if (!$hc.length) return false;
+    hcartTop();
+    $hc.addClass('is-open').attr('aria-hidden', 'false');
+    $('.site-header').addClass('hcart-open').find('.cart-toggle').attr('aria-label', 'Close cart');
+    return true;
+  }
+  function closeCart() {
+    $hc.removeClass('is-open').attr('aria-hidden', 'true');
+    $('.site-header').removeClass('hcart-open').find('.cart-toggle').attr('aria-label', 'Cart');
   }
   window.mrzaibOpenCart = openCart;
-  // Mini Cart Drawer (lite) renders item links relative to the current page (/shop/https://...): fix on click.
-  document.addEventListener('click', function (e) {
-    var a = e.target.closest && e.target.closest('#apbd-mini-cart-container a[href]');
-    if (!a) return;
-    var h = a.getAttribute('href') || '', i = h.indexOf('http', 1);
-    if (i > 0) { e.preventDefault(); e.stopPropagation(); window.location.href = h.slice(i); }
-  }, true);
   $(document).on('click', '.cart-toggle', function (e) {
-    if (pluginCart()) { e.preventDefault(); e.stopImmediatePropagation(); openCart(); }
+    if (!$hc.length) return;
+    e.preventDefault(); e.stopImmediatePropagation();
+    if ($hc.hasClass('is-open')) closeCart(); else openCart();
+  });
+  $(window).on('scroll resize', function () { if ($hc.hasClass('is-open')) hcartTop(); });
+  $(document).on('keyup', function (e) { if (e.key === 'Escape') closeCart(); });
+  $(document).on('click', function (e) {
+    if (!$hc.hasClass('is-open')) return;
+    if ($(e.target).closest('#mz-hcart,.cart-toggle,.mfp-wrap,.ajax_add_to_cart,.add_to_cart_button,.single_add_to_cart_button,.mz-qv').length) return;
+    closeCart();
+  });
+  function hcApply(res) {
+    if (res && res.fragments) {
+      $.each(res.fragments, function (k, v) { $(k).replaceWith(v); });
+      $(document.body).trigger('wc_fragments_refreshed');
+    }
+  }
+  var hcT;
+  function hcSetQty($item, q) {
+    $item.addClass('is-loading');
+    $.post((window.MRZAIB && MRZAIB.ajax) || '/wp-admin/admin-ajax.php', { action: 'mrzaib_hcart_qty', key: $item.data('key'), qty: q })
+      .done(hcApply).always(function () { $item.removeClass('is-loading'); });
+  }
+  $(document).on('click', '#mz-hcart .mzc-q', function () {
+    var $item = $(this).closest('.mzc-item'), $in = $item.find('input');
+    var q = Math.max(0, (parseInt($in.val(), 10) || 0) + parseInt($(this).data('d'), 10));
+    $in.val(q); clearTimeout(hcT); hcT = setTimeout(function () { hcSetQty($item, q); }, 250);
+  });
+  $(document).on('change', '#mz-hcart .mzc-qty input', function () {
+    hcSetQty($(this).closest('.mzc-item'), Math.max(0, parseInt(this.value, 10) || 0));
   });
   $(document.body).on('added_to_cart', function () {
     // Close the Quick View modal first (variable products), then slide in the cart.
@@ -138,9 +173,7 @@
     setTimeout(openCart, pluginCart() ? delay + 350 : delay);
   });
   // Single product page posts the form and reloads: open the cart drawer when the success notice is shown.
-  if ($('body').hasClass('single-product') && $('.woocommerce-message .wc-forward').length) {
-    setTimeout(openCart, 900);
-  }
+
 
   /* Product card icons -> Reno QuickView modal */
   $(document).on('click', '.mz-qv', function (e) {

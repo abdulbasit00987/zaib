@@ -168,7 +168,8 @@ function mrzaib_install_plugin( $slug, $file, $label ) {
 function mrzaib_install_card_plugins() {
 	$out   = array();
 	$out[] = mrzaib_install_plugin( 'woo-quickview', 'woo-quickview/woo-quick-view.php', 'Quick View for WooCommerce (Reno QuickView)' );
-	$out[] = mrzaib_install_plugin( 'woo-mini-cart-drawer', 'woo-mini-cart-drawer/woo-mini-cart-drawer.php', 'Mini Cart Drawer for WooCommerce' );
+	// Header cart is theme-native now; Mini Cart Drawer plugin no longer installed.
+	if ( false ) $out[] = mrzaib_install_plugin( 'woo-mini-cart-drawer', 'woo-mini-cart-drawer/woo-mini-cart-drawer.php', 'Mini Cart Drawer for WooCommerce' );
 	$out[] = mrzaib_install_plugin( 'woo-product-gallery-slider', 'woo-product-gallery-slider/woo-product-gallery-slider.php', 'Product Gallery Slider, Additional Variation Images for WooCommerce' );
 	if ( function_exists( 'mrzaib_configure_gallery_plugin' ) ) {
 		mrzaib_configure_gallery_plugin();

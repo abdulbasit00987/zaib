@@ -59,11 +59,6 @@ add_filter( 'woocommerce_add_to_cart_fragments', function ( $f ) {
 	$c = WC()->cart->get_cart_contents_count();
 	echo '<span class="cart-count' . ( $c ? '' : ' is-empty' ) . '">' . esc_html( $c ) . '</span>';
 	$f['span.cart-count'] = ob_get_clean();
-	ob_start();
-	echo '<div class="drawer-cart-body">';
-	woocommerce_mini_cart();
-	echo '</div>';
-	$f['div.drawer-cart-body'] = ob_get_clean();
 	return $f;
 } );
 

@@ -60,6 +60,7 @@ if ( $announcements ) :
 				<a class="icon-btn cart-toggle" href="<?php echo esc_url( function_exists( 'wc_get_cart_url' ) ? wc_get_cart_url() : home_url( '/' ) ); ?>" data-open="drawer-cart" aria-label="<?php esc_attr_e( 'Cart', 'mrzaib' ); ?>">
 					<span class="cart-ico"><?php echo mrzaib_icon( 'bag' ); // phpcs:ignore ?><span class="cart-count<?php echo $mz_count ? '' : ' is-empty'; ?>"><?php echo esc_html( $mz_count ); ?></span></span>
 					<span class="cart-label hide-mobile"><?php esc_html_e( 'Cart', 'mrzaib' ); ?></span>
+					<span class="cart-close"><span class="hide-mobile"><?php esc_html_e( 'Close', 'mrzaib' ); ?></span><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M6 6l12 12M18 6 6 18"/></svg></span>
 				</a>
 			<?php endif; ?>
 			<button class="icon-btn mnav-toggle hide-desktop" aria-expanded="false" aria-controls="mobile-nav" aria-label="<?php esc_attr_e( 'Menu', 'mrzaib' ); ?>"><svg viewBox="0 0 64 64" width="22" height="22" fill="none" stroke="currentColor" stroke-width="3" aria-hidden="true"><path d="M7 15h51"/><path d="M7 32h43"/><path d="M7 49h51"/></svg></button>
@@ -116,19 +117,9 @@ if ( $announcements ) :
 	<div class="drawer-overlay" data-close></div>
 </div>
 
-<!-- Drawer: cart -->
+<!-- Header cart dropdown -->
 <?php if ( class_exists( 'WooCommerce' ) ) : ?>
-<div class="drawer drawer-right" id="drawer-cart" aria-hidden="true">
-	<div class="drawer-panel">
-		<div class="drawer-head">
-			<h3><?php esc_html_e( 'Your cart', 'mrzaib' ); ?></h3>
-			<button class="icon-btn" data-close aria-label="<?php esc_attr_e( 'Close', 'mrzaib' ); ?>"><?php echo mrzaib_icon( 'close' ); // phpcs:ignore ?></button>
-		</div>
-		<p class="drawer-ship-note"><?php printf( esc_html__( 'Spend over Rs. %s and get free delivery', 'mrzaib' ), esc_html( mrzaib_opt( 'free_ship', '3000' ) ) ); ?></p>
-		<div class="drawer-cart-body"><?php woocommerce_mini_cart(); ?></div>
-	</div>
-	<div class="drawer-overlay" data-close></div>
-</div>
+<div class="mz-hcart" id="mz-hcart" aria-hidden="true"><?php echo mrzaib_hcart_inner(); // phpcs:ignore ?></div>
 <?php endif; ?>
 
 <!-- Search overlay -->
