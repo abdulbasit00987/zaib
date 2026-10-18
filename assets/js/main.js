@@ -276,17 +276,31 @@
     $(this).parent().toggleClass('is-open');
   });
 
-  /* Top Perfume Categories slider */
+  /* Top Perfume Categories slider: 5 per view, arrow = exactly one card */
   $('.cc-wrap.is-slider').each(function () {
-    var $w = $(this), g = $w.find('.collection-grid')[0];
-    function step() { var c = g.querySelector('.collection-card'); return c ? c.getBoundingClientRect().width + 18 : 200; }
-    function upd() {
-      $w.find('.cc-prev').toggleClass('is-off', g.scrollLeft < 5);
-      $w.find('.cc-next').toggleClass('is-off', g.scrollLeft + g.clientWidth >= g.scrollWidth - 5);
+    var $w = $(this), g = $w.find('.collection-grid')[0], idx = 0;
+    function cards() { return g.querySelectorAll('.collection-card'); }
+    function perView() { var c = cards()[0]; return c ? Math.max(1, Math.round((g.clientWidth + 18) / (c.getBoundingClientRect().width + 18))) : 5; }
+    function maxIdx() { return Math.max(0, cards().length - perView()); }
+    function go(n) {
+      var c = cards(); idx = Math.max(0, Math.min(maxIdx(), n));
+      if (c[idx]) g.scrollTo({ left: c[idx].offsetLeft - c[0].offsetLeft, behavior: 'smooth' });
+      upd();
     }
-    $w.on('click', '.cc-prev', function () { g.scrollBy({ left: -step(), behavior: 'smooth' }); });
-    $w.on('click', '.cc-next', function () { g.scrollBy({ left: step(), behavior: 'smooth' }); });
-    g.addEventListener('scroll', upd, { passive: true }); $(window).on('resize', upd); upd();
+    function upd() {
+      $w.find('.cc-prev').toggleClass('is-off', idx <= 0);
+      $w.find('.cc-next').toggleClass('is-off', idx >= maxIdx());
+    }
+    $w.on('click', '.cc-prev', function () { go(idx - 1); });
+    $w.on('click', '.cc-next', function () { go(idx + 1); });
+    g.addEventListener('scroll', function () {
+      if (window.innerWidth > 749) return;
+      var c = cards(), x = g.scrollLeft, best = 0;
+      for (var k = 0; k < c.length; k++) { if (Math.abs(c[k].offsetLeft - c[0].offsetLeft - x) < Math.abs(c[best].offsetLeft - c[0].offsetLeft - x)) best = k; }
+      idx = best; upd();
+    }, { passive: true });
+    $(window).on('resize', function () { go(idx); });
+    g.scrollLeft = 0; upd();
   });
 
   /* Hero slider */
