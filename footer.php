@@ -30,7 +30,7 @@ $free = mrzaib_opt( 'free_ship', '3000' );
 		</div>
 		<div class="footer-col">
 			<h4><?php esc_html_e( 'Quick Links', 'mrzaib' ); ?></h4>
-			<?php mrzaib_footer_menu( 'footer-quick', array( 'Men' => 'men', 'Women' => 'women', 'Unisex' => 'unisex', 'Ethereal' => 'ethereal', 'Tester' => 'tester' ) ); ?>
+			<?php mrzaib_footer_menu( 'footer-quick', array( 'Men' => 'men', 'Women' => 'women', 'Unisex' => 'unisex', 'Attar' => 'attar', 'Tester' => 'tester' ) ); ?>
 		</div>
 		<div class="footer-col">
 			<h4><?php esc_html_e( 'Get in touch', 'mrzaib' ); ?></h4>

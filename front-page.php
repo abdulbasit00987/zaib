@@ -36,25 +36,26 @@ $all_products = mrzaib_products_query( array( 'limit' => 12 ) );
 		<div class="slider-dots"></div>
 	</section>
 
-	<!-- TOP PERFUME COLLECTIONS -->
+	<!-- TOP PERFUME CATEGORIES -->
 	<section class="section collections">
 		<div class="container">
-			<h2 class="section-title center"><?php echo esc_html( mrzaib_opt( 'col_title', 'Top Perfume Collections' ) ); ?></h2>
-			<div class="collection-grid scroll-x">
-				<?php
-				foreach ( mrzaib_store_categories() as $slug => $c ) :
-					$term = get_term_by( 'slug', $slug, 'product_cat' );
-					if ( ! $term || ! $term->count ) {
-						continue;
-					}
-					$tid = get_term_meta( $term->term_id, 'thumbnail_id', true );
-					$src = $tid ? wp_get_attachment_image_url( $tid, 'medium_large' ) : mrzaib_img( $c[1] );
-					?>
-					<a class="collection-card" href="<?php echo esc_url( mrzaib_cat_link( $slug ) ); ?>">
-						<span class="cc-media"><img src="<?php echo esc_url( $src ); ?>" alt="<?php echo esc_attr( 'MR ZAIB ' . $c[0] . ' perfumes' ); ?>" loading="lazy"></span>
-						<span class="cc-title"><?php echo esc_html( $c[0] ); ?></span>
-					</a>
-				<?php endforeach; ?>
+			<h2 class="section-title center"><?php echo esc_html( mrzaib_opt( 'col_title', 'Top Perfume Categories' ) ); ?></h2>
+			<?php $cats = mrzaib_home_categories(); ?>
+			<div class="cc-wrap<?php echo count( $cats ) > 5 ? ' is-slider' : ''; ?>">
+				<?php if ( count( $cats ) > 5 ) : ?>
+					<button type="button" class="slider-arrow prev cc-prev" aria-label="Previous"><?php echo mrzaib_icon( 'prev' ); // phpcs:ignore ?></button>
+				<?php endif; ?>
+				<div class="collection-grid scroll-x">
+					<?php foreach ( $cats as $c ) : ?>
+						<a class="collection-card" href="<?php echo esc_url( $c['link'] ); ?>">
+							<span class="cc-media"><img src="<?php echo esc_url( $c['img'] ); ?>" alt="<?php echo esc_attr( 'MR ZAIB ' . $c['name'] . ' perfumes' ); ?>" loading="lazy"></span>
+							<span class="cc-title"><?php echo esc_html( $c['name'] ); ?></span>
+						</a>
+					<?php endforeach; ?>
+				</div>
+				<?php if ( count( $cats ) > 5 ) : ?>
+					<button type="button" class="slider-arrow next cc-next" aria-label="Next"><?php echo mrzaib_icon( 'next' ); // phpcs:ignore ?></button>
+				<?php endif; ?>
 			</div>
 		</div>
 	</section>
@@ -199,7 +200,7 @@ $all_products = mrzaib_products_query( array( 'limit' => 12 ) );
 					<h3>Arvon: Unisex Perfume for Men and Women</h3>
 					<p><a href="<?php echo esc_url( mrzaib_product_link( 'arvon' ) ); ?>">Arvon</a> is a bold unisex fragrance in a black bottle. Pineapple, red apple, plum, nutmeg, cinnamon and bitter orange open into magnolia, orchid, lily-of-the-valley, jasmine, Moroccan rose and iris, finishing on cacao, vanilla, white musk, amber, sandalwood and cedar.</p>
 					<h3>Shop Perfumes by Category</h3>
-					<p>Explore perfumes for <a href="<?php echo esc_url( mrzaib_cat_link( 'men' ) ); ?>">Men</a>, <a href="<?php echo esc_url( mrzaib_cat_link( 'women' ) ); ?>">Women</a> and <a href="<?php echo esc_url( mrzaib_cat_link( 'unisex' ) ); ?>">Unisex</a>, the airy <a href="<?php echo esc_url( mrzaib_cat_link( 'ethereal' ) ); ?>">Ethereal</a> collection, and perfume <a href="<?php echo esc_url( mrzaib_cat_link( 'tester' ) ); ?>">Testers</a> to try a scent before buying the full bottle.</p>
+					<p>Explore perfumes for <a href="<?php echo esc_url( mrzaib_cat_link( 'men' ) ); ?>">Men</a>, <a href="<?php echo esc_url( mrzaib_cat_link( 'women' ) ); ?>">Women</a> and <a href="<?php echo esc_url( mrzaib_cat_link( 'unisex' ) ); ?>">Unisex</a>, traditional <a href="<?php echo esc_url( mrzaib_cat_link( 'attar' ) ); ?>">Attar</a>, and perfume <a href="<?php echo esc_url( mrzaib_cat_link( 'tester' ) ); ?>">Testers</a> to try a scent before buying the full bottle.</p>
 					<h3>Easy Returns and Cash on Delivery</h3>
 					<p>Not sure about a scent? Our 15 days easy returns policy has you covered, and you can pay cash when your order arrives anywhere in Pakistan.</p>
 					<p><strong>Buy high quality, long lasting perfumes online in Pakistan at affordable prices.</strong></p>

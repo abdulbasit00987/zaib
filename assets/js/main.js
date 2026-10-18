@@ -276,6 +276,19 @@
     $(this).parent().toggleClass('is-open');
   });
 
+  /* Top Perfume Categories slider */
+  $('.cc-wrap.is-slider').each(function () {
+    var $w = $(this), g = $w.find('.collection-grid')[0];
+    function step() { var c = g.querySelector('.collection-card'); return c ? c.getBoundingClientRect().width + 18 : 200; }
+    function upd() {
+      $w.find('.cc-prev').toggleClass('is-off', g.scrollLeft < 5);
+      $w.find('.cc-next').toggleClass('is-off', g.scrollLeft + g.clientWidth >= g.scrollWidth - 5);
+    }
+    $w.on('click', '.cc-prev', function () { g.scrollBy({ left: -step(), behavior: 'smooth' }); });
+    $w.on('click', '.cc-next', function () { g.scrollBy({ left: step(), behavior: 'smooth' }); });
+    g.addEventListener('scroll', upd, { passive: true }); $(window).on('resize', upd); upd();
+  });
+
   /* Hero slider */
   $('[data-slider]').each(function () {
     var $s = $(this), $slides = $s.find('.slide'), $dots = $s.find('.slider-dots'), i = 0, t;

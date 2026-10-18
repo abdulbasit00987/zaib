@@ -18,7 +18,7 @@ function mrzaib_menu_structure() {
 		array( 'Men', 'men', array() ),
 		array( 'Women', 'women', array() ),
 		array( 'Unisex', 'unisex', array() ),
-		array( 'Ethereal', 'ethereal', array() ),
+		array( 'Attar', 'attar', array() ),
 		array( 'Tester', 'tester', array() ),
 		array( 'Contact', 'page:contact-us', array(
 			array( 'Contact Us', 'page:contact-us' ),

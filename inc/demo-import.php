@@ -234,7 +234,7 @@ function mrzaib_setup_page() {
 	?>
 	<div class="wrap">
 		<h1>MR ZAIB &mdash; Store Setup</h1>
-		<p style="font-size:15px;max-width:720px">This removes all old dummy data (demo perfumes, demo categories, demo blog posts, demo images and menus) and sets up your real MR ZAIB store: categories <strong>Men, Women, Unisex, Ethereal, Tester</strong>, your perfumes <strong>Kahn-vahl</strong> (Men) and <strong>Arvon</strong> (Unisex) with photos, notes, descriptions and SEO keywords, the homepage banners, pages and menus. It also sets PKR currency and Cash on Delivery. Products you added yourself are not touched.</p>
+		<p style="font-size:15px;max-width:720px">This removes all old dummy data (demo perfumes, demo categories, demo blog posts, demo images and menus) and sets up your real MR ZAIB store: categories <strong>Men, Women, Unisex, Attar, Tester</strong>, your perfumes <strong>Kahn-vahl</strong> (Men) and <strong>Arvon</strong> (Unisex) with photos, notes, descriptions and SEO keywords, the homepage banners, pages and menus. It also sets PKR currency and Cash on Delivery. Products you added yourself are not touched.</p>
 		<?php if ( ! $woo ) : ?>
 			<div class="notice notice-error inline"><p><strong>WooCommerce is required.</strong> Install &amp; activate it first: <a href="<?php echo esc_url( admin_url( 'plugin-install.php?s=woocommerce&tab=search&type=term' ) ); ?>">Plugins &rarr; Add New &rarr; WooCommerce</a>. Then come back here.</p></div>
 			<form method="post"><?php wp_nonce_field( 'mrzaib_woo' ); ?><p><button class="button button-primary" name="mrzaib_woo" value="1">Install &amp; Activate WooCommerce</button></p></form>
@@ -411,7 +411,7 @@ function mrzaib_run_import() {
 	/* --- Remove old dummy data, then add the real MR ZAIB catalogue --- */
 	$log[]   = mrzaib_remove_dummy();
 	$cat_ids = mrzaib_install_categories();
-	$log[]   = count( $cat_ids ) . ' categories ready: Men, Women, Unisex, Ethereal, Tester.';
+	$log[]   = count( $cat_ids ) . ' categories ready: Men, Women, Unisex, Attar, Tester.';
 	$log[]   = mrzaib_install_products( $cat_ids );
 
 	/* --- Pages --- */
@@ -453,7 +453,7 @@ function mrzaib_run_import() {
 
 	/* --- Menus --- */
 	mrzaib_build_menus();
-	$log[] = 'Main menu (Shop, Men, Women, Unisex, Ethereal, Tester, Contact) and footer menus created.';
+	$log[] = 'Main menu (Shop, Men, Women, Unisex, Attar, Tester, Contact) and footer menus created.';
 
 	/* --- Logo --- */
 	if ( ! get_theme_mod( 'custom_logo' ) || ! get_post( (int) get_theme_mod( 'custom_logo' ) ) ) {
@@ -535,7 +535,7 @@ function mrzaib_build_menus() {
 	}
 
 	$footers = array(
-		'footer-about'   => array( 'Footer About', array( 'Men' => 'men', 'Women' => 'women', 'Unisex' => 'unisex', 'Ethereal' => 'ethereal', 'Tester' => 'tester' ) ),
+		'footer-about'   => array( 'Footer About', array( 'Men' => 'men', 'Women' => 'women', 'Unisex' => 'unisex', 'Attar' => 'attar', 'Tester' => 'tester' ) ),
 		'footer-support' => array( 'Footer Support', array( 'My Account' => 'page:my-account', 'Return Form' => 'page:returns', 'Privacy Policy' => 'page:privacy-policy-2', 'Shipping Policy' => 'page:shipping-policy', 'Terms of Service' => 'page:terms-of-service', 'Track Your Order' => 'page:track-order' ) ),
 		'footer-quick'   => array( 'Footer Quick Links', array( 'FAQs' => 'page:faqs', 'Contact Us' => 'page:contact-us', 'Return & Refund Policy' => 'page:refund-policy', 'Blogs' => 'page:blog' ) ),
 	);

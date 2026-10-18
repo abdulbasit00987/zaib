@@ -16,7 +16,7 @@ function mrzaib_store_categories() {
 		'men'      => array( 'Men', 'cat-men.jpg', 'Long lasting perfumes for men by MR ZAIB. Fresh, woody and aquatic fragrances made to leave your presence.' ),
 		'women'    => array( 'Women', 'cat-women.jpg', 'Elegant, long lasting perfumes for women by MR ZAIB.' ),
 		'unisex'   => array( 'Unisex', 'cat-unisex.jpg', 'Unisex perfumes by MR ZAIB that suit men and women alike.' ),
-		'ethereal' => array( 'Ethereal', 'cat-ethereal.jpg', 'The Ethereal collection by MR ZAIB: soft, airy and luminous fragrances.' ),
+		'attar'    => array( 'Attar', 'cat-attar.jpg', 'Traditional long lasting attar (perfume oil) by MR ZAIB: rich oud, rose, musk and amber.' ),
 		'tester'   => array( 'Tester', 'cat-tester.jpg', 'MR ZAIB perfume testers: try a scent before you buy the full bottle.' ),
 	);
 }
@@ -325,3 +325,87 @@ add_action( 'wp_head', function () {
 		}
 	}
 }, 2 );
+
+/**
+ * Homepage "Top Perfume Categories": every top-level product category (also empty ones),
+ * ordered like WooCommerce's category order. Theme categories use the theme artwork unless
+ * the admin uploaded their own thumbnail.
+ */
+function mrzaib_home_categories() {
+	$out = array();
+	if ( ! taxonomy_exists( 'product_cat' ) ) {
+		return $out;
+	}
+	$terms = get_terms( array(
+		'taxonomy'   => 'product_cat',
+		'parent'     => 0,
+		'hide_empty' => false,
+		'exclude'    => array( (int) get_option( 'default_product_cat' ) ),
+		'menu_order' => 'asc',
+	) );
+	if ( is_wp_error( $terms ) ) {
+		return $out;
+	}
+	$theme = mrzaib_store_categories();
+	$media = array_map( 'intval', (array) get_option( 'mrzaib_demo_media', array() ) );
+	foreach ( $terms as $t ) {
+		$tid = (int) get_term_meta( $t->term_id, 'thumbnail_id', true );
+		$own = $tid && ! in_array( $tid, $media, true ) ? wp_get_attachment_image_url( $tid, 'medium_large' ) : '';
+		if ( $own ) {
+			$img = $own;
+		} elseif ( isset( $theme[ $t->slug ] ) ) {
+			$img = mrzaib_img( $theme[ $t->slug ][1] );
+		} elseif ( $tid && wp_get_attachment_image_url( $tid, 'medium_large' ) ) {
+			$img = wp_get_attachment_image_url( $tid, 'medium_large' );
+		} elseif ( function_exists( 'wc_placeholder_img_src' ) ) {
+			$img = wc_placeholder_img_src( 'medium_large' );
+		} else {
+			$img = '';
+		}
+		$out[] = array( 'name' => $t->name, 'link' => get_term_link( $t ), 'img' => $img );
+	}
+	return $out;
+}
+
+/** One-time update: Ethereal category becomes Attar; old category artwork is replaced. */
+function mrzaib_migrate_categories_v2() {
+	if ( (int) get_option( 'mrzaib_cat_v' ) >= 2 || ! taxonomy_exists( 'product_cat' ) ) {
+		return;
+	}
+	update_option( 'mrzaib_cat_v', 2, false );
+	$eth   = get_term_by( 'slug', 'ethereal', 'product_cat' );
+	$attar = get_term_by( 'slug', 'attar', 'product_cat' );
+	if ( $eth && ! $attar ) {
+		$c = mrzaib_store_categories();
+		wp_update_term( $eth->term_id, 'product_cat', array( 'name' => 'Attar', 'slug' => 'attar', 'description' => $c['attar'][2] ) );
+	} elseif ( $eth && $attar && ! $eth->count ) {
+		wp_delete_term( $eth->term_id, 'product_cat' );
+	}
+	/* Point theme categories' thumbnails at the new artwork. */
+	$map = (array) get_option( 'mrzaib_demo_media', array() );
+	foreach ( array( 'cat-men.jpg', 'cat-women.jpg', 'cat-unisex.jpg', 'cat-tester.jpg', 'cat-ethereal.jpg', 'cat-attar.jpg' ) as $f ) {
+		unset( $map[ $f ] );
+	}
+	$old = array_map( 'intval', (array) get_option( 'mrzaib_demo_media', array() ) );
+	update_option( 'mrzaib_demo_media', $map, false );
+	if ( ! function_exists( 'mrzaib_import_image' ) ) {
+		return;
+	}
+	foreach ( mrzaib_store_categories() as $slug => $c ) {
+		$t = get_term_by( 'slug', $slug, 'product_cat' );
+		if ( ! $t ) {
+			continue;
+		}
+		$tid = (int) get_term_meta( $t->term_id, 'thumbnail_id', true );
+		if ( $tid && ! in_array( $tid, $old, true ) ) {
+			continue; // Admin's own image: keep it.
+		}
+		$img = mrzaib_import_image( $c[1] );
+		if ( $img ) {
+			update_term_meta( $t->term_id, 'thumbnail_id', $img );
+			update_post_meta( $img, '_wp_attachment_image_alt', 'MR ZAIB ' . $c[0] . ' perfumes' );
+		}
+	}
+}
+add_action( 'admin_init', 'mrzaib_migrate_categories_v2' );
+
