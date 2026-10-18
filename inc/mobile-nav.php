@@ -216,11 +216,6 @@ function mrzaib_mobile_nav() {
 	}
 	?>
 	<div class="mobile-nav-wrapper">
-		<div class="drawer-top-promos-scroll"><div class="drawer-top-promos">
-			<?php foreach ( $promos as $pr ) : ?>
-				<a href="<?php echo esc_url( $pr[1] ); ?>" class="promo-card"><img src="<?php echo esc_url( $pr[2] ); ?>" alt="<?php echo esc_attr( $pr[0] ); ?>" class="promo-bg-img" loading="lazy"><span class="promo-overlay"><span class="promo-card-title"><?php echo esc_html( $pr[0] ); ?></span></span></a>
-			<?php endforeach; ?>
-		</div></div>
 
 		<div class="drawer-tabs-scroll-container"><div class="drawer-tabs-header" role="tablist">
 			<button type="button" class="drawer-tab-btn active" data-tab="mz-tab-0"><span><?php esc_html_e( 'Shop', 'mrzaib' ); ?></span></button>
