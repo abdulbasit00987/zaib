@@ -129,7 +129,7 @@ function mrzaib_footer_menu( $location, $fallback ) {
  * Desktop: a product-category menu item with no manual children shows its
  * WooCommerce sub-categories (if any) as a normal dropdown. No product preview.
  */
-function mrzaib_cat_children_menu( $term_id ) {
+function mrzaib_cat_children_menu( $term_id, $level = 0 ) {
 	if ( ! taxonomy_exists( 'product_cat' ) ) {
 		return '';
 	}
@@ -139,13 +139,14 @@ function mrzaib_cat_children_menu( $term_id ) {
 	}
 	$html = '<ul class="sub-menu">';
 	foreach ( $kids as $k ) {
-		$html .= '<li class="menu-item"><a href="' . esc_url( get_term_link( $k ) ) . '">' . esc_html( $k->name ) . '</a></li>';
+		$sub   = $level < 3 ? mrzaib_cat_children_menu( $k->term_id, $level + 1 ) : '';
+		$html .= '<li class="menu-item' . ( $sub ? ' menu-item-has-children' : '' ) . '"><a href="' . esc_url( get_term_link( $k ) ) . '">' . esc_html( $k->name ) . '</a>' . $sub . '</li>';
 	}
 	return $html . '</ul>';
 }
 
 function mrzaib_menu_item_is_auto_cat( $item, $args, $depth, $classes ) {
-	return 0 === $depth && ! empty( $args->menu_id ) && 'primary-menu' === $args->menu_id && 'taxonomy' === $item->type && 'product_cat' === $item->object && ! in_array( 'menu-item-has-children', (array) $classes, true );
+	return ! empty( $args->menu_id ) && 'primary-menu' === $args->menu_id && 'taxonomy' === $item->type && 'product_cat' === $item->object && ! in_array( 'menu-item-has-children', (array) $classes, true );
 }
 
 add_filter( 'walker_nav_menu_start_el', function ( $output, $item, $depth, $args ) {

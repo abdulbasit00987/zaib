@@ -89,6 +89,12 @@ body.admin-bar .site-header.is-compact{top:32px}
 .main-nav .sub-menu a:hover{color:var(--black)}
 .main-nav .menu>li:hover>.sub-menu,.main-nav .menu>li:has(:focus-visible)>.sub-menu{opacity:1;visibility:visible;transform:none;transition-delay:.12s}
 .main-nav .sub-menu .sub-menu{position:static;opacity:1;visibility:visible;transform:none;border:0;box-shadow:none;padding:0}
+/* dropdown (non-mega): nested sub-categories fly out to the right on hover */
+.main-nav .menu>li:not(.mega-menu) .sub-menu li{position:relative}
+.main-nav .menu>li:not(.mega-menu) .sub-menu .sub-menu{position:absolute;left:100%;top:-13px;padding:12px 0;border:1px solid var(--line);box-shadow:0 12px 30px rgba(0,0,0,.08);background:#fff;opacity:0;visibility:hidden;transform:translateX(8px)}
+.main-nav .menu>li:not(.mega-menu) .sub-menu li:hover>.sub-menu,.main-nav .menu>li:not(.mega-menu) .sub-menu li:has(:focus-visible)>.sub-menu{opacity:1;visibility:visible;transform:none}
+.main-nav .menu>li:not(.mega-menu) .sub-menu li.menu-item-has-children>a{display:flex;justify-content:space-between;align-items:center;gap:14px}
+.main-nav .menu>li:not(.mega-menu) .sub-menu li.menu-item-has-children>a::after{content:"\203A";font-size:18px;line-height:1}
 /* mega */
 .main-nav .mega-menu>.sub-menu{left:0;right:0;width:100%;display:grid;grid-template-columns:repeat(5,1fr);gap:24px 30px;padding:30px max(20px,calc((100% - var(--container))/2 + 20px))}
 .main-nav .mega-menu>.sub-menu>li>a{font-weight:600;color:var(--black);font-size:14px;padding:0 0 8px;text-transform:uppercase;letter-spacing:.6px}
@@ -1114,6 +1120,9 @@ body{overflow-x:clip}
   .drawer-menu-row.is-open+.accordion-wrapper{grid-template-rows:1fr}
   .accordion-inner{overflow:hidden}
   .drawer-submenu-list{list-style:none;margin:0;padding:4px 0 10px;background:rgba(0,0,0,.15)}
+  .drawer-sub-row{padding:0 20px 0 0}
+  .drawer-sub-row .drawer-submenu-link{flex:1}
+  .drawer-submenu-list .drawer-submenu-list{padding:0 0 4px;background:rgba(0,0,0,.12)}
   .drawer-submenu-link{display:block;padding:10px 20px 10px 54px;color:rgba(255,255,255,.75);text-decoration:none;font-size:13px}
   .empty-tab-msg{padding:16px 12px;width:100%}
   .direct-link-header{text-align:center;padding:8px 0 14px;border-bottom:1px solid rgba(255,255,255,.08)}

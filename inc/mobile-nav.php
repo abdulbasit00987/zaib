@@ -79,7 +79,7 @@ function mrzaib_mnav_cat_icon( $slug ) {
 }
 
 /** Child categories of a product category, as submenu entries. */
-function mrzaib_mnav_cat_children( $slug ) {
+function mrzaib_mnav_cat_children( $slug, $level = 0 ) {
 	$out = array();
 	if ( ! $slug || ! taxonomy_exists( 'product_cat' ) ) {
 		return $out;
@@ -91,7 +91,7 @@ function mrzaib_mnav_cat_children( $slug ) {
 	$kids = get_terms( array( 'taxonomy' => 'product_cat', 'parent' => $t->term_id, 'hide_empty' => false ) );
 	if ( ! is_wp_error( $kids ) ) {
 		foreach ( $kids as $k ) {
-			$out[] = array( $k->name, get_term_link( $k ), $k->slug, array() );
+			$out[] = array( $k->name, get_term_link( $k ), $k->slug, $level < 3 ? mrzaib_mnav_cat_children( $k->slug, $level + 1 ) : array() );
 		}
 	}
 	return $out;
@@ -111,13 +111,29 @@ function mrzaib_mnav_row( $title, $url, $icon, $children ) {
 	}
 	echo '</div>';
 	if ( $has ) {
-		echo '<div class="accordion-wrapper"><div class="accordion-inner"><ul class="drawer-submenu-list">';
-		foreach ( $children as $c ) {
-			echo '<li><a href="' . esc_url( $c[1] ) . '" class="drawer-submenu-link">' . esc_html( $c[0] ) . '</a></li>';
-		}
-		echo '</ul></div></div>';
+		echo '<div class="accordion-wrapper"><div class="accordion-inner">';
+		mrzaib_mnav_sublist( $children, 1 );
+		echo '</div></div>';
 	}
 	echo '</li>';
+}
+
+/** Nested sub-category list (sub-items with children become their own accordions). */
+function mrzaib_mnav_sublist( $children, $level ) {
+	echo '<ul class="drawer-submenu-list lvl-' . (int) $level . '">';
+	foreach ( $children as $c ) {
+		$kids = ! empty( $c[3] ) ? $c[3] : ( ! empty( $c[2] ) && $level < 4 ? mrzaib_mnav_cat_children( $c[2], $level ) : array() );
+		$pad  = 54 + ( $level - 1 ) * 16;
+		if ( $kids ) {
+			echo '<li><div class="drawer-menu-row drawer-sub-row" data-acc><a href="' . esc_url( $c[1] ) . '" class="drawer-submenu-link" style="padding-left:' . $pad . 'px">' . esc_html( $c[0] ) . '</a><span class="accordion-arrow-wrapper"><span class="arrow-icon">&rsaquo;</span></span></div>';
+			echo '<div class="accordion-wrapper"><div class="accordion-inner">';
+			mrzaib_mnav_sublist( $kids, $level + 1 );
+			echo '</div></div></li>';
+		} else {
+			echo '<li><a href="' . esc_url( $c[1] ) . '" class="drawer-submenu-link" style="padding-left:' . $pad . 'px">' . esc_html( $c[0] ) . '</a></li>';
+		}
+	}
+	echo '</ul>';
 }
 
 /** Mini product cards for a category tab. */
