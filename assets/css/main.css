@@ -57,6 +57,7 @@ h1,h2,h3,h4{font-family:var(--font-head);font-weight:600;line-height:1.2;margin:
 .site-header.is-compact{position:fixed;top:0;left:0;right:0;animation:hdrIn .25s ease}
 body.admin-bar .site-header.is-compact{top:32px}
 @media(max-width:782px){body.admin-bar .site-header.is-compact{top:46px}}
+@media(max-width:600px){body.admin-bar .site-header.is-compact{top:0}} /* WP admin bar scrolls away below 600px */
 @keyframes hdrIn{from{transform:translateY(-100%)}to{transform:none}}
 .site-header.is-compact .main-nav{display:none}
 @media(min-width:990px){.site-header.is-compact .menu-toggle{display:inline-flex}}
@@ -1234,6 +1235,7 @@ body{overflow-x:clip}
 .mzc-subtitle{margin:-2px 0 0;font-size:13px;color:#6b6b6b;line-height:1.4}
 .cart-close{line-height:1}
 .site-header .cart-toggle{align-items:center}
-.cart-close>span{display:block;line-height:14px;height:14px}
-.cart-close svg{width:16px;height:16px}
+.cart-close{height:20px}
+.cart-close>span{display:block;line-height:20px;height:20px;transform:translateY(1px)}
+.cart-close svg{width:15px;height:15px}
 .cart-close svg{display:block;flex:0 0 auto}

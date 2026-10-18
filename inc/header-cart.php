@@ -101,3 +101,11 @@ add_action( 'wp_footer', function () {
 		echo '<script>window.addEventListener("load",function(){setTimeout(function(){if(window.mrzaibOpenCart)window.mrzaibOpenCart();},300);});</script>';
 	}
 }, 99 );
+
+/* Bust WooCommerce's sessionStorage fragment cache whenever the header cart markup changes,
+   otherwise old cart HTML is restored on page load until the cart changes. */
+function mrzaib_hcart_cache_ver() {
+	return substr( md5( (string) filemtime( __FILE__ ) . MRZAIB_VERSION ), 0, 8 );
+}
+add_filter( 'woocommerce_cart_fragment_name', function ( $n ) { return $n . '_' . mrzaib_hcart_cache_ver(); } );
+add_filter( 'woocommerce_cart_hash_key', function ( $n ) { return $n . '_' . mrzaib_hcart_cache_ver(); } );
