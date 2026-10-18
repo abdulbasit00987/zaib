@@ -51,8 +51,15 @@ function mrzaib_fallback_menu() {
 				$has_mega = true;
 			}
 		}
-		$cls = 'menu-item' . ( $top[2] ? ' menu-item-has-children' : '' ) . ( $has_mega ? ' mega-menu' : '' );
-		echo '<li class="' . esc_attr( $cls ) . '"><a href="' . esc_url( mrzaib_resolve_link( $top[1] ) ) . '">' . esc_html( $top[0] ) . '</a>';
+		$auto = '';
+		if ( ! $top[2] && 'shop' !== $top[1] && 0 !== strpos( $top[1], 'page:' ) && taxonomy_exists( 'product_cat' ) ) {
+			$t = get_term_by( 'slug', $top[1], 'product_cat' );
+			if ( $t ) {
+				$auto = mrzaib_cat_children_menu( $t->term_id );
+			}
+		}
+		$cls = 'menu-item' . ( ( $top[2] || $auto ) ? ' menu-item-has-children' : '' ) . ( $has_mega ? ' mega-menu' : '' );
+		echo '<li class="' . esc_attr( $cls ) . '"><a href="' . esc_url( mrzaib_resolve_link( $top[1] ) ) . '">' . esc_html( $top[0] ) . '</a>' . $auto;
 		if ( $top[2] ) {
 			echo '<ul class="sub-menu">';
 			foreach ( $top[2] as $c ) {
@@ -119,40 +126,38 @@ function mrzaib_footer_menu( $location, $fallback ) {
 }
 
 /**
- * Desktop: category items without children show a product preview dropdown
- * ("Explore Gift Box Collection →" + 4 products), like the reference store.
+ * Desktop: a product-category menu item with no manual children shows its
+ * WooCommerce sub-categories (if any) as a normal dropdown. No product preview.
  */
-function mrzaib_menu_product_preview( $output, $item, $depth, $args ) {
-	if ( 0 !== $depth || empty( $args->menu_id ) || 'primary-menu' !== $args->menu_id ) {
-		return $output;
+function mrzaib_cat_children_menu( $term_id ) {
+	if ( ! taxonomy_exists( 'product_cat' ) ) {
+		return '';
 	}
-	if ( 'taxonomy' !== $item->type || 'product_cat' !== $item->object || ! function_exists( 'wc_get_products' ) ) {
-		return $output;
+	$kids = get_terms( array( 'taxonomy' => 'product_cat', 'parent' => (int) $term_id, 'hide_empty' => false, 'orderby' => 'menu_order' ) );
+	if ( ! $kids || is_wp_error( $kids ) ) {
+		return '';
 	}
-	if ( in_array( 'menu-item-has-children', (array) $item->classes, true ) ) {
-		return $output;
+	$html = '<ul class="sub-menu">';
+	foreach ( $kids as $k ) {
+		$html .= '<li class="menu-item"><a href="' . esc_url( get_term_link( $k ) ) . '">' . esc_html( $k->name ) . '</a></li>';
 	}
-	$term = get_term( (int) $item->object_id, 'product_cat' );
-	if ( ! $term || is_wp_error( $term ) ) {
-		return $output;
-	}
-	$products = wc_get_products( array( 'limit' => 4, 'status' => 'publish', 'category' => array( $term->slug ), 'orderby' => 'menu_order', 'order' => 'ASC' ) );
-	if ( ! $products ) {
-		return $output;
-	}
-	$html  = '<div class="menu-preview"><div class="container"><div class="mp-head"><a href="' . esc_url( get_term_link( $term ) ) . '">' . sprintf( esc_html__( 'Explore %s Collection →', 'mrzaib' ), esc_html( $term->name ) ) . '</a><span>' . esc_html( $term->name ) . '</span></div><div class="mp-grid">';
-	foreach ( $products as $p ) {
-		$html .= '<a class="mp-item" href="' . esc_url( get_permalink( $p->get_id() ) ) . '">' . $p->get_image( 'woocommerce_thumbnail' ) . ( $p->is_on_sale() ? '<span class="badge badge-sale">Sale</span>' : '' ) . '<span class="mp-name">' . esc_html( $p->get_name() ) . '</span><span class="mp-price">' . $p->get_price_html() . '</span></a>';
-	}
-	$html .= '</div></div></div>';
-	return $output . $html;
+	return $html . '</ul>';
 }
-add_filter( 'walker_nav_menu_start_el', 'mrzaib_menu_product_preview', 10, 4 );
 
-/* Mark those items so CSS can position the preview */
+function mrzaib_menu_item_is_auto_cat( $item, $args, $depth, $classes ) {
+	return 0 === $depth && ! empty( $args->menu_id ) && 'primary-menu' === $args->menu_id && 'taxonomy' === $item->type && 'product_cat' === $item->object && ! in_array( 'menu-item-has-children', (array) $classes, true );
+}
+
+add_filter( 'walker_nav_menu_start_el', function ( $output, $item, $depth, $args ) {
+	if ( mrzaib_menu_item_is_auto_cat( $item, $args, $depth, $item->classes ) ) {
+		$output .= mrzaib_cat_children_menu( $item->object_id );
+	}
+	return $output;
+}, 10, 4 );
+
 add_filter( 'nav_menu_css_class', function ( $classes, $item, $args, $depth ) {
-	if ( 0 === $depth && ! empty( $args->menu_id ) && 'primary-menu' === $args->menu_id && 'taxonomy' === $item->type && 'product_cat' === $item->object && ! in_array( 'menu-item-has-children', $classes, true ) ) {
-		$classes[] = 'has-preview';
+	if ( mrzaib_menu_item_is_auto_cat( $item, $args, $depth, $classes ) && mrzaib_cat_children_menu( $item->object_id ) ) {
+		$classes[] = 'menu-item-has-children';
 	}
 	return $classes;
 }, 10, 4 );
