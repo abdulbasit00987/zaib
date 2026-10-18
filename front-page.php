@@ -41,10 +41,8 @@ $all_products = mrzaib_products_query( array( 'limit' => 12 ) );
 		<div class="container">
 			<h2 class="section-title center"><?php echo esc_html( mrzaib_opt( 'col_title', 'Top Perfume Categories' ) ); ?></h2>
 			<?php $cats = mrzaib_home_categories(); ?>
-			<div class="cc-wrap<?php echo count( $cats ) > 5 ? ' is-slider' : ''; ?>">
-				<?php if ( count( $cats ) > 5 ) : ?>
-					<button type="button" class="slider-arrow prev cc-prev" aria-label="Previous"><?php echo mrzaib_icon( 'prev' ); // phpcs:ignore ?></button>
-				<?php endif; ?>
+			<div class="cc-wrap is-slider">
+				<button type="button" class="slider-arrow prev cc-prev is-off" aria-label="Previous"><?php echo mrzaib_icon( 'prev' ); // phpcs:ignore ?></button>
 				<div class="collection-grid scroll-x">
 					<?php foreach ( $cats as $c ) : ?>
 						<a class="collection-card" href="<?php echo esc_url( $c['link'] ); ?>">
@@ -53,9 +51,7 @@ $all_products = mrzaib_products_query( array( 'limit' => 12 ) );
 						</a>
 					<?php endforeach; ?>
 				</div>
-				<?php if ( count( $cats ) > 5 ) : ?>
-					<button type="button" class="slider-arrow next cc-next" aria-label="Next"><?php echo mrzaib_icon( 'next' ); // phpcs:ignore ?></button>
-				<?php endif; ?>
+				<button type="button" class="slider-arrow next cc-next is-off" aria-label="Next"><?php echo mrzaib_icon( 'next' ); // phpcs:ignore ?></button>
 			</div>
 		</div>
 	</section>

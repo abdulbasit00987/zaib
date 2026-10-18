@@ -369,10 +369,10 @@ function mrzaib_home_categories() {
 
 /** One-time update: Ethereal category becomes Attar; old category artwork is replaced. */
 function mrzaib_migrate_categories_v2() {
-	if ( (int) get_option( 'mrzaib_cat_v' ) >= 2 || ! taxonomy_exists( 'product_cat' ) ) {
+	if ( (int) get_option( 'mrzaib_cat_v' ) >= 3 || ! taxonomy_exists( 'product_cat' ) ) {
 		return;
 	}
-	update_option( 'mrzaib_cat_v', 2, false );
+	update_option( 'mrzaib_cat_v', 3, false );
 	$eth   = get_term_by( 'slug', 'ethereal', 'product_cat' );
 	$attar = get_term_by( 'slug', 'attar', 'product_cat' );
 	if ( $eth && ! $attar ) {
