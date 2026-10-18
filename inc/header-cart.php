@@ -29,6 +29,10 @@ function mrzaib_hcart_inner() {
 			$link  = $p->is_visible() ? $p->get_permalink( $item ) : '';
 			$name  = $p->get_parent_id() ? get_the_title( $p->get_parent_id() ) : $p->get_name();
 			$meta  = '';
+			$subt  = get_post_meta( $p->get_parent_id() ? $p->get_parent_id() : $p->get_id(), '_mrzaib_subtitle', true );
+			if ( $subt ) {
+				$meta .= '<p class="mzc-subtitle">' . esc_html( $subt ) . '</p>';
+			}
 			if ( ! empty( $item['variation'] ) ) {
 				foreach ( $item['variation'] as $attr => $val ) {
 					if ( '' === $val ) {
