@@ -124,6 +124,7 @@
   }
   function openCart() {
     if (!$hc.length) return false;
+    if (typeof closeHSearch === 'function') closeHSearch();
     hcartTop();
     $hc.addClass('is-open').attr('aria-hidden', 'false');
     $('.site-header').addClass('hcart-open').find('.cart-toggle').attr('aria-label', 'Close cart');

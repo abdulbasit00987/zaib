@@ -1239,3 +1239,11 @@ body{overflow-x:clip}
 .cart-close>span{display:block;line-height:20px;height:20px;transform:translateY(1px)}
 .cart-close svg{width:15px;height:15px}
 .cart-close svg{display:block;flex:0 0 auto}
+/* Tablet + mobile: cart open hides search (icon + pill) */
+@media(max-width:989px){
+  .site-header.hcart-open .mz-hs-open,.site-header.hcart-open .search-toggle,.site-header.hcart-open .header-search,.site-header.hcart-open .mz-hsearch{visibility:hidden!important;pointer-events:none}
+}
+@media(max-width:768px){
+  .mzc-row{flex-wrap:wrap;gap:8px 12px}
+  .mzc-price,.mzc-price .amount{font-size:15px}
+}
