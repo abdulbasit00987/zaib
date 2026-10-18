@@ -15,12 +15,6 @@ if ( ! class_exists( 'WooCommerce' ) ) {
 	return;
 }
 
-/* Hero slides */
-$defaults = array(
-	1 => array( 'hero-1-desktop.jpg', 'hero-1-mobile.jpg', mrzaib_cat_link( 'men' ), 'Kahn-vahl perfume for men by MR ZAIB' ),
-	2 => array( 'hero-2-desktop.jpg', 'hero-2-mobile.jpg', mrzaib_cat_link( 'unisex' ), 'Arvon unisex perfume by MR ZAIB' ),
-	3 => array( 'hero-3-desktop.jpg', 'hero-3-mobile.jpg', mrzaib_shop_link(), 'The MR ZAIB luxury perfume collection' ),
-);
 $all_products = mrzaib_products_query( array( 'limit' => 12 ) );
 ?>
 <main id="MainContent" class="site-main home">
@@ -28,15 +22,11 @@ $all_products = mrzaib_products_query( array( 'limit' => 12 ) );
 	<!-- HERO SLIDER -->
 	<section class="hero" data-slider data-autoplay="5000">
 		<div class="slides">
-			<?php foreach ( $defaults as $i => $d ) :
-				$dsk  = mrzaib_opt( 'hero_img_' . $i ) ? mrzaib_opt( 'hero_img_' . $i ) : mrzaib_img( $d[0] );
-				$mob  = mrzaib_opt( 'hero_mob_' . $i ) ? mrzaib_opt( 'hero_mob_' . $i ) : ( mrzaib_opt( 'hero_img_' . $i ) ? $dsk : mrzaib_img( $d[1] ) );
-				$link = mrzaib_opt( 'hero_link_' . $i, $d[2] );
-				?>
-				<a class="slide<?php echo 1 === $i ? ' is-active' : ''; ?>" href="<?php echo esc_url( $link ); ?>">
+			<?php foreach ( mrzaib_hero_slides() as $n => $sl ) : ?>
+				<a class="slide<?php echo 0 === $n ? ' is-active' : ''; ?>" href="<?php echo esc_url( $sl[2] ); ?>">
 					<picture>
-						<source media="(max-width: 749px)" srcset="<?php echo esc_url( $mob ); ?>">
-						<img src="<?php echo esc_url( $dsk ); ?>" alt="<?php echo esc_attr( $d[3] ); ?>" <?php echo 1 === $i ? 'fetchpriority="high"' : 'loading="lazy"'; ?>>
+						<source media="(max-width: 749px)" srcset="<?php echo esc_url( $sl[1] ); ?>">
+						<img src="<?php echo esc_url( $sl[0] ); ?>" alt="<?php echo esc_attr( $sl[3] ); ?>" <?php echo 0 === $n ? 'fetchpriority="high"' : 'loading="lazy"'; ?>>
 					</picture>
 				</a>
 			<?php endforeach; ?>

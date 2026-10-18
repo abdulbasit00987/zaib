@@ -66,7 +66,8 @@ add_action( 'wp_enqueue_scripts', 'mrzaib_assets' );
  * Helpers
  * ------------------------------------------------------------------ */
 function mrzaib_img( $file ) {
-	return esc_url( MRZAIB_URI . '/assets/images/' . $file );
+	$path = MRZAIB_DIR . '/assets/images/' . $file;
+	return esc_url( MRZAIB_URI . '/assets/images/' . $file . ( file_exists( $path ) ? '?v=' . filemtime( $path ) : '' ) );
 }
 
 function mrzaib_opt( $key, $default = '' ) {

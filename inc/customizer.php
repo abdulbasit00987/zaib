@@ -32,14 +32,29 @@ function mrzaib_customize( $wp_customize ) {
 	$text( 'announce_2', __( 'Announcement 2', 'mrzaib' ), 'mrzaib_header', 'Free Shipping on orders over Rs. 3000' );
 	$text( 'announce_3', __( 'Announcement 3', 'mrzaib' ), 'mrzaib_header', 'Cash on Delivery all over Pakistan' );
 
-	// Hero slides.
-	for ( $i = 1; $i <= 3; $i++ ) {
-		$wp_customize->add_setting( 'mrzaib_hero_img_' . $i, array( 'sanitize_callback' => 'esc_url_raw' ) );
-		$wp_customize->add_control( new WP_Customize_Image_Control( $wp_customize, 'mrzaib_hero_img_' . $i, array( 'label' => sprintf( __( 'Slide %d desktop image (1920x760)', 'mrzaib' ), $i ), 'section' => 'mrzaib_hero' ) ) );
-		$wp_customize->add_setting( 'mrzaib_hero_mob_' . $i, array( 'sanitize_callback' => 'esc_url_raw' ) );
-		$wp_customize->add_control( new WP_Customize_Image_Control( $wp_customize, 'mrzaib_hero_mob_' . $i, array( 'label' => sprintf( __( 'Slide %d mobile image (900x1100)', 'mrzaib' ), $i ), 'section' => 'mrzaib_hero' ) ) );
-		$wp_customize->add_setting( 'mrzaib_hero_link_' . $i, array( 'sanitize_callback' => 'esc_url_raw' ) );
-		$wp_customize->add_control( 'mrzaib_hero_link_' . $i, array( 'label' => sprintf( __( 'Slide %d link', 'mrzaib' ), $i ), 'section' => 'mrzaib_hero', 'type' => 'url' ) );
+	// Hero slides: choose how many (1-10); each has desktop image, mobile image, link and alt text.
+	$wp_customize->add_setting( 'mrzaib_hero_count', array( 'default' => 3, 'sanitize_callback' => 'absint' ) );
+	$wp_customize->add_control( 'mrzaib_hero_count', array(
+		'label'       => __( 'Number of slides', 'mrzaib' ),
+		'description' => __( 'Increase to add a new slide (max 10). Save & reload the Customizer to see the new slide fields.', 'mrzaib' ),
+		'section'     => 'mrzaib_hero',
+		'type'        => 'number',
+		'input_attrs' => array( 'min' => 1, 'max' => MRZAIB_HERO_MAX, 'step' => 1 ),
+	) );
+	$hd = mrzaib_hero_defaults();
+	for ( $i = 1; $i <= MRZAIB_HERO_MAX; $i++ ) {
+		$d      = isset( $hd[ $i ] ) ? $hd[ $i ] : array( '', '', '', '' );
+		$active = function () use ( $i ) {
+			return $i <= mrzaib_hero_count();
+		};
+		$wp_customize->add_setting( 'mrzaib_hero_img_' . $i, array( 'default' => $d[0], 'sanitize_callback' => 'esc_url_raw' ) );
+		$wp_customize->add_control( new WP_Customize_Image_Control( $wp_customize, 'mrzaib_hero_img_' . $i, array( 'label' => sprintf( __( 'Slide %d desktop image (1920x760)', 'mrzaib' ), $i ), 'section' => 'mrzaib_hero', 'active_callback' => $active ) ) );
+		$wp_customize->add_setting( 'mrzaib_hero_mob_' . $i, array( 'default' => $d[1], 'sanitize_callback' => 'esc_url_raw' ) );
+		$wp_customize->add_control( new WP_Customize_Image_Control( $wp_customize, 'mrzaib_hero_mob_' . $i, array( 'label' => sprintf( __( 'Slide %d mobile image (900x1100)', 'mrzaib' ), $i ), 'section' => 'mrzaib_hero', 'active_callback' => $active ) ) );
+		$wp_customize->add_setting( 'mrzaib_hero_link_' . $i, array( 'default' => $d[2], 'sanitize_callback' => 'esc_url_raw' ) );
+		$wp_customize->add_control( 'mrzaib_hero_link_' . $i, array( 'label' => sprintf( __( 'Slide %d link', 'mrzaib' ), $i ), 'section' => 'mrzaib_hero', 'type' => 'url', 'active_callback' => $active ) );
+		$wp_customize->add_setting( 'mrzaib_hero_alt_' . $i, array( 'default' => $d[3], 'sanitize_callback' => 'sanitize_text_field' ) );
+		$wp_customize->add_control( 'mrzaib_hero_alt_' . $i, array( 'label' => sprintf( __( 'Slide %d image alt text (SEO)', 'mrzaib' ), $i ), 'section' => 'mrzaib_hero', 'active_callback' => $active ) );
 	}
 
 	// Home texts.
@@ -92,3 +107,36 @@ function mrzaib_customize( $wp_customize ) {
 	}
 }
 add_action( 'customize_register', 'mrzaib_customize' );
+
+if ( ! defined( 'MRZAIB_HERO_MAX' ) ) {
+	define( 'MRZAIB_HERO_MAX', 10 );
+}
+
+/** Built-in hero slides (desktop, mobile, link, alt). */
+function mrzaib_hero_defaults() {
+	return array(
+		1 => array( mrzaib_img( 'hero-1-desktop.jpg' ), mrzaib_img( 'hero-1-mobile.jpg' ), mrzaib_cat_link( 'men' ), 'Kahn-vahl perfume for men by MR ZAIB' ),
+		2 => array( mrzaib_img( 'hero-2-desktop.jpg' ), mrzaib_img( 'hero-2-mobile.jpg' ), mrzaib_cat_link( 'unisex' ), 'Arvon unisex perfume by MR ZAIB' ),
+		3 => array( mrzaib_img( 'hero-3-desktop.jpg' ), mrzaib_img( 'hero-3-mobile.jpg' ), mrzaib_shop_link(), 'The MR ZAIB luxury perfume collection' ),
+	);
+}
+
+function mrzaib_hero_count() {
+	return max( 1, min( MRZAIB_HERO_MAX, (int) get_theme_mod( 'mrzaib_hero_count', 3 ) ) );
+}
+
+/** Slides to render: [desktop, mobile, link, alt]; slides without a desktop image are skipped. */
+function mrzaib_hero_slides() {
+	$hd  = mrzaib_hero_defaults();
+	$out = array();
+	for ( $i = 1; $i <= mrzaib_hero_count(); $i++ ) {
+		$d   = isset( $hd[ $i ] ) ? $hd[ $i ] : array( '', '', '', '' );
+		$dsk = mrzaib_opt( 'hero_img_' . $i, $d[0] );
+		if ( ! $dsk ) {
+			continue;
+		}
+		$mob   = mrzaib_opt( 'hero_mob_' . $i, get_theme_mod( 'mrzaib_hero_img_' . $i ) ? $dsk : ( $d[1] ? $d[1] : $dsk ) );
+		$out[] = array( $dsk, $mob, mrzaib_opt( 'hero_link_' . $i, $d[2] ? $d[2] : mrzaib_shop_link() ), mrzaib_opt( 'hero_alt_' . $i, $d[3] ? $d[3] : get_bloginfo( 'name' ) ) );
+	}
+	return $out;
+}
