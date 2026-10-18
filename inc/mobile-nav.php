@@ -201,10 +201,15 @@ function mrzaib_mobile_nav() {
 	}
 
 	$promos = array(
-		array( __( 'Shop All', 'mrzaib' ), $shop_url, mrzaib_img( 'hero-1-desktop.jpg' ) ),
+		array( __( 'Shop All', 'mrzaib' ), $shop_url, mrzaib_img( 'mnav-shop-all.jpg' ) ),
 	);
 	foreach ( array_slice( $cat_items, 0, 2 ) as $c ) {
-		$ic = $c[2] ? mrzaib_mnav_cat_icon( $c[2] ) : '';
+		$ic = '';
+		if ( $c[2] && file_exists( MRZAIB_DIR . '/assets/images/mnav-' . $c[2] . '.jpg' ) ) {
+			$ic = mrzaib_img( 'mnav-' . $c[2] . '.jpg' );
+		} elseif ( $c[2] ) {
+			$ic = mrzaib_mnav_cat_icon( $c[2] );
+		}
 		if ( $ic ) {
 			$promos[] = array( $c[0], $c[1], $ic );
 		}
