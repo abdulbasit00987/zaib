@@ -1320,3 +1320,8 @@ body{overflow-x:clip}
   .mzt-prev{top:50%;left:0;transform:translateY(-50%) rotate(-90deg)}
   .mzt-next{top:50%;bottom:auto;left:auto;right:0;transform:translateY(-50%) rotate(-90deg)}
 }
+/* QV thumb-strip chevrons: button gold */
+#wqv-quick-view-content .mzt-arrow{width:26px!important;height:26px!important;border-radius:50%!important;background:var(--theme,#deba68)!important;color:#111!important;border:0!important;box-shadow:0 2px 6px rgba(0,0,0,.15)!important;transition:background .2s}
+#wqv-quick-view-content .mzt-arrow:hover{background:#c9a352!important}
+#wqv-quick-view-content .mzt-arrow::before{display:none!important}
+#wqv-quick-view-content .mzt-arrow svg{width:16px;height:16px;stroke:#111}
