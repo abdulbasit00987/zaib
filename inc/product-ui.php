@@ -19,6 +19,15 @@ if ( ! class_exists( 'WooCommerce' ) ) {
 
 /** USP list + tax/shipping note (sits between quantity and Add to cart). */
 function mrzaib_usp_block() {
+	if ( doing_action( 'wqv_product_content' ) ) {
+		// Quick View: short description under the quantity counter instead of the USP list/tax note.
+		global $product;
+		$desc = $product ? $product->get_short_description() : '';
+		if ( $desc ) {
+			echo '<div class="mz-qv-desc">' . wp_kses_post( wpautop( $desc ) ) . '</div>';
+		}
+		return;
+	}
 	$free = mrzaib_opt( 'free_ship', '3000' );
 	$ship = get_page_by_path( 'shipping-policy' );
 	$ship = $ship ? get_permalink( $ship ) : '#';
@@ -111,8 +120,27 @@ add_action( 'init', function () {
 	add_action( 'wqv_product_content', 'woocommerce_template_single_price', 10 );
 	add_action( 'wqv_product_content', 'mrzaib_subtitle_line', 15 );
 	add_action( 'wqv_product_content', 'woocommerce_template_single_add_to_cart', 25 );
-	add_action( 'wqv_product_content', 'mrzaib_quickview_details', 30 );
+	add_action( 'wqv_product_content', 'mrzaib_qv_gallery_data', 1 );
 }, 30 );
+
+/** Quick View gallery images (featured + gallery), turned into a slider by main.js. */
+function mrzaib_qv_gallery_data() {
+	global $product;
+	if ( ! $product ) {
+		return;
+	}
+	$ids  = array_filter( array_merge( array( $product->get_image_id() ), $product->get_gallery_image_ids() ) );
+	$imgs = array();
+	foreach ( array_unique( $ids ) as $id ) {
+		$src = wp_get_attachment_image_url( $id, 'woocommerce_single' );
+		if ( $src ) {
+			$imgs[] = array( 'src' => $src, 'alt' => (string) get_post_meta( $id, '_wp_attachment_image_alt', true ) );
+		}
+	}
+	if ( count( $imgs ) > 1 ) {
+		echo '<script type="application/json" class="mz-qv-gallery">' . wp_json_encode( $imgs ) . '</script>'; // phpcs:ignore
+	}
+}
 
 function mrzaib_quickview_details() {
 	global $product;

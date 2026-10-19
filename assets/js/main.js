@@ -231,7 +231,32 @@
     v = $(this).hasClass('mz-plus') ? Math.min(max, v + step) : Math.max(min || 1, v - step);
     $in.val(v).trigger('change');
   });
-  function mzEnhance(scope) { mzPills(scope); mzQty(scope); }
+  /* Quick View image slider (arrows + dots + swipe) */
+  function mzQvGallery(scope) {
+    $(scope).find('.mz-qv-gallery').each(function () {
+      var $data = $(this), $qv = $data.closest('.sp-wqv-content'), $box = $qv.find('.wqv-product-images-slider').first();
+      if (!$box.length || $box.data('mzG')) return;
+      var imgs; try { imgs = JSON.parse($data.text()); } catch (err) { return; }
+      if (!imgs || imgs.length < 2) return;
+      $box.data('mzG', 1).addClass('mzg');
+      var html = '<div class="mzg-viewport"><div class="mzg-track">';
+      imgs.forEach(function (im) { html += '<div class="mzg-slide"><img src="' + im.src + '" alt="' + (im.alt || '').replace(/"/g, '&quot;') + '"></div>'; });
+      html += '</div></div><button type="button" class="mzg-arrow mzg-prev" aria-label="Previous image">&#8249;</button><button type="button" class="mzg-arrow mzg-next" aria-label="Next image">&#8250;</button><div class="mzg-dots">';
+      imgs.forEach(function (im, n) { html += '<button type="button" aria-label="Image ' + (n + 1) + '"></button>'; });
+      html += '</div>';
+      $box.html(html);
+      var i = 0, $t = $box.find('.mzg-track'), $d = $box.find('.mzg-dots button');
+      function go(n) { i = (n + imgs.length) % imgs.length; $t.css('transform', 'translateX(' + (-100 * i) + '%)'); $d.removeClass('is-active').eq(i).addClass('is-active'); }
+      $box.on('click', '.mzg-prev', function () { go(i - 1); });
+      $box.on('click', '.mzg-next', function () { go(i + 1); });
+      $box.on('click', '.mzg-dots button', function () { go($(this).index()); });
+      var sx = null;
+      $box.on('touchstart', function (e) { sx = e.originalEvent.touches[0].clientX; });
+      $box.on('touchend', function (e) { if (sx === null) return; var dx = e.originalEvent.changedTouches[0].clientX - sx; if (Math.abs(dx) > 40) go(dx < 0 ? i + 1 : i - 1); sx = null; });
+      go(0);
+    });
+  }
+  function mzEnhance(scope) { mzPills(scope); mzQty(scope); mzQvGallery(scope); }
   mzEnhance(document);
   if (window.MutationObserver) {
     var mzT;
