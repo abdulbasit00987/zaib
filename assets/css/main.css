@@ -1250,7 +1250,7 @@ body{overflow-x:clip}
 
 /* Top Perfume Categories slider (more than 5 categories) */
 .cc-wrap{position:relative}
-.cc-wrap.is-slider .collection-grid{display:flex!important;flex-wrap:nowrap;width:100%;max-width:none;gap:18px;overflow-x:auto;scroll-snap-type:x mandatory;scroll-behavior:smooth;scrollbar-width:none;padding-bottom:0}
+.cc-wrap.is-slider .collection-grid{display:flex!important;flex-wrap:nowrap;justify-content:flex-start!important;width:100%;max-width:none;gap:18px;overflow-x:auto;scroll-snap-type:x mandatory;scroll-behavior:smooth;scrollbar-width:none;padding-bottom:0}
 .cc-wrap.is-slider .collection-grid::-webkit-scrollbar{display:none}
 .cc-wrap.is-slider .collection-card{flex:0 0 calc((100% - 72px)/5);min-width:0;scroll-snap-align:start}
 .collections .container{max-width:1240px}
@@ -1262,3 +1262,5 @@ body{overflow-x:clip}
 .cc-wrap .is-off{opacity:0;pointer-events:none}
 @media(max-width:989px){.cc-wrap.is-slider .collection-card{flex-basis:calc((100% - 36px)/3)}.cc-wrap .cc-prev{left:4px}.cc-wrap .cc-next{right:4px}}
 @media(max-width:749px){.cc-wrap.is-slider .collection-card{flex-basis:42%}.cc-wrap .cc-prev,.cc-wrap .cc-next{display:none}}
+.cc-wrap.is-slider .collection-card:first-child{margin-left:auto}
+.cc-wrap.is-slider .collection-card:last-child{margin-right:auto}
