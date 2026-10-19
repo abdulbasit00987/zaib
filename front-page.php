@@ -64,10 +64,18 @@ $all_products = mrzaib_products_query( array( 'limit' => 12 ) );
 			<p class="section-sub center"><?php echo esc_html( mrzaib_opt( 'bs_sub', "Perfumes you won't find anywhere else" ) ); ?></p>
 			<?php
 			$tabs = array();
-			foreach ( mrzaib_store_categories() as $slug => $c ) {
-				$term = get_term_by( 'slug', $slug, 'product_cat' );
-				if ( $term && $term->count > 0 ) {
-					$tabs[ $slug ] = array( $c[0], $term );
+			// Every top-level category that has products (new categories appear automatically), in WooCommerce category order.
+			$bs_terms = get_terms( array(
+				'taxonomy'   => 'product_cat',
+				'parent'     => 0,
+				'hide_empty' => false,
+				'exclude'    => array( (int) get_option( 'default_product_cat' ) ),
+				'menu_order' => 'asc',
+			) );
+			foreach ( is_wp_error( $bs_terms ) ? array() : $bs_terms as $term ) {
+				$found = mrzaib_products_query( array( 'limit' => 4, 'category' => array( $term->slug ) ) ); // Includes sub-categories.
+				if ( $found ) {
+					$tabs[ $term->slug ] = array( $term->name, $term, $found );
 				}
 			}
 			if ( ! $tabs ) {
@@ -80,7 +88,7 @@ $all_products = mrzaib_products_query( array( 'limit' => 12 ) );
 				<?php $n++; endforeach; ?>
 			</div>
 			<?php $n = 0; foreach ( $tabs as $slug => $t ) :
-				$items = 'all' === $slug ? array_slice( $all_products, 0, 4 ) : mrzaib_products_query( array( 'limit' => 4, 'category' => array( $slug ) ) );
+				$items = 'all' === $slug ? array_slice( $all_products, 0, 4 ) : $t[2];
 				$total = $t[1] ? (int) $t[1]->count : count( $all_products );
 				$more  = max( 0, $total - count( $items ) );
 				$link  = 'all' === $slug ? mrzaib_shop_link() : mrzaib_cat_link( $slug );

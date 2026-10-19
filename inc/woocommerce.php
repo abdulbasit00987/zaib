@@ -133,10 +133,10 @@ function mrzaib_card_icons( $product ) {
 	$link = get_permalink( $id );
 	echo '<div class="card-icons">';
 	if ( $qv ) {
-		echo '<button type="button" class="card-icon mz-qv" data-id="' . esc_attr( $id ) . '" aria-label="' . esc_attr__( 'Quick shop', 'mrzaib' ) . '" title="' . esc_attr__( 'Quick shop', 'mrzaib' ) . '">' . mrzaib_icon( 'qsearch' ) . '</button>'; // phpcs:ignore
+		echo '<button type="button" class="card-icon mz-qv" data-id="' . esc_attr( $id ) . '" aria-label="' . esc_attr__( 'Quick shop', 'mrzaib' ) . '" title="' . esc_attr__( 'Quick shop', 'mrzaib' ) . '">' . mrzaib_icon( 'eye' ) . '</button>'; // phpcs:ignore
 		echo '<span class="mz-qv-src" hidden>' . SP_Woo_Quick_View::instance()->sp_wqv_view_button( $id ) . '</span>'; // phpcs:ignore
 	} else {
-		echo '<a class="card-icon" href="' . esc_url( $link ) . '" aria-label="' . esc_attr__( 'View product', 'mrzaib' ) . '">' . mrzaib_icon( 'qsearch' ) . '</a>'; // phpcs:ignore
+		echo '<a class="card-icon" href="' . esc_url( $link ) . '" aria-label="' . esc_attr__( 'View product', 'mrzaib' ) . '">' . mrzaib_icon( 'eye' ) . '</a>'; // phpcs:ignore
 	}
 	$cart_icon = mrzaib_icon( 'qcart' );
 	if ( ! $product->is_purchasable() || ! $product->is_in_stock() ) {
