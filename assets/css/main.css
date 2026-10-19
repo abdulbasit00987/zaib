@@ -1295,3 +1295,28 @@ body{overflow-x:clip}
   #wqv-quick-view-content .wqv-product-info{max-height:none;overflow:visible!important;padding-right:0!important}
   #wqv-quick-view-content .wqv-product-images{position:relative}
 }
+
+/* Quick View v3: gallery plugin slider, vertical thumbs left like the reference */
+#wqv-quick-view-content .wqv-product-images.mz-qv-wpgs-on{flex:0 0 50%;width:50%!important}
+.mz-qv-wpgs-on .woo-product-gallery-slider{display:flex;flex-direction:row-reverse;gap:16px;align-items:flex-start;width:100%;margin:0!important;float:none!important;opacity:1!important}
+.mz-qv-wpgs-on .wpgs-for{flex:1;min-width:0;border:1px solid #e8e8e8;margin:0!important}
+.mz-qv-wpgs-on .wpgs-for img{width:100%!important;aspect-ratio:1/1;object-fit:cover;display:block}
+.mz-qv-wpgs-on .wpgs-for:not(.slick-initialized) > div:not(:first-child){display:none}
+.mz-qv-wpgs-on .wpgs-nav{flex:0 0 76px;width:76px;margin:0!important;padding:26px 0}
+.mz-qv-wpgs-on .wpgs-nav .slick-slide{padding:0 0 12px;cursor:pointer;border:0!important}
+.mz-qv-wpgs-on .wpgs-nav .slick-slide img{width:74px!important;height:74px;object-fit:cover;display:block;border:1px solid transparent;opacity:1!important}
+.mz-qv-wpgs-on .wpgs-nav .slick-current img{border-color:#111}
+.mz-qv-wpgs-on .wpgs-nav .slick-list{margin:0}
+.mzt-arrow{position:absolute;left:50%;transform:translateX(-50%);width:28px;height:24px;border:0;background:transparent;color:#111;padding:0;display:flex;align-items:center;justify-content:center;cursor:pointer;z-index:2}
+.mzt-arrow.slick-disabled{opacity:0;pointer-events:none}
+.mzt-prev{top:0}.mzt-next{bottom:0}
+@media(max-width:749px){
+  #wqv-quick-view-content .wqv-product-images.mz-qv-wpgs-on{width:100%!important;flex:none}
+  .mz-qv-wpgs-on .woo-product-gallery-slider{flex-direction:column;gap:10px}
+  .mz-qv-wpgs-on .wpgs-for{width:100%}
+  .mz-qv-wpgs-on .wpgs-nav{width:100%;flex:none;padding:0 26px}
+  .mz-qv-wpgs-on .wpgs-nav .slick-slide{padding:0 6px}
+  .mz-qv-wpgs-on .wpgs-nav .slick-slide img{width:100%!important;height:auto;aspect-ratio:1/1}
+  .mzt-prev{top:50%;left:0;transform:translateY(-50%) rotate(-90deg)}
+  .mzt-next{top:50%;bottom:auto;left:auto;right:0;transform:translateY(-50%) rotate(-90deg)}
+}

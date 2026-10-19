@@ -123,11 +123,34 @@ add_action( 'init', function () {
 	add_action( 'wqv_product_content', 'mrzaib_qv_gallery_data', 1 );
 }, 30 );
 
+/* Slick (shipped with the gallery plugin) on every page so Quick View can use the plugin slider. */
+add_action( 'wp_enqueue_scripts', function () {
+	if ( ! defined( 'WPGS_ROOT_URL' ) ) {
+		return;
+	}
+	if ( ! wp_script_is( 'slick', 'enqueued' ) ) {
+		wp_enqueue_script( 'slick', WPGS_ROOT_URL . 'assets/js/slick.min.js', array( 'jquery' ), defined( 'CIPG_VERSION' ) ? CIPG_VERSION : null, true );
+	}
+	if ( ! wp_style_is( 'slick', 'enqueued' ) ) {
+		wp_enqueue_style( 'slick', WPGS_ROOT_URL . 'assets/css/slick.css', array(), defined( 'CIPG_VERSION' ) ? CIPG_VERSION : null );
+	}
+}, 95 );
+
 /** Quick View gallery images (featured + gallery), turned into a slider by main.js. */
 function mrzaib_qv_gallery_data() {
 	global $product;
 	if ( ! $product ) {
 		return;
+	}
+	// Preferred: Product Gallery Slider plugin markup (main slider + thumbnail strip), initialised by main.js.
+	if ( defined( 'WPGS_INC' ) && file_exists( WPGS_INC . 'product-image.php' ) && $product->get_gallery_image_ids() ) {
+		ob_start();
+		include WPGS_INC . 'product-image.php';
+		$html = ob_get_clean();
+		if ( $html ) {
+			echo '<template class="mz-qv-wpgs">' . $html . '</template>'; // phpcs:ignore
+			return;
+		}
 	}
 	$ids  = array_filter( array_merge( array( $product->get_image_id() ), $product->get_gallery_image_ids() ) );
 	$imgs = array();
