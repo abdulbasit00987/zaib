@@ -183,7 +183,12 @@
     if (!$src.length) $src = $('.sp-wqv-view-button[data-id="' + $(this).data('id') + '"]').first();
     if ($src.length) $src.trigger('click'); else window.location = $(this).closest('.product-card').find('a.card-media').attr('href');
   });
+  $(document.body).on('click', '.card-icon.ajax_add_to_cart', function () {
+    var $b = $(this); $b.addClass('is-loading');
+    setTimeout(function () { $b.removeClass('is-loading'); }, 8000); // safety net
+  });
   $(document.body).on('adding_to_cart', function (e, $btn) { if ($btn && $btn.hasClass('card-icon')) $btn.addClass('is-loading'); });
+  $(document.body).on('ajax_request_not_sent.adding_to_cart wc_cart_button_updated', function (e, $btn) { if ($btn && $btn.removeClass) $btn.removeClass('is-loading'); });
   $(document.body).on('added_to_cart', function (e, f, h, $btn) { if ($btn && $btn.hasClass && $btn.hasClass('card-icon')) $btn.removeClass('is-loading'); });
 
 

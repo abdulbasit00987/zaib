@@ -1389,10 +1389,12 @@ body{overflow-x:clip}
   #wqv-quick-view-content .wqv-product-images,#wqv-quick-view-content .wqv-product-images.mz-qv-wpgs-on{max-width:230px!important}
   #wqv-quick-view-content .mz-qv-desc{font-size:13px}
 }
-/* Card cart icon: no spinner on click (user 2026-10-21) */
-.card-icon.is-loading svg,.card-icon.loading svg{animation:none!important;transform:none!important}
-.card-icon.loading,.card-icon.is-loading{opacity:1!important;pointer-events:none}
-.card-icon.loading::after,.card-icon.added::after,.card-icon.is-loading::after{display:none!important;content:none!important}
+/* Card cart icon: on click the bag hides and a round spinner shows in its place (user 2026-10-21) */
+.card-icon{position:relative}
+.card-icon.is-loading svg,.card-icon.loading svg{animation:none!important;transform:none!important;visibility:hidden!important}
+.card-icon.loading,.card-icon.is-loading{opacity:1!important;transform:none!important;pointer-events:none}
+.card-icon.added::after{display:none!important;content:none!important}
+.card-icon.loading::after,.card-icon.is-loading::after{content:""!important;display:block!important;position:absolute!important;top:50%!important;left:50%!important;right:auto!important;width:16px!important;height:16px!important;margin:-8px 0 0 -8px!important;border:2px solid currentColor!important;border-right-color:transparent!important;border-radius:50%!important;font-family:inherit!important;animation:mzspin .7s linear infinite!important;box-sizing:border-box!important}
 .card-icons .added_to_cart{display:none!important}
 
 /* QV v6: close button on the popup's top-right corner on every device + light thin cross (user 2026-10-21) */
