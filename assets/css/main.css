@@ -1394,3 +1394,12 @@ body{overflow-x:clip}
 .card-icon.loading,.card-icon.is-loading{opacity:1!important;pointer-events:none}
 .card-icon.loading::after,.card-icon.added::after,.card-icon.is-loading::after{display:none!important;content:none!important}
 .card-icons .added_to_cart{display:none!important}
+
+/* QV v6: close button on the popup's top-right corner on every device + light thin cross (user 2026-10-21) */
+.mfp-wqv .mfp-content{overflow:visible!important}
+.mfp-wqv .mfp-content > .mfp-close.mz-qv-close-out{position:absolute!important;top:-13px!important;right:-11px!important;left:auto!important;width:34px!important;height:34px!important;z-index:1046!important;box-shadow:0 2px 10px rgba(0,0,0,.22)!important}
+html body .mfp-wqv .mfp-close::before,html body .mfp-wqv .mfp-close::after{width:14px!important;height:1px!important;border-radius:0!important;background:#111!important}
+@media(max-width:767px){
+  .mfp-wqv .mfp-content > .mfp-close.mz-qv-close-out{top:-9px!important;right:-3px!important;width:30px!important;height:30px!important}
+  html body .mfp-wqv .mfp-close::before,html body .mfp-wqv .mfp-close::after{width:12px!important}
+}

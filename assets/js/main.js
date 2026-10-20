@@ -285,8 +285,8 @@
       mzT = setTimeout(function () {
         var $qv = $('.sp-wqv-content');
         if ($qv.length) mzEnhance($qv);
-        // Phones: keep the Quick View close button fixed on screen while the popup scrolls.
-        if (window.innerWidth < 768) {
+        // All devices: pin the Quick View close button to the popup's top-right corner (outside the scrolling content).
+        {
           var $wrap = $qv.parent('.mfp-content'), $x = $qv.children('.mfp-close');
           if ($wrap.length && $x.length) $x.addClass('mz-qv-close-out').appendTo($wrap);
         }
