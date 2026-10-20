@@ -287,7 +287,7 @@
         if ($qv.length) mzEnhance($qv);
         // Phones: keep the Quick View close button fixed on screen while the popup scrolls.
         if (window.innerWidth < 768) {
-          var $wrap = $('.mfp-wqv.mfp-wrap'), $x = $qv.children('.mfp-close');
+          var $wrap = $qv.parent('.mfp-content'), $x = $qv.children('.mfp-close');
           if ($wrap.length && $x.length) $x.addClass('mz-qv-close-out').appendTo($wrap);
         }
         mzDrawerBar();

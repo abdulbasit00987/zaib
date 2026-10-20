@@ -22,6 +22,12 @@ function mrzaib_usp_block() {
 	if ( doing_action( 'wqv_product_content' ) ) {
 		// Quick View: short description under the quantity counter instead of the USP list/tax note.
 		global $product;
+		static $done = array();
+		$pid = $product ? $product->get_id() : 0;
+		if ( isset( $done[ $pid ] ) ) {
+			return; // Never print the description twice.
+		}
+		$done[ $pid ] = true;
 		$desc = $product ? $product->get_short_description() : '';
 		if ( $desc ) {
 			echo '<div class="mz-qv-desc">' . wp_kses_post( wpautop( $desc ) ) . '</div>';
