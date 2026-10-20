@@ -1388,3 +1388,8 @@ body{overflow-x:clip}
   #wqv-quick-view-content .wqv-product-images,#wqv-quick-view-content .wqv-product-images.mz-qv-wpgs-on{max-width:230px!important}
   #wqv-quick-view-content .mz-qv-desc{font-size:13px}
 }
+/* Card cart icon: no spinner on click (user 2026-10-21) */
+.card-icon.is-loading svg,.card-icon.loading svg{animation:none!important;transform:none!important}
+.card-icon.loading,.card-icon.is-loading{opacity:1!important;pointer-events:none}
+.card-icon.loading::after,.card-icon.added::after,.card-icon.is-loading::after{display:none!important;content:none!important}
+.card-icons .added_to_cart{display:none!important}
