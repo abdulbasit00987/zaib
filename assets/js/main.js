@@ -271,7 +271,7 @@
       $for.slick({ slidesToShow: 1, arrows: false, dots: false, fade: false, infinite: false, speed: 400, draggable: true, swipe: true, adaptiveHeight: false, asNavFor: $nav.length ? $nav : null });
       if ($nav.length) {
         $nav.slick({ slidesToShow: 4, slidesToScroll: 1, vertical: true, verticalSwiping: true, infinite: false, focusOnSelect: true, asNavFor: $for, prevArrow: chev('prev'), nextArrow: chev('next'), dots: false,
-          responsive: [{ breakpoint: 750, settings: { vertical: false, verticalSwiping: false, slidesToShow: 4 } }] });
+          responsive: [{ breakpoint: 768, settings: { vertical: false, verticalSwiping: false, slidesToShow: 4 } }] });
       }
       setTimeout(function () { $for.slick('setPosition'); if ($nav.length) $nav.slick('setPosition'); }, 250);
     });
