@@ -150,6 +150,12 @@ $all_products = mrzaib_products_query( array( 'limit' => 12 ) );
 		?>
 		<section class="section video-showcase">
 			<div class="container">
+				<?php $vs_slider = count( $tiles ) > 4; ?>
+				<div class="vs-wrap<?php echo $vs_slider ? ' is-slider' : ''; ?>">
+				<?php if ( $vs_slider ) : ?>
+					<button type="button" class="slider-arrow prev vs-prev" aria-label="Previous"><?php echo mrzaib_icon( 'prev' ); // phpcs:ignore ?></button>
+					<button type="button" class="slider-arrow next vs-next" aria-label="Next"><?php echo mrzaib_icon( 'next' ); // phpcs:ignore ?></button>
+				<?php endif; ?>
 				<div class="vs-grid scroll-x">
 					<?php foreach ( $tiles as $t ) : list( $vurl, $poster, $prod ) = $t; ?>
 						<div class="vs-tile">
@@ -164,6 +170,7 @@ $all_products = mrzaib_products_query( array( 'limit' => 12 ) );
 							</a>
 						</div>
 					<?php endforeach; ?>
+				</div>
 				</div>
 			</div>
 		</section>

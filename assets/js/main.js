@@ -331,6 +331,23 @@
     $(this).parent().toggleClass('is-open');
   });
 
+  /* Homepage videos: >4 tiles = slider, arrows move one tile, autoplay every 4s (loops), pauses on hover/touch */
+  $('.vs-wrap.is-slider').each(function () {
+    var $w = $(this), g = $w.find('.vs-grid')[0], paused = false, timer;
+    function tiles() { return g.querySelectorAll('.vs-tile'); }
+    function step() { var t = tiles(); return t.length > 1 ? t[1].offsetLeft - t[0].offsetLeft : g.clientWidth; }
+    function atEnd() { return g.scrollLeft + g.clientWidth >= g.scrollWidth - 4; }
+    function next() { if (atEnd()) { g.scrollTo({ left: 0, behavior: 'smooth' }); } else { g.scrollBy({ left: step(), behavior: 'smooth' }); } }
+    function prev() { if (g.scrollLeft <= 4) { g.scrollTo({ left: g.scrollWidth, behavior: 'smooth' }); } else { g.scrollBy({ left: -step(), behavior: 'smooth' }); } }
+    function play() { clearInterval(timer); timer = setInterval(function () { if (!paused && !document.hidden) next(); }, 4000); }
+    $w.on('click', '.vs-next', function () { next(); play(); });
+    $w.on('click', '.vs-prev', function () { prev(); play(); });
+    $w.on('mouseenter', function () { paused = true; }).on('mouseleave', function () { paused = false; });
+    g.addEventListener('touchstart', function () { paused = true; }, { passive: true });
+    g.addEventListener('touchend', function () { setTimeout(function () { paused = false; }, 3000); }, { passive: true });
+    play();
+  });
+
   /* Top Perfume Categories slider: 5 per view, arrow = exactly one card */
   $('.cc-wrap.is-slider').each(function () {
     var $w = $(this), g = $w.find('.collection-grid')[0], idx = 0;
