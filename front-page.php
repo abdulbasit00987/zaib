@@ -127,12 +127,16 @@ $all_products = mrzaib_products_query( array( 'limit' => 12 ) );
 	$vcount = min( (int) get_theme_mod( 'mrzaib_video_count', 4 ), defined( 'MRZAIB_VIDEO_MAX' ) ? MRZAIB_VIDEO_MAX : 12 );
 	for ( $i = 1; $i <= $vcount; $i++ ) {
 		$v     = isset( $vids[ $i ] ) ? $vids[ $i ] : array( '', 1 === $i % 2 ? 'kahn-vahl' : 'arvon' );
-		$own   = mrzaib_opt( 'video_' . $i );
-		if ( ! $own && ! $v[0] ) {
-			continue; // Extra slot with no uploaded video.
+		$vurl = mrzaib_opt( 'video_' . $i, mrzaib_video_default( $i ) );
+		if ( ! $vurl ) {
+			continue; // Slot with no video.
 		}
-		$vurl   = $own ? $own : MRZAIB_URI . '/assets/video/' . $v[0] . '.mp4';
-		$poster = mrzaib_opt( 'video_poster_' . $i ) ? mrzaib_opt( 'video_poster_' . $i ) : ( $own ? '' : MRZAIB_URI . '/assets/video/' . $v[0] . '.jpg' );
+		$is_theme = ( $vurl === mrzaib_video_default( $i ) );
+		// Cover image: Customizer value; an empty (removed) cover = none. Theme cover only goes with the theme video.
+		$poster = get_theme_mod( 'mrzaib_video_poster_' . $i, mrzaib_video_default( $i, 'jpg' ) );
+		if ( ! $is_theme && $poster === mrzaib_video_default( $i, 'jpg' ) ) {
+			$poster = '';
+		}
 		$pslug  = mrzaib_opt( 'video_product_' . $i, $v[1] );
 		$pp    = get_page_by_path( $pslug, OBJECT, 'product' );
 		$prod  = $pp ? wc_get_product( $pp->ID ) : null;
@@ -188,7 +192,10 @@ $all_products = mrzaib_products_query( array( 'limit' => 12 ) );
 				array( 'thumb', mrzaib_opt( 'feat_4', 'Super Macerated Perfumes' ) ),
 			);
 			foreach ( $feats as $fi => $f ) :
-				$ficon = mrzaib_opt( 'feat_icon_' . ( $fi + 1 ) );
+				$ficon = get_theme_mod( 'mrzaib_feat_icon_' . ( $fi + 1 ), mrzaib_feat_default_icon( $fi + 1 ) );
+				if ( $ficon === mrzaib_feat_default_icon( $fi + 1 ) ) {
+					$ficon = ''; // Theme icon: print inline SVG.
+				}
 				if ( ! $f[1] ) {
 					continue;
 				}
@@ -203,21 +210,9 @@ $all_products = mrzaib_products_query( array( 'limit' => 12 ) );
 		<div class="container narrow">
 			<h2 class="section-title center"><?php echo esc_html( mrzaib_opt( 'seo_title2', 'Best Perfumes in Pakistan by MR ZAIB' ) ); ?></h2>
 			<div class="seo-content" data-readmore>
-				<?php $seo_intro = mrzaib_opt( 'seo_intro' ); ?>
-				<p><?php if ( $seo_intro ) : echo wp_kses_post( $seo_intro ) . ' '; else : ?><strong>MR ZAIB Luxury Perfumes</strong> is a Pakistani perfume brand creating long lasting fragrances for men, women and unisex lovers. Our promise is simple: <em>Leave Your Presence</em>. Every 50ml bottle has a gold crown cap, rich layered notes and elegant black-and-gold packaging, and every order can be paid with Cash on Delivery all over Pakistan. Whether you want a fresh everyday signature scent, a bold evening fragrance or a thoughtful gift, MR ZAIB has a scent for you. <?php endif; ?><button class="readmore-btn" type="button" data-more="<?php esc_attr_e( 'Read More...', 'mrzaib' ); ?>" data-less="<?php esc_attr_e( 'Show Less', 'mrzaib' ); ?>"><?php esc_html_e( 'Read More...', 'mrzaib' ); ?></button></p>
+				<p><?php echo wp_kses_post( mrzaib_opt( 'seo_intro', mrzaib_seo_default_intro() ) ); ?> <button class="readmore-btn" type="button" data-more="<?php esc_attr_e( 'Read More...', 'mrzaib' ); ?>" data-less="<?php esc_attr_e( 'Show Less', 'mrzaib' ); ?>"><?php esc_html_e( 'Read More...', 'mrzaib' ); ?></button></p>
 				<div class="seo-more">
-				<?php if ( mrzaib_opt( 'seo_more' ) ) : echo wp_kses_post( wpautop( mrzaib_opt( 'seo_more' ) ) ); else : ?>
-					<p>At <strong>MR ZAIB</strong>, we put most of our cost into the perfume oil itself, so you get a high concentration, <strong>super macerated perfume</strong> at an affordable price of Rs. 2,500. We share the full top, middle and base notes of every fragrance, so you can choose a scent that matches your personality before you buy.</p>
-					<h3>Kahn-vahl: Long Lasting Perfume for Men</h3>
-					<p><a href="<?php echo esc_url( mrzaib_product_link( 'kahn-vahl' ) ); ?>">Kahn-vahl</a> is a fresh aquatic perfume for men in a deep blue bottle. Top notes of coconut water, a heart of jasmine and iris, and a warm base of vanilla, sandalwood and amber make it a versatile scent for the office, outings and summer evenings.</p>
-					<h3>Arvon: Unisex Perfume for Men and Women</h3>
-					<p><a href="<?php echo esc_url( mrzaib_product_link( 'arvon' ) ); ?>">Arvon</a> is a bold unisex fragrance in a black bottle. Pineapple, red apple, plum, nutmeg, cinnamon and bitter orange open into magnolia, orchid, lily-of-the-valley, jasmine, Moroccan rose and iris, finishing on cacao, vanilla, white musk, amber, sandalwood and cedar.</p>
-					<h3>Shop Perfumes by Category</h3>
-					<p>Explore perfumes for <a href="<?php echo esc_url( mrzaib_cat_link( 'men' ) ); ?>">Men</a>, <a href="<?php echo esc_url( mrzaib_cat_link( 'women' ) ); ?>">Women</a> and <a href="<?php echo esc_url( mrzaib_cat_link( 'unisex' ) ); ?>">Unisex</a>, traditional <a href="<?php echo esc_url( mrzaib_cat_link( 'attar' ) ); ?>">Attar</a>, and perfume <a href="<?php echo esc_url( mrzaib_cat_link( 'tester' ) ); ?>">Testers</a> to try a scent before buying the full bottle.</p>
-					<h3>Easy Returns and Cash on Delivery</h3>
-					<p>Not sure about a scent? Our 15 days easy returns policy has you covered, and you can pay cash when your order arrives anywhere in Pakistan.</p>
-					<p><strong>Buy high quality, long lasting perfumes online in Pakistan at affordable prices.</strong></p>
-				<?php endif; ?>
+					<?php echo wp_kses_post( mrzaib_opt( 'seo_more', mrzaib_seo_default_more() ) ); ?>
 				</div>
 			</div>
 		</div>

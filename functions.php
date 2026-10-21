@@ -146,6 +146,7 @@ function mrzaib_icon( $name ) {
  * ------------------------------------------------------------------ */
 require MRZAIB_DIR . '/inc/wc-compat.php';
 require MRZAIB_DIR . '/inc/search-suggest.php';
+require MRZAIB_DIR . '/inc/home-defaults.php';
 require MRZAIB_DIR . '/inc/customizer.php';
 require MRZAIB_DIR . '/inc/menus.php';
 require MRZAIB_DIR . '/inc/mobile-nav.php';
