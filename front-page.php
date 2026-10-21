@@ -127,15 +127,16 @@ $all_products = mrzaib_products_query( array( 'limit' => 12 ) );
 	$vcount = min( (int) get_theme_mod( 'mrzaib_video_count', 4 ), defined( 'MRZAIB_VIDEO_MAX' ) ? MRZAIB_VIDEO_MAX : 12 );
 	for ( $i = 1; $i <= $vcount; $i++ ) {
 		$v     = isset( $vids[ $i ] ) ? $vids[ $i ] : array( '', 1 === $i % 2 ? 'kahn-vahl' : 'arvon' );
-		$vurl = mrzaib_opt( 'video_' . $i, mrzaib_video_default( $i ) );
-		if ( ! $vurl ) {
-			continue; // Slot with no video.
-		}
+		// Video: Customizer value. Removed (empty) = no video, the cover image is shown instead.
+		$vurl     = (string) get_theme_mod( 'mrzaib_video_' . $i, mrzaib_video_default( $i ) );
 		$is_theme = ( $vurl === mrzaib_video_default( $i ) || $vurl === mrzaib_home_media_url( 'video_' . $i ) );
-		// Cover image: Customizer value; an empty (removed) cover = none. Theme cover only goes with the theme video.
-		$poster = get_theme_mod( 'mrzaib_video_poster_' . $i, mrzaib_video_default( $i, 'jpg' ) );
-		if ( ! $is_theme && ( $poster === mrzaib_video_default( $i, 'jpg' ) || $poster === mrzaib_home_media_url( 'video_poster_' . $i ) ) ) {
+		$poster   = (string) get_theme_mod( 'mrzaib_video_poster_' . $i, mrzaib_video_default( $i, 'jpg' ) );
+		// The theme's cover belongs to the theme video: hide it when an own video was uploaded.
+		if ( $vurl && ! $is_theme && ( $poster === mrzaib_video_default( $i, 'jpg' ) || $poster === mrzaib_home_media_url( 'video_poster_' . $i ) ) ) {
 			$poster = '';
+		}
+		if ( ! $vurl && ! $poster ) {
+			continue; // Nothing to show in this slot.
 		}
 		$prod = mrzaib_video_product( $i );
 		if ( ! $prod && $all_products ) {
@@ -152,7 +153,11 @@ $all_products = mrzaib_products_query( array( 'limit' => 12 ) );
 				<div class="vs-grid scroll-x">
 					<?php foreach ( $tiles as $t ) : list( $vurl, $poster, $prod ) = $t; ?>
 						<div class="vs-tile">
-							<video class="vs-video" muted loop playsinline autoplay preload="metadata" <?php echo $poster ? 'poster="' . esc_url( $poster ) . '"' : ''; ?> data-src="<?php echo esc_url( $vurl ); ?>"></video>
+							<?php if ( $vurl ) : ?>
+								<video class="vs-video" muted loop playsinline autoplay preload="metadata" <?php echo $poster ? 'poster="' . esc_url( $poster ) . '"' : ''; ?> data-src="<?php echo esc_url( $vurl ); ?>"></video>
+							<?php else : ?>
+								<img class="vs-video vs-cover" src="<?php echo esc_url( $poster ); ?>" alt="<?php echo esc_attr( $prod->get_name() ); ?>" loading="lazy">
+							<?php endif; ?>
 							<a class="vs-badge" href="<?php echo esc_url( get_permalink( $prod->get_id() ) ); ?>">
 								<span class="vs-thumb"><?php echo $prod->get_image( 'thumbnail' ); // phpcs:ignore ?></span>
 								<span class="vs-meta"><span class="vs-name"><?php echo esc_html( $prod->get_name() ); ?></span><span class="vs-price"><?php echo wp_kses_post( wc_price( $prod->get_price() ) ); ?></span></span>

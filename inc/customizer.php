@@ -80,7 +80,7 @@ function mrzaib_customize( $wp_customize ) {
 			return $i <= (int) get_theme_mod( 'mrzaib_video_count', 4 );
 		};
 		$wp_customize->add_setting( 'mrzaib_video_' . $i, array( 'default' => mrzaib_video_default( $i ), 'sanitize_callback' => 'esc_url_raw' ) );
-		$wp_customize->add_control( new WP_Customize_Upload_Control( $wp_customize, 'mrzaib_video_' . $i, array( 'label' => sprintf( __( 'Video %d (.mp4, vertical 2:3). Change = upload new video from your computer', 'mrzaib' ), $i ), 'section' => 'mrzaib_videos', 'mime_type' => 'video', 'active_callback' => $vact ) ) );
+		$wp_customize->add_control( new WP_Customize_Upload_Control( $wp_customize, 'mrzaib_video_' . $i, array( 'label' => sprintf( __( 'Video %d (.mp4, vertical 2:3). Change = pick/upload from Media; Remove = show cover image only', 'mrzaib' ), $i ), 'section' => 'mrzaib_videos', 'mime_type' => 'video', 'active_callback' => $vact ) ) );
 		$wp_customize->add_setting( 'mrzaib_video_poster_' . $i, array( 'default' => mrzaib_video_default( $i, 'jpg' ), 'sanitize_callback' => 'esc_url_raw' ) );
 		$wp_customize->add_control( new WP_Customize_Image_Control( $wp_customize, 'mrzaib_video_poster_' . $i, array( 'label' => sprintf( __( 'Video %d cover image (shown before the video plays; Remove = none)', 'mrzaib' ), $i ), 'section' => 'mrzaib_videos', 'active_callback' => $vact ) ) );
 		$wp_customize->add_setting( 'mrzaib_video_product_' . $i, array( 'default' => mrzaib_video_default_product( $i ), 'sanitize_callback' => 'absint' ) );
