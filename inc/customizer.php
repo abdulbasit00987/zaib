@@ -68,10 +68,8 @@ function mrzaib_customize( $wp_customize ) {
 	$text( 'stat_2', __( 'Stat 2 number (%)', 'mrzaib' ), 'mrzaib_home', '98' );
 	$text( 'stat_3', __( 'Stat 3 number', 'mrzaib' ), 'mrzaib_home', '100' );
 	$text( 'col_title', __( 'Categories section title', 'mrzaib' ), 'mrzaib_home', 'Top Perfume Categories' );
-	$text( 'row1_title', __( 'Product row 1 title', 'mrzaib' ), 'mrzaib_home', 'Executive Range' );
-	$text( 'row1_cat', __( 'Product row 1 category slug (empty = all)', 'mrzaib' ), 'mrzaib_home', '' );
-	$text( 'row2_title', __( 'Product row 2 title', 'mrzaib' ), 'mrzaib_home', 'Poetic Range' );
-	$text( 'row2_cat', __( 'Product row 2 category slug (empty = all)', 'mrzaib' ), 'mrzaib_home', '' );
+	$text( 'row1_title', __( 'New Arrivals title (newest products)', 'mrzaib' ), 'mrzaib_home', 'New Arrivals' );
+	$text( 'row2_title', __( 'Featured Collection title (products marked Featured ★)', 'mrzaib' ), 'mrzaib_home', 'Featured Collection' );
 	// Videos (own section): count + per video file, poster and product badge.
 	$wp_customize->add_setting( 'mrzaib_video_count', array( 'default' => 4, 'sanitize_callback' => 'absint' ) );
 	$wp_customize->add_control( 'mrzaib_video_count', array( 'label' => __( 'Number of videos (0 = hide section)', 'mrzaib' ), 'description' => __( 'Save & refresh to see fields for new videos.', 'mrzaib' ), 'section' => 'mrzaib_videos', 'type' => 'number', 'input_attrs' => array( 'min' => 0, 'max' => MRZAIB_VIDEO_MAX ) ) );
@@ -167,3 +165,13 @@ function mrzaib_hero_slides() {
 	}
 	return $out;
 }
+
+/** Old row titles/categories (Executive Range / Poetic Range) replaced by New Arrivals / Featured Collection. */
+add_action( 'init', function () {
+	if ( 'Executive Range' === get_theme_mod( 'mrzaib_row1_title' ) ) {
+		remove_theme_mod( 'mrzaib_row1_title' );
+	}
+	if ( 'Poetic Range' === get_theme_mod( 'mrzaib_row2_title' ) ) {
+		remove_theme_mod( 'mrzaib_row2_title' );
+	}
+} );

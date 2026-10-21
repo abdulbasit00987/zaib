@@ -73,7 +73,7 @@ $all_products = mrzaib_products_query( array( 'limit' => 12 ) );
 				'menu_order' => 'asc',
 			) );
 			foreach ( is_wp_error( $bs_terms ) ? array() : $bs_terms as $term ) {
-				$found = mrzaib_products_query( array( 'limit' => 4, 'category' => array( $term->slug ) ) ); // Includes sub-categories.
+				$found = mrzaib_products_query( array( 'limit' => 4, 'category' => array( $term->slug ), 'mz_top_rated' => true ) ); // Top rated first; includes sub-categories.
 				if ( $found ) {
 					$tabs[ $term->slug ] = array( $term->name, $term, $found );
 				}
@@ -88,7 +88,7 @@ $all_products = mrzaib_products_query( array( 'limit' => 12 ) );
 				<?php $n++; endforeach; ?>
 			</div>
 			<?php $n = 0; foreach ( $tabs as $slug => $t ) :
-				$items = 'all' === $slug ? array_slice( $all_products, 0, 4 ) : $t[2];
+				$items = 'all' === $slug ? mrzaib_products_query( array( 'limit' => 4, 'mz_top_rated' => true ) ) : $t[2];
 				$total = $t[1] ? (int) $t[1]->count : count( $all_products );
 				$more  = max( 0, $total - count( $items ) );
 				$link  = 'all' === $slug ? mrzaib_shop_link() : mrzaib_cat_link( $slug );
@@ -112,8 +112,8 @@ $all_products = mrzaib_products_query( array( 'limit' => 12 ) );
 	</section>
 	<?php endif; ?>
 
-	<!-- EXECUTIVE RANGE -->
-	<?php get_template_part( 'template-parts/product-row', null, array( 'title' => mrzaib_opt( 'row1_title', 'Executive Range' ), 'slug' => mrzaib_opt( 'row1_cat', '' ), 'limit' => 5 ) ); ?>
+	<!-- NEW ARRIVALS: newest products first -->
+	<?php get_template_part( 'template-parts/product-row', null, array( 'title' => mrzaib_opt( 'row1_title', 'New Arrivals' ), 'mode' => 'new', 'limit' => 5 ) ); ?>
 
 	<!-- VIDEO SHOWCASE -->
 	<?php
@@ -162,8 +162,8 @@ $all_products = mrzaib_products_query( array( 'limit' => 12 ) );
 		</section>
 	<?php endif; ?>
 
-	<!-- POETIC RANGE -->
-	<?php get_template_part( 'template-parts/product-row', null, array( 'title' => mrzaib_opt( 'row2_title', 'Poetic Range' ), 'slug' => mrzaib_opt( 'row2_cat', '' ), 'limit' => 5, 'offset_order' => true ) ); ?>
+	<!-- FEATURED COLLECTION: products marked Featured (star) in Products -->
+	<?php get_template_part( 'template-parts/product-row', null, array( 'title' => mrzaib_opt( 'row2_title', 'Featured Collection' ), 'mode' => 'featured', 'limit' => 5 ) ); ?>
 
 	<!-- PROMO BANNER -->
 	<section class="section promo-band-wrap">

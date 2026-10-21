@@ -74,8 +74,38 @@ function mrzaib_products_query( $args = array() ) {
 	if ( ! empty( $args['category'] ) && ! term_exists( $args['category'][0], 'product_cat' ) ) {
 		unset( $args['category'] );
 	}
+	if ( ! empty( $args['mz_top_rated'] ) ) {
+		// Best sellers: highest average rating first, then most ratings, then most sales.
+		$limit = (int) $args['limit'];
+		unset( $args['mz_top_rated'] );
+		$args['limit'] = -1;
+		$all = wc_get_products( $args );
+		usort( $all, function ( $a, $b ) {
+			$r = (float) $b->get_average_rating() <=> (float) $a->get_average_rating();
+			if ( 0 === $r ) {
+				$r = (int) $b->get_rating_count() <=> (int) $a->get_rating_count();
+			}
+			if ( 0 === $r ) {
+				$r = (int) $b->get_total_sales() <=> (int) $a->get_total_sales();
+			}
+			return $r;
+		} );
+		return $limit > 0 ? array_slice( $all, 0, $limit ) : $all;
+	}
 	return wc_get_products( $args );
 }
+
+/** Shop filter for the homepage "Featured Collection" View all link: /shop/?mz_featured=1 */
+add_action( 'pre_get_posts', function ( $q ) {
+	if ( is_admin() || ! $q->is_main_query() || empty( $_GET['mz_featured'] ) || ! taxonomy_exists( 'product_visibility' ) ) { // phpcs:ignore
+		return;
+	}
+	if ( $q->is_post_type_archive( 'product' ) || $q->is_tax( 'product_cat' ) ) {
+		$tax   = (array) $q->get( 'tax_query' );
+		$tax[] = array( 'taxonomy' => 'product_visibility', 'field' => 'name', 'terms' => array( 'featured' ) );
+		$q->set( 'tax_query', $tax );
+	}
+} );
 
 /**
  * Product card (homepage + shop loop).
