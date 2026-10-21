@@ -25,7 +25,7 @@ function mrzaib_seo_default_more() {
 /** Theme icon file for feature N (1-4). */
 function mrzaib_feat_default_icon( $n ) {
 	$k = array( 1 => 'fcart', 2 => 'award', 3 => 'box', 4 => 'thumb' );
-	return isset( $k[ $n ] ) ? MRZAIB_URI . '/assets/images/icons/feat-' . $k[ $n ] . '.svg' : '';
+	return isset( $k[ $n ] ) ? MRZAIB_URI . '/assets/images/icons/feat-' . $k[ $n ] . '.png' : '';
 }
 
 /** Theme demo video / cover for slot N (1-4). */
@@ -55,4 +55,81 @@ function mrzaib_video_product( $n ) {
 	}
 	$prod = ( $v && function_exists( 'wc_get_product' ) ) ? wc_get_product( (int) $v ) : null;
 	return ( $prod && 'publish' === $prod->get_status() ) ? $prod : null;
+}
+
+/**
+ * Copy the theme's homepage videos, covers, feature icons and promo banners into the
+ * WordPress Media Library once, and point the Customizer fields at them, so they show
+ * as real media (with previews) and can be picked again from Media.
+ * Only fields still using the theme default (or empty) are changed.
+ */
+define( 'MRZAIB_HOME_MEDIA_V', 1 );
+
+function mrzaib_home_media_items() {
+	$items = array();
+	for ( $i = 1; $i <= 4; $i++ ) {
+		$items[ 'video_' . $i ]        = array( 'assets/video/' . basename( mrzaib_video_default( $i ) ), mrzaib_video_default( $i ) );
+		$items[ 'video_poster_' . $i ] = array( 'assets/video/' . basename( mrzaib_video_default( $i, 'jpg' ) ), mrzaib_video_default( $i, 'jpg' ) );
+		$items[ 'feat_icon_' . $i ]    = array( 'assets/images/icons/' . basename( mrzaib_feat_default_icon( $i ) ), mrzaib_feat_default_icon( $i ) );
+	}
+	$items['promo_img_d'] = array( 'assets/images/promo-band-desktop.jpg', MRZAIB_URI . '/assets/images/promo-band-desktop.jpg' );
+	$items['promo_img_m'] = array( 'assets/images/promo-band-mobile.jpg', MRZAIB_URI . '/assets/images/promo-band-mobile.jpg' );
+	return $items;
+}
+
+/** Attachment ID already imported for a theme file, else 0. */
+function mrzaib_home_media_find( $rel ) {
+	$q = get_posts( array( 'post_type' => 'attachment', 'post_status' => 'inherit', 'numberposts' => 1, 'fields' => 'ids', 'meta_key' => '_mrzaib_src', 'meta_value' => $rel ) );
+	return $q ? (int) $q[0] : 0;
+}
+
+function mrzaib_import_home_media( $force = false ) {
+	require_once ABSPATH . 'wp-admin/includes/file.php';
+	require_once ABSPATH . 'wp-admin/includes/media.php';
+	require_once ABSPATH . 'wp-admin/includes/image.php';
+	$map = (array) get_option( 'mrzaib_home_media', array() );
+	$n   = 0;
+	foreach ( mrzaib_home_media_items() as $key => $it ) {
+		list( $rel, $theme_url ) = $it;
+		$cur = get_theme_mod( 'mrzaib_' . $key, '' );
+		$cur_base = $cur ? strtok( $cur, '?' ) : '';
+		if ( $cur && ! $force && strtok( $theme_url, '?' ) !== $cur_base && false === strpos( $cur_base, '/themes/' ) ) {
+			continue; // Admin already chose own media.
+		}
+		$file = MRZAIB_DIR . '/' . $rel;
+		if ( ! file_exists( $file ) ) {
+			continue;
+		}
+		$id = mrzaib_home_media_find( $rel );
+		if ( ! $id ) {
+			$tmp = wp_tempnam( basename( $file ) );
+			copy( $file, $tmp );
+			$fa = array( 'name' => 'mr-zaib-' . basename( $file ), 'tmp_name' => $tmp );
+			$id = media_handle_sideload( $fa, 0, 'MR ZAIB ' . ucwords( str_replace( array( '-', '_' ), ' ', pathinfo( $file, PATHINFO_FILENAME ) ) ) );
+			if ( is_wp_error( $id ) ) {
+				@unlink( $tmp ); // phpcs:ignore
+				continue;
+			}
+			update_post_meta( $id, '_mrzaib_src', $rel );
+			$n++;
+		}
+		$map[ $key ] = (int) $id;
+		set_theme_mod( 'mrzaib_' . $key, wp_get_attachment_url( $id ) );
+	}
+	update_option( 'mrzaib_home_media', $map, false );
+	update_option( 'mrzaib_home_media_v', MRZAIB_HOME_MEDIA_V );
+	return $n;
+}
+
+add_action( 'admin_init', function () {
+	if ( (int) get_option( 'mrzaib_home_media_v' ) >= MRZAIB_HOME_MEDIA_V || ! current_user_can( 'upload_files' ) || wp_doing_ajax() ) {
+		return;
+	}
+	mrzaib_import_home_media();
+} );
+
+/** URL of the theme media imported for a field (e.g. 'feat_icon_1'), or ''. */
+function mrzaib_home_media_url( $key ) {
+	$map = (array) get_option( 'mrzaib_home_media', array() );
+	return empty( $map[ $key ] ) ? '' : (string) wp_get_attachment_url( $map[ $key ] );
 }

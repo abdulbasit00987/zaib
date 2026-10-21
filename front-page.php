@@ -131,10 +131,10 @@ $all_products = mrzaib_products_query( array( 'limit' => 12 ) );
 		if ( ! $vurl ) {
 			continue; // Slot with no video.
 		}
-		$is_theme = ( $vurl === mrzaib_video_default( $i ) );
+		$is_theme = ( $vurl === mrzaib_video_default( $i ) || $vurl === mrzaib_home_media_url( 'video_' . $i ) );
 		// Cover image: Customizer value; an empty (removed) cover = none. Theme cover only goes with the theme video.
 		$poster = get_theme_mod( 'mrzaib_video_poster_' . $i, mrzaib_video_default( $i, 'jpg' ) );
-		if ( ! $is_theme && $poster === mrzaib_video_default( $i, 'jpg' ) ) {
+		if ( ! $is_theme && ( $poster === mrzaib_video_default( $i, 'jpg' ) || $poster === mrzaib_home_media_url( 'video_poster_' . $i ) ) ) {
 			$poster = '';
 		}
 		$prod = mrzaib_video_product( $i );
@@ -191,7 +191,7 @@ $all_products = mrzaib_products_query( array( 'limit' => 12 ) );
 			);
 			foreach ( $feats as $fi => $f ) :
 				$ficon = get_theme_mod( 'mrzaib_feat_icon_' . ( $fi + 1 ), mrzaib_feat_default_icon( $fi + 1 ) );
-				if ( $ficon === mrzaib_feat_default_icon( $fi + 1 ) ) {
+				if ( $ficon === mrzaib_feat_default_icon( $fi + 1 ) || ( $ficon && $ficon === mrzaib_home_media_url( 'feat_icon_' . ( $fi + 1 ) ) ) ) {
 					$ficon = ''; // Theme icon: print inline SVG.
 				}
 				if ( ! $f[1] ) {
