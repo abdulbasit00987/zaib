@@ -174,3 +174,30 @@ add_filter( 'woocommerce_product_add_to_cart_text', function ( $t, $p ) {
 
 /* Checkout: Pakistan defaults */
 add_filter( 'default_checkout_billing_country', function () { return 'PK'; } );
+
+/**
+ * Admin: "Subtitle" field in Product data > General (shown under the title on cards, product page, Quick View and cart).
+ */
+add_action( 'woocommerce_product_options_general_product_data', 'mrzaib_subtitle_field' );
+function mrzaib_subtitle_field() {
+	if ( ! function_exists( 'woocommerce_wp_text_input' ) ) {
+		return;
+	}
+	echo '<div class="options_group">';
+	woocommerce_wp_text_input(
+		array(
+			'id'          => '_mrzaib_subtitle',
+			'label'       => __( 'Subtitle', 'mrzaib' ),
+			'placeholder' => __( 'e.g. Perfume for Men | 50ml', 'mrzaib' ),
+			'desc_tip'    => true,
+			'description' => __( 'Short line shown under the product title. Leave empty to hide it.', 'mrzaib' ),
+		)
+	);
+	echo '</div>';
+}
+add_action( 'woocommerce_admin_process_product_object', 'mrzaib_subtitle_save' );
+function mrzaib_subtitle_save( $product ) {
+	if ( isset( $_POST['_mrzaib_subtitle'] ) ) { // phpcs:ignore WordPress.Security.NonceVerification
+		$product->update_meta_data( '_mrzaib_subtitle', sanitize_text_field( wp_unslash( $_POST['_mrzaib_subtitle'] ) ) ); // phpcs:ignore
+	}
+}
