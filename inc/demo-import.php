@@ -220,6 +220,14 @@ function mrzaib_setup_page() {
 		echo '<div class="notice notice-info"><p>' . esc_html( mrzaib_install_plugin( 'woocommerce', 'woocommerce/woocommerce.php', 'WooCommerce' ) ) . '</p></div>';
 		echo '<script>setTimeout(function(){location.href=' . wp_json_encode( admin_url( 'themes.php?page=mrzaib-setup' ) ) . ';},1500);</script>';
 	}
+	if ( isset( $_POST['mrzaib_yoast_apply'] ) && check_admin_referer( 'mrzaib_yoast_apply' ) ) {
+		echo '<div class="notice notice-success"><p>' . esc_html( mrzaib_configure_yoast() ) . '</p></div>';
+	}
+	if ( defined( 'WPSEO_VERSION' ) ) {
+		echo '<form method="post" style="margin:12px 0">';
+		wp_nonce_field( 'mrzaib_yoast_apply' );
+		echo '<p><button class="button" name="mrzaib_yoast_apply" value="1">' . esc_html__( 'Apply MR ZAIB Yoast SEO settings', 'mrzaib' ) . '</button> <span class="description">' . esc_html__( 'Fills only empty SEO titles, descriptions and keyphrases; your edits are kept.', 'mrzaib' ) . '</span></p></form>';
+	}
 	if ( isset( $_POST['mrzaib_cardplugins'] ) && check_admin_referer( 'mrzaib_cardplugins' ) ) {
 		echo '<div class="notice notice-info"><p>' . esc_html( mrzaib_install_card_plugins() ) . '</p></div>';
 	}
@@ -466,6 +474,9 @@ function mrzaib_run_import() {
 
 	$log[] = mrzaib_install_aws();
 	$log[] = mrzaib_install_card_plugins();
+	if ( function_exists( 'mrzaib_configure_yoast' ) && defined( 'WPSEO_VERSION' ) ) {
+		$log[] = mrzaib_configure_yoast();
+	}
 	// Make the store public (WooCommerce 9.x+ starts new stores in Coming Soon mode).
 	update_option( 'woocommerce_coming_soon', 'no' );
 	update_option( 'woocommerce_store_pages_only', 'no' );
