@@ -262,69 +262,33 @@ function mrzaib_install_products( $cat_ids ) {
 		update_post_meta( $pid, '_mrzaib_subtitle', $d['subtitle'] );
 		update_post_meta( $pid, '_mrzaib_notes', $d['notes'] );
 		update_post_meta( $pid, '_mrzaib_note_imgs', $note_imgs );
-		/* SEO: theme fallback + Yoast + Rank Math fields. */
-		update_post_meta( $pid, '_mrzaib_seo_title', $d['seo']['title'] );
-		update_post_meta( $pid, '_mrzaib_seo_desc', $d['seo']['desc'] );
-		update_post_meta( $pid, '_mrzaib_seo_keywords', $d['seo']['keywords'] );
+		/* SEO: Yoast SEO fields only (edit them in the Yoast box on the product page). */
 		update_post_meta( $pid, '_yoast_wpseo_title', $d['seo']['title'] );
 		update_post_meta( $pid, '_yoast_wpseo_metadesc', $d['seo']['desc'] );
 		update_post_meta( $pid, '_yoast_wpseo_focuskw', $d['seo']['focus'] );
-		update_post_meta( $pid, 'rank_math_title', $d['seo']['title'] );
-		update_post_meta( $pid, 'rank_math_description', $d['seo']['desc'] );
-		update_post_meta( $pid, 'rank_math_focus_keyword', $d['seo']['keywords'] );
 		$made++;
 	}
 	return $made . ' MR ZAIB products added/updated (Kahn-vahl, Arvon).';
 }
 
-/* ---------- SEO output when no SEO plugin is active ---------- */
-function mrzaib_has_seo_plugin() {
-	return defined( 'WPSEO_VERSION' ) || class_exists( 'RankMath' ) || defined( 'AIOSEO_VERSION' ) || defined( 'SEOPRESS_VERSION' );
-}
-add_filter( 'pre_get_document_title', function ( $t ) {
-	if ( mrzaib_has_seo_plugin() || ! is_singular( 'product' ) ) {
-		return $t;
-	}
-	$custom = get_post_meta( get_queried_object_id(), '_mrzaib_seo_title', true );
-	return $custom ? $custom : $t;
-}, 20 );
-add_action( 'wp_head', function () {
-	if ( mrzaib_has_seo_plugin() ) {
+/* ---------- SEO is handled by the Yoast SEO plugin (theme outputs no meta tags) ---------- */
+
+/** One-time cleanup of the theme's old custom SEO fields. */
+add_action( 'admin_init', function () {
+	if ( '1' === get_option( 'mrzaib_seo_cleanup' ) ) {
 		return;
 	}
-	$desc = '';
-	$keys = '';
-	if ( is_singular( 'product' ) ) {
-		$id   = get_queried_object_id();
-		$desc = get_post_meta( $id, '_mrzaib_seo_desc', true );
-		$keys = get_post_meta( $id, '_mrzaib_seo_keywords', true );
-		if ( ! $desc ) {
-			$desc = wp_trim_words( wp_strip_all_tags( get_post_field( 'post_excerpt', $id ) ), 28, '' );
-		}
-	} elseif ( mrzaib_is( 'is_product_category' ) ) {
-		$t    = get_queried_object();
-		$desc = $t && $t->description ? $t->description : '';
-		$keys = $t ? $t->name . ' perfume, ' . $t->name . ' perfume Pakistan, MR ZAIB ' . $t->name : '';
-	} elseif ( is_front_page() ) {
-		$desc = 'MR ZAIB Luxury Perfumes: long lasting perfumes for men, women and unisex in Pakistan. Shop Kahn-vahl and Arvon with Cash on Delivery all over Pakistan.';
-		$keys = 'MR ZAIB, MR ZAIB perfumes, luxury perfumes Pakistan, long lasting perfume, perfume for men, perfume for women, unisex perfume, Kahn-vahl perfume, Arvon perfume, buy perfume online Pakistan';
+	foreach ( array( '_mrzaib_seo_title', '_mrzaib_seo_desc', '_mrzaib_seo_keywords' ) as $k ) {
+		delete_post_meta_by_key( $k );
 	}
-	if ( $desc ) {
-		echo '<meta name="description" content="' . esc_attr( $desc ) . '">' . "\n";
-		echo '<meta property="og:description" content="' . esc_attr( $desc ) . '">' . "\n";
-	}
-	if ( $keys ) {
-		echo '<meta name="keywords" content="' . esc_attr( $keys ) . '">' . "\n";
-	}
-	if ( is_singular( 'product' ) ) {
-		$img = get_the_post_thumbnail_url( get_queried_object_id(), 'large' );
-		echo '<meta property="og:type" content="product">' . "\n";
-		echo '<meta property="og:title" content="' . esc_attr( wp_get_document_title() ) . '">' . "\n";
-		if ( $img ) {
-			echo '<meta property="og:image" content="' . esc_url( $img ) . '">' . "\n";
+	if ( ! class_exists( 'RankMath' ) ) {
+		foreach ( array( 'rank_math_title', 'rank_math_description', 'rank_math_focus_keyword' ) as $k ) {
+			delete_post_meta_by_key( $k );
 		}
 	}
-}, 2 );
+	remove_theme_mod( 'mrzaib_seo_title' );
+	update_option( 'mrzaib_seo_cleanup', '1' );
+} );
 
 /**
  * Homepage "Top Perfume Categories": every top-level product category (also empty ones),

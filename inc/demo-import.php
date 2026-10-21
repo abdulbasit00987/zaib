@@ -170,6 +170,7 @@ function mrzaib_install_card_plugins() {
 	$out[] = mrzaib_install_plugin( 'woo-quickview', 'woo-quickview/woo-quick-view.php', 'Quick View for WooCommerce (Reno QuickView)' );
 	// Header cart is theme-native now; Mini Cart Drawer plugin no longer installed.
 	if ( false ) $out[] = mrzaib_install_plugin( 'woo-mini-cart-drawer', 'woo-mini-cart-drawer/woo-mini-cart-drawer.php', 'Mini Cart Drawer for WooCommerce' );
+	$out[] = mrzaib_install_plugin( 'wordpress-seo', 'wordpress-seo/wp-seo.php', 'Yoast SEO' );
 	$out[] = mrzaib_install_plugin( 'woo-product-gallery-slider', 'woo-product-gallery-slider/woo-product-gallery-slider.php', 'Product Gallery Slider, Additional Variation Images for WooCommerce' );
 	if ( function_exists( 'mrzaib_configure_gallery_plugin' ) ) {
 		mrzaib_configure_gallery_plugin();
@@ -561,3 +562,16 @@ function mrzaib_page_story() {
 		. '<!-- wp:paragraph --><p>MR ZAIB started with one simple idea: luxury fragrances should not cost a fortune. We create high-concentration, long lasting perfumes in Pakistan and put most of our cost into the juice inside the bottle. (Dummy text: write your own brand story here.)</p><!-- /wp:paragraph -->'
 		. '<!-- wp:paragraph --><p>Every scent comes with honest notes, lasting and projection details, so you can choose with confidence. And if it is not right for you, our 15-day easy return policy has you covered.</p><!-- /wp:paragraph -->';
 }
+
+/** Ask the admin to install Yoast SEO (the theme leaves all SEO meta to it). */
+add_action( 'admin_notices', function () {
+	if ( defined( 'WPSEO_VERSION' ) || ! current_user_can( 'install_plugins' ) ) {
+		return;
+	}
+	if ( isset( $_GET['mrzaib_yoast'] ) && check_admin_referer( 'mrzaib_yoast' ) ) { // phpcs:ignore
+		echo '<div class="notice notice-info"><p>' . esc_html( mrzaib_install_plugin( 'wordpress-seo', 'wordpress-seo/wp-seo.php', 'Yoast SEO' ) ) . '</p></div>';
+		return;
+	}
+	$url = wp_nonce_url( add_query_arg( 'mrzaib_yoast', '1', admin_url( 'index.php' ) ), 'mrzaib_yoast' );
+	echo '<div class="notice notice-warning"><p><strong>MR ZAIB:</strong> ' . esc_html__( 'SEO titles, meta descriptions and sitemaps are handled by Yoast SEO.', 'mrzaib' ) . ' <a class="button button-primary" href="' . esc_url( $url ) . '">' . esc_html__( 'Install & Activate Yoast SEO', 'mrzaib' ) . '</a></p></div>';
+} );

@@ -64,7 +64,6 @@ function mrzaib_customize( $wp_customize ) {
 	$text( 'bs_title', __( 'Best sellers title', 'mrzaib' ), 'mrzaib_home', 'Our Best Sellers' );
 	$text( 'bs_sub', __( 'Best sellers subtitle', 'mrzaib' ), 'mrzaib_home', "Perfumes you won't find anywhere else" );
 	$text( 'outlet_text', __( 'Retail outlets text', 'mrzaib' ), 'mrzaib_home', 'We are one of the fastest growing fragrance brands in Pakistan. Visit our outlets in major malls and experience every MR ZAIB scent in person before you buy.', 'textarea' );
-	$text( 'seo_title', __( 'SEO block title', 'mrzaib' ), 'mrzaib_home', 'Best Long Lasting Perfumes in Pakistan by MR ZAIB' );
 	$text( 'stat_1', __( 'Stat 1 number', 'mrzaib' ), 'mrzaib_home', '1' );
 	$text( 'stat_2', __( 'Stat 2 number (%)', 'mrzaib' ), 'mrzaib_home', '98' );
 	$text( 'stat_3', __( 'Stat 3 number', 'mrzaib' ), 'mrzaib_home', '100' );
