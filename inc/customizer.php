@@ -16,6 +16,9 @@ function mrzaib_customize( $wp_customize ) {
 		'mrzaib_header'  => __( 'Announcement Bar', 'mrzaib' ),
 		'mrzaib_hero'    => __( 'Hero Slider', 'mrzaib' ),
 		'mrzaib_home'    => __( 'Homepage Texts', 'mrzaib' ),
+		'mrzaib_videos'  => __( 'Homepage Videos', 'mrzaib' ),
+		'mrzaib_feats'   => __( 'Homepage Features & Icons', 'mrzaib' ),
+		'mrzaib_seo'     => __( 'Homepage SEO Text', 'mrzaib' ),
 		'mrzaib_contact' => __( 'Contact & Social', 'mrzaib' ),
 	);
 	foreach ( $sections as $id => $title ) {
@@ -65,15 +68,24 @@ function mrzaib_customize( $wp_customize ) {
 	$text( 'stat_1', __( 'Stat 1 number', 'mrzaib' ), 'mrzaib_home', '1' );
 	$text( 'stat_2', __( 'Stat 2 number (%)', 'mrzaib' ), 'mrzaib_home', '98' );
 	$text( 'stat_3', __( 'Stat 3 number', 'mrzaib' ), 'mrzaib_home', '100' );
-	$text( 'col_title', __( 'Collections title', 'mrzaib' ), 'mrzaib_home', 'Top Perfume Collections' );
+	$text( 'col_title', __( 'Categories section title', 'mrzaib' ), 'mrzaib_home', 'Top Perfume Categories' );
 	$text( 'row1_title', __( 'Product row 1 title', 'mrzaib' ), 'mrzaib_home', 'Executive Range' );
 	$text( 'row1_cat', __( 'Product row 1 category slug (empty = all)', 'mrzaib' ), 'mrzaib_home', '' );
 	$text( 'row2_title', __( 'Product row 2 title', 'mrzaib' ), 'mrzaib_home', 'Poetic Range' );
 	$text( 'row2_cat', __( 'Product row 2 category slug (empty = all)', 'mrzaib' ), 'mrzaib_home', '' );
-	for ( $i = 1; $i <= 4; $i++ ) {
+	// Videos (own section): count + per video file, poster and product badge.
+	$wp_customize->add_setting( 'mrzaib_video_count', array( 'default' => 4, 'sanitize_callback' => 'absint' ) );
+	$wp_customize->add_control( 'mrzaib_video_count', array( 'label' => __( 'Number of videos (0 = hide section)', 'mrzaib' ), 'description' => __( 'Save & refresh to see fields for new videos.', 'mrzaib' ), 'section' => 'mrzaib_videos', 'type' => 'number', 'input_attrs' => array( 'min' => 0, 'max' => MRZAIB_VIDEO_MAX ) ) );
+	for ( $i = 1; $i <= MRZAIB_VIDEO_MAX; $i++ ) {
+		$vact = function () use ( $i ) {
+			return $i <= (int) get_theme_mod( 'mrzaib_video_count', 4 );
+		};
 		$wp_customize->add_setting( 'mrzaib_video_' . $i, array( 'sanitize_callback' => 'esc_url_raw' ) );
-		$wp_customize->add_control( 'mrzaib_video_' . $i, array( 'label' => sprintf( __( 'Video %d URL (.mp4, empty = theme video)', 'mrzaib' ), $i ), 'section' => 'mrzaib_home', 'type' => 'url' ) );
-		$text( 'video_product_' . $i, sprintf( __( 'Video %d product slug', 'mrzaib' ), $i ), 'mrzaib_home', 1 === $i % 2 ? 'kahn-vahl' : 'arvon' );
+		$wp_customize->add_control( new WP_Customize_Upload_Control( $wp_customize, 'mrzaib_video_' . $i, array( 'label' => sprintf( __( 'Video %d (.mp4, vertical 2:3)', 'mrzaib' ), $i ), 'section' => 'mrzaib_videos', 'mime_type' => 'video', 'active_callback' => $vact ) ) );
+		$wp_customize->add_setting( 'mrzaib_video_poster_' . $i, array( 'sanitize_callback' => 'esc_url_raw' ) );
+		$wp_customize->add_control( new WP_Customize_Image_Control( $wp_customize, 'mrzaib_video_poster_' . $i, array( 'label' => sprintf( __( 'Video %d cover image (optional)', 'mrzaib' ), $i ), 'section' => 'mrzaib_videos', 'active_callback' => $vact ) ) );
+		$wp_customize->add_setting( 'mrzaib_video_product_' . $i, array( 'default' => 1 === $i % 2 ? 'kahn-vahl' : 'arvon', 'sanitize_callback' => 'sanitize_title' ) );
+		$wp_customize->add_control( 'mrzaib_video_product_' . $i, array( 'label' => sprintf( __( 'Video %d product slug (badge)', 'mrzaib' ), $i ), 'section' => 'mrzaib_videos', 'active_callback' => $vact ) );
 	}
 	$wp_customize->add_setting( 'mrzaib_promo_img_d', array( 'sanitize_callback' => 'esc_url_raw' ) );
 	$wp_customize->add_control( new WP_Customize_Image_Control( $wp_customize, 'mrzaib_promo_img_d', array( 'label' => __( 'Promo banner desktop (1920x384)', 'mrzaib' ), 'section' => 'mrzaib_home' ) ) );
@@ -81,11 +93,21 @@ function mrzaib_customize( $wp_customize ) {
 	$wp_customize->add_control( new WP_Customize_Image_Control( $wp_customize, 'mrzaib_promo_img_m', array( 'label' => __( 'Promo banner mobile (900x544)', 'mrzaib' ), 'section' => 'mrzaib_home' ) ) );
 	$wp_customize->add_setting( 'mrzaib_promo_link', array( 'sanitize_callback' => 'esc_url_raw' ) );
 	$wp_customize->add_control( 'mrzaib_promo_link', array( 'label' => __( 'Promo banner link', 'mrzaib' ), 'section' => 'mrzaib_home', 'type' => 'url' ) );
-	$text( 'feat_1', __( 'Feature 1', 'mrzaib' ), 'mrzaib_home', '1M+ Customers' );
-	$text( 'feat_2', __( 'Feature 2', 'mrzaib' ), 'mrzaib_home', 'Long Lasting Fragrances' );
-	$text( 'feat_3', __( 'Feature 3', 'mrzaib' ), 'mrzaib_home', '15 Days Easy Returns Policy' );
-	$text( 'feat_4', __( 'Feature 4', 'mrzaib' ), 'mrzaib_home', 'Super Macerated Perfumes' );
-	$text( 'seo_title2', __( 'SEO section title', 'mrzaib' ), 'mrzaib_home', 'Best Perfumes in Pakistan by MR ZAIB' );
+	$text( 'feat_1', __( 'Feature 1 text', 'mrzaib' ), 'mrzaib_feats', '1M+ Customers' );
+	$wp_customize->add_setting( 'mrzaib_feat_icon_1', array( 'sanitize_callback' => 'esc_url_raw' ) );
+	$wp_customize->add_control( new WP_Customize_Image_Control( $wp_customize, 'mrzaib_feat_icon_1', array( 'label' => __( 'Feature 1 icon (PNG/SVG, empty = theme icon)', 'mrzaib' ), 'section' => 'mrzaib_feats' ) ) );
+	$text( 'feat_2', __( 'Feature 2 text', 'mrzaib' ), 'mrzaib_feats', 'Long Lasting Fragrances' );
+	$wp_customize->add_setting( 'mrzaib_feat_icon_2', array( 'sanitize_callback' => 'esc_url_raw' ) );
+	$wp_customize->add_control( new WP_Customize_Image_Control( $wp_customize, 'mrzaib_feat_icon_2', array( 'label' => __( 'Feature 2 icon (PNG/SVG, empty = theme icon)', 'mrzaib' ), 'section' => 'mrzaib_feats' ) ) );
+	$text( 'feat_3', __( 'Feature 3 text', 'mrzaib' ), 'mrzaib_feats', '15 Days Easy Returns Policy' );
+	$wp_customize->add_setting( 'mrzaib_feat_icon_3', array( 'sanitize_callback' => 'esc_url_raw' ) );
+	$wp_customize->add_control( new WP_Customize_Image_Control( $wp_customize, 'mrzaib_feat_icon_3', array( 'label' => __( 'Feature 3 icon (PNG/SVG, empty = theme icon)', 'mrzaib' ), 'section' => 'mrzaib_feats' ) ) );
+	$text( 'feat_4', __( 'Feature 4 text', 'mrzaib' ), 'mrzaib_feats', 'Super Macerated Perfumes' );
+	$wp_customize->add_setting( 'mrzaib_feat_icon_4', array( 'sanitize_callback' => 'esc_url_raw' ) );
+	$wp_customize->add_control( new WP_Customize_Image_Control( $wp_customize, 'mrzaib_feat_icon_4', array( 'label' => __( 'Feature 4 icon (PNG/SVG, empty = theme icon)', 'mrzaib' ), 'section' => 'mrzaib_feats' ) ) );
+	$text( 'seo_title2', __( 'SEO section title', 'mrzaib' ), 'mrzaib_seo', 'Best Perfumes in Pakistan by MR ZAIB' );
+	$text( 'seo_intro', __( 'SEO intro paragraph (empty = theme text). HTML allowed.', 'mrzaib' ), 'mrzaib_seo', '', 'textarea' );
+	$text( 'seo_more', __( 'SEO "Read More" text (empty = theme text). HTML allowed: <h3>, <p>, <a>, <strong>.', 'mrzaib' ), 'mrzaib_seo', '', 'textarea' );
 	$text( 'trust_pill', __( 'Trusted section pill', 'mrzaib' ), 'mrzaib_home', 'Trusted by Fragheads' );
 	$text( 'trust_title', __( 'Trusted section title', 'mrzaib' ), 'mrzaib_home', "Pakistan's Luxury Perfume Brand." );
 	$text( 'trust_sub', __( 'Trusted section text', 'mrzaib' ), 'mrzaib_home', 'Pakistanis choose MR ZAIB for quality they can feel, at prices that make sense.' );
@@ -94,6 +116,9 @@ function mrzaib_customize( $wp_customize ) {
 		$text( 'tstat_' . $i . 's', sprintf( __( 'Trusted stat %d suffix', 'mrzaib' ), $i ), 'mrzaib_home', $d[1] );
 		$text( 'tstat_' . $i . 'l', sprintf( __( 'Trusted stat %d label', 'mrzaib' ), $i ), 'mrzaib_home', $d[2] );
 	}
+	$text( 'tbadge_1', __( 'Trusted badge 1', 'mrzaib' ), 'mrzaib_home', 'Easy 15-day exchange' );
+	$text( 'tbadge_2', __( 'Trusted badge 2', 'mrzaib' ), 'mrzaib_home', 'Cash on Delivery' );
+	$text( 'tbadge_3', __( 'Trusted badge 3', 'mrzaib' ), 'mrzaib_home', 'Ships across Pakistan' );
 	$text( 'free_ship', __( 'Free shipping over (Rs.)', 'mrzaib' ), 'mrzaib_home', '3000' );
 
 	// Contact & social.
@@ -108,6 +133,9 @@ function mrzaib_customize( $wp_customize ) {
 }
 add_action( 'customize_register', 'mrzaib_customize' );
 
+if ( ! defined( 'MRZAIB_VIDEO_MAX' ) ) {
+	define( 'MRZAIB_VIDEO_MAX', 12 );
+}
 if ( ! defined( 'MRZAIB_HERO_MAX' ) ) {
 	define( 'MRZAIB_HERO_MAX', 10 );
 }

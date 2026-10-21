@@ -1405,3 +1405,4 @@ html body .mfp-wqv .mfp-close::before,html body .mfp-wqv .mfp-close::after{width
   .mfp-wqv .mfp-content > .mfp-close.mz-qv-close-out{top:-9px!important;right:-3px!important;width:30px!important;height:30px!important}
   html body .mfp-wqv .mfp-close::before,html body .mfp-wqv .mfp-close::after{width:12px!important}
 }
+.features .f-icon img{width:46px;height:46px;object-fit:contain;display:block}
