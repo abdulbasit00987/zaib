@@ -67,6 +67,12 @@ function mrzaib_customize( $wp_customize ) {
 	$text( 'row1_title', __( 'New Arrivals title (newest products)', 'mrzaib' ), 'mrzaib_home', 'New Arrivals' );
 	$text( 'row2_title', __( 'Featured Collection title (products marked Featured ★)', 'mrzaib' ), 'mrzaib_home', 'Featured Collection' );
 	// Videos (own section): count + per video file, poster and product badge.
+	$vprods = array( 0 => __( '— Select product —', 'mrzaib' ) );
+	if ( function_exists( 'wc_get_products' ) ) {
+		foreach ( wc_get_products( array( 'limit' => -1, 'status' => 'publish', 'orderby' => 'title', 'order' => 'ASC' ) ) as $vp ) {
+			$vprods[ $vp->get_id() ] = $vp->get_name();
+		}
+	}
 	$wp_customize->add_setting( 'mrzaib_video_count', array( 'default' => 4, 'sanitize_callback' => 'absint' ) );
 	$wp_customize->add_control( 'mrzaib_video_count', array( 'label' => __( 'Number of videos (0 = hide section)', 'mrzaib' ), 'description' => __( 'Save & refresh to see fields for new videos.', 'mrzaib' ), 'section' => 'mrzaib_videos', 'type' => 'number', 'input_attrs' => array( 'min' => 0, 'max' => MRZAIB_VIDEO_MAX ) ) );
 	for ( $i = 1; $i <= MRZAIB_VIDEO_MAX; $i++ ) {
@@ -77,8 +83,8 @@ function mrzaib_customize( $wp_customize ) {
 		$wp_customize->add_control( new WP_Customize_Upload_Control( $wp_customize, 'mrzaib_video_' . $i, array( 'label' => sprintf( __( 'Video %d (.mp4, vertical 2:3). Change = upload new video from your computer', 'mrzaib' ), $i ), 'section' => 'mrzaib_videos', 'mime_type' => 'video', 'active_callback' => $vact ) ) );
 		$wp_customize->add_setting( 'mrzaib_video_poster_' . $i, array( 'default' => mrzaib_video_default( $i, 'jpg' ), 'sanitize_callback' => 'esc_url_raw' ) );
 		$wp_customize->add_control( new WP_Customize_Image_Control( $wp_customize, 'mrzaib_video_poster_' . $i, array( 'label' => sprintf( __( 'Video %d cover image (shown before the video plays; Remove = none)', 'mrzaib' ), $i ), 'section' => 'mrzaib_videos', 'active_callback' => $vact ) ) );
-		$wp_customize->add_setting( 'mrzaib_video_product_' . $i, array( 'default' => 1 === $i % 2 ? 'kahn-vahl' : 'arvon', 'sanitize_callback' => 'sanitize_title' ) );
-		$wp_customize->add_control( 'mrzaib_video_product_' . $i, array( 'label' => sprintf( __( 'Video %d product slug (badge)', 'mrzaib' ), $i ), 'section' => 'mrzaib_videos', 'active_callback' => $vact ) );
+		$wp_customize->add_setting( 'mrzaib_video_product_' . $i, array( 'default' => mrzaib_video_default_product( $i ), 'sanitize_callback' => 'absint' ) );
+		$wp_customize->add_control( 'mrzaib_video_product_' . $i, array( 'label' => sprintf( __( 'Video %d product (its image, title and price show on the video)', 'mrzaib' ), $i ), 'section' => 'mrzaib_videos', 'type' => 'select', 'choices' => $vprods, 'active_callback' => $vact ) );
 	}
 	$wp_customize->add_setting( 'mrzaib_promo_img_d', array( 'default' => mrzaib_img( 'promo-band-desktop.jpg' ), 'sanitize_callback' => 'esc_url_raw' ) );
 	$wp_customize->add_control( new WP_Customize_Image_Control( $wp_customize, 'mrzaib_promo_img_d', array( 'label' => __( 'Promo banner desktop (1920x384): wide banner after Featured Collection', 'mrzaib' ), 'section' => 'mrzaib_home' ) ) );

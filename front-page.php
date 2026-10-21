@@ -137,9 +137,7 @@ $all_products = mrzaib_products_query( array( 'limit' => 12 ) );
 		if ( ! $is_theme && $poster === mrzaib_video_default( $i, 'jpg' ) ) {
 			$poster = '';
 		}
-		$pslug  = mrzaib_opt( 'video_product_' . $i, $v[1] );
-		$pp    = get_page_by_path( $pslug, OBJECT, 'product' );
-		$prod  = $pp ? wc_get_product( $pp->ID ) : null;
+		$prod = mrzaib_video_product( $i );
 		if ( ! $prod && $all_products ) {
 			$prod = $all_products[ ( $i - 1 ) % count( $all_products ) ];
 		}

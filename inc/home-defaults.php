@@ -33,3 +33,26 @@ function mrzaib_video_default( $n, $ext = 'mp4' ) {
 	$v = array( 1 => 'kahn-vahl', 2 => 'arvon', 3 => 'mr-zaib-collection', 4 => 'mr-zaib-gift' );
 	return isset( $v[ $n ] ) ? MRZAIB_URI . '/assets/video/' . $v[ $n ] . '.' . $ext : '';
 }
+
+/** Default product (ID) for video slot N: Kahn-vahl / Arvon when they exist. */
+function mrzaib_video_default_product( $n ) {
+	$slug = 1 === $n % 2 ? 'kahn-vahl' : 'arvon';
+	foreach ( array( $slug, $slug . '-perfume' ) as $s ) {
+		$p = get_page_by_path( $s, OBJECT, 'product' );
+		if ( $p ) {
+			return (int) $p->ID;
+		}
+	}
+	return 0;
+}
+
+/** Product chosen for video slot N (accepts old slug values too). */
+function mrzaib_video_product( $n ) {
+	$v = get_theme_mod( 'mrzaib_video_product_' . $n, mrzaib_video_default_product( $n ) );
+	if ( $v && ! is_numeric( $v ) ) {
+		$p = get_page_by_path( sanitize_title( $v ), OBJECT, 'product' );
+		$v = $p ? $p->ID : 0;
+	}
+	$prod = ( $v && function_exists( 'wc_get_product' ) ) ? wc_get_product( (int) $v ) : null;
+	return ( $prod && 'publish' === $prod->get_status() ) ? $prod : null;
+}
