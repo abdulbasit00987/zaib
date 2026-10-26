@@ -20,12 +20,6 @@ $free = mrzaib_opt( 'free_ship', '3000' );
 
 <footer class="site-footer">
 	<div class="container footer-grid">
-		<?php if ( mrzaib_opt( 'address' ) ) : ?>
-		<div class="footer-col footer-address">
-			<h4><?php esc_html_e( 'Address', 'mrzaib' ); ?></h4>
-			<p><?php echo esc_html( mrzaib_opt( 'address' ) ); ?></p>
-		</div>
-		<?php endif; ?>
 		<div class="footer-col">
 			<h4><?php esc_html_e( 'Support', 'mrzaib' ); ?></h4>
 			<?php mrzaib_footer_menu( 'footer-support', array( 'My Account' => 'page:my-account', 'Return Form' => 'page:returns', 'Privacy Policy' => 'page:privacy-policy-2', 'Shipping Policy' => 'page:shipping-policy', 'Terms of Service' => 'page:terms-of-service', 'Track Your Order' => 'page:track-order' ) ); ?>
@@ -48,6 +42,12 @@ $free = mrzaib_opt( 'free_ship', '3000' );
 				<?php endforeach; ?>
 			</div>
 		</div>
+		<?php if ( mrzaib_opt( 'address' ) ) : ?>
+		<div class="footer-col footer-address">
+			<h4><?php esc_html_e( 'Address', 'mrzaib' ); ?></h4>
+			<p><?php echo esc_html( mrzaib_opt( 'address' ) ); ?></p>
+		</div>
+		<?php endif; ?>
 	</div>
 	<div class="container footer-mid">
 		<div class="footer-pay">
