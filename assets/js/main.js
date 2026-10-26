@@ -236,52 +236,43 @@
     v = $(this).hasClass('mz-plus') ? Math.min(max, v + step) : Math.max(min || 1, v - step);
     $in.val(v).trigger('change');
   });
-  /* Quick View image slider (arrows + dots + swipe) */
-  function mzQvGallery(scope) {
-    $(scope).find('.mz-qv-gallery').each(function () {
-      var $data = $(this), $qv = $data.closest('.sp-wqv-content'), $box = $qv.find('.wqv-product-images-slider').first();
-      if (!$box.length || $box.data('mzG')) return;
-      var imgs; try { imgs = JSON.parse($data.text()); } catch (err) { return; }
-      if (!imgs || imgs.length < 2) return;
-      $box.data('mzG', 1).addClass('mzg');
-      var html = '<div class="mzg-viewport"><div class="mzg-track">';
-      imgs.forEach(function (im) { html += '<div class="mzg-slide"><img src="' + im.src + '" alt="' + (im.alt || '').replace(/"/g, '&quot;') + '"></div>'; });
-      html += '</div></div><button type="button" class="mzg-arrow mzg-prev" aria-label="Previous image">&#8249;</button><button type="button" class="mzg-arrow mzg-next" aria-label="Next image">&#8250;</button><div class="mzg-dots">';
-      imgs.forEach(function (im, n) { html += '<button type="button" aria-label="Image ' + (n + 1) + '"></button>'; });
-      html += '</div>';
-      $box.html(html);
-      var i = 0, $t = $box.find('.mzg-track'), $d = $box.find('.mzg-dots button');
-      function go(n) { i = (n + imgs.length) % imgs.length; $t.css('transform', 'translateX(' + (-100 * i) + '%)'); $d.removeClass('is-active').eq(i).addClass('is-active'); }
-      $box.on('click', '.mzg-prev', function () { go(i - 1); });
-      $box.on('click', '.mzg-next', function () { go(i + 1); });
-      $box.on('click', '.mzg-dots button', function () { go($(this).index()); });
-      var sx = null;
-      $box.on('touchstart', function (e) { sx = e.originalEvent.touches[0].clientX; });
-      $box.on('touchend', function (e) { if (sx === null) return; var dx = e.originalEvent.changedTouches[0].clientX - sx; if (Math.abs(dx) > 40) go(dx < 0 ? i + 1 : i - 1); sx = null; });
-      go(0);
-    });
-  }
-  /* Quick View: Product Gallery Slider plugin markup -> main slide + vertical thumbnail strip (like the reference) */
-  function mzQvWpgs(scope) {
-    $(scope).find('template.mz-qv-wpgs').each(function () {
-      var tpl = this, $qv = $(tpl).closest('.sp-wqv-content'), $col = $qv.find('.wqv-product-images').first();
-      if (!$col.length || $col.data('mzW') || !$.fn.slick) return;
-      $col.data('mzW', 1).addClass('mz-qv-wpgs-on');
-      var $g = $('<div>').append(tpl.innerHTML).children().first();
-      $col.empty().append($g);
-      $(tpl).remove();
-      var $for = $g.find('.wpgs-for'), $nav = $g.find('.wpgs-nav');
-      $for.on('click', 'a', function (e) { e.preventDefault(); });
-      var chev = function (d) { return '<button type="button" class="mzt-arrow mzt-' + d + '" aria-label="' + (d === 'prev' ? 'Previous' : 'Next') + '"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><path d="' + (d === 'prev' ? 'M6 15l6-6 6 6' : 'M6 9l6 6 6-6') + '"/></svg></button>'; };
-      $for.slick({ slidesToShow: 1, arrows: false, dots: false, fade: false, infinite: false, speed: 400, draggable: true, swipe: true, adaptiveHeight: false, asNavFor: $nav.length ? $nav : null });
-      if ($nav.length) {
-        $nav.slick({ slidesToShow: 4, slidesToScroll: 1, vertical: true, verticalSwiping: true, infinite: false, focusOnSelect: true, asNavFor: $for, prevArrow: chev('prev'), nextArrow: chev('next'), dots: false,
-          responsive: [{ breakpoint: 768, settings: { vertical: false, verticalSwiping: false, slidesToShow: 4 } }] });
+  /* Theme gallery (product page + Quick View): main slider + thumbnail strip with chevrons */
+  function mzGal(el) {
+    var $g = $(el); if ($g.data('mzGal')) return; $g.data('mzGal', 1);
+    var $track = $g.find('.mzgal-track'), $slides = $g.find('.mzgal-slide'), $t = $g.find('.mzgal-t'), $list = $g.find('.mzgal-tlist'), n = $slides.length, i = 0;
+    function vertical() { return $list.length && $list.css('flex-direction') === 'column'; }
+    function go(k) {
+      i = Math.max(0, Math.min(n - 1, k));
+      $track.css('transform', 'translateX(' + (-100 * i) + '%)');
+      $t.removeClass('is-active').eq(i).addClass('is-active');
+      var th = $t[i], l = $list[0];
+      if (th && l) {
+        if (vertical()) { var top = th.offsetTop - l.offsetTop; if (top < l.scrollTop || top + th.offsetHeight > l.scrollTop + l.clientHeight) l.scrollTo({ top: top - (l.clientHeight - th.offsetHeight) / 2, behavior: 'smooth' }); }
+        else { var left = th.offsetLeft - l.offsetLeft; if (left < l.scrollLeft || left + th.offsetWidth > l.scrollLeft + l.clientWidth) l.scrollTo({ left: left - (l.clientWidth - th.offsetWidth) / 2, behavior: 'smooth' }); }
       }
-      setTimeout(function () { $for.slick('setPosition'); if ($nav.length) $nav.slick('setPosition'); }, 250);
+      $g.find('.mzgal-up').toggleClass('is-off', i <= 0);
+      $g.find('.mzgal-down').toggleClass('is-off', i >= n - 1);
+    }
+    $g.on('click', '.mzgal-t', function () { go($t.index(this)); });
+    $g.on('click', '.mzgal-up', function () { go(i - 1); });
+    $g.on('click', '.mzgal-down', function () { go(i + 1); });
+    var sx = null, sy = null;
+    $g.find('.mzgal-main').on('touchstart', function (e) { var p = e.originalEvent.touches[0]; sx = p.clientX; sy = p.clientY; })
+      .on('touchend', function (e) { if (sx === null) return; var p = e.originalEvent.changedTouches[0], dx = p.clientX - sx; if (Math.abs(dx) > 40 && Math.abs(dx) > Math.abs(p.clientY - sy)) go(dx < 0 ? i + 1 : i - 1); sx = null; });
+    go(0);
+  }
+  function mzQvGal(scope) {
+    $(scope).find('template.mz-qv-gal').each(function () {
+      var tpl = this, $qv = $(tpl).closest('.sp-wqv-content'), $col = $qv.find('.wqv-product-images').first();
+      if (!$col.length || $col.data('mzW')) return;
+      $col.data('mzW', 1).addClass('mz-qv-wpgs-on mz-qv-gal-on');
+      $col.html(tpl.innerHTML);
+      $(tpl).remove();
+      $col.find('.mzgal').each(function () { mzGal(this); });
     });
   }
-  function mzEnhance(scope) { mzPills(scope); mzQty(scope); mzQvWpgs(scope); mzQvGallery(scope); }
+  $('.mzgal-pdp').each(function () { mzGal(this); });
+  function mzEnhance(scope) { mzPills(scope); mzQty(scope); mzQvGal(scope); }
   mzEnhance(document);
   if (window.MutationObserver) {
     var mzT;

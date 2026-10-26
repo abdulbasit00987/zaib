@@ -37,12 +37,29 @@ function mrzaib_usp_block() {
 	$ship = get_page_by_path( 'shipping-policy' );
 	$ship = $ship ? get_permalink( $ship ) : '#';
 	echo '<div class="mz-usp">';
-	echo '<ul class="mz-usp-list">';
-	echo '<li>' . mrzaib_icon( 'return' ) . esc_html__( '15 Days Easy Returns', 'mrzaib' ) . '</li>';
-	echo '<li>' . mrzaib_icon( 'truck' ) . esc_html( mrzaib_ship_short() ) . '</li>';
-	echo '<li>' . mrzaib_icon( 'star' ) . esc_html__( 'Long Lasting Premium Fragrance', 'mrzaib' ) . '</li>';
-	echo '<li>' . mrzaib_icon( 'shield' ) . esc_html__( 'Cash on Delivery All Over Pakistan', 'mrzaib' ) . '</li>';
-	echo '</ul>';
+	global $product;
+	$pid   = $product ? $product->get_id() : get_the_ID();
+	$lines = metadata_exists( 'post', $pid, '_mrzaib_usps' ) ? preg_split( '/\r\n|\r|\n/', (string) get_post_meta( $pid, '_mrzaib_usps', true ) ) : mrzaib_default_usps();
+	$lines = array_filter( array_map( 'trim', $lines ), 'strlen' );
+	$items = array();
+	foreach ( $lines as $line ) {
+		if ( '{shipping}' === strtolower( $line ) ) {
+			$icon = 'truck';
+			$line = mrzaib_ship_short();
+		} elseif ( preg_match( '/return|exchange|refund/i', $line ) ) {
+			$icon = 'return';
+		} elseif ( preg_match( '/deliver|shipping|courier/i', $line ) ) {
+			$icon = 'truck';
+		} elseif ( preg_match( '/cash|cod|pay|secure|safe|original|genuine/i', $line ) ) {
+			$icon = 'shield';
+		} else {
+			$icon = 'star';
+		}
+		$items[] = '<li>' . mrzaib_icon( $icon ) . esc_html( str_ireplace( '{shipping}', mrzaib_ship_short(), $line ) ) . '</li>';
+	}
+	if ( $items ) {
+		echo '<ul class="mz-usp-list">' . implode( '', $items ) . '</ul>'; // phpcs:ignore
+	}
 	echo '<p class="mz-tax-note">' . esc_html__( 'Tax included.', 'mrzaib' ) . ' <a href="' . esc_url( $ship ) . '">' . esc_html__( 'Shipping', 'mrzaib' ) . '</a> ' . esc_html__( 'calculated at checkout.', 'mrzaib' ) . '</p>';
 	echo '</div>';
 }
@@ -74,7 +91,6 @@ add_action( 'init', function () {
 	add_action( 'woocommerce_single_product_summary', 'woocommerce_template_single_price', 7 );
 	add_action( 'woocommerce_single_product_summary', 'woocommerce_template_single_rating', 8 );
 	add_action( 'woocommerce_single_product_summary', 'mrzaib_subtitle_line', 9 );
-	add_action( 'woocommerce_single_product_summary', 'mrzaib_trust_badges', 35 );
 
 	/* Tabs -> accordions */
 	remove_action( 'woocommerce_after_single_product_summary', 'woocommerce_output_product_data_tabs', 10 );
@@ -140,33 +156,63 @@ add_action( 'wp_enqueue_scripts', function () {
 	}
 }, 95 );
 
-/** Quick View gallery images (featured + gallery), turned into a slider by main.js. */
+/**
+ * Theme gallery (product page + Quick View): main image slider with a vertical thumbnail strip on the left
+ * (horizontal under the image on phones). Pure theme code, no gallery plugin needed.
+ */
+function mrzaib_gallery_html( $product, $extra_class = '' ) {
+	if ( ! $product ) {
+		return '';
+	}
+	$ids = array_values( array_unique( array_filter( array_merge( array( $product->get_image_id() ), $product->get_gallery_image_ids() ) ) ) );
+	$title = $product->get_name();
+	if ( ! $ids ) {
+		return '<div class="mzgal is-single ' . esc_attr( $extra_class ) . '"><div class="mzgal-main"><div class="mzgal-track"><div class="mzgal-slide">' . wc_placeholder_img( 'woocommerce_single' ) . '</div></div></div></div>';
+	}
+	$chev = function ( $d ) {
+		return '<button type="button" class="mzgal-arr mzgal-' . $d . '" aria-label="' . ( 'up' === $d ? esc_attr__( 'Previous', 'mrzaib' ) : esc_attr__( 'Next', 'mrzaib' ) ) . '"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><path d="' . ( 'up' === $d ? 'M6 15l6-6 6 6' : 'M6 9l6 6 6-6' ) . '"/></svg></button>';
+	};
+	$slides = '';
+	$thumbs = '';
+	foreach ( $ids as $n => $id ) {
+		$alt     = get_post_meta( $id, '_wp_attachment_image_alt', true );
+		$alt     = $alt ? $alt : $title;
+		$slides .= '<div class="mzgal-slide">' . wp_get_attachment_image( $id, 'woocommerce_single', false, array( 'alt' => $alt, 'loading' => $n ? 'lazy' : 'eager', 'class' => 'mzgal-img' ) ) . '</div>';
+		$thumbs .= '<button type="button" class="mzgal-t' . ( $n ? '' : ' is-active' ) . '" aria-label="' . esc_attr( sprintf( __( 'Image %d', 'mrzaib' ), $n + 1 ) ) . '">' . wp_get_attachment_image( $id, 'woocommerce_gallery_thumbnail', false, array( 'alt' => '', 'loading' => 'lazy' ) ) . '</button>';
+	}
+	$multi = count( $ids ) > 1;
+	$html  = '<div class="mzgal ' . ( $multi ? '' : 'is-single ' ) . esc_attr( $extra_class ) . '">';
+	if ( $multi ) {
+		$html .= '<div class="mzgal-thumbs">' . $chev( 'up' ) . '<div class="mzgal-tlist">' . $thumbs . '</div>' . $chev( 'down' ) . '</div>';
+	}
+	$html .= '<div class="mzgal-main"><div class="mzgal-track">' . $slides . '</div></div></div>';
+	return $html;
+}
+
+/* Product page: our gallery replaces the WooCommerce / plugin gallery. */
+add_filter( 'wpgs_default_gallery_hook', '__return_false' );
+add_action( 'wp', function () {
+	remove_action( 'woocommerce_before_single_product_summary', 'woocommerce_show_product_images', 20 );
+	add_action( 'woocommerce_before_single_product_summary', 'mrzaib_pdp_gallery', 20 );
+}, 99 );
+function mrzaib_pdp_gallery() {
+	global $product;
+	echo '<div class="mz-pdp-gallery">' . mrzaib_gallery_html( $product, 'mzgal-pdp' ) . '</div>'; // phpcs:ignore
+}
+
+/* Missing gallery-plugin option keys caused PHP warnings ("Undefined array key lightbox_img_count / thumbnail_image_size"). */
+add_filter( 'option_wpgs_form', function ( $o ) {
+	$o = is_array( $o ) ? $o : array();
+	return $o + array( 'lightbox_img_count' => '0', 'thumbnail_image_size' => 'woocommerce_gallery_thumbnail' );
+} );
+
+/** Quick View: same gallery, placed into the popup's image column by main.js. */
 function mrzaib_qv_gallery_data() {
 	global $product;
 	if ( ! $product ) {
 		return;
 	}
-	// Preferred: Product Gallery Slider plugin markup (main slider + thumbnail strip), initialised by main.js.
-	if ( defined( 'WPGS_INC' ) && file_exists( WPGS_INC . 'product-image.php' ) && $product->get_gallery_image_ids() ) {
-		ob_start();
-		include WPGS_INC . 'product-image.php';
-		$html = ob_get_clean();
-		if ( $html ) {
-			echo '<template class="mz-qv-wpgs">' . $html . '</template>'; // phpcs:ignore
-			return;
-		}
-	}
-	$ids  = array_filter( array_merge( array( $product->get_image_id() ), $product->get_gallery_image_ids() ) );
-	$imgs = array();
-	foreach ( array_unique( $ids ) as $id ) {
-		$src = wp_get_attachment_image_url( $id, 'woocommerce_single' );
-		if ( $src ) {
-			$imgs[] = array( 'src' => $src, 'alt' => (string) get_post_meta( $id, '_wp_attachment_image_alt', true ) );
-		}
-	}
-	if ( count( $imgs ) > 1 ) {
-		echo '<script type="application/json" class="mz-qv-gallery">' . wp_json_encode( $imgs ) . '</script>'; // phpcs:ignore
-	}
+	echo '<template class="mz-qv-gal">' . mrzaib_gallery_html( $product, 'mzgal-qv' ) . '</template>'; // phpcs:ignore
 }
 
 function mrzaib_quickview_details() {

@@ -1429,3 +1429,35 @@ html body .mfp-wqv .mfp-close::before,html body .mfp-wqv .mfp-close::after{width
 .footer-bottom .container{text-align:center}
 @media (max-width:989px){.footer-grid{grid-template-columns:repeat(2,1fr)}}
 @media (max-width:749px){.footer-grid{grid-template-columns:1fr}}
+/* ===== Theme gallery (product page + Quick View, same design) ===== */
+.mz-pdp-gallery{grid-column:1;min-width:0;position:relative}
+.mzgal{display:flex;gap:14px;align-items:flex-start;width:100%;--th:74px}
+.mzgal-main{flex:1;min-width:0;overflow:hidden;border:1px solid #e8e8e8;background:#fff;touch-action:pan-y}
+.mzgal-track{display:flex;transition:transform .4s ease}
+.mzgal-slide{flex:0 0 100%;min-width:100%}
+.mzgal-slide img{width:100%!important;height:auto!important;aspect-ratio:1/1;object-fit:cover;display:block;max-width:none!important}
+.mzgal-thumbs{flex:0 0 var(--th);width:var(--th);display:flex;flex-direction:column;align-items:center;gap:8px;position:relative;padding:32px 0}
+.mzgal-tlist{display:flex;flex-direction:column;gap:10px;overflow:hidden;max-height:calc(var(--th)*4 + 30px);width:100%;scrollbar-width:none}
+.mzgal-tlist::-webkit-scrollbar{display:none}
+.mzgal-t{flex:0 0 auto;width:var(--th);height:var(--th);padding:0;border:1px solid transparent;background:#fff;cursor:pointer;line-height:0}
+.mzgal-t img{width:100%!important;height:100%!important;object-fit:cover;display:block}
+.mzgal-t.is-active{border-color:#111}
+.mzgal-arr{position:absolute;left:50%;transform:translateX(-50%);width:26px;height:26px;border-radius:50%;border:0;background:var(--theme,#deba68);color:#111;padding:0;display:flex;align-items:center;justify-content:center;cursor:pointer;z-index:2;box-shadow:0 2px 6px rgba(0,0,0,.15);transition:background .2s,opacity .2s}
+.mzgal-arr:hover{background:#c9a352}
+.mzgal-arr svg{width:14px;height:14px;stroke:#111;display:block}
+.mzgal-up{top:0}.mzgal-down{bottom:0}
+.mzgal-arr.is-off{opacity:0;pointer-events:none}
+.mzgal-qv{--th:64px;gap:12px}
+#wqv-quick-view-content .wqv-product-images.mz-qv-gal-on{display:block}
+#wqv-quick-view-content .mz-qv-gal-on .mzgal-slide img{border-radius:0!important}
+@media (min-width:768px) and (max-width:1100px){.mzgal{--th:58px;gap:10px}}
+@media (max-width:767px){
+  .mzgal,.mzgal-qv{flex-direction:column-reverse;gap:10px;--th:62px}
+  .mzgal-main{width:100%}
+  .mzgal-thumbs{width:100%;flex:none;flex-direction:row;padding:0 30px}
+  .mzgal-tlist{flex-direction:row;max-height:none;gap:8px}
+  .mzgal-up,.mzgal-down{top:50%;bottom:auto;transform:translateY(-50%) rotate(-90deg);width:24px;height:24px}
+  .mzgal-up{left:0}.mzgal-down{left:auto;right:0}
+}
+/* old plugin gallery + trust badges no longer used */
+.mz-badges{display:none!important}

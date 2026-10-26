@@ -223,6 +223,20 @@ function mrzaib_subtitle_field() {
 			'description' => __( 'Short line shown under the product title. Leave empty to hide it.', 'mrzaib' ),
 		)
 	);
+	global $post;
+	$pid  = $post ? $post->ID : 0;
+	$usps = ( $pid && metadata_exists( 'post', $pid, '_mrzaib_usps' ) ) ? get_post_meta( $pid, '_mrzaib_usps', true ) : implode( "\n", mrzaib_default_usps() );
+	woocommerce_wp_textarea_input(
+		array(
+			'id'          => '_mrzaib_usps',
+			'label'       => __( 'Points under quantity', 'mrzaib' ),
+			'value'       => $usps,
+			'rows'        => 5,
+			'style'       => 'height:110px',
+			'desc_tip'    => true,
+			'description' => __( 'One point per line, shown with an icon under the quantity counter. {shipping} = automatic free-delivery text from WooCommerce shipping. Empty = no points.', 'mrzaib' ),
+		)
+	);
 	echo '</div>';
 }
 add_action( 'woocommerce_admin_process_product_object', 'mrzaib_subtitle_save' );
@@ -230,4 +244,12 @@ function mrzaib_subtitle_save( $product ) {
 	if ( isset( $_POST['_mrzaib_subtitle'] ) ) { // phpcs:ignore WordPress.Security.NonceVerification
 		$product->update_meta_data( '_mrzaib_subtitle', sanitize_text_field( wp_unslash( $_POST['_mrzaib_subtitle'] ) ) ); // phpcs:ignore
 	}
+	if ( isset( $_POST['_mrzaib_usps'] ) ) { // phpcs:ignore WordPress.Security.NonceVerification
+		$product->update_meta_data( '_mrzaib_usps', sanitize_textarea_field( wp_unslash( $_POST['_mrzaib_usps'] ) ) ); // phpcs:ignore
+	}
+}
+
+/** Default points under the quantity counter. */
+function mrzaib_default_usps() {
+	return array( '15 Days Easy Returns', '{shipping}', 'Long Lasting Premium Fragrance', 'Cash on Delivery All Over Pakistan' );
 }
