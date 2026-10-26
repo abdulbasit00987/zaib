@@ -272,6 +272,19 @@
     });
   }
   $('.mzgal-pdp').each(function () { mzGal(this); });
+  /* Add to cart (product page + Quick View): button text -> loader while adding */
+  $(document).on('submit', 'form.cart', function () {
+    var $b = $(this).find('.single_add_to_cart_button');
+    if ($b.hasClass('disabled')) return;
+    $b.addClass('is-loading');
+    setTimeout(function () { $b.removeClass('is-loading'); }, 15000);
+  });
+  $(document).on('click', '.single_add_to_cart_button', function () {
+    var $b = $(this); if ($b.hasClass('disabled') || $b.is(':disabled')) return;
+    setTimeout(function () { if (!$b.closest('form').length || $b.closest('.sp-wqv-content').length) $b.addClass('is-loading'); }, 0);
+  });
+  $(document.body).on('added_to_cart ajax_request_not_sent.adding_to_cart', function () { $('.single_add_to_cart_button.is-loading').removeClass('is-loading'); });
+  window.addEventListener('pageshow', function () { $('.single_add_to_cart_button.is-loading').removeClass('is-loading'); });
   function mzEnhance(scope) { mzPills(scope); mzQty(scope); mzQvGal(scope); }
   mzEnhance(document);
   if (window.MutationObserver) {

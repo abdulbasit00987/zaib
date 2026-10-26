@@ -422,7 +422,7 @@ function mrzaib_run_import() {
 		'faqs'              => array( 'FAQs', '', 'page-templates/faqs.php' ),
 		'track-order'       => array( 'Track Your Order', '<!-- wp:shortcode -->[woocommerce_order_tracking]<!-- /wp:shortcode -->', '' ),
 		'returns'           => array( 'Return Form', '', 'page-templates/returns.php' ),
-		'shipping-policy'   => array( 'Shipping Policy', mrzaib_page_generic( 'Shipping Policy', 'We deliver all over Pakistan in 2–5 working days. [mrzaib_shipping] Cash on Delivery available on all orders.' ), '' ),
+		'shipping-policy'   => array( 'Shipping Policy', mrzaib_page_generic( 'Shipping Policy', '[mrzaib_delivery_time] [mrzaib_shipping] Cash on Delivery available on all orders.' ), '' ),
 		'privacy-policy-2'  => array( 'Privacy Policy', mrzaib_page_generic( 'Privacy Policy', 'Your privacy matters to us. We only use your details to process orders and never sell your data. (Replace with your full policy.)' ), '' ),
 		'terms-of-service'  => array( 'Terms of Service', mrzaib_page_generic( 'Terms of Service', 'By using this website you agree to our terms. (Replace with your full terms.)' ), '' ),
 		'refund-policy'     => array( 'Return & Refund Policy', mrzaib_page_generic( 'Return & Refund Policy', 'Not happy with a fragrance? Return it within 15 days of delivery for an exchange or refund. Product must be at least 80% full with original packaging.' ), '' ),

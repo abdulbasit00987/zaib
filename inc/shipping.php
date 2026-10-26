@@ -218,3 +218,35 @@ add_action( 'admin_init', function () {
 add_filter( 'default_checkout_billing_country', function ( $c ) {
 	return $c ? $c : 'PK';
 } );
+
+/* ---------- Delivery time (WooCommerce > Settings > Shipping > Shipping settings) ---------- */
+function mrzaib_delivery_times() {
+	$k = trim( (string) get_option( 'mrzaib_dtime_karachi', '' ) );
+	$r = trim( (string) get_option( 'mrzaib_dtime_rest', '' ) );
+	return array( $k ? $k : '2 to 5 working days', $r ? $r : '2 to 5 working days' );
+}
+function mrzaib_delivery_text() {
+	list( $k, $r ) = mrzaib_delivery_times();
+	if ( strtolower( $k ) === strtolower( $r ) ) {
+		/* translators: %s delivery time */
+		return sprintf( __( 'We deliver all over Pakistan in %s.', 'mrzaib' ), $k );
+	}
+	/* translators: 1: Karachi time 2: rest of Pakistan time */
+	return sprintf( __( 'Karachi: delivery in %1$s. Rest of Pakistan: delivery in %2$s.', 'mrzaib' ), $k, $r );
+}
+add_shortcode( 'mrzaib_delivery_time', function () {
+	return esc_html( mrzaib_delivery_text() );
+} );
+add_filter( 'woocommerce_shipping_settings', function ( $settings ) {
+	$new = array(
+		array( 'title' => __( 'MR ZAIB delivery time', 'mrzaib' ), 'type' => 'title', 'id' => 'mrzaib_dtime', 'desc' => __( 'Shown on product pages (Shipping Information), FAQ and Shipping Policy.', 'mrzaib' ) ),
+		array( 'title' => __( 'Karachi delivery time', 'mrzaib' ), 'id' => 'mrzaib_dtime_karachi', 'type' => 'text', 'default' => '2 to 5 working days', 'placeholder' => '1 to 2 working days' ),
+		array( 'title' => __( 'Rest of Pakistan delivery time', 'mrzaib' ), 'id' => 'mrzaib_dtime_rest', 'type' => 'text', 'default' => '2 to 5 working days', 'placeholder' => '3 to 5 working days' ),
+		array( 'type' => 'sectionend', 'id' => 'mrzaib_dtime' ),
+	);
+	return array_merge( $settings, $new );
+} );
+/* Old static sentence in the Shipping Policy page -> live delivery time. */
+add_filter( 'the_content', function ( $c ) {
+	return str_replace( array( 'We deliver all over Pakistan in 2–5 working days.', 'We deliver all over Pakistan in 2&#8211;5 working days.' ), esc_html( mrzaib_delivery_text() ), $c );
+}, 9 );

@@ -44,18 +44,20 @@ function mrzaib_usp_block() {
 	$items = array();
 	foreach ( $lines as $line ) {
 		if ( '{shipping}' === strtolower( $line ) ) {
-			$icon = 'truck';
-			$line = mrzaib_ship_short();
+			$line = mrzaib_default_usps()[1]; // old shipping point -> replaced by the new default point.
+			$icon = 'award';
+		} elseif ( preg_match( '/original|authentic|genuine|quality/i', $line ) ) {
+			$icon = 'award';
 		} elseif ( preg_match( '/return|exchange|refund/i', $line ) ) {
 			$icon = 'return';
 		} elseif ( preg_match( '/deliver|shipping|courier/i', $line ) ) {
 			$icon = 'truck';
-		} elseif ( preg_match( '/cash|cod|pay|secure|safe|original|genuine/i', $line ) ) {
+		} elseif ( preg_match( '/cash|cod|pay|secure|safe/i', $line ) ) {
 			$icon = 'shield';
 		} else {
 			$icon = 'star';
 		}
-		$items[] = '<li>' . mrzaib_icon( $icon ) . esc_html( str_ireplace( '{shipping}', mrzaib_ship_short(), $line ) ) . '</li>';
+		$items[] = '<li>' . mrzaib_icon( $icon ) . esc_html( $line ) . '</li>';
 	}
 	if ( $items ) {
 		echo '<ul class="mz-usp-list">' . implode( '', $items ) . '</ul>'; // phpcs:ignore
@@ -105,7 +107,7 @@ function mrzaib_product_accordions() {
 		'title'    => __( 'Shipping Information', 'mrzaib' ),
 		'priority' => 40,
 		'callback' => function () {
-			echo '<p>' . esc_html__( 'We deliver all over Pakistan in 2 to 5 working days.', 'mrzaib' ) . ' ' . esc_html( mrzaib_ship_long() ) . ' ' . esc_html__( 'Cash on Delivery is available on every order.', 'mrzaib' ) . '</p>';
+			echo '<p>' . esc_html( mrzaib_delivery_text() ) . ' ' . esc_html( mrzaib_ship_long() ) . ' ' . esc_html__( 'Cash on Delivery is available on every order.', 'mrzaib' ) . '</p>';
 		},
 	);
 	uasort( $tabs, function ( $a, $b ) { return ( $a['priority'] ?? 50 ) <=> ( $b['priority'] ?? 50 ); } );
@@ -185,7 +187,8 @@ function mrzaib_gallery_html( $product, $extra_class = '' ) {
 	if ( $multi ) {
 		$html .= '<div class="mzgal-thumbs">' . $chev( 'up' ) . '<div class="mzgal-tlist">' . $thumbs . '</div>' . $chev( 'down' ) . '</div>';
 	}
-	$html .= '<div class="mzgal-main"><div class="mzgal-track">' . $slides . '</div></div></div>';
+	$badge = ( 'mzgal-pdp' === $extra_class && $product->is_on_sale() ) ? '<span class="badge badge-sale mzgal-sale">' . esc_html__( 'Sale', 'mrzaib' ) . '</span>' : '';
+	$html .= '<div class="mzgal-main">' . $badge . '<div class="mzgal-track">' . $slides . '</div></div></div>';
 	return $html;
 }
 
@@ -193,6 +196,7 @@ function mrzaib_gallery_html( $product, $extra_class = '' ) {
 add_filter( 'wpgs_default_gallery_hook', '__return_false' );
 add_action( 'wp', function () {
 	remove_action( 'woocommerce_before_single_product_summary', 'woocommerce_show_product_images', 20 );
+	remove_action( 'woocommerce_before_single_product_summary', 'woocommerce_show_product_sale_flash', 10 );
 	add_action( 'woocommerce_before_single_product_summary', 'mrzaib_pdp_gallery', 20 );
 }, 99 );
 function mrzaib_pdp_gallery() {

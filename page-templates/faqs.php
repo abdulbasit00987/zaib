@@ -7,7 +7,7 @@
 get_header();
 $faqs = array(
 	'Orders & Delivery' => array(
-		array( 'How long does delivery take?', 'Orders are delivered in 2 to 5 working days all over Pakistan.' ),
+		array( 'How long does delivery take?', function_exists( 'mrzaib_delivery_text' ) ? mrzaib_delivery_text() : 'Orders are delivered in 2 to 5 working days all over Pakistan.' ),
 		array( 'Do you offer Cash on Delivery?', 'Yes, Cash on Delivery is available on all orders across Pakistan.' ),
 		array( 'Is shipping free?', ( function_exists( 'mrzaib_ship_long' ) && mrzaib_ship_long() ? mrzaib_ship_long() : 'Free delivery applies on larger orders; a small delivery charge applies below that.' ) ),
 		array( 'How can I track my order?', 'Use the Track Your Order page with your order number and email.' ),

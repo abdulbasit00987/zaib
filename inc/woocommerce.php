@@ -37,7 +37,7 @@ add_filter( 'woocommerce_product_tabs', function ( $tabs ) {
 		return $tabs;
 	}
 	$notes = get_post_meta( $product->get_id(), '_mrzaib_notes', true );
-	if ( $notes ) {
+	if ( $notes && false ) { // Fragrance Notes accordion removed (user request).
 		$tabs['mrzaib_notes'] = array(
 			'title'    => __( 'Fragrance Notes', 'mrzaib' ),
 			'priority' => 15,
@@ -234,7 +234,7 @@ function mrzaib_subtitle_field() {
 			'rows'        => 5,
 			'style'       => 'height:110px',
 			'desc_tip'    => true,
-			'description' => __( 'One point per line, shown with an icon under the quantity counter. {shipping} = automatic free-delivery text from WooCommerce shipping. Empty = no points.', 'mrzaib' ),
+			'description' => __( 'One point per line, shown with an icon under the quantity counter. Empty = no points.', 'mrzaib' ),
 		)
 	);
 	echo '</div>';
@@ -251,5 +251,18 @@ function mrzaib_subtitle_save( $product ) {
 
 /** Default points under the quantity counter. */
 function mrzaib_default_usps() {
-	return array( '15 Days Easy Returns', '{shipping}', 'Long Lasting Premium Fragrance', 'Cash on Delivery All Over Pakistan' );
+	return array( '15 Days Easy Returns', '100% Original & Authentic Fragrance', 'Long Lasting Premium Fragrance', 'Cash on Delivery All Over Pakistan' );
 }
+
+/* One-time: replace the old '{shipping}' point saved in products with the new default point. */
+add_action( 'admin_init', function () {
+	if ( get_option( 'mrzaib_usps_v' ) >= 1 ) {
+		return;
+	}
+	global $wpdb;
+	$rows = $wpdb->get_results( "SELECT post_id, meta_value FROM {$wpdb->postmeta} WHERE meta_key = '_mrzaib_usps' AND meta_value LIKE '%{shipping}%'" ); // phpcs:ignore
+	foreach ( $rows as $r ) {
+		update_post_meta( $r->post_id, '_mrzaib_usps', str_ireplace( '{shipping}', mrzaib_default_usps()[1], $r->meta_value ) );
+	}
+	update_option( 'mrzaib_usps_v', 1 );
+} );
