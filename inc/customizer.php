@@ -32,7 +32,7 @@ function mrzaib_customize( $wp_customize ) {
 
 	// Announcement.
 	$text( 'announce_1', __( 'Announcement 1', 'mrzaib' ), 'mrzaib_header', 'Luxury Perfumes | Leave Your Presence' );
-	$text( 'announce_2', __( 'Announcement 2', 'mrzaib' ), 'mrzaib_header', 'Free Shipping on orders over Rs. 3000' );
+	$text( 'announce_2', __( 'Announcement 2 (empty = free delivery text from WooCommerce shipping)', 'mrzaib' ), 'mrzaib_header', '' );
 	$text( 'announce_3', __( 'Announcement 3', 'mrzaib' ), 'mrzaib_header', 'Cash on Delivery all over Pakistan' );
 
 	// Hero slides: choose how many (1-10); each has desktop image, mobile image, link and alt text.
@@ -118,7 +118,6 @@ function mrzaib_customize( $wp_customize ) {
 	$text( 'tbadge_1', __( 'Trusted badge 1', 'mrzaib' ), 'mrzaib_home', 'Easy 15-day exchange' );
 	$text( 'tbadge_2', __( 'Trusted badge 2', 'mrzaib' ), 'mrzaib_home', 'Cash on Delivery' );
 	$text( 'tbadge_3', __( 'Trusted badge 3', 'mrzaib' ), 'mrzaib_home', 'Ships across Pakistan' );
-	$text( 'free_ship', __( 'Free shipping over (Rs.)', 'mrzaib' ), 'mrzaib_home', '3000' );
 
 	// Contact & social.
 	$text( 'whatsapp', __( 'WhatsApp number (923001234567)', 'mrzaib' ), 'mrzaib_contact', '' );

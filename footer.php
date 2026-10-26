@@ -4,7 +4,6 @@
  *
  * @package mrzaib
  */
-$free = mrzaib_opt( 'free_ship', '3000' );
 ?>
 
 <section class="newsletter">

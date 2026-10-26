@@ -255,7 +255,7 @@ $all_products = mrzaib_products_query( array( 'limit' => 12 ) );
 				<li><?php echo mrzaib_icon( 'shield' ); // phpcs:ignore ?><?php echo esc_html( mrzaib_opt( 'tbadge_2', 'Cash on Delivery' ) ); ?></li>
 				<li><?php echo mrzaib_icon( 'truck' ); // phpcs:ignore ?><?php echo esc_html( mrzaib_opt( 'tbadge_3', 'Ships across Pakistan' ) ); ?></li>
 			</ul>
-			<p class="trusted-note"><?php echo esc_html( sprintf( __( 'Spend over %s and get free delivery', 'mrzaib' ), mrzaib_opt( 'free_ship', '3000' ) ) ); ?></p>
+			<p class="trusted-note"><?php echo esc_html( function_exists( 'mrzaib_ship_short' ) ? mrzaib_ship_short() : '' ); ?></p>
 		</div>
 	</section>
 

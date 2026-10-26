@@ -153,6 +153,7 @@ require MRZAIB_DIR . '/inc/customizer.php';
 require MRZAIB_DIR . '/inc/menus.php';
 require MRZAIB_DIR . '/inc/mobile-nav.php';
 require MRZAIB_DIR . '/inc/woocommerce.php';
+require MRZAIB_DIR . '/inc/shipping.php';
 require MRZAIB_DIR . '/inc/product-ui.php';
 require MRZAIB_DIR . '/inc/header-cart.php';
 require MRZAIB_DIR . '/inc/reviews.php';

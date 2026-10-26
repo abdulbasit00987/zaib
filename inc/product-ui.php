@@ -34,13 +34,12 @@ function mrzaib_usp_block() {
 		}
 		return;
 	}
-	$free = mrzaib_opt( 'free_ship', '3000' );
 	$ship = get_page_by_path( 'shipping-policy' );
 	$ship = $ship ? get_permalink( $ship ) : '#';
 	echo '<div class="mz-usp">';
 	echo '<ul class="mz-usp-list">';
 	echo '<li>' . mrzaib_icon( 'return' ) . esc_html__( '15 Days Easy Returns', 'mrzaib' ) . '</li>';
-	echo '<li>' . mrzaib_icon( 'truck' ) . sprintf( esc_html__( 'Free Delivery on orders over Rs. %s', 'mrzaib' ), esc_html( $free ) ) . '</li>';
+	echo '<li>' . mrzaib_icon( 'truck' ) . esc_html( mrzaib_ship_short() ) . '</li>';
 	echo '<li>' . mrzaib_icon( 'star' ) . esc_html__( 'Long Lasting Premium Fragrance', 'mrzaib' ) . '</li>';
 	echo '<li>' . mrzaib_icon( 'shield' ) . esc_html__( 'Cash on Delivery All Over Pakistan', 'mrzaib' ) . '</li>';
 	echo '</ul>';
@@ -90,8 +89,7 @@ function mrzaib_product_accordions() {
 		'title'    => __( 'Shipping Information', 'mrzaib' ),
 		'priority' => 40,
 		'callback' => function () {
-			$free = mrzaib_opt( 'free_ship', '3000' );
-			echo '<p>' . sprintf( esc_html__( 'We deliver all over Pakistan in 2 to 5 working days. Free delivery on orders over Rs. %s, otherwise a flat delivery fee applies. Cash on Delivery is available on every order.', 'mrzaib' ), esc_html( $free ) ) . '</p>';
+			echo '<p>' . esc_html__( 'We deliver all over Pakistan in 2 to 5 working days.', 'mrzaib' ) . ' ' . esc_html( mrzaib_ship_long() ) . ' ' . esc_html__( 'Cash on Delivery is available on every order.', 'mrzaib' ) . '</p>';
 		},
 	);
 	uasort( $tabs, function ( $a, $b ) { return ( $a['priority'] ?? 50 ) <=> ( $b['priority'] ?? 50 ); } );
@@ -195,7 +193,9 @@ function mrzaib_freeship_html() {
 	if ( ! function_exists( 'WC' ) || ! WC()->cart ) {
 		return '<div class="mz-freeship"></div>';
 	}
-	$min   = (float) mrzaib_opt( 'free_ship', '3000' );
+	$rule  = mrzaib_ship_customer_rule();
+	$min   = $rule && $rule['free'] ? (float) $rule['free'] : 0;
+	$where = $rule ? ' ' . sprintf( __( 'in %s', 'mrzaib' ), $rule['name'] ) : '';
 	$total = (float) WC()->cart->get_displayed_subtotal();
 	$count = WC()->cart->get_cart_contents_count();
 	if ( $min <= 0 || ! $count ) {
@@ -205,8 +205,8 @@ function mrzaib_freeship_html() {
 	$pct  = min( 100, round( $total / $min * 100 ) );
 	$msg  = $left > 0
 		/* translators: %s amount left */
-		? sprintf( __( 'Add %s more for Free Delivery.', 'mrzaib' ), '<strong>' . wc_price( $left ) . '</strong>' )
-		: __( 'Congratulations! You have unlocked Free Delivery.', 'mrzaib' );
+		? sprintf( __( 'Add %1$s more for Free Delivery%2$s.', 'mrzaib' ), '<strong>' . wc_price( $left ) . '</strong>', esc_html( $where ) )
+		: sprintf( __( 'Congratulations! You have unlocked Free Delivery%s.', 'mrzaib' ), esc_html( $where ) );
 	return '<div class="mz-freeship' . ( $left > 0 ? '' : ' is-done' ) . '"><p>' . wp_kses_post( $msg ) . '</p><div class="mz-freeship-track"><span style="width:' . esc_attr( $pct ) . '%"></span></div></div>';
 }
 add_filter( 'woocommerce_add_to_cart_fragments', function ( $f ) {

@@ -277,7 +277,7 @@ function mrzaib_setup_page() {
 			<li>Appearance &rarr; Customize &rarr; MR ZAIB Options: announcement bar, hero slides, WhatsApp, phone, address, social links.</li>
 			<li>Products &rarr; edit each product: real name, price, photos. Field &ldquo;Subtitle&rdquo; is the small line under the name.</li>
 			<li>WooCommerce &rarr; Settings &rarr; Payments: Cash on Delivery is on. Add JazzCash / Easypaisa / card plugins if you want.</li>
-			<li>WooCommerce &rarr; Settings &rarr; Shipping: add a &ldquo;Pakistan&rdquo; zone with flat rate + free shipping over Rs. 3000.</li>
+			<li>WooCommerce &rarr; Settings &rarr; Shipping: zones &ldquo;Karachi&rdquo; and &ldquo;Rest of Pakistan&rdquo; are created automatically; edit their charges there and the site text updates.</li>
 		</ol>
 	</div>
 	<?php
@@ -403,18 +403,9 @@ function mrzaib_run_import() {
 	) );
 	$log[] = 'Currency set to PKR (Rs.), Cash on Delivery enabled, AJAX add-to-cart on.';
 
-	/* --- Shipping zone: Pakistan --- */
-	if ( class_exists( 'WC_Shipping_Zone' ) && ! get_option( 'mrzaib_zone_done' ) ) {
-		$zone = new WC_Shipping_Zone();
-		$zone->set_zone_name( 'Pakistan' );
-		$zone->add_location( 'PK', 'country' );
-		$zone->save();
-		$flat = $zone->add_shipping_method( 'flat_rate' );
-		update_option( 'woocommerce_flat_rate_' . $flat . '_settings', array( 'title' => 'Standard Delivery', 'cost' => '250', 'tax_status' => 'none' ) );
-		$free = $zone->add_shipping_method( 'free_shipping' );
-		update_option( 'woocommerce_free_shipping_' . $free . '_settings', array( 'title' => 'Free Shipping', 'requires' => 'min_amount', 'min_amount' => '3000' ) );
-		update_option( 'mrzaib_zone_done', 1 );
-		$log[] = 'Shipping zone "Pakistan" created: Rs. 250 flat, free over Rs. 3000.';
+	/* --- Shipping zones: Karachi + Rest of Pakistan --- */
+	if ( function_exists( 'mrzaib_setup_shipping_zones' ) && MRZAIB_SHIP_V !== get_option( 'mrzaib_ship_v' ) ) {
+		$log[] = mrzaib_setup_shipping_zones();
 	}
 
 	/* --- Remove old dummy data, then add the real MR ZAIB catalogue --- */
@@ -431,7 +422,7 @@ function mrzaib_run_import() {
 		'faqs'              => array( 'FAQs', '', 'page-templates/faqs.php' ),
 		'track-order'       => array( 'Track Your Order', '<!-- wp:shortcode -->[woocommerce_order_tracking]<!-- /wp:shortcode -->', '' ),
 		'returns'           => array( 'Return Form', '', 'page-templates/returns.php' ),
-		'shipping-policy'   => array( 'Shipping Policy', mrzaib_page_generic( 'Shipping Policy', 'We deliver all over Pakistan in 2–5 working days. Free shipping on orders over Rs. 3000. Cash on Delivery available on all orders.' ), '' ),
+		'shipping-policy'   => array( 'Shipping Policy', mrzaib_page_generic( 'Shipping Policy', 'We deliver all over Pakistan in 2–5 working days. [mrzaib_shipping] Cash on Delivery available on all orders.' ), '' ),
 		'privacy-policy-2'  => array( 'Privacy Policy', mrzaib_page_generic( 'Privacy Policy', 'Your privacy matters to us. We only use your details to process orders and never sell your data. (Replace with your full policy.)' ), '' ),
 		'terms-of-service'  => array( 'Terms of Service', mrzaib_page_generic( 'Terms of Service', 'By using this website you agree to our terms. (Replace with your full terms.)' ), '' ),
 		'refund-policy'     => array( 'Return & Refund Policy', mrzaib_page_generic( 'Return & Refund Policy', 'Not happy with a fragrance? Return it within 15 days of delivery for an exchange or refund. Product must be at least 80% full with original packaging.' ), '' ),

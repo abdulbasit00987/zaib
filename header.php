@@ -16,7 +16,7 @@
 <a class="skip-link" href="#MainContent"><?php esc_html_e( 'Skip to content', 'mrzaib' ); ?></a>
 
 <?php
-$announcements = array_filter( array( mrzaib_opt( 'announce_1', 'Luxury Perfumes | Leave Your Presence' ), mrzaib_opt( 'announce_2', 'Free Shipping on orders over Rs. 3000' ), mrzaib_opt( 'announce_3', 'Cash on Delivery all over Pakistan' ) ) );
+$announcements = array_filter( array( mrzaib_opt( 'announce_1', 'Luxury Perfumes | Leave Your Presence' ), mrzaib_announce_shipping(), mrzaib_opt( 'announce_3', 'Cash on Delivery all over Pakistan' ) ) );
 if ( $announcements ) :
 	?>
 <div class="announcement-bar" data-announcement>
