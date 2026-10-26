@@ -12,7 +12,7 @@
 
 defined( 'ABSPATH' ) || exit;
 
-define( 'MRZAIB_YOAST_V', '1' );
+define( 'MRZAIB_YOAST_V', '2' );
 
 add_action( 'admin_init', function () {
 	if ( defined( 'WPSEO_VERSION' ) && MRZAIB_YOAST_V !== get_option( 'mrzaib_yoast_v' ) && current_user_can( 'manage_options' ) ) {
@@ -77,6 +77,17 @@ function mrzaib_configure_yoast() {
 		return 'Yoast SEO is not active.';
 	}
 	$brand   = 'MR ZAIB';
+
+	/* ---- Let search engines index the site (fixes Yoast "Huge SEO Issue: You're blocking access to robots") ---- */
+	update_option( 'blog_public', '1' );
+	if ( class_exists( 'Yoast_Notification_Center' ) ) {
+		$nc = Yoast_Notification_Center::get();
+		if ( method_exists( $nc, 'remove_notification_by_id' ) ) {
+			$nc->remove_notification_by_id( 'wpseo-search-engines-discouraged' );
+		}
+	}
+	delete_option( 'wpseo_search_engines_discouraged_notice' );
+
 	$logo_id = mrzaib_seo_logo_id();
 	$logo    = $logo_id ? wp_get_attachment_url( $logo_id ) : '';
 
