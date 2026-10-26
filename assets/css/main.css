@@ -1465,5 +1465,5 @@ html body .mfp-wqv .mfp-close::before,html body .mfp-wqv .mfp-close::after{width
 .mzgal-main{position:relative}
 .mzgal-main .mzgal-sale{position:absolute;top:12px;left:12px;z-index:3}
 /* Add to cart loader */
-.single_add_to_cart_button.is-loading{color:transparent!important;position:relative;pointer-events:none}
+html body .woocommerce div.product form.cart .single_add_to_cart_button.is-loading,html body .sp-wqv-content form.cart .single_add_to_cart_button.is-loading,.single_add_to_cart_button.is-loading{color:transparent!important;-webkit-text-fill-color:transparent!important;text-shadow:none!important;position:relative;pointer-events:none}
 .single_add_to_cart_button.is-loading::after{content:"";position:absolute;left:50%;top:50%;width:20px;height:20px;margin:-10px 0 0 -10px;border:2px solid rgba(17,17,17,.25);border-top-color:#111;border-radius:50%;animation:mzspin .7s linear infinite}

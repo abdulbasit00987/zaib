@@ -109,3 +109,19 @@ function mrzaib_hcart_cache_ver() {
 }
 add_filter( 'woocommerce_cart_fragment_name', function ( $n ) { return $n . '_' . mrzaib_hcart_cache_ver(); } );
 add_filter( 'woocommerce_cart_hash_key', function ( $n ) { return $n . '_' . mrzaib_hcart_cache_ver(); } );
+
+/* Product page: no "has been added to your cart" notice above the gallery (the header cart opens instead). */
+add_action( 'woocommerce_before_single_product', function () {
+	if ( ! function_exists( 'wc_get_notices' ) || ! WC()->session ) {
+		return;
+	}
+	$all = wc_get_notices();
+	if ( empty( $all['success'] ) ) {
+		return;
+	}
+	$all['success'] = array_values( array_filter( $all['success'], function ( $n ) {
+		$msg = is_array( $n ) ? ( $n['notice'] ?? '' ) : (string) $n;
+		return false === strpos( $msg, 'added_to_cart' ) && false === stripos( wp_strip_all_tags( $msg ), 'added to your cart' );
+	} ) );
+	wc_set_notices( $all );
+}, 1 );
