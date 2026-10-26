@@ -125,7 +125,7 @@ function mrzaib_customize( $wp_customize ) {
 	$text( 'phone', __( 'Phone', 'mrzaib' ), 'mrzaib_contact', '' );
 	$text( 'email', __( 'Email', 'mrzaib' ), 'mrzaib_contact', '' );
 	$text( 'address', __( 'Address', 'mrzaib' ), 'mrzaib_contact', '' );
-	foreach ( array( 'facebook', 'instagram', 'tiktok', 'youtube', 'x' ) as $s ) {
+	foreach ( array( 'facebook', 'instagram', 'tiktok', 'youtube', 'x', 'snapchat', 'pinterest' ) as $s ) {
 		$wp_customize->add_setting( 'mrzaib_social_' . $s, array( 'default' => '#', 'sanitize_callback' => 'esc_url_raw' ) );
 		$wp_customize->add_control( 'mrzaib_social_' . $s, array( 'label' => ucfirst( $s ) . ' URL', 'section' => 'mrzaib_contact', 'type' => 'url' ) );
 	}

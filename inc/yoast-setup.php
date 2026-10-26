@@ -126,7 +126,7 @@ function mrzaib_configure_yoast() {
 	$s['og_default_image']    = $logo;
 	$s['og_default_image_id'] = $logo_id;
 	$social = array();
-	foreach ( array( 'facebook', 'instagram', 'tiktok', 'youtube', 'x' ) as $net ) {
+	foreach ( array( 'facebook', 'instagram', 'tiktok', 'youtube', 'x', 'snapchat', 'pinterest' ) as $net ) {
 		$u = get_theme_mod( 'mrzaib_social_' . $net, '' );
 		if ( $u && '#' !== $u ) {
 			if ( 'facebook' === $net ) {

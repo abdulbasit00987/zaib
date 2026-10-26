@@ -1418,3 +1418,14 @@ html body .mfp-wqv .mfp-close::before,html body .mfp-wqv .mfp-close::after{width
 @media (max-width:1440px){.vs-wrap .vs-prev{left:6px}.vs-wrap .vs-next{right:6px}}
 @media (max-width:989px){.vs-wrap.is-slider .vs-grid{grid-auto-columns:46%}}
 @media (max-width:749px){.vs-wrap.is-slider .vs-grid{grid-auto-columns:68%}}
+/* Footer v2 (About removed, Address top column, contact icons, centered pay + copyright) */
+.footer-grid{grid-template-columns:repeat(4,1fr)}
+.footer-address p{margin:0;line-height:1.6}
+.ft-contact{display:inline-flex;align-items:center;gap:10px}
+.ft-contact svg{width:17px;height:17px;flex:0 0 17px;color:var(--theme,#deba68)}
+.footer-mid{justify-content:center}
+.footer-pay{display:flex;align-items:center;justify-content:center;gap:12px;flex-wrap:wrap;text-align:center}
+.footer-pay strong{margin:0}
+.footer-bottom .container{text-align:center}
+@media (max-width:989px){.footer-grid{grid-template-columns:repeat(2,1fr)}}
+@media (max-width:749px){.footer-grid{grid-template-columns:1fr}}

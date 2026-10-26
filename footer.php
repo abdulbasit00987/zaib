@@ -20,10 +20,12 @@ $free = mrzaib_opt( 'free_ship', '3000' );
 
 <footer class="site-footer">
 	<div class="container footer-grid">
-		<div class="footer-col">
-			<h4><?php esc_html_e( 'About', 'mrzaib' ); ?></h4>
-			<?php mrzaib_footer_menu( 'footer-about', array( 'FAQs' => 'page:faqs', 'Contact Us' => 'page:contact-us', 'Return & Refund Policy' => 'page:refund-policy', 'Blogs' => 'page:blog' ) ); ?>
+		<?php if ( mrzaib_opt( 'address' ) ) : ?>
+		<div class="footer-col footer-address">
+			<h4><?php esc_html_e( 'Address', 'mrzaib' ); ?></h4>
+			<p><?php echo esc_html( mrzaib_opt( 'address' ) ); ?></p>
 		</div>
+		<?php endif; ?>
 		<div class="footer-col">
 			<h4><?php esc_html_e( 'Support', 'mrzaib' ); ?></h4>
 			<?php mrzaib_footer_menu( 'footer-support', array( 'My Account' => 'page:my-account', 'Return Form' => 'page:returns', 'Privacy Policy' => 'page:privacy-policy-2', 'Shipping Policy' => 'page:shipping-policy', 'Terms of Service' => 'page:terms-of-service', 'Track Your Order' => 'page:track-order' ) ); ?>
@@ -35,24 +37,19 @@ $free = mrzaib_opt( 'free_ship', '3000' );
 		<div class="footer-col">
 			<h4><?php esc_html_e( 'Get in touch', 'mrzaib' ); ?></h4>
 			<ul class="footer-links">
-				<?php if ( mrzaib_opt( 'phone' ) ) : ?><li><a href="tel:<?php echo esc_attr( mrzaib_opt( 'phone' ) ); ?>"><?php echo esc_html( mrzaib_opt( 'phone' ) ); ?></a></li><?php endif; ?>
-				<li><a href="<?php echo esc_url( mrzaib_page_link( 'contact-us' ) ); ?>"><?php esc_html_e( 'Send us a message', 'mrzaib' ); ?></a></li>
+				<?php if ( mrzaib_opt( 'phone' ) ) : ?><li><a class="ft-contact" href="tel:<?php echo esc_attr( preg_replace( '/[^\d+]/', '', mrzaib_opt( 'phone' ) ) ); ?>"><?php echo mrzaib_icon( 'phone' ); // phpcs:ignore ?><span><?php echo esc_html( mrzaib_opt( 'phone' ) ); ?></span></a></li><?php endif; ?>
+				<?php if ( mrzaib_opt( 'email' ) ) : ?><li><a class="ft-contact" href="mailto:<?php echo esc_attr( mrzaib_opt( 'email' ) ); ?>"><?php echo mrzaib_icon( 'mail' ); // phpcs:ignore ?><span><?php echo esc_html( mrzaib_opt( 'email' ) ); ?></span></a></li><?php endif; ?>
 			</ul>
-			<?php $has_social = false; foreach ( array( 'facebook', 'x', 'instagram', 'tiktok', 'youtube' ) as $s ) { if ( mrzaib_opt( 'social_' . $s ) && '#' !== mrzaib_opt( 'social_' . $s ) ) { $has_social = true; } } ?>
+			<?php $has_social = false; foreach ( array( 'facebook', 'x', 'instagram', 'tiktok', 'youtube', 'snapchat', 'pinterest' ) as $s ) { if ( mrzaib_opt( 'social_' . $s ) && '#' !== mrzaib_opt( 'social_' . $s ) ) { $has_social = true; } } ?>
 			<?php if ( $has_social ) : ?><p class="follow-title"><?php esc_html_e( 'Follow us', 'mrzaib' ); ?></p><?php endif; ?>
 			<div class="socials">
-				<?php foreach ( array( 'facebook', 'x', 'instagram', 'tiktok', 'youtube' ) as $s ) : if ( ! mrzaib_opt( 'social_' . $s ) || '#' === mrzaib_opt( 'social_' . $s ) ) { continue; } ?>
+				<?php foreach ( array( 'facebook', 'x', 'instagram', 'tiktok', 'youtube', 'snapchat', 'pinterest' ) as $s ) : if ( ! mrzaib_opt( 'social_' . $s ) || '#' === mrzaib_opt( 'social_' . $s ) ) { continue; } ?>
 					<a href="<?php echo esc_url( mrzaib_opt( 'social_' . $s ) ); ?>" aria-label="<?php echo esc_attr( ucfirst( $s ) ); ?>" target="_blank" rel="noopener"><?php echo mrzaib_icon( $s ); // phpcs:ignore ?></a>
 				<?php endforeach; ?>
 			</div>
 		</div>
 	</div>
 	<div class="container footer-mid">
-		<div class="footer-address">
-			<?php if ( mrzaib_opt( 'address' ) || mrzaib_opt( 'email' ) ) : ?><strong><?php esc_html_e( 'Address', 'mrzaib' ); ?></strong><?php endif; ?>
-			<?php if ( mrzaib_opt( 'address' ) ) : ?><p><?php echo esc_html( mrzaib_opt( 'address' ) ); ?></p><?php endif; ?>
-			<?php if ( mrzaib_opt( 'email' ) ) : ?><p><?php esc_html_e( 'Email:', 'mrzaib' ); ?> <?php echo esc_html( mrzaib_opt( 'email' ) ); ?></p><?php endif; ?>
-		</div>
 		<div class="footer-pay">
 			<strong><?php esc_html_e( 'We accept', 'mrzaib' ); ?></strong>
 			<div class="pay-icons"><span>Cash on Delivery</span></div>
