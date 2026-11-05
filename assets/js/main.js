@@ -556,7 +556,17 @@ jQuery(function ($) {
 /* Contact / Return forms: AJAX submit with button loader (no page reload). */
 (function () {
 	var form = document.getElementById('mz-form');
-	if (!form || !window.fetch || !window.FormData || !window.MRZAIB) return;
+	if (!form) return;
+	var initial = form.querySelector('.mz-form-msg .form-success');
+	if (initial) {
+		setTimeout(function () {
+			initial.style.transition = 'opacity .4s';
+			initial.style.opacity = '0';
+			setTimeout(function () { if (initial.parentNode) initial.parentNode.removeChild(initial); }, 400);
+		}, 10000);
+		if (window.history && history.replaceState) history.replaceState(null, '', location.pathname);
+	}
+	if (!window.fetch || !window.FormData || !window.MRZAIB) return;
 	form.addEventListener('submit', function (e) {
 		var btn = form.querySelector('button[name^="mrzaib_"]');
 		if (!btn) return;
@@ -580,6 +590,14 @@ jQuery(function ($) {
 					d.className = ok ? 'form-success' : 'form-error';
 					d.textContent = msg;
 					box.appendChild(d);
+					if (ok) {
+						clearTimeout(form._mzHide);
+						form._mzHide = setTimeout(function () {
+							d.style.transition = 'opacity .4s';
+							d.style.opacity = '0';
+							setTimeout(function () { if (d.parentNode) d.parentNode.removeChild(d); }, 400);
+						}, 10000);
+					}
 				}
 				if (ok) form.reset();
 			})
