@@ -599,6 +599,10 @@ function mrzaib_email_settings_page() {
 			) );
 			$ok = mrzaib_send_html_mail( $to, sprintf( '[%s] Test email', get_bloginfo( 'name' ) ), $html );
 			remove_action( 'wp_mail_failed', $cb );
+			$smtp_ok = mrzaib_wpms_active() && 'smtp' === \WPMailSMTP\Options::init()->get( 'mail', 'mailer' ) && \WPMailSMTP\Options::init()->get( 'smtp', 'host' );
+			if ( ! $ok && ! $smtp_ok ) {
+				$err .= ' — ' . __( 'SMTP is not set up yet. Your server (XAMPP/localhost or this host) cannot send email by itself. Fill section 2 (SMTP host, username, password), click Save settings, then send the test again.', 'mrzaib' );
+			}
 			$notices[] = $ok ? array( 'success', sprintf( __( 'Test email sent to %s. Check the inbox (and spam folder).', 'mrzaib' ), $to ) ) : array( 'error', __( 'Test email failed: ', 'mrzaib' ) . ( $err ? $err : __( 'unknown error', 'mrzaib' ) ) );
 		}
 	}
