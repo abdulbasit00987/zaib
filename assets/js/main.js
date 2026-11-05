@@ -505,3 +505,50 @@ jQuery(function ($) {
     if (!$(e.target).closest('form[data-predictive]').length) $('form[data-predictive]').not('.is-open').removeClass('is-focus');
   });
 });
+
+/* Shop page: view switcher, filter drawer, category toggles */
+(function () {
+	var shop = document.querySelector('.mzshop');
+	if (!shop) { return; }
+	var root = document.documentElement;
+	function setView(v) {
+		root.setAttribute('data-mzview', v);
+		try { localStorage.setItem('mzShopView', v); } catch (e) {}
+		document.querySelectorAll('.grid-view-btn').forEach(function (b) {
+			var on = b.getAttribute('data-view') === v;
+			b.classList.toggle('is-active', on);
+			b.setAttribute('aria-pressed', on ? 'true' : 'false');
+		});
+	}
+	var cur = root.getAttribute('data-mzview') || 'small';
+	setView(cur);
+	document.querySelectorAll('.grid-view-btn').forEach(function (b) {
+		b.addEventListener('click', function () { setView(b.getAttribute('data-view')); });
+	});
+	function open() { shop.classList.add('is-open'); document.body.style.overflow = 'hidden'; }
+	function close() { shop.classList.remove('is-open'); document.body.style.overflow = ''; }
+	document.querySelectorAll('[data-mzshop-open]').forEach(function (b) { b.addEventListener('click', open); });
+	shop.querySelectorAll('[data-mzshop-close]').forEach(function (b) { b.addEventListener('click', close); });
+	document.addEventListener('keydown', function (e) { if (e.key === 'Escape') { close(); } });
+	shop.querySelectorAll('.mzw-tog').forEach(function (t) {
+		t.addEventListener('click', function () { t.parentNode.classList.toggle('is-open'); });
+	});
+})();
+/* Shop price range */
+(function () {
+	document.querySelectorAll('.mzp-range').forEach(function (f) {
+		var lo = f.querySelector('.mzp-lo'), hi = f.querySelector('.mzp-hi'), fill = f.querySelector('.mzp-fill');
+		var sym = f.getAttribute('data-sym') || '';
+		var min = +lo.min, max = +lo.max;
+		function fmt(n) { return sym + ' ' + Number(n).toLocaleString('en-US'); }
+		function upd(e) {
+			if (+lo.value > +hi.value) { if (e && e.target === lo) { lo.value = hi.value; } else { hi.value = lo.value; } }
+			var a = (lo.value - min) / (max - min) * 100, b = (hi.value - min) / (max - min) * 100;
+			fill.style.left = a + '%'; fill.style.width = (b - a) + '%';
+			f.querySelector('.mzp-v-lo').textContent = fmt(lo.value);
+			f.querySelector('.mzp-v-hi').textContent = fmt(hi.value);
+			lo.style.zIndex = (+lo.value >= max - (max - min) * 0.05) ? 3 : 2;
+		}
+		lo.addEventListener('input', upd); hi.addEventListener('input', upd); upd();
+	});
+})();

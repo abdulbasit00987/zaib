@@ -146,6 +146,11 @@ function mrzaib_product_card( $product ) {
 				</div>
 			<?php endif; ?>
 			<div class="card-price"><?php echo $product->get_price_html(); // phpcs:ignore ?></div>
+			<?php if ( function_exists( 'mrzaib_is_shop_archive' ) && mrzaib_is_shop_archive() && in_the_loop() ) : ?>
+				<?php $mz_ex = wp_trim_words( wp_strip_all_tags( $product->get_short_description() ), 26 ); ?>
+				<?php if ( $mz_ex ) : ?><p class="card-excerpt"><?php echo esc_html( $mz_ex ); ?></p><?php endif; ?>
+				<a class="card-cta btn" href="<?php echo esc_url( $link ); ?>"><?php esc_html_e( 'View product', 'mrzaib' ); ?></a>
+			<?php endif; ?>
 		</div>
 	</div>
 	<?php
