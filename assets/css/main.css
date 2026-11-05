@@ -1699,3 +1699,7 @@ html[data-mzview="list"] .mzshop-main .product-card{align-items:center}
   .mzshop-right{gap:4px}.mzshop-sort{padding-right:4px}
   .grid-view-btn{padding:8px 4px}
 }
+/* forms */
+.form-success{background:#fbf6ea;border:1px solid var(--theme);color:#111;padding:14px 16px;border-radius:8px}
+.form-error{background:#fff4f2;border:1px solid #f0c4bc;color:#8a2a1c;padding:14px 16px;border-radius:8px}
+.mz-hp{position:absolute!important;left:-9999px;width:1px;height:1px;overflow:hidden}

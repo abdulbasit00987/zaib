@@ -156,6 +156,7 @@ require MRZAIB_DIR . '/inc/woocommerce.php';
 require MRZAIB_DIR . '/inc/shipping.php';
 require MRZAIB_DIR . '/inc/product-ui.php';
 require MRZAIB_DIR . '/inc/shop-ui.php';
+require MRZAIB_DIR . '/inc/forms.php';
 require MRZAIB_DIR . '/inc/header-cart.php';
 require MRZAIB_DIR . '/inc/reviews.php';
 require MRZAIB_DIR . '/inc/store-content.php';

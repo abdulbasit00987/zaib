@@ -170,6 +170,9 @@ function mrzaib_install_card_plugins() {
 	$out[] = mrzaib_install_plugin( 'woo-quickview', 'woo-quickview/woo-quick-view.php', 'Quick View for WooCommerce (Reno QuickView)' );
 	// Header cart is theme-native now; Mini Cart Drawer plugin no longer installed.
 	if ( false ) $out[] = mrzaib_install_plugin( 'woo-mini-cart-drawer', 'woo-mini-cart-drawer/woo-mini-cart-drawer.php', 'Mini Cart Drawer for WooCommerce' );
+	$out[] = mrzaib_install_plugin( 'wp-mail-smtp', 'wp-mail-smtp/wp_mail_smtp.php', 'WP Mail SMTP' );
+	update_option( 'wp_mail_smtp_activation_prevent_redirect', true );
+	delete_transient( 'wp_mail_smtp_activation_redirect' );
 	$out[] = mrzaib_install_plugin( 'wordpress-seo', 'wordpress-seo/wp-seo.php', 'Yoast SEO' );
 	$out[] = mrzaib_install_plugin( 'woo-product-gallery-slider', 'woo-product-gallery-slider/woo-product-gallery-slider.php', 'Product Gallery Slider, Additional Variation Images for WooCommerce' );
 	if ( function_exists( 'mrzaib_configure_gallery_plugin' ) ) {
