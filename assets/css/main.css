@@ -1703,3 +1703,7 @@ html[data-mzview="list"] .mzshop-main .product-card{align-items:center}
 .form-success{background:#fbf6ea;border:1px solid var(--theme);color:#111;padding:14px 16px;border-radius:8px}
 .form-error{background:#fff4f2;border:1px solid #f0c4bc;color:#8a2a1c;padding:14px 16px;border-radius:8px}
 .mz-hp{position:absolute!important;left:-9999px;width:1px;height:1px;overflow:hidden}
+.contact-form button[name^="mrzaib_"]{position:relative}
+.contact-form button.is-sending{color:transparent!important;pointer-events:none}
+.contact-form button.is-sending::after{content:"";position:absolute;top:50%;left:50%;width:18px;height:18px;margin:-9px 0 0 -9px;border:2px solid #111;border-right-color:transparent;border-radius:50%;animation:mzspin .7s linear infinite;box-sizing:border-box}
+.mz-form-msg:empty{display:none}

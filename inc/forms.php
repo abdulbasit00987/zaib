@@ -240,25 +240,18 @@ add_action( 'admin_head', function () {
 /* ------------------------------------------------------------------
  * Front-end handling (POST → save → emails → redirect)
  * ------------------------------------------------------------------ */
-add_action( 'template_redirect', function () {
-	if ( 'POST' !== ( isset( $_SERVER['REQUEST_METHOD'] ) ? $_SERVER['REQUEST_METHOD'] : '' ) ) { // phpcs:ignore
-		return;
-	}
-	$type = isset( $_POST['mrzaib_contact'] ) ? 'contact' : ( isset( $_POST['mrzaib_return'] ) ? 'return' : '' ); // phpcs:ignore
-	if ( ! $type ) {
-		return;
-	}
+/**
+ * Validate, store and email one submission. Returns 'ok', 'expired' or 'fields'.
+ */
+function mrzaib_forms_process( $type ) {
 	$nonce = isset( $_POST['_wpnonce'] ) ? sanitize_text_field( wp_unslash( $_POST['_wpnonce'] ) ) : '';
-	$page  = is_singular() ? get_permalink( get_queried_object_id() ) : '';
-	$back  = remove_query_arg( array( 'mz_sent', 'mz_err' ), $page ? $page : ( wp_get_raw_referer() ? wp_get_raw_referer() : home_url( '/' ) ) );
+	$nonce = isset( $_POST['_wpnonce'] ) ? sanitize_text_field( wp_unslash( $_POST['_wpnonce'] ) ) : '';
 	if ( ! wp_verify_nonce( $nonce, 'mrzaib_' . $type ) ) {
-		wp_safe_redirect( add_query_arg( 'mz_err', 'expired', $back ) . '#mz-form' );
-		exit;
+		return 'expired';
 	}
 	// Honeypot: bots fill the hidden field.
 	if ( ! empty( $_POST['mz_website'] ) ) { // phpcs:ignore
-		wp_safe_redirect( add_query_arg( 'mz_sent', $type, $back ) . '#mz-form' );
-		exit;
+		return 'ok';
 	}
 	$g = function ( $k, $textarea = false ) {
 		$v = isset( $_POST[ $k ] ) ? wp_unslash( $_POST[ $k ] ) : ''; // phpcs:ignore
@@ -291,8 +284,7 @@ add_action( 'template_redirect', function () {
 		$ok = $name && $phone && $fields['Order number'] && $fields['Product'] && $fields['Reason'] && is_email( $email );
 	}
 	if ( ! $ok ) {
-		wp_safe_redirect( add_query_arg( 'mz_err', 'fields', $back ) . '#mz-form' );
-		exit;
+		return 'fields';
 	}
 
 	$id = wp_insert_post( array(
@@ -308,21 +300,64 @@ add_action( 'template_redirect', function () {
 		update_post_meta( $id, '_mz_status', 'new' );
 	}
 	mrzaib_forms_send_emails( $type, $fields, $email, $id );
-	wp_safe_redirect( add_query_arg( 'mz_sent', $type, $back ) . '#mz-form' );
+	return 'ok';
+}
+
+function mrzaib_forms_post_type() {
+	return isset( $_POST['mrzaib_contact'] ) ? 'contact' : ( isset( $_POST['mrzaib_return'] ) ? 'return' : '' ); // phpcs:ignore
+}
+
+function mrzaib_form_messages( $type, $code ) {
+	if ( 'ok' === $code ) {
+		return 'return' === $type
+			? __( 'Return request received. Our team will contact you within 24 hours. A confirmation has been sent to your email.', 'mrzaib' )
+			: __( 'Thank you! Your message has been sent. We will get back to you soon.', 'mrzaib' );
+	}
+	return 'expired' === $code ? __( 'The form expired. Please refresh the page and try again.', 'mrzaib' ) : __( 'Please fill all required fields correctly.', 'mrzaib' );
+}
+
+/* AJAX submit (no page reload). */
+function mrzaib_forms_ajax() {
+	$type = mrzaib_forms_post_type();
+	if ( ! $type ) {
+		wp_send_json_error( array( 'message' => mrzaib_form_messages( 'contact', 'fields' ) ) );
+	}
+	$code = mrzaib_forms_process( $type );
+	if ( 'ok' === $code ) {
+		wp_send_json_success( array( 'message' => mrzaib_form_messages( $type, 'ok' ) ) );
+	}
+	wp_send_json_error( array( 'message' => mrzaib_form_messages( $type, $code ) ) );
+}
+add_action( 'wp_ajax_mrzaib_form', 'mrzaib_forms_ajax' );
+add_action( 'wp_ajax_nopriv_mrzaib_form', 'mrzaib_forms_ajax' );
+
+/* Fallback when JavaScript is off: normal POST → redirect. */
+add_action( 'template_redirect', function () {
+	if ( 'POST' !== ( isset( $_SERVER['REQUEST_METHOD'] ) ? $_SERVER['REQUEST_METHOD'] : '' ) ) { // phpcs:ignore
+		return;
+	}
+	$type = mrzaib_forms_post_type();
+	if ( ! $type ) {
+		return;
+	}
+	$page = is_singular() ? get_permalink( get_queried_object_id() ) : '';
+	$back = remove_query_arg( array( 'mz_sent', 'mz_err' ), $page ? $page : ( wp_get_raw_referer() ? wp_get_raw_referer() : home_url( '/' ) ) );
+	$code = mrzaib_forms_process( $type );
+	$back = 'ok' === $code ? add_query_arg( 'mz_sent', $type, $back ) : add_query_arg( 'mz_err', $code, $back );
+	wp_safe_redirect( $back . '#mz-form' );
 	exit;
 } );
 
+
 /** Front-end notice for templates. */
 function mrzaib_form_notice( $type ) {
+	echo '<div class="mz-form-msg" aria-live="polite">';
 	if ( isset( $_GET['mz_sent'] ) && $type === $_GET['mz_sent'] ) { // phpcs:ignore
-		$msg = 'return' === $type
-			? __( 'Return request received. Our team will contact you within 24 hours. A confirmation has been sent to your email.', 'mrzaib' )
-			: __( 'Thank you! Your message has been sent. We will get back to you soon.', 'mrzaib' );
-		echo '<div class="form-success" role="status">' . esc_html( $msg ) . '</div>';
+		echo '<div class="form-success">' . esc_html( mrzaib_form_messages( $type, 'ok' ) ) . '</div>';
 	} elseif ( isset( $_GET['mz_err'] ) ) { // phpcs:ignore
-		$msg = 'expired' === $_GET['mz_err'] ? __( 'The form expired. Please try again.', 'mrzaib' ) : __( 'Please fill all required fields correctly.', 'mrzaib' ); // phpcs:ignore
-		echo '<div class="form-error" role="alert">' . esc_html( $msg ) . '</div>';
+		echo '<div class="form-error">' . esc_html( mrzaib_form_messages( $type, sanitize_key( $_GET['mz_err'] ) ) ) . '</div>'; // phpcs:ignore
 	}
+	echo '</div>';
 	echo '<div class="mz-hp" aria-hidden="true"><input type="text" name="mz_website" tabindex="-1" autocomplete="off"></div>';
 }
 

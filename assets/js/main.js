@@ -552,3 +552,48 @@ jQuery(function ($) {
 		lo.addEventListener('input', upd); hi.addEventListener('input', upd); upd();
 	});
 })();
+
+/* Contact / Return forms: AJAX submit with button loader (no page reload). */
+(function () {
+	var form = document.getElementById('mz-form');
+	if (!form || !window.fetch || !window.FormData || !window.MRZAIB) return;
+	form.addEventListener('submit', function (e) {
+		var btn = form.querySelector('button[name^="mrzaib_"]');
+		if (!btn) return;
+		e.preventDefault();
+		if (btn.classList.contains('is-sending')) return;
+		var box = form.querySelector('.mz-form-msg');
+		var fd = new FormData(form);
+		fd.append(btn.name, '1');
+		fd.append('action', 'mrzaib_form');
+		btn.classList.add('is-sending');
+		btn.disabled = true;
+		btn.setAttribute('aria-busy', 'true');
+		if (box) box.innerHTML = '';
+		fetch(MRZAIB.ajax, { method: 'POST', body: fd, credentials: 'same-origin' })
+			.then(function (r) { return r.json(); })
+			.then(function (res) {
+				var ok = res && res.success;
+				var msg = (res && res.data && res.data.message) || 'Something went wrong. Please try again.';
+				if (box) {
+					var d = document.createElement('div');
+					d.className = ok ? 'form-success' : 'form-error';
+					d.textContent = msg;
+					box.appendChild(d);
+				}
+				if (ok) form.reset();
+			})
+			.catch(function () {
+				var h = document.createElement('input');
+				h.type = 'hidden'; h.name = btn.name; h.value = '1';
+				form.appendChild(h);
+				HTMLFormElement.prototype.submit.call(form);
+			})
+			.then(function () {
+				btn.classList.remove('is-sending');
+				btn.disabled = false;
+				btn.removeAttribute('aria-busy');
+				if (box && box.firstChild) box.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+			});
+	});
+})();
