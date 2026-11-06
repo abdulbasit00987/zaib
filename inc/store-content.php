@@ -65,36 +65,39 @@ function mrzaib_store_products() {
 		array(
 			'name'     => 'Arvon',
 			'slug'     => 'arvon-perfume',
-			'subtitle' => 'Unisex Perfume | 50ml',
+			'subtitle' => 'Long Lasting Unisex Perfume for Men & Women | 50ml',
 			'sku'      => 'MZ-ARVON-50',
 			'regular'  => '2800',
 			'sale'     => '2500',
 			'cats'     => array( 'unisex' ),
-			'images'   => array( 'arvon-1.jpg', 'mr-zaib-gift-box.jpg', 'arvon-top-notes.jpg', 'arvon-middle-notes.jpg', 'arvon-base-notes.jpg' ),
-			'alts'     => array( 'Arvon unisex perfume by MR ZAIB 50ml black bottle', 'MR ZAIB luxury perfume gift box', 'Arvon top notes pineapple apple plum cinnamon bitter orange', 'Arvon middle notes magnolia orchid jasmine moroccan rose iris', 'Arvon base notes cacao vanilla white musk amber sandalwood cedar' ),
+			'images'   => array( 'arvon-main.jpg', 'arvon-banner.jpg', 'arvon-notes-top.jpg', 'arvon-notes-middle.jpg', 'arvon-notes-base.jpg' ),
+			'alts'     => array( 'Arvon long lasting unisex perfume by MR ZAIB 50ml black bottle', 'MR ZAIB Arvon unisex perfume fragrance notes', 'Arvon top notes pineapple nutmeg cinnamon red apple plum pepper cassia bitter orange', 'Arvon middle notes magnolia orchid lily of the valley jasmine moroccan rose iris', 'Arvon base notes cacao vanilla white musk amber sandalwood cedar' ),
 			'notes'    => array(
 				'Top Notes'    => 'Pineapple, Nutmeg, Cinnamon, Red Apple, Plum, Pepper, Cassia, Bitter Orange',
 				'Middle Notes' => 'Magnolia, Orchid, Lily-of-the-Valley, Jasmine, Moroccan Rose, Iris',
 				'Base Notes'   => 'Cacao, Vanilla, White Musk, Amber, Sandalwood, Cedar',
 			),
-			'short'    => '<p><strong>Arvon</strong> by MR ZAIB is a rich unisex perfume. A juicy, spicy opening of <strong>pineapple, red apple, plum, cinnamon and bitter orange</strong> leads to a floral heart of <strong>magnolia, orchid, jasmine and Moroccan rose</strong>, then melts into a deep base of <strong>cacao, vanilla, white musk, amber, sandalwood and cedar</strong>.</p><ul><li>Top: Pineapple, Nutmeg, Cinnamon, Red Apple, Plum, Pepper, Cassia, Bitter Orange</li><li>Middle: Magnolia, Orchid, Lily-of-the-Valley, Jasmine, Moroccan Rose, Iris</li><li>Base: Cacao, Vanilla, White Musk, Amber, Sandalwood, Cedar</li><li>Size: 50ml</li></ul>',
-			'long'     => '<h2>Arvon Unisex Perfume by MR ZAIB</h2>'
-				. '<p>Arvon is a bold, luxurious unisex fragrance from MR ZAIB Luxury Perfumes, for men and women who want a scent that gets noticed. Fruity and spicy at first, floral and elegant in the heart, and deep, warm and gourmand in the dry-down.</p>'
-				. '<h3>How Arvon smells</h3>'
-				. '<p><strong>Top notes: Pineapple, Nutmeg, Cinnamon, Red Apple, Plum, Pepper, Cassia and Bitter Orange.</strong> A fresh blend of fruity, spicy and citrus notes that wakes up the senses, juicy pineapple and apple warmed by cinnamon, nutmeg and pepper.</p>'
-				. '<p><strong>Middle notes: Magnolia, Orchid, Lily-of-the-Valley, Jasmine, Moroccan Rose and Iris.</strong> A floral heart of elegance where every note blooms with sophistication.</p>'
-				. '<p><strong>Base notes: Cacao, Vanilla, White Musk, Amber, Sandalwood and Cedar.</strong> A deep, warm foundation that lingers long after the first impression, dark cacao and vanilla over smooth woods, amber and clean musk.</p>'
-				. '<h3>When to wear it</h3>'
-				. '<p>Arvon is a statement scent for evenings, parties, weddings and special occasions, and its warm cacao-vanilla base is especially beautiful in cooler weather. It works equally well on men and women.</p>'
-				. '<h3>Why choose MR ZAIB Arvon</h3>'
-				. '<ul><li>A rich fruity-spicy, floral and gourmand composition</li><li>Unisex: perfect for him, her or to share</li><li>Elegant 50ml bottle with a gold crown cap, ready to gift</li><li>Cash on Delivery all over Pakistan</li></ul>'
-				. '<p><strong>How to apply:</strong> spray 3 to 4 times on pulse points (neck, wrists, behind the ears) from about 15 cm. Apply on moisturised skin for the best performance.</p>',
-			'tags'     => array( 'Unisex Perfume', 'Long Lasting Perfume', 'Fruity Perfume', 'Gourmand Perfume', 'Perfume for Men and Women', 'MR ZAIB' ),
+			'short'    => '<p><strong>Arvon by MR ZAIB</strong> is a rich, long lasting unisex perfume for men and women. A juicy, spicy opening of <strong>pineapple, red apple, plum, cinnamon and bitter orange</strong> leads to a floral heart of <strong>magnolia, orchid, jasmine and Moroccan rose</strong>, then melts into a deep, warm base of <strong>cacao, vanilla, white musk, amber, sandalwood and cedar</strong>. A bold statement fragrance for evenings, parties and weddings.</p>'
+				. '<ul><li><strong>Top Notes:</strong> Pineapple, Nutmeg, Cinnamon, Red Apple, Plum, Pepper, Cassia, Bitter Orange</li><li><strong>Middle Notes:</strong> Magnolia, Orchid, Lily-of-the-Valley, Jasmine, Moroccan Rose, Iris</li><li><strong>Base Notes:</strong> Cacao, Vanilla, White Musk, Amber, Sandalwood, Cedar</li><li><strong>Size:</strong> 50ml</li><li><strong>For:</strong> Men &amp; Women (Unisex)</li></ul>',
+			'long'     => '<h2>Arvon: Long Lasting Unisex Perfume in Pakistan</h2>'
+				. '<p><strong>Arvon</strong> is a bold, luxurious unisex fragrance from <strong>MR ZAIB Luxury Perfumes</strong>, created for men and women who want a scent that gets noticed and remembered. Fruity and spicy at first, floral and elegant in the heart, and deep, warm and gourmand in the dry-down.</p>'
+				. '<h3>Fragrance Notes of Arvon</h3>'
+				. '<p><strong>Top Notes: Pineapple, Nutmeg, Cinnamon, Red Apple, Plum, Pepper, Cassia and Bitter Orange.</strong> A fresh blend of fruity, spicy and citrus notes that ignites the senses: juicy pineapple and apple warmed by cinnamon, nutmeg and pepper.</p>'
+				. '<p><strong>Middle Notes: Magnolia, Orchid, Lily-of-the-Valley, Jasmine, Moroccan Rose and Iris.</strong> A floral heart of elegance, where every note blooms with sophistication.</p>'
+				. '<p><strong>Base Notes: Cacao, Vanilla, White Musk, Amber, Sandalwood and Cedar.</strong> A deep, warm foundation that lingers long after the first impression: dark cacao and vanilla over smooth woods, glowing amber and clean musk.</p>'
+				. '<h3>Fragrance Profile</h3>'
+				. '<ul><li><strong>Family:</strong> Fruity Spicy, Floral, Gourmand Amber Woody</li><li><strong>Character:</strong> Rich, warm, sweet, seductive</li><li><strong>Best season:</strong> Winter, autumn and evenings all year</li><li><strong>Occasions:</strong> Parties, weddings, dinners, date nights and special events</li></ul>'
+				. '<h3>Why Choose MR ZAIB Arvon?</h3>'
+				. '<ul><li>Rich fruity-spicy opening, elegant floral heart and gourmand cacao-vanilla base</li><li>Long lasting unisex fragrance with strong projection</li><li>Perfect for him, for her, or to share</li><li>Luxurious 50ml crystal-cut black bottle with gold crown cap, a perfect gift</li><li>Affordable luxury perfume under Rs. 3000</li><li>Cash on Delivery all over Pakistan</li></ul>'
+				. '<h3>How to Apply</h3>'
+				. '<p>Spray 3 to 4 times on pulse points (neck, wrists, chest and behind the ears) from about 15 cm. Apply on clean, moisturised skin and do not rub, so the fragrance lasts longer.</p>'
+				. '<p>Looking for the <strong>best unisex perfume in Pakistan</strong> that smells rich, warm and lasts all night? Order <strong>Arvon by MR ZAIB</strong> online today.</p>',
+			'tags'     => array( 'Arvon', 'Unisex Perfume', 'Perfume for Men and Women', 'Unisex Perfume Pakistan', 'Long Lasting Perfume', 'Fruity Perfume', 'Spicy Perfume', 'Gourmand Perfume', 'Vanilla Perfume', 'Amber Perfume', 'Winter Perfume', 'Party Perfume', 'Wedding Perfume', 'Luxury Perfume', 'MR ZAIB' ),
 			'seo'      => array(
-				'title'    => 'Arvon Unisex Perfume 50ml | MR ZAIB Luxury Perfumes Pakistan',
-				'desc'     => 'Buy Arvon by MR ZAIB, a unisex perfume with pineapple, red apple, cinnamon, Moroccan rose, cacao, vanilla and amber. 50ml at Rs. 2,500. Cash on Delivery in Pakistan.',
-				'focus'    => 'Arvon perfume',
-				'keywords' => 'Arvon perfume, MR ZAIB Arvon, unisex perfume, unisex perfume Pakistan, perfume for men and women, fruity spicy perfume, pineapple perfume, cacao vanilla perfume, long lasting unisex fragrance, luxury perfume Pakistan, best perfume under 3000',
+				'title'    => 'Arvon Long Lasting Unisex Perfume 50ml | MR ZAIB Pakistan',
+				'desc'     => 'Shop Arvon by MR ZAIB, a long lasting unisex perfume with pineapple, cinnamon, Moroccan rose, cacao, vanilla and amber. 50ml, Rs. 2,500. COD in Pakistan.',
+				'focus'    => 'Arvon unisex perfume',
+				'keywords' => 'Arvon perfume, Arvon unisex perfume, MR ZAIB Arvon, unisex perfume, unisex perfume Pakistan, perfume for men and women, long lasting unisex perfume, fruity spicy perfume, cacao vanilla perfume, gourmand perfume, party perfume, wedding perfume, winter perfume, luxury perfume Pakistan, perfume under 3000',
 			),
 		),
 	);
