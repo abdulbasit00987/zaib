@@ -27,36 +27,39 @@ function mrzaib_store_products() {
 		array(
 			'name'     => 'Kahn-vahl',
 			'slug'     => 'kahn-vahl-perfume',
-			'subtitle' => 'Perfume for Men | 50ml',
+			'subtitle' => 'Long Lasting Fresh Perfume for Men | 50ml',
 			'sku'      => 'MZ-KAHNVAHL-50',
 			'regular'  => '2800',
 			'sale'     => '2500',
 			'cats'     => array( 'men' ),
-			'images'   => array( 'kahn-vahl-1.jpg', 'kahn-vahl-2.jpg', 'kahn-vahl-top-notes.jpg', 'kahn-vahl-middle-notes.jpg', 'kahn-vahl-base-notes.jpg', 'mr-zaib-gift-box.jpg' ),
-			'alts'     => array( 'Kahn-vahl perfume for men by MR ZAIB 50ml blue bottle', 'MR ZAIB Kahn-vahl blue perfume bottle', 'Kahn-vahl top notes coconut water', 'Kahn-vahl middle notes jasmine and iris', 'Kahn-vahl base notes vanilla sandalwood amber', 'MR ZAIB luxury perfume gift box' ),
+			'images'   => array( 'kahn-vahl-main.jpg', 'kahn-vahl-banner.jpg', 'kahn-vahl-notes-top.jpg', 'kahn-vahl-notes-middle.jpg', 'kahn-vahl-notes-base.jpg' ),
+			'alts'     => array( 'Kahn-vahl long lasting perfume for men by MR ZAIB 50ml blue bottle', 'MR ZAIB Kahn-vahl men perfume fragrance notes', 'Kahn-vahl top notes coconut water fresh aquatic perfume', 'Kahn-vahl middle notes jasmine and iris', 'Kahn-vahl base notes vanilla sandalwood amber' ),
 			'notes'    => array(
 				'Top Notes'    => 'Coconut Water',
 				'Middle Notes' => 'Jasmine, Iris',
 				'Base Notes'   => 'Vanilla, Sandalwood, Amber',
 			),
-			'short'    => '<p><strong>Kahn-vahl</strong> by MR ZAIB is a fresh, aquatic-floral perfume for men. It opens with cool <strong>coconut water</strong>, flows into a clean heart of <strong>jasmine and iris</strong>, and settles on a smooth, warm base of <strong>vanilla, sandalwood and amber</strong>.</p><ul><li>Top: Coconut Water</li><li>Middle: Jasmine, Iris</li><li>Base: Vanilla, Sandalwood, Amber</li><li>Size: 50ml</li></ul>',
-			'long'     => '<h2>Kahn-vahl Perfume for Men by MR ZAIB</h2>'
-				. '<p>Kahn-vahl is a modern men\'s fragrance from MR ZAIB Luxury Perfumes, made for the man who wants to <em>leave his presence</em>. It opens fresh and bright, turns elegant in the heart and finishes warm and creamy on the skin. Fresh enough for the day and smooth enough for the evening.</p>'
-				. '<h3>How Kahn-vahl smells</h3>'
-				. '<p><strong>Top notes: Coconut Water.</strong> The first spray is cool, clean and watery, a light tropical freshness that feels effortless in warm weather.</p>'
-				. '<p><strong>Middle notes: Jasmine and Iris.</strong> The heart turns refined. White jasmine adds a soft floral glow and iris brings a powdery, polished elegance.</p>'
-				. '<p><strong>Base notes: Vanilla, Sandalwood and Amber.</strong> The dry-down is warm and smooth. Creamy sandalwood, sweet vanilla and glowing amber stay close to the skin and leave a memorable trail.</p>'
-				. '<h3>When to wear it</h3>'
-				. '<p>Kahn-vahl is a versatile perfume for men: office days, casual outings, dinners and summer evenings. Its fresh opening suits Pakistan\'s warm weather, while the vanilla-amber base keeps it classy after dark.</p>'
-				. '<h3>Why choose MR ZAIB Kahn-vahl</h3>'
-				. '<ul><li>Fresh aquatic opening with a warm, woody-amber base</li><li>Elegant 50ml bottle with a gold crown cap, ready to gift</li><li>Cash on Delivery all over Pakistan</li></ul>'
-				. '<p><strong>How to apply:</strong> spray 3 to 4 times on pulse points (neck, wrists, behind the ears) from about 15 cm. Apply on moisturised skin for the best performance.</p>',
-			'tags'     => array( 'Perfume for Men', 'Long Lasting Perfume', 'Aquatic Perfume', 'Vanilla Perfume', 'Sandalwood Perfume', 'MR ZAIB' ),
+			'short'    => '<p><strong>Kahn-vahl by MR ZAIB</strong> is a long lasting, fresh aquatic perfume for men. It opens with cool <strong>coconut water</strong>, flows into an elegant heart of <strong>jasmine and iris</strong>, and settles on a warm, smooth base of <strong>vanilla, sandalwood and amber</strong>. A clean, classy men\'s fragrance for daily wear, office and evenings.</p>'
+				. '<ul><li><strong>Top Notes:</strong> Coconut Water</li><li><strong>Middle Notes:</strong> Jasmine, Iris</li><li><strong>Base Notes:</strong> Vanilla, Sandalwood, Amber</li><li><strong>Size:</strong> 50ml</li><li><strong>For:</strong> Men</li></ul>',
+			'long'     => '<h2>Kahn-vahl: Long Lasting Fresh Perfume for Men in Pakistan</h2>'
+				. '<p><strong>Kahn-vahl</strong> is a premium men\'s perfume from <strong>MR ZAIB Luxury Perfumes</strong>, made for the man who wants to <em>leave his presence</em>. It opens fresh and bright, becomes refined in the heart and dries down warm and creamy on the skin. Fresh enough for hot days in Pakistan, smooth enough for formal evenings.</p>'
+				. '<h3>Fragrance Notes of Kahn-vahl</h3>'
+				. '<p><strong>Top Notes: Coconut Water.</strong> The first spray is cool, clean and watery, a light tropical freshness that feels effortless in warm weather.</p>'
+				. '<p><strong>Middle Notes: Jasmine and Iris.</strong> White jasmine adds a soft floral glow, while iris brings a powdery, polished elegance that makes the scent feel expensive.</p>'
+				. '<p><strong>Base Notes: Vanilla, Sandalwood and Amber.</strong> Creamy sandalwood, sweet vanilla and glowing amber give Kahn-vahl its long lasting, warm trail that people remember.</p>'
+				. '<h3>Fragrance Profile</h3>'
+				. '<ul><li><strong>Family:</strong> Fresh Aquatic, Floral, Woody Amber</li><li><strong>Character:</strong> Clean, fresh, elegant, warm</li><li><strong>Best season:</strong> Summer and all year round</li><li><strong>Occasions:</strong> Office, daily wear, university, dinners, date nights and gatherings</li></ul>'
+				. '<h3>Why Choose MR ZAIB Kahn-vahl?</h3>'
+				. '<ul><li>Fresh aquatic opening with a warm vanilla, sandalwood and amber base</li><li>Long lasting fragrance with a noticeable trail</li><li>Luxurious 50ml crystal-cut blue bottle with gold crown cap, a perfect gift for men</li><li>Affordable luxury perfume under Rs. 3000</li><li>Cash on Delivery all over Pakistan</li></ul>'
+				. '<h3>How to Apply</h3>'
+				. '<p>Spray 3 to 4 times on pulse points (neck, wrists, chest and behind the ears) from about 15 cm. Apply on clean, moisturised skin and do not rub, so the fragrance lasts longer.</p>'
+				. '<p>Looking for the <strong>best perfume for men in Pakistan</strong> that smells fresh, classy and lasts all day? Order <strong>Kahn-vahl by MR ZAIB</strong> online today.</p>',
+			'tags'     => array( 'Kahn-vahl', 'Perfume for Men', 'Men Perfume Pakistan', 'Long Lasting Perfume', 'Fresh Perfume', 'Aquatic Perfume', 'Coconut Perfume', 'Vanilla Perfume', 'Sandalwood Perfume', 'Amber Perfume', 'Summer Perfume', 'Office Perfume', 'Gift for Men', 'Luxury Perfume', 'MR ZAIB' ),
 			'seo'      => array(
-				'title'    => 'Kahn-vahl Perfume for Men 50ml | MR ZAIB Luxury Perfumes Pakistan',
-				'desc'     => 'Buy Kahn-vahl by MR ZAIB, a fresh aquatic perfume for men with coconut water, jasmine, iris, vanilla, sandalwood and amber. 50ml at Rs. 2,500. Cash on Delivery in Pakistan.',
-				'focus'    => 'Kahn-vahl perfume',
-				'keywords' => 'Kahn-vahl perfume, MR ZAIB perfume, perfume for men, perfume for men in Pakistan, long lasting perfume for men, aquatic perfume for men, coconut perfume, vanilla sandalwood amber perfume, men fragrance Pakistan, luxury perfume Pakistan, best perfume under 3000',
+				'title'    => 'Kahn-vahl Long Lasting Perfume for Men 50ml | MR ZAIB Pakistan',
+				'desc'     => 'Shop Kahn-vahl by MR ZAIB, a fresh long lasting perfume for men with coconut water, jasmine, iris, vanilla, sandalwood and amber. 50ml, Rs. 2,500. COD in Pakistan.',
+				'focus'    => 'Kahn-vahl perfume for men',
+				'keywords' => 'Kahn-vahl perfume, Kahn-vahl perfume for men, MR ZAIB perfume, perfume for men, men perfume Pakistan, long lasting perfume for men, fresh perfume for men, aquatic perfume, coconut water perfume, vanilla sandalwood amber perfume, best perfume for men in Pakistan, summer perfume for men, office perfume for men, luxury perfume Pakistan, perfume under 3000',
 			),
 		),
 		array(
@@ -206,10 +209,17 @@ function mrzaib_install_categories() {
 }
 
 /** Create / update Kahn-vahl and Arvon. */
-function mrzaib_install_products( $cat_ids ) {
+function mrzaib_install_products( $cat_ids, $only = '' ) {
 	$made = 0;
 	foreach ( mrzaib_store_products() as $i => $d ) {
-		$existing = get_posts( array( 'post_type' => 'product', 'title' => $d['name'], 'post_status' => 'any', 'numberposts' => 1, 'fields' => 'ids' ) );
+		if ( $only && $only !== $d['slug'] ) {
+			continue;
+		}
+		$existing = mrzaib_find_store_product( $d );
+		if ( $existing && 'trash' === get_post_status( $existing[0] ) ) {
+			wp_untrash_post( $existing[0] );
+			wp_update_post( array( 'ID' => $existing[0], 'post_status' => 'publish' ) );
+		}
 		$prod     = $existing ? wc_get_product( $existing[0] ) : new WC_Product_Simple();
 		if ( ! $prod ) {
 			continue;
@@ -268,7 +278,62 @@ function mrzaib_install_products( $cat_ids ) {
 		update_post_meta( $pid, '_yoast_wpseo_focuskw', $d['seo']['focus'] );
 		$made++;
 	}
-	return $made . ' MR ZAIB products added/updated (Kahn-vahl, Arvon).';
+	return $made . ' MR ZAIB product(s) added/updated.';
+}
+
+/** Find a theme product by slug, SKU or title (any status, trash included). */
+function mrzaib_find_store_product( $d ) {
+	$q = get_posts( array( 'post_type' => 'product', 'name' => $d['slug'], 'post_status' => 'any', 'numberposts' => 1, 'fields' => 'ids' ) );
+	if ( ! $q ) {
+		$q = get_posts( array( 'post_type' => 'product', 'name' => $d['slug'] . '__trashed', 'post_status' => 'trash', 'numberposts' => 1, 'fields' => 'ids' ) );
+	}
+	if ( ! $q && function_exists( 'wc_get_product_id_by_sku' ) && wc_get_product_id_by_sku( $d['sku'] ) ) {
+		$q = array( wc_get_product_id_by_sku( $d['sku'] ) );
+	}
+	if ( ! $q ) {
+		$q = get_posts( array( 'post_type' => 'product', 'title' => $d['name'], 'post_status' => 'any', 'numberposts' => 1, 'fields' => 'ids' ) );
+	}
+	return $q;
+}
+
+/* ---------- Products > MR ZAIB Products: add / restore theme products one by one ---------- */
+add_action( 'admin_menu', function () {
+	if ( ! class_exists( 'WooCommerce' ) ) {
+		return;
+	}
+	add_submenu_page( 'edit.php?post_type=product', 'MR ZAIB Products', 'MR ZAIB Products', 'manage_woocommerce', 'mrzaib-products', 'mrzaib_products_page' );
+}, 60 );
+
+function mrzaib_products_page() {
+	$msg = '';
+	if ( isset( $_POST['mrzaib_add_product'] ) && check_admin_referer( 'mrzaib_add_product' ) ) {
+		@set_time_limit( 300 ); // phpcs:ignore
+		$slug = sanitize_title( wp_unslash( $_POST['mrzaib_add_product'] ) );
+		$cats = mrzaib_install_categories();
+		$msg  = mrzaib_install_products( $cats, 'all' === $slug ? '' : $slug );
+	}
+	echo '<div class="wrap"><h1>MR ZAIB Products</h1>';
+	echo '<p style="max-width:760px;font-size:14px">Add your MR ZAIB perfumes with photos, fragrance notes, short &amp; long description, tags, subtitle and Yoast SEO (title, meta description, focus keyphrase) in one click. If you deleted a product, click <strong>Add product</strong> to bring it back. Running again updates the product.</p>';
+	if ( $msg ) {
+		echo '<div class="notice notice-success"><p>' . esc_html( $msg ) . '</p></div>';
+	}
+	echo '<form method="post">';
+	wp_nonce_field( 'mrzaib_add_product' );
+	echo '<table class="widefat striped" style="max-width:960px"><thead><tr><th style="width:90px">Photo</th><th>Product</th><th>Category</th><th>Price</th><th>Status</th><th></th></tr></thead><tbody>';
+	foreach ( mrzaib_store_products() as $d ) {
+		$id     = mrzaib_find_store_product( $d );
+		$status = $id ? get_post_status( $id[0] ) : '';
+		$label  = $id && 'trash' !== $status ? 'Update product' : 'Add product';
+		$img    = get_template_directory_uri() . '/assets/images/' . $d['images'][0];
+		echo '<tr><td><img src="' . esc_url( $img ) . '" width="70" height="70" style="object-fit:cover;border-radius:6px"></td>';
+		echo '<td><strong>' . esc_html( $d['name'] ) . '</strong><br><span class="description">' . esc_html( $d['subtitle'] ) . '</span></td>';
+		echo '<td>' . esc_html( ucwords( implode( ', ', $d['cats'] ) ) ) . '</td>';
+		echo '<td><del>Rs. ' . esc_html( number_format( (float) $d['regular'] ) ) . '</del> Rs. ' . esc_html( number_format( (float) $d['sale'] ) ) . '</td>';
+		echo '<td>' . ( $id ? ( 'trash' === $status ? '&#128465; In trash' : '&#10004; ' . esc_html( ucfirst( $status ) ) . ' &middot; <a href="' . esc_url( get_edit_post_link( $id[0] ) ) . '">Edit</a>' ) : '&#10008; Not added' ) . '</td>';
+		echo '<td><button class="button button-primary" name="mrzaib_add_product" value="' . esc_attr( $d['slug'] ) . '">' . esc_html( $label ) . '</button></td></tr>';
+	}
+	echo '</tbody></table>';
+	echo '<p><button class="button" name="mrzaib_add_product" value="all">Add / update all</button></p></form></div>';
 }
 
 /* ---------- SEO is handled by the Yoast SEO plugin (theme outputs no meta tags) ---------- */
