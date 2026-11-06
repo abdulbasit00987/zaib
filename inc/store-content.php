@@ -100,6 +100,44 @@ function mrzaib_store_products() {
 				'keywords' => 'Arvon perfume, Arvon unisex perfume, MR ZAIB Arvon, unisex perfume, unisex perfume Pakistan, perfume for men and women, long lasting unisex perfume, fruity spicy perfume, cacao vanilla perfume, gourmand perfume, party perfume, wedding perfume, winter perfume, luxury perfume Pakistan, perfume under 3000',
 			),
 		),
+		array(
+			'name'     => 'Zay-ab',
+			'slug'     => 'zay-ab-perfume',
+			'subtitle' => 'Long Lasting Oriental Perfume for Men | 50ml',
+			'sku'      => 'MZ-ZAYAB-50',
+			'regular'  => '2800',
+			'sale'     => '2500',
+			'cats'     => array( 'men' ),
+			'images'   => array( 'zay-ab-main.jpg', 'zay-ab-banner.jpg', 'zay-ab-notes-top.jpg', 'zay-ab-notes-middle.jpg', 'zay-ab-notes-base.jpg' ),
+			'alts'     => array( 'Zay-ab long lasting oriental perfume for men by MR ZAIB 50ml red bottle', 'MR ZAIB Zay-ab men perfume fragrance notes', 'Zay-ab top notes aldehydes lily of the valley rose', 'Zay-ab middle notes frankincense mystikal labdanum', 'Zay-ab base notes white musk benzoin ambergris' ),
+			'notes'    => array(
+				'Top Notes'    => 'Aldehydes, Lily of the Valley, Rose',
+				'Middle Notes' => 'Frankincense, Mystikal, Labdanum',
+				'Base Notes'   => 'White Musk, Benzoin, Ambergris',
+			),
+			'short'    => '<p><strong>Zay-ab by MR ZAIB</strong> is a long lasting oriental perfume for men. It opens with sparkling <strong>aldehydes, lily of the valley and rose</strong>, deepens into a smoky, resinous heart of <strong>frankincense, mystikal and labdanum</strong>, and settles on a warm, sensual base of <strong>white musk, benzoin and ambergris</strong>. A royal, rich fragrance for evenings, weddings and special occasions.</p>'
+				. '<ul><li><strong>Top Notes:</strong> Aldehydes, Lily of the Valley, Rose</li><li><strong>Middle Notes:</strong> Frankincense, Mystikal, Labdanum</li><li><strong>Base Notes:</strong> White Musk, Benzoin, Ambergris</li><li><strong>Size:</strong> 50ml</li><li><strong>For:</strong> Men</li></ul>',
+			'long'     => '<h2>Zay-ab: Long Lasting Oriental Perfume for Men in Pakistan</h2>'
+				. '<p><strong>Zay-ab</strong> is a royal oriental fragrance from <strong>MR ZAIB Luxury Perfumes</strong>, made for the man who wants to <em>leave his presence</em> wherever he goes. Bright rose and aldehydes on top, smoky incense and resins in the heart, and a warm musky-amber trail that stays for hours.</p>'
+				. '<h3>Fragrance Notes of Zay-ab</h3>'
+				. '<p><strong>Top Notes: Aldehydes, Lily of the Valley and Rose.</strong> A delicate, sparkling opening: fresh aldehydes lift a soft bouquet of lily of the valley and velvety red rose.</p>'
+				. '<p><strong>Middle Notes: Frankincense, Mystikal and Labdanum.</strong> The heart turns deep and mysterious, with smoky frankincense, resinous mystikal and rich, leathery labdanum giving Zay-ab its oriental, oud-like character.</p>'
+				. '<p><strong>Base Notes: White Musk, Benzoin and Ambergris.</strong> A warm, sensual foundation of clean white musk, sweet balsamic benzoin and salty ambergris that lingers long on skin and clothes.</p>'
+				. '<h3>Fragrance Profile</h3>'
+				. '<ul><li><strong>Family:</strong> Oriental, Incense, Amber Musk</li><li><strong>Character:</strong> Royal, smoky, warm, sensual</li><li><strong>Best season:</strong> Winter, autumn and evenings all year</li><li><strong>Occasions:</strong> Weddings, Eid, Jummah, dinners, formal events and special nights</li></ul>'
+				. '<h3>Why Choose MR ZAIB Zay-ab?</h3>'
+				. '<ul><li>Rich oriental blend of rose, frankincense, labdanum and ambergris</li><li>Long lasting fragrance with a strong, elegant trail</li><li>Luxurious 50ml crystal-cut red bottle with gold crown cap, a perfect gift for men</li><li>Affordable luxury perfume under Rs. 3000</li><li>Cash on Delivery all over Pakistan</li></ul>'
+				. '<h3>How to Apply</h3>'
+				. '<p>Spray 3 to 4 times on pulse points (neck, wrists, chest and behind the ears) from about 15 cm. Apply on clean, moisturised skin and do not rub, so the fragrance lasts longer.</p>'
+				. '<p>Looking for the <strong>best oriental perfume for men in Pakistan</strong> that smells royal and lasts all day? Order <strong>Zay-ab by MR ZAIB</strong> online today.</p>',
+			'tags'     => array( 'Zay-ab', 'Zayab Perfume', 'Perfume for Men', 'Men Perfume Pakistan', 'Long Lasting Perfume', 'Oriental Perfume', 'Incense Perfume', 'Frankincense Perfume', 'Rose Perfume', 'Musk Perfume', 'Amber Perfume', 'Winter Perfume', 'Wedding Perfume', 'Gift for Men', 'Luxury Perfume', 'MR ZAIB' ),
+			'seo'      => array(
+				'title'    => 'Zay-ab Long Lasting Oriental Perfume for Men 50ml | MR ZAIB',
+				'desc'     => 'Shop Zay-ab (Zayab) by MR ZAIB, a long lasting oriental perfume for men with rose, frankincense, labdanum, musk and ambergris. 50ml, Rs. 2,500. COD in Pakistan.',
+				'focus'    => 'Zay-ab perfume for men',
+				'keywords' => 'Zay-ab perfume, Zayab perfume, Zay-ab perfume for men, MR ZAIB perfume, perfume for men, men perfume Pakistan, long lasting perfume for men, oriental perfume for men, frankincense perfume, incense perfume, rose musk perfume, ambergris perfume, wedding perfume for men, winter perfume for men, luxury perfume Pakistan, perfume under 3000',
+			),
+		),
 	);
 }
 
