@@ -138,6 +138,44 @@ function mrzaib_store_products() {
 				'keywords' => 'Zay-ab perfume, Zayab perfume, Zay-ab perfume for men, MR ZAIB perfume, perfume for men, men perfume Pakistan, long lasting perfume for men, oriental perfume for men, frankincense perfume, incense perfume, rose musk perfume, ambergris perfume, wedding perfume for men, winter perfume for men, luxury perfume Pakistan, perfume under 3000',
 			),
 		),
+		array(
+			'name'     => 'Hoor',
+			'slug'     => 'hoor-perfume',
+			'subtitle' => 'Long Lasting Floral Perfume for Women | 50ml',
+			'sku'      => 'MZ-HOOR-50',
+			'regular'  => '2800',
+			'sale'     => '2500',
+			'cats'     => array( 'women' ),
+			'images'   => array( 'hoor-main.jpg', 'hoor-banner.jpg', 'hoor-notes-top.jpg', 'hoor-notes-middle.jpg', 'hoor-notes-base.jpg' ),
+			'alts'     => array( 'Hoor long lasting floral perfume for women by MR ZAIB 50ml pink bottle', 'MR ZAIB Hoor women perfume fragrance notes', 'Hoor top notes black currant pineapple orange red apple', 'Hoor middle notes rose freesia peony', 'Hoor base notes musk iris sandalwood' ),
+			'notes'    => array(
+				'Top Notes'    => 'Black Currant, Pineapple, Orange, Red Apple',
+				'Middle Notes' => 'Rose, Freesia, Peony',
+				'Base Notes'   => 'Musk, Iris, Sandalwood',
+			),
+			'short'    => '<p><strong>Hoor by MR ZAIB</strong> is a long lasting fruity floral perfume for women, inspired by Myton Floral. It opens with juicy <strong>black currant, pineapple, orange and red apple</strong>, blooms into a romantic heart of <strong>rose, freesia and peony</strong>, and settles on a soft, elegant base of <strong>musk, iris and sandalwood</strong>. A feminine, sweet and graceful fragrance for every day and every celebration.</p>'
+				. '<ul><li><strong>Top Notes:</strong> Black Currant, Pineapple, Orange, Red Apple</li><li><strong>Middle Notes:</strong> Rose, Freesia, Peony</li><li><strong>Base Notes:</strong> Musk, Iris, Sandalwood</li><li><strong>Size:</strong> 50ml</li><li><strong>For:</strong> Women</li></ul>',
+			'long'     => '<h2>Hoor: Long Lasting Floral Perfume for Women in Pakistan</h2>'
+				. '<p><strong>Hoor</strong> is a beautiful women\'s perfume from <strong>MR ZAIB Luxury Perfumes</strong>, inspired by Myton Floral. Made for the woman who wants to <em>leave her presence</em>, Hoor is fresh and fruity at first, romantic and floral in the heart, and soft and creamy in the dry-down.</p>'
+				. '<h3>Fragrance Notes of Hoor</h3>'
+				. '<p><strong>Top Notes: Black Currant, Pineapple, Orange and Red Apple.</strong> A bright, juicy opening of sweet berries, tropical pineapple, sparkling orange and crisp red apple.</p>'
+				. '<p><strong>Middle Notes: Rose, Freesia and Peony.</strong> A romantic floral bouquet: velvety pink rose, airy freesia and soft peony give Hoor its graceful, feminine heart.</p>'
+				. '<p><strong>Base Notes: Musk, Iris and Sandalwood.</strong> A smooth, powdery and warm finish of clean musk, elegant iris and creamy sandalwood that stays close to the skin for hours.</p>'
+				. '<h3>Fragrance Profile</h3>'
+				. '<ul><li><strong>Family:</strong> Fruity Floral, Musky</li><li><strong>Character:</strong> Feminine, sweet, fresh, elegant</li><li><strong>Best season:</strong> Spring, summer and all year round</li><li><strong>Occasions:</strong> Daily wear, office, university, brunches, mehndi, weddings and parties</li></ul>'
+				. '<h3>Why Choose MR ZAIB Hoor?</h3>'
+				. '<ul><li>Fruity floral blend of black currant, rose, peony and musk</li><li>Long lasting women\'s fragrance with a soft, pretty trail</li><li>Elegant 50ml pink crystal bottle, a perfect gift for her</li><li>Affordable luxury perfume under Rs. 3000</li><li>Cash on Delivery all over Pakistan</li></ul>'
+				. '<h3>How to Apply</h3>'
+				. '<p>Spray 3 to 4 times on pulse points (neck, wrists and behind the ears) from about 15 cm. Apply on clean, moisturised skin and do not rub, so the fragrance lasts longer. A light mist on hair or scarf leaves a lovely trail.</p>'
+				. '<p>Looking for the <strong>best perfume for women in Pakistan</strong> that smells fresh, floral and lasts all day? Order <strong>Hoor by MR ZAIB</strong> online today.</p>',
+			'tags'     => array( 'Hoor', 'Perfume for Women', 'Women Perfume Pakistan', 'Ladies Perfume', 'Long Lasting Perfume', 'Floral Perfume', 'Fruity Floral Perfume', 'Rose Perfume', 'Peony Perfume', 'Musk Perfume', 'Inspired by Myton Floral', 'Summer Perfume', 'Gift for Her', 'Wedding Perfume', 'Luxury Perfume', 'MR ZAIB' ),
+			'seo'      => array(
+				'title'    => 'Hoor Long Lasting Perfume for Women 50ml | MR ZAIB Pakistan',
+				'desc'     => 'Shop Hoor by MR ZAIB, a long lasting fruity floral perfume for women with black currant, rose, peony, musk and sandalwood. 50ml, Rs. 2,500. COD in Pakistan.',
+				'focus'    => 'Hoor perfume for women',
+				'keywords' => 'Hoor perfume, Hoor perfume for women, MR ZAIB Hoor, perfume for women, women perfume Pakistan, ladies perfume, long lasting perfume for women, floral perfume for women, fruity floral perfume, rose perfume for women, inspired by Myton Floral, best perfume for women in Pakistan, gift for her, luxury perfume Pakistan, perfume under 3000',
+			),
+		),
 	);
 }
 
