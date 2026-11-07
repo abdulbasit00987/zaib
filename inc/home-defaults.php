@@ -63,7 +63,7 @@ function mrzaib_video_product( $n ) {
  * as real media (with previews) and can be picked again from Media.
  * Only fields still using the theme default (or empty) are changed.
  */
-define( 'MRZAIB_HOME_MEDIA_V', 2 );
+define( 'MRZAIB_HOME_MEDIA_V', 3 );
 
 function mrzaib_home_media_items() {
 	$items = array();
@@ -76,8 +76,9 @@ function mrzaib_home_media_items() {
 		$items[ 'hero_img_' . $i ] = array( 'assets/images/hero-' . $i . '-desktop.jpg', $d[0] );
 		$items[ 'hero_mob_' . $i ] = array( 'assets/images/hero-' . $i . '-mobile.jpg', $d[1] );
 	}
-	$items['promo_img_d'] = array( 'assets/images/promo-band-desktop.jpg', MRZAIB_URI . '/assets/images/promo-band-desktop.jpg' );
-	$items['promo_img_m'] = array( 'assets/images/promo-band-mobile.jpg', MRZAIB_URI . '/assets/images/promo-band-mobile.jpg' );
+	/* Third value = version tag: a new tag imports the updated file again (v3 = 4 bottles). */
+	$items['promo_img_d'] = array( 'assets/images/promo-band-desktop.jpg', MRZAIB_URI . '/assets/images/promo-band-desktop.jpg', 'v3' );
+	$items['promo_img_m'] = array( 'assets/images/promo-band-mobile.jpg', MRZAIB_URI . '/assets/images/promo-band-mobile.jpg', 'v3' );
 	return $items;
 }
 
@@ -94,17 +95,21 @@ function mrzaib_import_home_media( $force = false ) {
 	$map = (array) get_option( 'mrzaib_home_media', array() );
 	$n   = 0;
 	foreach ( mrzaib_home_media_items() as $key => $it ) {
-		list( $rel, $theme_url ) = $it;
-		$cur = get_theme_mod( 'mrzaib_' . $key, '' );
-		$cur_base = $cur ? strtok( $cur, '?' ) : '';
-		if ( $cur && ! $force && strtok( $theme_url, '?' ) !== $cur_base && false === strpos( $cur_base, '/themes/' ) ) {
+		$rel       = $it[0];
+		$theme_url = $it[1];
+		$tag       = empty( $it[2] ) ? $rel : $rel . '#' . $it[2];
+		$cur       = get_theme_mod( 'mrzaib_' . $key, '' );
+		$cur_base  = $cur ? strtok( $cur, '?' ) : '';
+		$old_id    = empty( $map[ $key ] ) ? 0 : (int) $map[ $key ];
+		$ours      = $old_id && $cur_base && (string) wp_parse_url( $cur_base, PHP_URL_PATH ) === (string) wp_parse_url( (string) wp_get_attachment_url( $old_id ), PHP_URL_PATH );
+		if ( $cur && ! $force && ! $ours && strtok( $theme_url, '?' ) !== $cur_base && false === strpos( $cur_base, '/themes/' ) ) {
 			continue; // Admin already chose own media.
 		}
 		$file = MRZAIB_DIR . '/' . $rel;
 		if ( ! file_exists( $file ) ) {
 			continue;
 		}
-		$id = mrzaib_home_media_find( $rel );
+		$id = mrzaib_home_media_find( $tag );
 		if ( ! $id ) {
 			$tmp = wp_tempnam( basename( $file ) );
 			copy( $file, $tmp );
@@ -114,7 +119,7 @@ function mrzaib_import_home_media( $force = false ) {
 				@unlink( $tmp ); // phpcs:ignore
 				continue;
 			}
-			update_post_meta( $id, '_mrzaib_src', $rel );
+			update_post_meta( $id, '_mrzaib_src', $tag );
 			if ( preg_match( '/^hero_(img|mob)_(\d+)$/', $key, $m ) ) {
 				$hd = mrzaib_hero_defaults();
 				if ( ! empty( $hd[ (int) $m[2] ][3] ) ) {
@@ -122,6 +127,9 @@ function mrzaib_import_home_media( $force = false ) {
 				}
 			}
 			$n++;
+		}
+		if ( $old_id && $old_id !== (int) $id && get_post_meta( $old_id, '_mrzaib_src', true ) ) {
+			wp_delete_attachment( $old_id, true ); // Older theme copy replaced by the new one.
 		}
 		$map[ $key ] = (int) $id;
 		set_theme_mod( 'mrzaib_' . $key, wp_get_attachment_url( $id ) );

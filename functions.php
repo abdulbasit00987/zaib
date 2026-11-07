@@ -162,6 +162,7 @@ require MRZAIB_DIR . '/inc/reviews.php';
 require MRZAIB_DIR . '/inc/store-content.php';
 require MRZAIB_DIR . '/inc/demo-import.php';
 require MRZAIB_DIR . '/inc/yoast-setup.php';
+require MRZAIB_DIR . '/inc/media-cleanup.php';
 
 /* ------------------------------------------------------------------
  * Widgets (optional sidebar for shop/blog)
