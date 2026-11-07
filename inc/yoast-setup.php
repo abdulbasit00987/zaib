@@ -12,7 +12,7 @@
 
 defined( 'ABSPATH' ) || exit;
 
-define( 'MRZAIB_YOAST_V', '2' );
+define( 'MRZAIB_YOAST_V', '3' );
 
 add_action( 'admin_init', function () {
 	if ( defined( 'WPSEO_VERSION' ) && MRZAIB_YOAST_V !== get_option( 'mrzaib_yoast_v' ) && current_user_can( 'manage_options' ) ) {
@@ -126,6 +126,11 @@ function mrzaib_configure_yoast() {
 		'title-search-wpseo'             => 'Search results for %%searchphrase%% %%page%% %%sep%% %%sitename%%',
 		'title-404-wpseo'                => 'Page not found %%sep%% %%sitename%%',
 	) );
+	$og_id0 = function_exists( 'mrzaib_og_image_id' ) ? mrzaib_og_image_id() : 0;
+	$t['open_graph_frontpage_title']    = 'MR ZAIB | Luxury Long Lasting Perfumes in Pakistan';
+	$t['open_graph_frontpage_desc']     = 'Shop MR ZAIB long lasting perfumes for men, women and unisex: Kahn-vahl, Zay-ab, Hoor and Arvon. Rs. 2,500 per 50ml with Cash on Delivery all over Pakistan.';
+	$t['open_graph_frontpage_image']    = $og_id0 ? wp_get_attachment_url( $og_id0 ) : $logo;
+	$t['open_graph_frontpage_image_id'] = $og_id0 ? $og_id0 : $logo_id;
 	update_option( 'wpseo_titles', $t );
 
 	/* ---- Social / Open Graph ---- */
@@ -134,8 +139,17 @@ function mrzaib_configure_yoast() {
 	$s['opengraph']           = true;
 	$s['twitter']             = true;
 	$s['twitter_card_type']   = 'summary_large_image';
-	$s['og_default_image']    = $logo;
-	$s['og_default_image_id'] = $logo_id;
+	$og_id  = function_exists( 'mrzaib_og_image_id' ) ? mrzaib_og_image_id() : 0;
+	$og_url = $og_id ? wp_get_attachment_url( $og_id ) : $logo;
+	$og_id  = $og_id ? $og_id : $logo_id;
+	$og_t   = 'MR ZAIB | Luxury Long Lasting Perfumes in Pakistan';
+	$og_d   = 'Shop MR ZAIB long lasting perfumes for men, women and unisex: Kahn-vahl, Zay-ab, Hoor and Arvon. Rs. 2,500 per 50ml with Cash on Delivery all over Pakistan.';
+	$s['og_default_image']    = $og_url;
+	$s['og_default_image_id'] = $og_id;
+	$s['og_frontpage_title']  = $og_t;
+	$s['og_frontpage_desc']   = $og_d;
+	$s['og_frontpage_image']  = $og_url;
+	$s['og_frontpage_image_id'] = $og_id;
 	$social = array();
 	foreach ( array( 'facebook', 'instagram', 'tiktok', 'youtube', 'x', 'snapchat', 'pinterest' ) as $net ) {
 		$u = get_theme_mod( 'mrzaib_social_' . $net, '' );
@@ -238,6 +252,14 @@ function mrzaib_configure_yoast() {
 	foreach ( $pages as $pid => $d ) {
 		if ( $pid <= 0 || ! get_post( $pid ) ) {
 			continue;
+		}
+		if ( $og_id && ( $pid === $front || ( function_exists( 'wc_get_page_id' ) && wc_get_page_id( 'shop' ) === $pid ) ) ) {
+			$st = $pid === $front ? $og_t : 'Shop Long Lasting Perfumes Online in Pakistan | MR ZAIB';
+			$sd = $pid === $front ? $og_d : $d[1];
+			foreach ( array( 'opengraph-title' => $st, 'opengraph-description' => $sd, 'opengraph-image' => $og_url, 'opengraph-image-id' => $og_id, 'twitter-title' => $st, 'twitter-description' => $sd, 'twitter-image' => $og_url, 'twitter-image-id' => $og_id ) as $k => $v ) {
+				mrzaib_seo_fill( $pid, $k, $v );
+			}
+			$touched[] = $pid;
 		}
 		$c  = mrzaib_seo_fill( $pid, 'title', $d[0] );
 		$c += mrzaib_seo_fill( $pid, 'metadesc', $d[1] );
