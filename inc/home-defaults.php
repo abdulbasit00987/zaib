@@ -63,7 +63,7 @@ function mrzaib_video_product( $n ) {
  * as real media (with previews) and can be picked again from Media.
  * Only fields still using the theme default (or empty) are changed.
  */
-define( 'MRZAIB_HOME_MEDIA_V', 1 );
+define( 'MRZAIB_HOME_MEDIA_V', 2 );
 
 function mrzaib_home_media_items() {
 	$items = array();
@@ -71,6 +71,10 @@ function mrzaib_home_media_items() {
 		$items[ 'video_' . $i ]        = array( 'assets/video/' . basename( mrzaib_video_default( $i ) ), mrzaib_video_default( $i ) );
 		$items[ 'video_poster_' . $i ] = array( 'assets/video/' . basename( mrzaib_video_default( $i, 'jpg' ) ), mrzaib_video_default( $i, 'jpg' ) );
 		$items[ 'feat_icon_' . $i ]    = array( 'assets/images/icons/' . basename( mrzaib_feat_default_icon( $i ) ), mrzaib_feat_default_icon( $i ) );
+	}
+	foreach ( mrzaib_hero_defaults() as $i => $d ) {
+		$items[ 'hero_img_' . $i ] = array( 'assets/images/hero-' . $i . '-desktop.jpg', $d[0] );
+		$items[ 'hero_mob_' . $i ] = array( 'assets/images/hero-' . $i . '-mobile.jpg', $d[1] );
 	}
 	$items['promo_img_d'] = array( 'assets/images/promo-band-desktop.jpg', MRZAIB_URI . '/assets/images/promo-band-desktop.jpg' );
 	$items['promo_img_m'] = array( 'assets/images/promo-band-mobile.jpg', MRZAIB_URI . '/assets/images/promo-band-mobile.jpg' );
@@ -111,6 +115,12 @@ function mrzaib_import_home_media( $force = false ) {
 				continue;
 			}
 			update_post_meta( $id, '_mrzaib_src', $rel );
+			if ( preg_match( '/^hero_(img|mob)_(\d+)$/', $key, $m ) ) {
+				$hd = mrzaib_hero_defaults();
+				if ( ! empty( $hd[ (int) $m[2] ][3] ) ) {
+					update_post_meta( $id, '_wp_attachment_image_alt', $hd[ (int) $m[2] ][3] );
+				}
+			}
 			$n++;
 		}
 		$map[ $key ] = (int) $id;
