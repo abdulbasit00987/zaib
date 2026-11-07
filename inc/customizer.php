@@ -64,7 +64,7 @@ function mrzaib_customize( $wp_customize ) {
 		$wp_customize->add_control( new WP_Customize_Image_Control( $wp_customize, 'mrzaib_hero_mob_' . $i, array( 'label' => sprintf( __( 'Slide %d mobile image (900x1100)', 'mrzaib' ), $i ), 'section' => 'mrzaib_hero', 'active_callback' => $active ) ) );
 		$wp_customize->add_setting( 'mrzaib_hero_link_' . $i, array( 'default' => $d[2], 'sanitize_callback' => 'esc_url_raw' ) );
 		$wp_customize->add_control( 'mrzaib_hero_link_' . $i, array( 'label' => sprintf( __( 'Slide %d link', 'mrzaib' ), $i ), 'section' => 'mrzaib_hero', 'type' => 'url', 'active_callback' => $active ) );
-		$wp_customize->add_setting( 'mrzaib_hero_rm_' . $i, array( 'default' => '', 'sanitize_callback' => '__return_empty_string', 'transport' => 'postMessage' ) );
+		$wp_customize->add_setting( 'mrzaib_hero_rm_' . $i, array( 'default' => '', 'sanitize_callback' => 'mrzaib_sanitize_flag' ) );
 		$wp_customize->add_control( new MRZAIB_Hero_Remove_Control( $wp_customize, 'mrzaib_hero_rm_' . $i, array( 'label' => sprintf( __( 'Remove slide %d', 'mrzaib' ), $i ), 'section' => 'mrzaib_hero', 'active_callback' => $active, 'slide' => $i ) ) );
 	}
 
@@ -165,6 +165,13 @@ function mrzaib_media_alt( $url, $fallback = '' ) {
 		if ( '' !== $alt ) {
 			return $alt;
 		}
+		$src = (string) get_post_meta( $id, '_mrzaib_src', true );
+		if ( preg_match( '/hero-(\d+)-(desktop|mobile)/', $src, $m ) ) {
+			$hd = mrzaib_hero_defaults();
+			if ( ! empty( $hd[ (int) $m[1] ][3] ) ) {
+				return $hd[ (int) $m[1] ][3];
+			}
+		}
 		if ( '' === $fallback ) {
 			return trim( get_the_title( $id ) );
 		}
@@ -172,28 +179,69 @@ function mrzaib_media_alt( $url, $fallback = '' ) {
 	return $fallback;
 }
 
-/* Customizer: "Remove slide N" shifts the following slides up and lowers the slide count. */
+function mrzaib_sanitize_flag( $v ) {
+	return $v ? '1' : '';
+}
+
+/* Customizer: "Remove slide N" marks the slide (hidden in the preview at once); on Publish the
+   following slides move up, the slide count drops and the Customizer reloads. */
 add_action( 'customize_controls_print_footer_scripts', function () {
 	?>
 	<script>
 	jQuery( function ( $ ) {
+		var api = wp.customize, removed = false;
 		$( document ).on( 'click', '.mz-hero-remove', function () {
-			var api = wp.customize, n = parseInt( $( this ).data( 'slide' ), 10 ), count = parseInt( api( 'mrzaib_hero_count' ).get(), 10 ) || 1;
-			if ( count <= 1 ) { alert( 'At least one slide is needed.' ); return; }
+			var n = parseInt( $( this ).data( 'slide' ), 10 ), count = parseInt( api( 'mrzaib_hero_count' ).get(), 10 ) || 1, left = 0;
+			for ( var k = 1; k <= count; k++ ) { if ( k !== n && ! api( 'mrzaib_hero_rm_' + k ).get() ) { left++; } }
+			if ( left < 1 ) { alert( 'At least one slide is needed.' ); return; }
 			if ( ! confirm( 'Remove slide ' + n + '?' ) ) { return; }
-			var keys = [ 'img', 'mob', 'link' ];
-			for ( var k = n; k < count; k++ ) {
-				keys.forEach( function ( f ) {
-					var to = api( 'mrzaib_hero_' + f + '_' + k ), from = api( 'mrzaib_hero_' + f + '_' + ( k + 1 ) );
-					if ( to && from ) { to.set( from.get() ); }
-				} );
-			}
-			api( 'mrzaib_hero_count' ).set( count - 1 );
+			api( 'mrzaib_hero_rm_' + n ).set( '1' );
+			removed = true;
+			[ 'img', 'mob', 'link' ].forEach( function ( f ) {
+				var c = api.control( 'mrzaib_hero_' + f + '_' + n );
+				if ( c ) { c.container.slideUp( 150 ); }
+			} );
+			$( this ).replaceWith( '<p style="color:#b32d2e;font-weight:600">Slide ' + n + ' removed. Click Publish to save.</p>' );
 		} );
+		api.bind( 'saved', function () { if ( removed ) { window.location.reload(); } } );
 	} );
 	</script>
 	<?php
 } );
+
+/* On Publish: drop the removed slides and move the rest up. */
+add_action( 'customize_save_after', function () {
+	$count = mrzaib_hero_count();
+	$hd    = mrzaib_hero_defaults();
+	$keep  = array();
+	$any   = false;
+	for ( $i = 1; $i <= MRZAIB_HERO_MAX; $i++ ) {
+		$rm = get_theme_mod( 'mrzaib_hero_rm_' . $i );
+		remove_theme_mod( 'mrzaib_hero_rm_' . $i );
+		if ( $i > $count ) {
+			continue;
+		}
+		if ( $rm ) {
+			$any = true;
+			continue;
+		}
+		$d      = isset( $hd[ $i ] ) ? $hd[ $i ] : array( '', '', '', '' );
+		$keep[] = array(
+			'img'  => mrzaib_opt( 'hero_img_' . $i, $d[0] ),
+			'mob'  => mrzaib_opt( 'hero_mob_' . $i, get_theme_mod( 'mrzaib_hero_img_' . $i ) ? '' : $d[1] ),
+			'link' => mrzaib_opt( 'hero_link_' . $i, $d[2] ),
+		);
+	}
+	if ( ! $any || ! $keep ) {
+		return;
+	}
+	foreach ( $keep as $j => $sl ) {
+		foreach ( $sl as $f => $v ) {
+			set_theme_mod( 'mrzaib_hero_' . $f . '_' . ( $j + 1 ), $v );
+		}
+	}
+	set_theme_mod( 'mrzaib_hero_count', count( $keep ) );
+}, 20 );
 
 /** Product page URL by slug, else the category page. */
 function mrzaib_product_slug_link( $slug, $cat ) {
@@ -224,11 +272,11 @@ function mrzaib_hero_slides() {
 	for ( $i = 1; $i <= mrzaib_hero_count(); $i++ ) {
 		$d   = isset( $hd[ $i ] ) ? $hd[ $i ] : array( '', '', '', '' );
 		$dsk = mrzaib_opt( 'hero_img_' . $i, $d[0] );
-		if ( ! $dsk ) {
+		if ( ! $dsk || get_theme_mod( 'mrzaib_hero_rm_' . $i ) ) {
 			continue;
 		}
 		$mob   = mrzaib_opt( 'hero_mob_' . $i, get_theme_mod( 'mrzaib_hero_img_' . $i ) ? $dsk : ( $d[1] ? $d[1] : $dsk ) );
-		$out[] = array( $dsk, $mob, mrzaib_opt( 'hero_link_' . $i, $d[2] ? $d[2] : mrzaib_shop_link() ), mrzaib_media_alt( $dsk, $d[3] ? $d[3] : get_bloginfo( 'name' ) ) );
+		$out[] = array( $dsk, $mob, mrzaib_opt( 'hero_link_' . $i, $d[2] ? $d[2] : mrzaib_shop_link() ), mrzaib_media_alt( $dsk, ( $d[3] && basename( strtok( $dsk, '?' ) ) === basename( strtok( $d[0], '?' ) ) ) ? $d[3] : get_bloginfo( 'name' ) ) );
 	}
 	return $out;
 }
