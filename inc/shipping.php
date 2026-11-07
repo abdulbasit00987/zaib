@@ -83,13 +83,9 @@ function mrzaib_ship_short() {
 	return $parts ? 'Free Delivery: ' . implode( ' | ', $parts ) : __( 'Cash on Delivery all over Pakistan', 'mrzaib' );
 }
 
-/** Announcement 2: Customizer text, or automatic from WooCommerce when empty / still the old Rs. 3000 text. */
+/** Free delivery line in the announcement bar: always automatic from WooCommerce shipping. */
 function mrzaib_announce_shipping() {
-	$a = trim( (string) get_theme_mod( 'mrzaib_announce_2', '' ) );
-	if ( '' === $a || preg_match( '/Rs\.?\s*3,?000/i', $a ) ) {
-		return mrzaib_ship_short();
-	}
-	return $a;
+	return mrzaib_ship_short();
 }
 
 /** Full sentence: charge + free minimum per zone. */

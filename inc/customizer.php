@@ -32,8 +32,7 @@ function mrzaib_customize( $wp_customize ) {
 
 	// Announcement.
 	$text( 'announce_1', __( 'Announcement 1', 'mrzaib' ), 'mrzaib_header', 'Luxury Perfumes | Leave Your Presence' );
-	$text( 'announce_2', __( 'Announcement 2 (empty = free delivery text from WooCommerce shipping)', 'mrzaib' ), 'mrzaib_header', '' );
-	$text( 'announce_3', __( 'Announcement 3', 'mrzaib' ), 'mrzaib_header', 'Cash on Delivery all over Pakistan' );
+	$text( 'announce_3', __( 'Announcement 3 (no. 2 is the free delivery line, automatic from WooCommerce shipping)', 'mrzaib' ), 'mrzaib_header', 'Cash on Delivery all over Pakistan' );
 
 	// Hero slides: choose how many (1-10); each has desktop image, mobile image, link and alt text.
 	$wp_customize->add_setting( 'mrzaib_hero_count', array( 'default' => 5, 'sanitize_callback' => 'absint' ) );
