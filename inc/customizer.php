@@ -34,11 +34,20 @@ function mrzaib_customize( $wp_customize ) {
 	$text( 'announce_1', __( 'Announcement 1', 'mrzaib' ), 'mrzaib_header', 'Luxury Perfumes | Leave Your Presence' );
 	$text( 'announce_3', __( 'Announcement 3 (no. 2 is the free delivery line, automatic from WooCommerce shipping)', 'mrzaib' ), 'mrzaib_header', 'Cash on Delivery all over Pakistan' );
 
-	// Hero slides: choose how many (1-10); each has desktop image, mobile image, link and alt text.
+	// Hero slides: choose how many (1-10); each has desktop image, mobile image, link and a Remove button.
+	if ( ! class_exists( 'MRZAIB_Hero_Remove_Control' ) ) {
+		class MRZAIB_Hero_Remove_Control extends WP_Customize_Control {
+			public $type  = 'mrzaib_hero_remove';
+			public $slide = 1;
+			public function render_content() {
+				echo '<button type="button" class="button mz-hero-remove" data-slide="' . (int) $this->slide . '" style="color:#b32d2e;border-color:#b32d2e;margin-bottom:14px">&#128465; ' . esc_html( $this->label ) . '</button><hr style="margin:4px 0 12px">';
+			}
+		}
+	}
 	$wp_customize->add_setting( 'mrzaib_hero_count', array( 'default' => 5, 'sanitize_callback' => 'absint' ) );
 	$wp_customize->add_control( 'mrzaib_hero_count', array(
 		'label'       => __( 'Number of slides', 'mrzaib' ),
-		'description' => __( 'Increase to add a new slide (max 10). Save & reload the Customizer to see the new slide fields.', 'mrzaib' ),
+		'description' => __( 'Increase to add a new slide (max 10). To delete a slide, use the "Remove slide" button under it. Image alt text (SEO) comes from the image in Media Library (Alt Text field).', 'mrzaib' ),
 		'section'     => 'mrzaib_hero',
 		'type'        => 'number',
 		'input_attrs' => array( 'min' => 1, 'max' => MRZAIB_HERO_MAX, 'step' => 1 ),
@@ -55,8 +64,8 @@ function mrzaib_customize( $wp_customize ) {
 		$wp_customize->add_control( new WP_Customize_Image_Control( $wp_customize, 'mrzaib_hero_mob_' . $i, array( 'label' => sprintf( __( 'Slide %d mobile image (900x1100)', 'mrzaib' ), $i ), 'section' => 'mrzaib_hero', 'active_callback' => $active ) ) );
 		$wp_customize->add_setting( 'mrzaib_hero_link_' . $i, array( 'default' => $d[2], 'sanitize_callback' => 'esc_url_raw' ) );
 		$wp_customize->add_control( 'mrzaib_hero_link_' . $i, array( 'label' => sprintf( __( 'Slide %d link', 'mrzaib' ), $i ), 'section' => 'mrzaib_hero', 'type' => 'url', 'active_callback' => $active ) );
-		$wp_customize->add_setting( 'mrzaib_hero_alt_' . $i, array( 'default' => $d[3], 'sanitize_callback' => 'sanitize_text_field' ) );
-		$wp_customize->add_control( 'mrzaib_hero_alt_' . $i, array( 'label' => sprintf( __( 'Slide %d image alt text (SEO)', 'mrzaib' ), $i ), 'section' => 'mrzaib_hero', 'active_callback' => $active ) );
+		$wp_customize->add_setting( 'mrzaib_hero_rm_' . $i, array( 'default' => '', 'sanitize_callback' => '__return_empty_string', 'transport' => 'postMessage' ) );
+		$wp_customize->add_control( new MRZAIB_Hero_Remove_Control( $wp_customize, 'mrzaib_hero_rm_' . $i, array( 'label' => sprintf( __( 'Remove slide %d', 'mrzaib' ), $i ), 'section' => 'mrzaib_hero', 'active_callback' => $active, 'slide' => $i ) ) );
 	}
 
 	// Home texts.
@@ -148,6 +157,44 @@ function mrzaib_hero_defaults() {
 	);
 }
 
+/** Alt text of a Media Library image by URL (Media > Alt Text), else $fallback, else the image title. */
+function mrzaib_media_alt( $url, $fallback = '' ) {
+	$id = $url ? attachment_url_to_postid( strtok( $url, '?' ) ) : 0;
+	if ( $id ) {
+		$alt = trim( (string) get_post_meta( $id, '_wp_attachment_image_alt', true ) );
+		if ( '' !== $alt ) {
+			return $alt;
+		}
+		if ( '' === $fallback ) {
+			return trim( get_the_title( $id ) );
+		}
+	}
+	return $fallback;
+}
+
+/* Customizer: "Remove slide N" shifts the following slides up and lowers the slide count. */
+add_action( 'customize_controls_print_footer_scripts', function () {
+	?>
+	<script>
+	jQuery( function ( $ ) {
+		$( document ).on( 'click', '.mz-hero-remove', function () {
+			var api = wp.customize, n = parseInt( $( this ).data( 'slide' ), 10 ), count = parseInt( api( 'mrzaib_hero_count' ).get(), 10 ) || 1;
+			if ( count <= 1 ) { alert( 'At least one slide is needed.' ); return; }
+			if ( ! confirm( 'Remove slide ' + n + '?' ) ) { return; }
+			var keys = [ 'img', 'mob', 'link' ];
+			for ( var k = n; k < count; k++ ) {
+				keys.forEach( function ( f ) {
+					var to = api( 'mrzaib_hero_' + f + '_' + k ), from = api( 'mrzaib_hero_' + f + '_' + ( k + 1 ) );
+					if ( to && from ) { to.set( from.get() ); }
+				} );
+			}
+			api( 'mrzaib_hero_count' ).set( count - 1 );
+		} );
+	} );
+	</script>
+	<?php
+} );
+
 /** Product page URL by slug, else the category page. */
 function mrzaib_product_slug_link( $slug, $cat ) {
 	$p = get_page_by_path( $slug, OBJECT, 'product' );
@@ -181,7 +228,7 @@ function mrzaib_hero_slides() {
 			continue;
 		}
 		$mob   = mrzaib_opt( 'hero_mob_' . $i, get_theme_mod( 'mrzaib_hero_img_' . $i ) ? $dsk : ( $d[1] ? $d[1] : $dsk ) );
-		$out[] = array( $dsk, $mob, mrzaib_opt( 'hero_link_' . $i, $d[2] ? $d[2] : mrzaib_shop_link() ), mrzaib_opt( 'hero_alt_' . $i, $d[3] ? $d[3] : get_bloginfo( 'name' ) ) );
+		$out[] = array( $dsk, $mob, mrzaib_opt( 'hero_link_' . $i, $d[2] ? $d[2] : mrzaib_shop_link() ), mrzaib_media_alt( $dsk, $d[3] ? $d[3] : get_bloginfo( 'name' ) ) );
 	}
 	return $out;
 }
