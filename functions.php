@@ -86,8 +86,13 @@ function mrzaib_cat_link( $slug ) {
 }
 
 function mrzaib_product_link( $slug ) {
-	$pp = get_page_by_path( $slug, OBJECT, 'product' );
-	return $pp ? get_permalink( $pp->ID ) : mrzaib_shop_link();
+	foreach ( array( $slug, $slug . '-perfume', preg_replace( '/-perfume$/', '', $slug ) ) as $s ) {
+		$pp = get_page_by_path( $s, OBJECT, 'product' );
+		if ( $pp && 'publish' === $pp->post_status ) {
+			return get_permalink( $pp->ID );
+		}
+	}
+	return mrzaib_shop_link();
 }
 
 function mrzaib_shop_link() {
