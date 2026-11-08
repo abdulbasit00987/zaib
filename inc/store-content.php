@@ -214,6 +214,44 @@ function mrzaib_store_products() {
 				'keywords' => 'Kireza perfume, Kireza perfume for women, MR ZAIB Kireza, perfume for women, women perfume Pakistan, ladies perfume, long lasting perfume for women, luxury perfume for women, raspberry rose perfume, marine perfume for women, ambroxan perfume, inspired by Megamari, Megamare inspired perfume Pakistan, best perfume for women in Pakistan, gift for her, party perfume for women',
 			),
 		),
+		array(
+			'name'     => 'OUD X',
+			'slug'     => 'oud-x-perfume',
+			'subtitle' => 'Long Lasting Oud Woody Unisex Perfume | 50ml',
+			'sku'      => 'MZ-OUDX-50',
+			'regular'  => '4000',
+			'sale'     => '3500',
+			'cats'     => array( 'unisex' ),
+			'images'   => array( 'oud-x-main.jpg', 'oud-x-banner.jpg', 'oud-x-notes-top.jpg', 'oud-x-notes-middle.jpg', 'oud-x-notes-base.jpg' ),
+			'alts'     => array( 'OUD X long lasting unisex oud perfume by MR ZAIB 50ml', 'MR ZAIB OUD X unisex perfume fragrance notes', 'OUD X top notes aquatic notes bergamot citrus', 'OUD X middle notes cinnamon apple', 'OUD X base notes ambergris musk woody notes' ),
+			'notes'    => array(
+				'Top Notes'    => 'Aquatic Notes, Bergamot, Citrus',
+				'Middle Notes' => 'Cinnamon, Apple',
+				'Base Notes'   => 'Ambergris, Musk, Woody Notes',
+			),
+			'short'    => '<p><strong>OUD X by MR ZAIB</strong> is a long lasting unisex oud perfume, inspired by Ouray. It opens fresh with <strong>aquatic notes, bergamot and citrus</strong>, warms up with a spicy-sweet heart of <strong>cinnamon and apple</strong>, and dries down to a rich, smoky base of <strong>ambergris, musk and woody notes</strong>. A modern oud-style fragrance for men and women who want a bold, classy signature.</p>'
+				. '<ul><li><strong>Top Notes:</strong> Aquatic Notes, Bergamot, Citrus</li><li><strong>Middle Notes:</strong> Cinnamon, Apple</li><li><strong>Base Notes:</strong> Ambergris, Musk, Woody Notes</li><li><strong>Size:</strong> 50ml</li><li><strong>For:</strong> Men &amp; Women (Unisex)</li></ul>',
+			'long'     => '<h2>OUD X: Long Lasting Unisex Oud Perfume in Pakistan</h2>'
+				. '<p><strong>OUD X</strong> is a premium unisex perfume from <strong>MR ZAIB Luxury Perfumes</strong>, inspired by Ouray. It blends the freshness of the sea and citrus with warm spice and a deep, woody, ambery dry-down, giving you the luxury feel of an oud fragrance that is easy to wear every day. Made for anyone who wants to <em>leave their presence</em>.</p>'
+				. '<h3>Fragrance Notes of OUD X</h3>'
+				. '<p><strong>Top Notes: Aquatic Notes, Bergamot and Citrus.</strong> A cool, sparkling opening of watery freshness, zesty bergamot and juicy citrus.</p>'
+				. '<p><strong>Middle Notes: Cinnamon and Apple.</strong> A warm, spicy-sweet heart where golden cinnamon meets crisp red apple for a smooth, inviting character.</p>'
+				. '<p><strong>Base Notes: Ambergris, Musk and Woody Notes.</strong> A rich, long lasting finish of salty ambergris, soft musk and dark woods that gives OUD X its luxurious oud-like depth and trail.</p>'
+				. '<h3>Fragrance Profile</h3>'
+				. '<ul><li><strong>Family:</strong> Woody, Amber, Fresh Spicy</li><li><strong>Character:</strong> Bold, classy, warm, fresh</li><li><strong>Best season:</strong> All year round, especially autumn and winter evenings</li><li><strong>Occasions:</strong> Office, Jummah, dinners, weddings, events and everyday signature wear</li></ul>'
+				. '<h3>Why Choose MR ZAIB OUD X?</h3>'
+				. '<ul><li>Fresh, spicy and woody blend with ambergris and musk</li><li>Long lasting unisex perfume with strong projection</li><li>Elegant 50ml bottle with a black cap, a perfect gift for him or her</li><li>Premium quality at Rs. 3,500</li><li>Cash on Delivery all over Pakistan</li></ul>'
+				. '<h3>How to Apply</h3>'
+				. '<p>Spray 3 to 4 times on pulse points (neck, wrists and chest) from about 15 cm. Apply on clean, moisturised skin and do not rub, so the fragrance lasts longer. A light spray on clothes keeps the woody trail going all day.</p>'
+				. '<p>Looking for the <strong>best long lasting oud perfume in Pakistan</strong> for men and women? Order <strong>OUD X by MR ZAIB</strong> online today.</p>',
+			'tags'     => array( 'OUD X', 'Oud Perfume', 'Unisex Perfume', 'Unisex Perfume Pakistan', 'Oud Perfume for Men', 'Oud Perfume for Women', 'Long Lasting Perfume', 'Woody Perfume', 'Amber Perfume', 'Ambergris Perfume', 'Musk Perfume', 'Spicy Perfume', 'Aquatic Perfume', 'Inspired by Ouray', 'Winter Perfume', 'Wedding Perfume', 'Gift for Him', 'Gift for Her', 'Luxury Perfume', 'MR ZAIB' ),
+			'seo'      => array(
+				'title'    => 'OUD X Long Lasting Unisex Oud Perfume 50ml | MR ZAIB Pakistan',
+				'desc'     => 'Shop OUD X by MR ZAIB, a long lasting unisex oud perfume inspired by Ouray, with bergamot, cinnamon, apple, ambergris, musk and woods. 50ml, Rs. 3,500. COD in Pakistan.',
+				'focus'    => 'OUD X unisex oud perfume',
+				'keywords' => 'OUD X perfume, OUD X unisex oud perfume, MR ZAIB OUD X, oud perfume, oud perfume Pakistan, unisex perfume, unisex perfume Pakistan, oud perfume for men, oud perfume for women, long lasting oud perfume, woody perfume, ambergris perfume, inspired by Ouray, best oud perfume in Pakistan, luxury perfume Pakistan, gift for him, gift for her',
+			),
+		),
 	);
 }
 
