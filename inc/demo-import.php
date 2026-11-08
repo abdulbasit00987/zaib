@@ -174,6 +174,7 @@ function mrzaib_install_card_plugins() {
 	update_option( 'wp_mail_smtp_activation_prevent_redirect', true );
 	delete_transient( 'wp_mail_smtp_activation_redirect' );
 	$out[] = mrzaib_install_plugin( 'wordpress-seo', 'wordpress-seo/wp-seo.php', 'Yoast SEO' );
+	$out[] = mrzaib_install_plugin( 'email-subscribers', 'email-subscribers/email-subscribers.php', 'Icegram Express (Email Subscribers & Newsletters)' );
 	$out[] = mrzaib_install_plugin( 'woo-product-gallery-slider', 'woo-product-gallery-slider/woo-product-gallery-slider.php', 'Product Gallery Slider, Additional Variation Images for WooCommerce' );
 	if ( function_exists( 'mrzaib_configure_gallery_plugin' ) ) {
 		mrzaib_configure_gallery_plugin();

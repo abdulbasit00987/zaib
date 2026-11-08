@@ -383,7 +383,8 @@ function mrzaib_install_products( $cat_ids, $only = '' ) {
 		$prod->set_name( $d['name'] );
 		if ( $is_new ) {
 			$prod->set_slug( $d['slug'] );
-			$prod->set_status( 'publish' );
+			// Saved as draft first and published after images/meta, so the newsletter email has the photo.
+			$prod->set_status( 'draft' );
 			$prod->set_catalog_visibility( 'visible' );
 			$prod->set_featured( true );
 			$prod->set_menu_order( $i + 1 );
@@ -431,6 +432,9 @@ function mrzaib_install_products( $cat_ids, $only = '' ) {
 		update_post_meta( $pid, '_yoast_wpseo_title', $d['seo']['title'] );
 		update_post_meta( $pid, '_yoast_wpseo_metadesc', $d['seo']['desc'] );
 		update_post_meta( $pid, '_yoast_wpseo_focuskw', $d['seo']['focus'] );
+		if ( $is_new ) {
+			wp_update_post( array( 'ID' => $pid, 'post_status' => 'publish' ) );
+		}
 		$made++;
 	}
 	return $made . ' MR ZAIB product(s) added/updated.';
