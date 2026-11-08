@@ -176,6 +176,44 @@ function mrzaib_store_products() {
 				'keywords' => 'Hoor perfume, Hoor perfume for women, MR ZAIB Hoor, perfume for women, women perfume Pakistan, ladies perfume, long lasting perfume for women, floral perfume for women, fruity floral perfume, rose perfume for women, inspired by Myton Floral, best perfume for women in Pakistan, gift for her, luxury perfume Pakistan, perfume under 3000',
 			),
 		),
+		array(
+			'name'     => 'Kireza',
+			'slug'     => 'kireza-perfume',
+			'subtitle' => 'Long Lasting Fruity Marine Perfume for Women | 50ml',
+			'sku'      => 'MZ-KIREZA-50',
+			'regular'  => '4000',
+			'sale'     => '3500',
+			'cats'     => array( 'women' ),
+			'images'   => array( 'kireza-main.jpg', 'kireza-banner.jpg', 'kireza-notes-top.jpg', 'kireza-notes-middle.jpg', 'kireza-notes-base.jpg' ),
+			'alts'     => array( 'Kireza long lasting perfume for women by MR ZAIB 50ml ruby red bottle', 'MR ZAIB Kireza women perfume fragrance notes', 'Kireza top notes raspberry rose black currant', 'Kireza middle notes seaweed calone hedione', 'Kireza base notes musk ambroxan cedar' ),
+			'notes'    => array(
+				'Top Notes'    => 'Raspberry, Rose, Black Currant',
+				'Middle Notes' => 'Seaweed, Calone, Hedione',
+				'Base Notes'   => 'Musk, Ambroxan, Cedar',
+			),
+			'short'    => '<p><strong>Kireza by MR ZAIB</strong> is a long lasting luxury perfume for women, inspired by Megamari. It opens with juicy <strong>raspberry, red rose and black currant</strong>, flows into a fresh, airy heart of <strong>seaweed, calone and hedione</strong>, and settles on a powerful, sensual base of <strong>musk, ambroxan and cedar</strong>. A bold, glamorous fragrance with strong projection for women who love to be noticed.</p>'
+				. '<ul><li><strong>Top Notes:</strong> Raspberry, Rose, Black Currant</li><li><strong>Middle Notes:</strong> Seaweed, Calone, Hedione</li><li><strong>Base Notes:</strong> Musk, Ambroxan, Cedar</li><li><strong>Size:</strong> 50ml</li><li><strong>For:</strong> Women</li></ul>',
+			'long'     => '<h2>Kireza: Long Lasting Luxury Perfume for Women in Pakistan</h2>'
+				. '<p><strong>Kireza</strong> is a premium women\'s perfume from <strong>MR ZAIB Luxury Perfumes</strong>, inspired by Megamari. Presented in a ruby red bottle with a gold crown cap, Kireza is made for the confident woman who wants to <em>leave her presence</em>: fruity and romantic at first, fresh and luminous in the heart, and deep, musky and woody in the dry-down.</p>'
+				. '<h3>Fragrance Notes of Kireza</h3>'
+				. '<p><strong>Top Notes: Raspberry, Rose and Black Currant.</strong> A sweet, juicy opening of ripe raspberry and dark black currant wrapped around a velvety red rose.</p>'
+				. '<p><strong>Middle Notes: Seaweed, Calone and Hedione.</strong> A fresh marine heart: salty seaweed and watery calone meet radiant, jasmine-like hedione for a clean, glowing sea-breeze feel.</p>'
+				. '<p><strong>Base Notes: Musk, Ambroxan and Cedar.</strong> A strong, addictive finish of soft musk, ambery ambroxan and dry cedarwood that lasts for hours and leaves a rich trail.</p>'
+				. '<h3>Fragrance Profile</h3>'
+				. '<ul><li><strong>Family:</strong> Fruity Floral, Marine, Amber Woody</li><li><strong>Character:</strong> Bold, glamorous, fresh, sensual</li><li><strong>Best season:</strong> All year round, day and night</li><li><strong>Occasions:</strong> Parties, weddings, dinners, office, outings and special evenings</li></ul>'
+				. '<h3>Why Choose MR ZAIB Kireza?</h3>'
+				. '<ul><li>Unique blend of raspberry, rose, sea notes, ambroxan and musk</li><li>Long lasting women\'s perfume with strong projection and sillage</li><li>Luxurious 50ml ruby red bottle with gold cap, a perfect gift for her</li><li>Premium quality at Rs. 3,500</li><li>Cash on Delivery all over Pakistan</li></ul>'
+				. '<h3>How to Apply</h3>'
+				. '<p>Spray 3 to 4 times on pulse points (neck, wrists and behind the ears) from about 15 cm. Apply on clean, moisturised skin and do not rub, so the fragrance lasts longer. A light mist on hair or clothes keeps the trail going all day.</p>'
+				. '<p>Looking for the <strong>best long lasting perfume for women in Pakistan</strong> with a bold, luxurious trail? Order <strong>Kireza by MR ZAIB</strong> online today.</p>',
+			'tags'     => array( 'Kireza', 'Kireza Perfume', 'Perfume for Women', 'Women Perfume Pakistan', 'Ladies Perfume', 'Long Lasting Perfume', 'Fruity Floral Perfume', 'Marine Perfume', 'Raspberry Perfume', 'Rose Perfume', 'Musk Perfume', 'Ambroxan Perfume', 'Inspired by Megamari', 'Megamare Inspired Perfume', 'Party Perfume', 'Wedding Perfume', 'Gift for Her', 'Luxury Perfume', 'MR ZAIB' ),
+			'seo'      => array(
+				'title'    => 'Kireza Long Lasting Perfume for Women 50ml | MR ZAIB Pakistan',
+				'desc'     => 'Shop Kireza by MR ZAIB, a long lasting perfume for women inspired by Megamari, with raspberry, rose, sea notes, ambroxan and musk. 50ml, Rs. 3,500. COD in Pakistan.',
+				'focus'    => 'Kireza perfume for women',
+				'keywords' => 'Kireza perfume, Kireza perfume for women, MR ZAIB Kireza, perfume for women, women perfume Pakistan, ladies perfume, long lasting perfume for women, luxury perfume for women, raspberry rose perfume, marine perfume for women, ambroxan perfume, inspired by Megamari, Megamare inspired perfume Pakistan, best perfume for women in Pakistan, gift for her, party perfume for women',
+			),
+		),
 	);
 }
 
