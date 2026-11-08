@@ -185,7 +185,7 @@ $all_products = mrzaib_products_query( array( 'limit' => 12 ) );
 			<a class="promo-band" href="<?php echo esc_url( mrzaib_opt( 'promo_link', mrzaib_shop_link() ) ); ?>">
 				<picture>
 					<source media="(max-width: 749px)" srcset="<?php echo esc_url( mrzaib_opt( 'promo_img_m' ) ? mrzaib_opt( 'promo_img_m' ) : mrzaib_img( 'promo-band-mobile.jpg' ) ); ?>">
-					<img src="<?php echo esc_url( mrzaib_opt( 'promo_img_d' ) ? mrzaib_opt( 'promo_img_d' ) : mrzaib_img( 'promo-band-desktop.jpg' ) ); ?>" alt="<?php esc_attr_e( 'MR ZAIB perfumes made for moments that leave your presence: Kahn-vahl and Arvon', 'mrzaib' ); ?>" loading="lazy" width="1920" height="384">
+					<img src="<?php echo esc_url( mrzaib_opt( 'promo_img_d' ) ? mrzaib_opt( 'promo_img_d' ) : mrzaib_img( 'promo-band-desktop.jpg' ) ); ?>" alt="<?php esc_attr_e( 'MR ZAIB long lasting perfumes: Arvon, OUD X, Zay-ab, Kahn-vahl, Kireza and Hoor', 'mrzaib' ); ?>" loading="lazy" width="1920" height="384">
 				</picture>
 			</a>
 		</div>

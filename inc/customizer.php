@@ -44,7 +44,7 @@ function mrzaib_customize( $wp_customize ) {
 			}
 		}
 	}
-	$wp_customize->add_setting( 'mrzaib_hero_count', array( 'default' => 5, 'sanitize_callback' => 'absint' ) );
+	$wp_customize->add_setting( 'mrzaib_hero_count', array( 'default' => 7, 'sanitize_callback' => 'absint' ) );
 	$wp_customize->add_control( 'mrzaib_hero_count', array(
 		'label'       => __( 'Number of slides', 'mrzaib' ),
 		'description' => __( 'Increase to add a new slide (max 10). To delete a slide, use the "Remove slide" button under it. Image alt text (SEO) comes from the image in Media Library (Alt Text field).', 'mrzaib' ),
@@ -154,6 +154,8 @@ function mrzaib_hero_defaults() {
 		3 => array( mrzaib_img( 'hero-3-desktop.jpg' ), mrzaib_img( 'hero-3-mobile.jpg' ), mrzaib_shop_link(), 'The MR ZAIB luxury perfume collection' ),
 		4 => array( mrzaib_img( 'hero-4-desktop.jpg' ), mrzaib_img( 'hero-4-mobile.jpg' ), mrzaib_product_slug_link( 'zay-ab-perfume', 'men' ), 'Zay-ab long lasting oriental perfume for men by MR ZAIB' ),
 		5 => array( mrzaib_img( 'hero-5-desktop.jpg' ), mrzaib_img( 'hero-5-mobile.jpg' ), mrzaib_product_slug_link( 'hoor-perfume', 'women' ), 'Hoor long lasting floral perfume for women by MR ZAIB' ),
+		6 => array( mrzaib_img( 'hero-6-desktop.jpg' ), mrzaib_img( 'hero-6-mobile.jpg' ), mrzaib_product_slug_link( 'kireza-perfume', 'women' ), 'Kireza long lasting perfume for women by MR ZAIB' ),
+		7 => array( mrzaib_img( 'hero-7-desktop.jpg' ), mrzaib_img( 'hero-7-mobile.jpg' ), mrzaib_product_slug_link( 'oud-x-perfume', 'unisex' ), 'OUD X long lasting unisex oud perfume by MR ZAIB' ),
 	);
 }
 
@@ -249,20 +251,20 @@ function mrzaib_product_slug_link( $slug, $cat ) {
 	return ( $p && 'publish' === $p->post_status ) ? get_permalink( $p ) : mrzaib_cat_link( $cat );
 }
 
-/* One-time: show the new Zay-ab and Hoor slides (count 3 -> 5) for stores still on the old default. */
+/* One-time: show the new slides (Zay-ab/Hoor: 3 -> 5, Kireza/OUD X: 5 -> 7) for stores still on an old default. */
 add_action( 'init', function () {
-	if ( get_option( 'mrzaib_hero_v' ) === '5' ) {
+	if ( get_option( 'mrzaib_hero_v' ) === '7' ) {
 		return;
 	}
 	$c = get_theme_mod( 'mrzaib_hero_count' );
-	if ( false === $c || 3 === (int) $c ) {
-		set_theme_mod( 'mrzaib_hero_count', 5 );
+	if ( false === $c || in_array( (int) $c, array( 3, 5 ), true ) ) {
+		set_theme_mod( 'mrzaib_hero_count', 7 );
 	}
-	update_option( 'mrzaib_hero_v', '5' );
+	update_option( 'mrzaib_hero_v', '7' );
 } );
 
 function mrzaib_hero_count() {
-	return max( 1, min( MRZAIB_HERO_MAX, (int) get_theme_mod( 'mrzaib_hero_count', 5 ) ) );
+	return max( 1, min( MRZAIB_HERO_MAX, (int) get_theme_mod( 'mrzaib_hero_count', 7 ) ) );
 }
 
 /** Slides to render: [desktop, mobile, link, alt]; slides without a desktop image are skipped. */

@@ -6,19 +6,23 @@
  */
 
 function mrzaib_seo_default_intro() {
-	return '<strong>MR ZAIB Luxury Perfumes</strong> is a Pakistani perfume brand creating <strong>long lasting perfumes</strong> for men, women and unisex lovers. Our promise is simple: <em>Leave Your Presence</em>. Choose from four signature 50ml fragrances, the fresh aquatic Kahn-vahl and the royal oriental Zay-ab for men, the fruity floral Hoor for women and the bold unisex Arvon, each at an affordable Rs. 2,500 with Cash on Delivery all over Pakistan. Whether you want an everyday signature scent, a wedding perfume or a thoughtful gift, MR ZAIB has the <strong>best perfume in Pakistan</strong> for you.';
+	return '<strong>MR ZAIB Luxury Perfumes</strong> is a Pakistani perfume brand creating <strong>long lasting perfumes</strong> for men, women and unisex lovers. Our promise is simple: <em>Leave Your Presence</em>. Choose from six signature 50ml fragrances: the fresh aquatic Kahn-vahl and the royal oriental Zay-ab for men, the fruity floral Hoor and the glamorous Kireza for women, and the bold Arvon and woody OUD X for everyone, with prices from Rs. 2,500 and Cash on Delivery all over Pakistan. Whether you want an everyday signature scent, an <strong>oud perfume</strong>, a wedding perfume or a thoughtful gift, MR ZAIB has the <strong>best perfume in Pakistan</strong> for you.';
 }
 
 function mrzaib_seo_default_more() {
-	return '<p>At <strong>MR ZAIB</strong>, we put most of our cost into the perfume oil itself, so you get a high concentration, <strong>super macerated perfume</strong> at an affordable price of Rs. 2,500. We share the full top, middle and base notes of every fragrance, so you can choose a scent that matches your personality before you buy.</p>' .
+	return '<p>At <strong>MR ZAIB</strong>, we put most of our cost into the perfume oil itself, so you get a high concentration, <strong>super macerated perfume</strong> at affordable prices from Rs. 2,500. We share the full top, middle and base notes of every fragrance, so you can choose a scent that matches your personality before you buy.</p>' .
 		'<h3>Kahn-vahl: Long Lasting Perfume for Men</h3>' .
 		'<p><a href="' . esc_url( mrzaib_product_link( 'kahn-vahl-perfume' ) ) . '">Kahn-vahl perfume for men</a> is a fresh aquatic fragrance in a deep blue bottle. Top notes of coconut water, a heart of jasmine and iris, and a warm base of vanilla, sandalwood and amber make it a versatile scent for the office, outings and summer evenings.</p>' .
 		'<h3>Zay-ab: Oriental Perfume for Men</h3>' .
 		'<p><a href="' . esc_url( mrzaib_product_link( 'zay-ab-perfume' ) ) . '">Zay-ab perfume for men</a> (Zayab) is a royal oriental fragrance in a crystal-cut red bottle. Aldehydes, lily of the valley and rose open into frankincense, mystikal and labdanum, settling on white musk, benzoin and ambergris. A smoky, warm scent for weddings, Eid, Jummah and winter nights.</p>' .
 		'<h3>Hoor: Floral Perfume for Women</h3>' .
 		'<p><a href="' . esc_url( mrzaib_product_link( 'hoor-perfume' ) ) . '">Hoor perfume for women</a>, inspired by Myton Floral, is a sweet fruity floral scent in a pink bottle. Black currant, pineapple, orange and red apple bloom into rose, freesia and peony, with a soft base of musk, iris and sandalwood. A graceful ladies perfume for every day, gifts and celebrations.</p>' .
+		'<h3>Kireza: Long Lasting Perfume for Women</h3>' .
+		'<p><a href="' . esc_url( mrzaib_product_link( 'kireza-perfume' ) ) . '">Kireza perfume for women</a>, inspired by Megamari, is a bold, glamorous fragrance in a ruby red bottle with a gold crown cap. Raspberry, rose and black currant flow into a fresh marine heart of seaweed, calone and hedione, finishing on musk, ambroxan and cedar. A strong, long lasting ladies perfume for parties, weddings and evenings out.</p>' .
 		'<h3>Arvon: Unisex Perfume for Men and Women</h3>' .
 		'<p><a href="' . esc_url( mrzaib_product_link( 'arvon-perfume' ) ) . '">Arvon unisex perfume</a> is a bold fragrance in a black bottle. Pineapple, red apple, plum, nutmeg, cinnamon and bitter orange open into magnolia, orchid, lily-of-the-valley, jasmine, Moroccan rose and iris, finishing on cacao, vanilla, white musk, amber, sandalwood and cedar.</p>' .
+		'<h3>OUD X: Unisex Oud Perfume</h3>' .
+		'<p><a href="' . esc_url( mrzaib_product_link( 'oud-x-perfume' ) ) . '">OUD X unisex oud perfume</a>, inspired by Ouray, blends aquatic notes, bergamot and citrus with a warm heart of cinnamon and apple, drying down to ambergris, musk and rich woods. A modern, long lasting oud-style fragrance for men and women, perfect for the office, Jummah, weddings and winter nights.</p>' .
 		'<h3>Shop Perfumes by Category</h3>' .
 		'<p>Explore <a href="' . esc_url( mrzaib_cat_link( 'men' ) ) . '">perfumes for men</a>, <a href="' . esc_url( mrzaib_cat_link( 'women' ) ) . '">perfumes for women</a> and <a href="' . esc_url( mrzaib_cat_link( 'unisex' ) ) . '">unisex perfumes</a>, traditional <a href="' . esc_url( mrzaib_cat_link( 'attar' ) ) . '">Attar</a>, and perfume <a href="' . esc_url( mrzaib_cat_link( 'tester' ) ) . '">Testers</a> to try a scent before buying the full bottle.</p>' .
 		'<h3>Easy Returns and Cash on Delivery</h3>' .
@@ -26,19 +30,19 @@ function mrzaib_seo_default_more() {
 		'<p><strong>Buy high quality, long lasting perfumes online in Pakistan at affordable prices.</strong></p>';
 }
 
-/* SEO text v2 (4 perfumes): a saved Customizer value that is still the old theme text is
+/* SEO text v3 (6 perfumes): a saved Customizer value that is still the old theme text is
    cleared once, so the new text shows. Text the admin wrote is left alone. */
 add_action( 'init', function () {
-	if ( (int) get_option( 'mrzaib_seo_text_v' ) >= 2 ) {
+	if ( (int) get_option( 'mrzaib_seo_text_v' ) >= 3 ) {
 		return;
 	}
 	foreach ( array( 'mrzaib_seo_intro' => 'MR ZAIB has a scent for you.', 'mrzaib_seo_more' => 'Arvon: Unisex Perfume for Men and Women' ) as $mod => $old ) {
 		$v = (string) get_theme_mod( $mod, '' );
-		if ( '' !== $v && false !== strpos( $v, $old ) && false === strpos( $v, 'Zay-ab' ) ) {
+		if ( '' !== $v && false !== strpos( $v, $old ) && false === strpos( $v, 'Kireza' ) ) {
 			remove_theme_mod( $mod );
 		}
 	}
-	update_option( 'mrzaib_seo_text_v', 2 );
+	update_option( 'mrzaib_seo_text_v', 3 );
 }, 20 );
 
 /** Theme icon file for feature N (1-4). */
@@ -82,7 +86,7 @@ function mrzaib_video_product( $n ) {
  * as real media (with previews) and can be picked again from Media.
  * Only fields still using the theme default (or empty) are changed.
  */
-define( 'MRZAIB_HOME_MEDIA_V', 3 );
+define( 'MRZAIB_HOME_MEDIA_V', 4 );
 
 function mrzaib_home_media_items() {
 	$items = array();
@@ -95,9 +99,9 @@ function mrzaib_home_media_items() {
 		$items[ 'hero_img_' . $i ] = array( 'assets/images/hero-' . $i . '-desktop.jpg', $d[0] );
 		$items[ 'hero_mob_' . $i ] = array( 'assets/images/hero-' . $i . '-mobile.jpg', $d[1] );
 	}
-	/* Third value = version tag: a new tag imports the updated file again (v3 = 4 bottles). */
-	$items['promo_img_d'] = array( 'assets/images/promo-band-desktop.jpg', MRZAIB_URI . '/assets/images/promo-band-desktop.jpg', 'v3' );
-	$items['promo_img_m'] = array( 'assets/images/promo-band-mobile.jpg', MRZAIB_URI . '/assets/images/promo-band-mobile.jpg', 'v3' );
+	/* Third value = version tag: a new tag imports the updated file again (v4 = 6 bottles). */
+	$items['promo_img_d'] = array( 'assets/images/promo-band-desktop.jpg', MRZAIB_URI . '/assets/images/promo-band-desktop.jpg', 'v4' );
+	$items['promo_img_m'] = array( 'assets/images/promo-band-mobile.jpg', MRZAIB_URI . '/assets/images/promo-band-mobile.jpg', 'v4' );
 	return $items;
 }
 
