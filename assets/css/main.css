@@ -1712,4 +1712,6 @@ html[data-mzview="list"] .mzshop-main .product-card{align-items:center}
 .nl-form{position:relative}
 .nl-form .nl-msg{flex-basis:100%;margin:6px 0 0;font-size:14px;color:#3c7a3c}
 .nl-form .nl-msg.is-error{color:#a8843c}
-.nl-form button.is-loading{opacity:.6;pointer-events:none}
+.nl-form button{position:relative}
+.nl-form button.is-sending,.nl-form button.is-sending:disabled{color:transparent!important;-webkit-text-fill-color:transparent!important;pointer-events:none;opacity:1}
+.nl-form button.is-sending::after{content:"";position:absolute;top:50%;left:50%;width:18px;height:18px;margin:-9px 0 0 -9px;border:2px solid #111;border-right-color:transparent;border-radius:50%;animation:mzspin .7s linear infinite;box-sizing:border-box}

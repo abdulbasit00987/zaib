@@ -462,14 +462,14 @@
       $m.text(($m.data('bad')) || 'Please enter a valid email address.').addClass('is-error').prop('hidden', false);
       return;
     }
-    $b.prop('disabled', true).addClass('is-loading');
+    $b.prop('disabled', true).addClass('is-sending').attr('aria-busy', 'true');
     $.post(MRZAIB.ajax, $f.serialize() + '&action=mrzaib_subscribe').done(function (r) {
       $m.text(r.message).toggleClass('is-error', !r.ok).prop('hidden', false);
       if (r.ok) { $f[0].reset(); }
     }).fail(function () {
       $m.text('Something went wrong. Please try again.').addClass('is-error').prop('hidden', false);
     }).always(function () {
-      $b.prop('disabled', false).removeClass('is-loading');
+      $b.prop('disabled', false).removeClass('is-sending').removeAttr('aria-busy');
       clearTimeout($f.data('t'));
       $f.data('t', setTimeout(function () { $m.prop('hidden', true); }, 10000));
     });
