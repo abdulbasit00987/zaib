@@ -453,11 +453,26 @@
     vids.forEach(function (v) { io.observe(v); });
   })();
 
-  /* Newsletter (front-end only; connect Mailchimp etc. later) */
+  /* Newsletter subscribe (ajax; falls back to normal POST without JS) */
   $('[data-newsletter]').on('submit', function (e) {
+    var $f = $(this), $m = $f.find('.nl-msg'), $b = $f.find('button[type=submit]'), em = $.trim($f.find('input[type=email]').val());
+    if (!window.MRZAIB) return;
     e.preventDefault();
-    $(this).find('.nl-msg').prop('hidden', false);
-    this.reset();
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(em)) {
+      $m.text(($m.data('bad')) || 'Please enter a valid email address.').addClass('is-error').prop('hidden', false);
+      return;
+    }
+    $b.prop('disabled', true).addClass('is-loading');
+    $.post(MRZAIB.ajax, $f.serialize() + '&action=mrzaib_subscribe').done(function (r) {
+      $m.text(r.message).toggleClass('is-error', !r.ok).prop('hidden', false);
+      if (r.ok) { $f[0].reset(); }
+    }).fail(function () {
+      $m.text('Something went wrong. Please try again.').addClass('is-error').prop('hidden', false);
+    }).always(function () {
+      $b.prop('disabled', false).removeClass('is-loading');
+      clearTimeout($f.data('t'));
+      $f.data('t', setTimeout(function () { $m.prop('hidden', true); }, 10000));
+    });
   });
 })(jQuery);
 

@@ -9,11 +9,7 @@
 <section class="newsletter">
 	<div class="container newsletter-inner">
 		<p class="nl-text"><?php esc_html_e( "Let's keep in touch! Get email offers & the latest news from us", 'mrzaib' ); ?></p>
-		<form class="nl-form" action="#" method="post" data-newsletter>
-			<input type="email" name="email" required placeholder="<?php esc_attr_e( 'Enter your email', 'mrzaib' ); ?>">
-			<button type="submit" class="btn btn-dark"><?php esc_html_e( 'Subscribe', 'mrzaib' ); ?></button>
-			<p class="nl-msg" hidden><?php esc_html_e( 'Thanks for subscribing!', 'mrzaib' ); ?></p>
-		</form>
+		<?php mrzaib_newsletter_form(); ?>
 	</div>
 </section>
 

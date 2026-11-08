@@ -381,7 +381,7 @@ function mrzaib_email_logo_url() {
  * @param array $a title, intro (html allowed: p/strong/br), rows (label=>value), list (steps), button (text,url), button2 (text,url), preheader.
  */
 function mrzaib_email_html( $a ) {
-	$a     = wp_parse_args( $a, array( 'title' => '', 'eyebrow' => '', 'intro' => '', 'rows' => array(), 'list' => array(), 'button' => array(), 'button2' => array(), 'preheader' => '', 'note' => '' ) );
+	$a     = wp_parse_args( $a, array( 'title' => '', 'eyebrow' => '', 'intro' => '', 'rows' => array(), 'list' => array(), 'button' => array(), 'button2' => array(), 'preheader' => '', 'note' => '', 'image' => array(), 'price' => '', 'unsub' => '' ) );
 	$gold  = '#deba68';
 	$site  = get_bloginfo( 'name' );
 	$font  = "'Jost','Helvetica Neue',Helvetica,Arial,sans-serif";
@@ -404,6 +404,14 @@ function mrzaib_email_html( $a ) {
 		<h1 style="margin:0 0 16px;font-family:<?php echo $serif; // phpcs:ignore ?>;font-size:28px;line-height:1.25;color:#111;font-weight:600"><?php echo esc_html( $a['title'] ); ?></h1>
 		<?php echo wp_kses( $a['intro'], array( 'p' => array( 'style' => array() ), 'strong' => array(), 'br' => array(), 'a' => array( 'href' => array(), 'style' => array() ) ) ); ?>
 	</td></tr>
+	<?php if ( $a['image'] ) : ?>
+	<tr><td align="center" style="padding:10px 40px 4px">
+		<a href="<?php echo esc_url( $a['image'][1] ); ?>" style="text-decoration:none"><img src="<?php echo esc_url( $a['image'][0] ); ?>" alt="<?php echo esc_attr( $a['title'] ); ?>" width="520" style="display:block;width:100%;max-width:520px;height:auto;border:0;border-radius:10px"></a>
+	</td></tr>
+	<?php endif; ?>
+	<?php if ( $a['price'] ) : ?>
+	<tr><td align="center" style="padding:14px 40px 0;font-family:<?php echo $font; // phpcs:ignore ?>;font-size:20px;color:#a8843c;font-weight:600"><?php echo wp_kses( $a['price'], array( 'del' => array( 'style' => array() ), 'span' => array( 'style' => array() ) ) ); ?></td></tr>
+	<?php endif; ?>
 	<?php if ( $a['rows'] ) : ?>
 	<tr><td style="padding:10px 40px 6px">
 		<table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="border:1px solid #efe6d2;border-radius:10px;overflow:hidden;font-family:<?php echo $font; // phpcs:ignore ?>">
@@ -464,6 +472,7 @@ function mrzaib_email_html( $a ) {
 			echo '<br>' . implode( ' &nbsp;|&nbsp; ', $soc ); // phpcs:ignore
 		}
 		?>
+		<?php if ( $a['unsub'] ) : ?><br><span style="color:#888"><?php esc_html_e( 'You are receiving this because you subscribed on our website.', 'mrzaib' ); ?> <a href="<?php echo esc_url( $a['unsub'] ); ?>" style="color:#bbb;text-decoration:underline"><?php esc_html_e( 'Unsubscribe', 'mrzaib' ); ?></a></span><?php endif; ?>
 		<br><span style="color:#777">&copy; <?php echo esc_html( gmdate( 'Y' ) . ' ' . $site ); ?>. <?php esc_html_e( 'All rights reserved.', 'mrzaib' ); ?></span>
 	</td></tr>
 </table>
