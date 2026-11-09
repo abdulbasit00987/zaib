@@ -110,6 +110,7 @@ function mrzaib_get_questions( $pid ) {
 			'id'     => (int) $q->comment_ID,
 			'q'      => $q->comment_content,
 			'name'   => mrzaib_short_name( $q->comment_author ),
+			'initials' => mrzaib_initials( $q->comment_author ),
 			'date'   => mrzaib_rel_date( $q->comment_date_gmt ),
 			'ts'     => strtotime( $q->comment_date_gmt ),
 			'answer' => $ans,
@@ -485,7 +486,10 @@ function mrzaib_ajax_useful() {
 add_action( 'mrzaib_notify_question', 'wp_notify_moderator' );
 
 /* When the store answers a question (admin reply), approve it and email the asker. */
-add_action( 'comment_post', function ( $cid, $approved ) {
+add_action( 'comment_post', function ( $cid ) {
+	mrzaib_question_answered( $cid );
+}, 10, 1 );
+function mrzaib_question_answered( $cid ) {
 	$c = get_comment( $cid );
 	if ( ! $c || ! $c->comment_parent ) {
 		return;
@@ -502,7 +506,147 @@ add_action( 'comment_post', function ( $cid, $approved ) {
 			sprintf( "%s\n\n%s\n\n%s", $parent->comment_content, $c->comment_content, get_permalink( $parent->comment_post_ID ) . '#reviews' )
 		);
 	}
+}
+
+/* ---------- Admin: keep questions out of the Reviews lists, give them their own box ---------- */
+function mrzaib_hide_questions_here() {
+	if ( ! is_admin() ) {
+		return false;
+	}
+	$action = isset( $_REQUEST['action'] ) ? sanitize_key( wp_unslash( $_REQUEST['action'] ) ) : ''; // phpcs:ignore
+	if ( wp_doing_ajax() ) {
+		return in_array( $action, array( 'get-comments', 'replyto-comment', 'edit-comment' ), true );
+	}
+	global $pagenow;
+	$page = isset( $_GET['page'] ) ? sanitize_key( wp_unslash( $_GET['page'] ) ) : ''; // phpcs:ignore
+	return 'product-reviews' === $page || 'post.php' === $pagenow;
+}
+add_filter( 'comments_clauses', function ( $clauses, $q ) {
+	if ( ! mrzaib_hide_questions_here() ) {
+		return $clauses;
+	}
+	$type = $q->query_vars['type'] ?? '';
+	$in   = (array) ( $q->query_vars['type__in'] ?? array() );
+	if ( 'mz_question' === $type || in_array( 'mz_question', $in, true ) || ! empty( $q->query_vars['parent'] ) || ! empty( $q->query_vars['mz_keep_q'] ) ) {
+		return $clauses;
+	}
+	global $wpdb;
+	$ids = $wpdb->get_col( "SELECT comment_ID FROM {$wpdb->comments} WHERE comment_type = 'mz_question'" ); // phpcs:ignore
+	$where = " AND {$wpdb->comments}.comment_type <> 'mz_question'";
+	if ( $ids ) {
+		$where .= " AND {$wpdb->comments}.comment_parent NOT IN (" . implode( ',', array_map( 'intval', $ids ) ) . ')';
+	}
+	$clauses['where'] .= $where;
+	return $clauses;
 }, 10, 2 );
+
+add_action( 'add_meta_boxes_product', function () {
+	add_meta_box( 'mrzaib-questions', __( 'Customer Questions', 'mrzaib' ), 'mrzaib_questions_metabox', 'product', 'normal', 'low' );
+} );
+function mrzaib_questions_metabox( $post ) {
+	$qs = get_comments( array( 'post_id' => $post->ID, 'type' => 'mz_question', 'parent' => 0, 'status' => 'all', 'orderby' => 'comment_date_gmt', 'order' => 'DESC' ) );
+	$nonce = wp_create_nonce( 'mrzaib_q_admin' );
+	echo '<div class="mzq-admin" data-nonce="' . esc_attr( $nonce ) . '">';
+	if ( ! $qs ) {
+		echo '<p class="mzq-none">' . esc_html__( 'No questions yet. Questions customers ask on the product page will show here, separate from reviews.', 'mrzaib' ) . '</p>';
+	}
+	foreach ( $qs as $q ) {
+		$ans     = get_comments( array( 'parent' => $q->comment_ID, 'status' => 'approve', 'number' => 1, 'orderby' => 'comment_date_gmt', 'order' => 'ASC' ) );
+		$ans     = $ans ? $ans[0] : null;
+		$pending = '1' !== (string) $q->comment_approved;
+		printf( '<div class="mzq-item%s" data-id="%d">', $pending ? ' is-pending' : '', (int) $q->comment_ID );
+		echo '<div class="mzq-head"><span class="mzq-ava">' . esc_html( mrzaib_initials( $q->comment_author ) ) . '</span><div class="mzq-who"><strong>' . esc_html( $q->comment_author ) . '</strong><a href="mailto:' . esc_attr( $q->comment_author_email ) . '">' . esc_html( $q->comment_author_email ) . '</a></div>';
+		echo '<span class="mzq-date">' . esc_html( mysql2date( get_option( 'date_format' ) . ' ' . get_option( 'time_format' ), $q->comment_date ) ) . '</span>';
+		echo '<span class="mzq-status">' . ( $pending ? esc_html__( 'Pending', 'mrzaib' ) : esc_html__( 'Published', 'mrzaib' ) ) . '</span></div>';
+		echo '<p class="mzq-q"><span>Q:</span> ' . esc_html( $q->comment_content ) . '</p>';
+		echo '<div class="mzq-answer"><label>' . esc_html__( 'Store answer', 'mrzaib' ) . '</label><textarea rows="2" placeholder="' . esc_attr__( 'Write your answer. Saving publishes the question and emails the customer.', 'mrzaib' ) . '">' . esc_textarea( $ans ? $ans->comment_content : '' ) . '</textarea></div>';
+		echo '<div class="mzq-actions"><button type="button" class="button button-primary" data-op="answer">' . ( $ans ? esc_html__( 'Update answer', 'mrzaib' ) : esc_html__( 'Save answer & publish', 'mrzaib' ) ) . '</button>';
+		echo $pending ? '<button type="button" class="button" data-op="approve">' . esc_html__( 'Approve', 'mrzaib' ) . '</button>' : '<button type="button" class="button" data-op="unapprove">' . esc_html__( 'Unapprove', 'mrzaib' ) . '</button>';
+		echo '<button type="button" class="button-link mzq-del" data-op="trash">' . esc_html__( 'Trash', 'mrzaib' ) . '</button><span class="mzq-msg"></span></div>';
+		echo '</div>';
+	}
+	echo '</div>';
+	?>
+	<style>
+	#mrzaib-questions .mzq-item{border:1px solid #e2e4e7;border-left:4px solid #deba68;border-radius:6px;padding:14px 16px;margin:12px 0;background:#fff}
+	#mrzaib-questions .mzq-item.is-pending{background:#fef7f1;border-left-color:#d63638}
+	#mrzaib-questions .mzq-head{display:flex;align-items:center;gap:10px}
+	#mrzaib-questions .mzq-ava{width:34px;height:34px;flex:0 0 34px;border-radius:50%;background:#efefef;color:#333;font-weight:600;display:inline-flex;align-items:center;justify-content:center}
+	#mrzaib-questions .mzq-who{display:flex;flex-direction:column;line-height:1.35;flex:1}
+	#mrzaib-questions .mzq-date{color:#777;font-size:12px}
+	#mrzaib-questions .mzq-status{font-size:11px;font-weight:600;padding:2px 8px;border-radius:10px;background:#e7f5ec;color:#1e7a43}
+	#mrzaib-questions .is-pending .mzq-status{background:#fcebea;color:#b32d2e}
+	#mrzaib-questions .mzq-q{font-size:14px;margin:10px 0}
+	#mrzaib-questions .mzq-q span{font-weight:700;color:#a8843c}
+	#mrzaib-questions .mzq-answer label{display:block;font-weight:600;margin-bottom:4px}
+	#mrzaib-questions .mzq-answer textarea{width:100%}
+	#mrzaib-questions .mzq-actions{display:flex;align-items:center;gap:8px;margin-top:8px}
+	#mrzaib-questions .mzq-del{color:#b32d2e}
+	#mrzaib-questions .mzq-msg{color:#1e7a43;font-size:12px}
+	</style>
+	<script>
+	(function(){var box=document.querySelector('#mrzaib-questions .mzq-admin');if(!box)return;
+	box.addEventListener('click',function(e){var b=e.target.closest('[data-op]');if(!b)return;e.preventDefault();
+	var it=b.closest('.mzq-item'),op=b.getAttribute('data-op');if(op==='trash'&&!confirm('Move this question to Trash?'))return;
+	var fd=new FormData();fd.append('action','mrzaib_q_admin');fd.append('_wpnonce',box.getAttribute('data-nonce'));fd.append('id',it.getAttribute('data-id'));fd.append('op',op);fd.append('answer',it.querySelector('textarea').value);
+	var m=it.querySelector('.mzq-msg');m.textContent='Saving…';b.disabled=true;
+	fetch(ajaxurl,{method:'POST',body:fd,credentials:'same-origin'}).then(function(r){return r.json();}).then(function(r){b.disabled=false;
+	if(!r||!r.success){m.style.color='#b32d2e';m.textContent=(r&&r.data&&r.data.msg)||'Error';return;}
+	if(op==='trash'){it.remove();return;}
+	var pend=op==='unapprove';it.classList.toggle('is-pending',pend);it.querySelector('.mzq-status').textContent=pend?'Pending':'Published';
+	var t=it.querySelector('[data-op=approve],[data-op=unapprove]');t.setAttribute('data-op',pend?'approve':'unapprove');t.textContent=pend?'Approve':'Unapprove';
+	if(op==='answer')b.textContent='Update answer';m.style.color='';m.textContent='Saved';setTimeout(function(){m.textContent='';},2500);
+	}).catch(function(){b.disabled=false;m.textContent='Network error';});});})();
+	</script>
+	<?php
+}
+add_action( 'wp_ajax_mrzaib_q_admin', function () {
+	check_ajax_referer( 'mrzaib_q_admin' );
+	$id = isset( $_POST['id'] ) ? absint( $_POST['id'] ) : 0;
+	$q  = get_comment( $id );
+	if ( ! $q || 'mz_question' !== $q->comment_type || ! current_user_can( 'edit_comment', $id ) ) {
+		wp_send_json_error( array( 'msg' => __( 'Not allowed.', 'mrzaib' ) ) );
+	}
+	$op = isset( $_POST['op'] ) ? sanitize_key( wp_unslash( $_POST['op'] ) ) : '';
+	if ( 'approve' === $op || 'unapprove' === $op ) {
+		wp_set_comment_status( $id, 'approve' === $op ? 'approve' : 'hold' );
+	} elseif ( 'trash' === $op ) {
+		wp_trash_comment( $id );
+	} elseif ( 'answer' === $op ) {
+		$text = isset( $_POST['answer'] ) ? sanitize_textarea_field( wp_unslash( $_POST['answer'] ) ) : '';
+		if ( mb_strlen( $text ) < 2 ) {
+			wp_send_json_error( array( 'msg' => __( 'Write an answer first.', 'mrzaib' ) ) );
+		}
+		$old = get_comments( array( 'parent' => $id, 'status' => 'approve', 'number' => 1, 'orderby' => 'comment_date_gmt', 'order' => 'ASC' ) );
+		if ( $old ) {
+			wp_update_comment( array( 'comment_ID' => $old[0]->comment_ID, 'comment_content' => $text ) );
+			wp_set_comment_status( $id, 'approve' );
+		} else {
+			$u   = wp_get_current_user();
+			$cid = wp_insert_comment( array(
+				'comment_post_ID'      => $q->comment_post_ID,
+				'comment_parent'       => $id,
+				'comment_content'      => $text,
+				'comment_approved'     => 1,
+				'user_id'              => $u->ID,
+				'comment_author'       => $u->display_name,
+				'comment_author_email' => $u->user_email,
+			) );
+			if ( $cid ) {
+				mrzaib_question_answered( $cid );
+			}
+		}
+	}
+	wp_send_json_success();
+} );
+
+/* Products > Questions shortcut to all questions. */
+add_action( 'admin_menu', function () {
+	global $wpdb;
+	$n = (int) $wpdb->get_var( "SELECT COUNT(*) FROM {$wpdb->comments} WHERE comment_type = 'mz_question' AND comment_approved = '0'" ); // phpcs:ignore
+	$label = __( 'Questions', 'mrzaib' ) . ( $n ? ' <span class="awaiting-mod">' . $n . '</span>' : '' );
+	add_submenu_page( 'edit.php?post_type=product', __( 'Product Questions', 'mrzaib' ), $label, 'moderate_comments', 'edit-comments.php?comment_type=mz_question' );
+}, 60 );
 
 /* ---------- Demo reviews & questions ---------- */
 function mrzaib_seed_reviews() {
