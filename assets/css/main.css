@@ -1715,3 +1715,12 @@ html[data-mzview="list"] .mzshop-main .product-card{align-items:center}
 .nl-form button{position:relative}
 .nl-form button.is-sending,.nl-form button.is-sending:disabled{color:transparent!important;-webkit-text-fill-color:transparent!important;pointer-events:none;opacity:1}
 .nl-form button.is-sending::after{content:"";position:absolute;top:50%;left:50%;width:18px;height:18px;margin:-9px 0 0 -9px;border:2px solid #111;border-right-color:transparent;border-radius:50%;animation:mzspin .7s linear infinite;box-sizing:border-box}
+/* list view: quick view + cart icons on the card's top-right corner (like reference) */
+html[data-mzview="list"] .mzshop-main .product-card{overflow:visible}
+html[data-mzview="list"] .mzshop-main .card-media-wrap{position:static;align-self:stretch;border-radius:10px 0 0 10px;overflow:hidden}
+html[data-mzview="list"] .mzshop-main .card-icons{top:-6px;right:-10px;left:auto;gap:8px;z-index:4}
+html[data-mzview="list"] .mzshop-main .card-info{padding-right:56px}
+@media (max-width:768px){
+  html[data-mzview="list"] .mzshop-main .card-icons{top:8px;right:8px}
+  html[data-mzview="list"] .mzshop-main .card-info{padding-right:48px}
+}
