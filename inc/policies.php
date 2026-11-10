@@ -16,14 +16,14 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-define( 'MRZAIB_POLICY_V', 2 );
+define( 'MRZAIB_POLICY_V', 3 );
 
 /* ---------- order confirmation note ---------- */
 function mrzaib_confirm_default_short() {
 	return 'After you order, our team will call or WhatsApp you on your number to confirm it and share our account details. Send the delivery charges with the payment slip, and your order is dispatched. Pay the rest in cash to the rider on delivery.';
 }
 function mrzaib_confirm_default_full() {
-	return 'How your order works: after you place your order, our team will call or WhatsApp you on the phone number you entered to confirm it and share our account details. Please send the delivery charges shown at checkout to that account and share the payment slip (screenshot) with our team. Your order is then dispatched to your address. On delivery, pay the rider the order amount in cash, without the delivery charges, because you have already paid them. If your order has free delivery, no advance payment is needed.';
+	return 'How your order works: after you place your order, our team will call or WhatsApp you on the phone number you entered to confirm it and share our account details. Please send the delivery charges shown at checkout to that account and share the payment slip (screenshot) with our team. Your order is then dispatched to your address. On delivery, pay the rider the order amount in cash, without the delivery charges, because you have already paid them.';
 }
 function mrzaib_confirm_text( $full = true ) {
 	return $full ? mrzaib_opt( 'confirm_full', mrzaib_confirm_default_full() ) : mrzaib_opt( 'confirm_short', mrzaib_confirm_default_short() );
@@ -136,7 +136,7 @@ function mrzaib_policy_content( $slug ) {
 				. mrzaib_pb_p( 'If we cannot reach you after a few attempts by call or WhatsApp, the order may be put on hold or cancelled.' )
 				. mrzaib_pb_h( 'Delivery charges' )
 				. mrzaib_pb_p( '[mrzaib_shipping] The delivery charges for your order are shown at checkout.' )
-				. mrzaib_pb_p( '<strong>Delivery charges are paid in advance</strong> to the account our team shares with you on the confirmation call or WhatsApp. If your order has free delivery, no advance payment is needed.' )
+				. mrzaib_pb_p( '<strong>Delivery charges are paid in advance</strong> to the account our team shares with you on the confirmation call or WhatsApp.' )
 				. mrzaib_pb_h( 'Payment: Cash on Delivery' )
 				. mrzaib_pb_p( 'The order amount is <strong>Cash on Delivery (COD)</strong>. You pay the rider in cash when your parcel arrives, without the delivery charges you already paid in advance.' )
 				. mrzaib_pb_h( 'Delivery time' )
@@ -270,6 +270,7 @@ function mrzaib_fill_policy_pages( $force = false ) {
 			|| false !== strpos( $page->post_content, 'Delivery charges are confirmed with you on this confirmation call' )
 			|| false !== strpos( $page->post_content, 'to confirm your order and its delivery charges' )
 			|| false !== strpos( $page->post_content, 'Because all orders are Cash on Delivery, refunds are sent' );
+		$v1  = $v1 || false !== strpos( $page->post_content, 'If your order has free delivery, no advance payment is needed' );
 		$old = $v1 || '' === $c
 			|| false !== strpos( $c, '(Replace with' )
 			|| ( false !== strpos( $page->post_content, '[mrzaib_shipping]' ) && false === strpos( $page->post_content, 'How your order works' ) )
@@ -295,8 +296,8 @@ add_action( 'admin_init', function () {
 function mrzaib_default_faqs() {
 	return array(
 		array( 'Orders & Delivery', 'How will my order be confirmed?', 'After you place your order, our team will call or WhatsApp you on the phone number you entered in the order form to confirm your order. Please keep your phone on.' ),
-		array( 'Orders & Delivery', 'How do I pay the delivery charges?', 'Delivery charges are paid in advance. On the confirmation call or WhatsApp, our team shares our account details. Send the delivery charges shown at checkout and share the payment slip, then your order is dispatched. If your order has free delivery, no advance payment is needed.' ),
-		array( 'Orders & Delivery', 'How much are the delivery charges?', 'The delivery charges for your city are shown on the website at checkout. Larger orders get free delivery.' ),
+		array( 'Orders & Delivery', 'How do I pay the delivery charges?', 'Delivery charges are paid in advance. On the confirmation call or WhatsApp, our team shares our account details. Send the delivery charges shown at checkout and share the payment slip, then your order is dispatched.' ),
+		array( 'Orders & Delivery', 'How much are the delivery charges?', 'The delivery charges for your city are shown on the website at checkout.' ),
 		array( 'Orders & Delivery', 'Do you offer Cash on Delivery?', 'Yes. The order amount is Cash on Delivery all over Pakistan. You pay the rider in cash when your parcel arrives, without the delivery charges, because they are paid in advance.' ),
 		array( 'Orders & Delivery', 'How long does delivery take?', 'Orders are dispatched within 1 to 2 working days after confirmation and payment of the delivery charges, and usually arrive in 2 to 5 working days, depending on your city.' ),
 		array( 'Orders & Delivery', 'How can I track my order?', 'We share the courier tracking number after dispatch. You can also use the Track Your Order page with your order number and email.' ),
