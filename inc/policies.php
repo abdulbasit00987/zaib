@@ -16,14 +16,14 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-define( 'MRZAIB_POLICY_V', 1 );
+define( 'MRZAIB_POLICY_V', 2 );
 
 /* ---------- order confirmation note ---------- */
 function mrzaib_confirm_default_short() {
-	return 'After you place your order, our team will call you on the phone number you entered to confirm it. Delivery charges are confirmed on that call, and you pay cash on delivery.';
+	return 'After you order, our team will call or WhatsApp you on your number to confirm it and share our account details. Send the delivery charges with the payment slip, and your order is dispatched. Pay the rest in cash to the rider on delivery.';
 }
 function mrzaib_confirm_default_full() {
-	return 'Order confirmation: after you place your order, our team will contact you on the phone number you entered in the checkout form to confirm your order. Delivery charges will be confirmed with you on that call, and payment is Cash on Delivery. Please keep your phone on so we can confirm and dispatch your order quickly.';
+	return 'How your order works: after you place your order, our team will call or WhatsApp you on the phone number you entered to confirm it and share our account details. Please send the delivery charges shown at checkout to that account and share the payment slip (screenshot) with our team. Your order is then dispatched to your address. On delivery, pay the rider the order amount in cash, without the delivery charges, because you have already paid them. If your order has free delivery, no advance payment is needed.';
 }
 function mrzaib_confirm_text( $full = true ) {
 	return $full ? mrzaib_opt( 'confirm_full', mrzaib_confirm_default_full() ) : mrzaib_opt( 'confirm_short', mrzaib_confirm_default_short() );
@@ -44,7 +44,7 @@ add_action( 'customize_register', function ( $c ) {
 	$c->add_section( 'mrzaib_confirm', array(
 		'title'       => __( 'Order Confirmation Note', 'mrzaib' ),
 		'panel'       => 'mrzaib_panel',
-		'description' => __( 'This note tells customers that your team will call them to confirm the order and delivery charges, and that payment is Cash on Delivery. The short text shows on product pages and the cart. The full text shows on checkout, the thank-you page and order emails.', 'mrzaib' ),
+		'description' => __( 'This note tells customers that your team will call or WhatsApp them to confirm the order, that they send the delivery charges in advance with a payment slip, and pay the rest in cash to the rider. The short text shows on product pages and the cart. The full text shows on checkout, the thank-you page and order emails.', 'mrzaib' ),
 		'priority'    => 160,
 	) );
 	$c->add_setting( 'mrzaib_confirm_on', array( 'default' => '1', 'sanitize_callback' => function ( $v ) { return $v ? '1' : ''; } ) );
@@ -84,6 +84,14 @@ add_action( 'woocommerce_email_before_order_table', function ( $order, $sent_to_
 	}
 }, 5, 3 );
 
+/* Cash on Delivery description at checkout. */
+add_filter( 'woocommerce_gateway_description', function ( $desc, $id ) {
+	if ( 'cod' === $id && mrzaib_opt( 'confirm_on', '1' ) ) {
+		return esc_html__( 'Pay the order amount in cash to the rider on delivery. Delivery charges are paid in advance after our team confirms your order.', 'mrzaib' );
+	}
+	return $desc;
+}, 10, 2 );
+
 /* ---------- shortcodes used in the policy pages ---------- */
 add_shortcode( 'mrzaib_contact_line', function () {
 	$parts = array();
@@ -116,17 +124,24 @@ function mrzaib_policy_content( $slug ) {
 	};
 	switch ( $slug ) {
 		case 'shipping-policy':
-			return mrzaib_pb_p( 'At <strong>MR ZAIB</strong> we deliver our perfumes to every city in Pakistan. This page explains how your order is confirmed, how long delivery takes and how delivery charges work.' )
-				. mrzaib_pb_h( 'Order confirmation call' )
-				. mrzaib_pb_p( 'After you place your order, <strong>our team will contact you on the phone number you entered in the order form</strong> to confirm your order. We only dispatch an order after it is confirmed, so please enter a correct, active mobile number and keep your phone on.' )
+			return mrzaib_pb_p( 'At <strong>MR ZAIB</strong> we deliver our perfumes to every city in Pakistan. This page explains how your order is confirmed, how delivery charges are paid and how long delivery takes.' )
+				. mrzaib_pb_h( 'How your order works' )
+				. mrzaib_pb_ul( array(
+					'<strong>1. Order confirmation:</strong> after you place your order, our team will call or WhatsApp you on the phone number you entered in the order form to confirm your order.',
+					'<strong>2. Pay delivery charges in advance:</strong> on that call or WhatsApp, our team shares our account details. Send the delivery charges shown on the website at checkout, then send us the payment slip (screenshot).',
+					'<strong>3. Dispatch:</strong> once we receive the delivery charges, your order is dispatched to your address.',
+					'<strong>4. Pay the rest on delivery:</strong> when your order arrives, pay the rider the order amount in cash, without the delivery charges, because you have already paid them.',
+				) )
+				. mrzaib_pb_p( 'Please enter a correct, active mobile number and keep your phone and WhatsApp on, so we can confirm and dispatch your order quickly.' )
 				. mrzaib_pb_p( 'If we cannot reach you after a few attempts by call or WhatsApp, the order may be put on hold or cancelled.' )
 				. mrzaib_pb_h( 'Delivery charges' )
-				. mrzaib_pb_p( 'Delivery charges depend on your city and order. <strong>Your delivery charges will be confirmed with you when our team calls you to confirm your order</strong>, and the confirmed charges are the ones you pay. Any delivery charges shown at checkout are an estimate.' )
+				. mrzaib_pb_p( '[mrzaib_shipping] The delivery charges for your order are shown at checkout.' )
+				. mrzaib_pb_p( '<strong>Delivery charges are paid in advance</strong> to the account our team shares with you on the confirmation call or WhatsApp. If your order has free delivery, no advance payment is needed.' )
 				. mrzaib_pb_h( 'Payment: Cash on Delivery' )
-				. mrzaib_pb_p( 'All orders are <strong>Cash on Delivery (COD)</strong>. You pay the courier in cash when your parcel arrives. Please keep the exact amount (order total plus confirmed delivery charges) ready.' )
+				. mrzaib_pb_p( 'The order amount is <strong>Cash on Delivery (COD)</strong>. You pay the rider in cash when your parcel arrives, without the delivery charges you already paid in advance.' )
 				. mrzaib_pb_h( 'Delivery time' )
 				. mrzaib_pb_ul( array(
-					'Orders are dispatched within 1 to 2 working days after confirmation.',
+					'Orders are dispatched within 1 to 2 working days after confirmation and receipt of the delivery charges.',
 					'[mrzaib_delivery_time]',
 					'Orders placed on Sundays or public holidays are processed on the next working day.',
 					'During sales and festive seasons, delivery can take 1 to 3 extra days.',
@@ -160,13 +175,13 @@ function mrzaib_policy_content( $slug ) {
 				) )
 				. mrzaib_pb_h( 'Refunds' )
 				. mrzaib_pb_ul( array(
-					'Because all orders are Cash on Delivery, refunds are sent by bank transfer, JazzCash or Easypaisa to the account you share with our team.',
+					'Refunds are sent by bank transfer, JazzCash or Easypaisa to the account you share with our team.',
 					'Refunds are processed within 5 to 7 working days after we receive and approve the returned product.',
-					'Delivery charges are not refundable, unless the product was damaged, leaking or wrong.',
+					'Delivery charges paid in advance are not refundable once the order is dispatched, unless the product was damaged, leaking or wrong.',
 					'For change-of-mind returns, the return delivery charges are paid by the customer.',
 				) )
 				. mrzaib_pb_h( 'Order cancellation' )
-				. mrzaib_pb_p( 'You can cancel your order before it is dispatched, for example when our team calls you to confirm it. Once an order is dispatched, it can only be returned under this policy.' )
+				. mrzaib_pb_p( 'You can cancel your order before it is dispatched, for example when our team calls you to confirm it. If you already paid the delivery charges and cancel before dispatch, we refund them. Once an order is dispatched, it can only be returned under this policy.' )
 				. mrzaib_pb_h( 'Questions?' )
 				. mrzaib_pb_p( 'Contact our team: [mrzaib_contact_line].' );
 
@@ -185,13 +200,13 @@ function mrzaib_policy_content( $slug ) {
 				. mrzaib_pb_p( 'All prices are in Pakistani Rupees (PKR). Prices and offers can change at any time without notice, but the price confirmed for your order will not change after confirmation.' )
 				. mrzaib_pb_h( 'Orders and confirmation' )
 				. mrzaib_pb_ul( array(
-					'After you place an order, <strong>our team will contact you on the phone number you entered in the order form</strong> to confirm it. Orders are dispatched only after confirmation.',
-					'<strong>Delivery charges are confirmed with you on this confirmation call.</strong>',
+					'After you place an order, <strong>our team will call or WhatsApp you on the phone number you entered in the order form</strong> to confirm it and share our account details.',
+					'<strong>Delivery charges (as shown on the website at checkout) are paid in advance</strong> to that account, with the payment slip sent to our team. Orders are dispatched only after confirmation and receipt of the delivery charges.',
 					'Please enter your correct name, address and an active phone number. If we cannot reach you, we may hold or cancel the order.',
 					'We may refuse or cancel an order in case of stock problems, pricing errors, incomplete details or suspected fake orders.',
 				) )
 				. mrzaib_pb_h( 'Payment' )
-				. mrzaib_pb_p( 'All orders are <strong>Cash on Delivery</strong>. You pay the order total and the confirmed delivery charges in cash when the parcel is delivered. Refusing to receive confirmed COD orders again and again may stop us from accepting your future orders.' )
+				. mrzaib_pb_p( 'Delivery charges are paid in advance as explained above. The order amount is <strong>Cash on Delivery</strong>: you pay it to the rider in cash when the parcel is delivered, without the delivery charges you already paid. Refusing to receive confirmed COD orders again and again may stop us from accepting your future orders.' )
 				. mrzaib_pb_h( 'Delivery, returns and refunds' )
 				. mrzaib_pb_p( 'Delivery is covered in our <a href="' . $u( '/shipping-policy/' ) . '">Shipping Policy</a>, and returns and refunds in our <a href="' . $u( '/refund-policy/' ) . '">Return &amp; Refund Policy</a>.' )
 				. mrzaib_pb_h( 'Reviews and questions' )
@@ -219,7 +234,7 @@ function mrzaib_policy_content( $slug ) {
 				. mrzaib_pb_h( 'How we use your information' )
 				. mrzaib_pb_ul( array(
 					'To process and deliver your order.',
-					'<strong>To call or message you on the phone number you entered to confirm your order and its delivery charges.</strong>',
+					'<strong>To call or WhatsApp you on the phone number you entered to confirm your order and share our account details for the delivery charges.</strong>',
 					'To share courier tracking details and answer your questions, returns and complaints.',
 					'To send offers and new product emails, only if you subscribed. Every email has an unsubscribe link.',
 					'To improve our website, products and service.',
@@ -227,7 +242,7 @@ function mrzaib_policy_content( $slug ) {
 				. mrzaib_pb_h( 'Sharing your information' )
 				. mrzaib_pb_p( 'We never sell or rent your personal information. We only share the details needed to deliver your order (name, phone number and address) with our courier partners, and we use trusted services to run this website and send emails.' )
 				. mrzaib_pb_h( 'Payments' )
-				. mrzaib_pb_p( 'All orders are Cash on Delivery, so we do not collect or store any card or bank details on this website.' )
+				. mrzaib_pb_p( 'We do not collect or store any card or bank details on this website. Delivery charges are sent by you to our account, and the order amount is paid in cash on delivery. Payment slips you send us are used only to verify your payment.' )
 				. mrzaib_pb_h( 'Cookies' )
 				. mrzaib_pb_p( 'We use cookies to keep your cart, remember your preferences and understand how our website is used. You can turn cookies off in your browser, but some parts of the website, such as the cart, may not work properly.' )
 				. mrzaib_pb_h( 'Keeping your data safe' )
@@ -251,9 +266,13 @@ function mrzaib_fill_policy_pages( $force = false ) {
 			continue;
 		}
 		$c   = trim( wp_strip_all_tags( $page->post_content ) );
-		$old = '' === $c
+		$v1  = false !== strpos( $page->post_content, 'will be confirmed with you when our team calls' )
+			|| false !== strpos( $page->post_content, 'Delivery charges are confirmed with you on this confirmation call' )
+			|| false !== strpos( $page->post_content, 'to confirm your order and its delivery charges' )
+			|| false !== strpos( $page->post_content, 'Because all orders are Cash on Delivery, refunds are sent' );
+		$old = $v1 || '' === $c
 			|| false !== strpos( $c, '(Replace with' )
-			|| false !== strpos( $page->post_content, '[mrzaib_shipping]' )
+			|| ( false !== strpos( $page->post_content, '[mrzaib_shipping]' ) && false === strpos( $page->post_content, 'How your order works' ) )
 			|| 0 === strpos( $c, 'Not happy with a fragrance? Return it within 15 days' )
 			|| 0 === strpos( $c, 'Return & Refund PolicyNot happy with a fragrance?' )
 			|| 0 === strpos( $c, 'Return &amp; Refund PolicyNot happy with a fragrance?' );
@@ -275,10 +294,11 @@ add_action( 'admin_init', function () {
 /* ---------- FAQs (Pages > FAQ Questions) ---------- */
 function mrzaib_default_faqs() {
 	return array(
-		array( 'Orders & Delivery', 'How will my order be confirmed?', 'After you place your order, our team will contact you on the phone number you entered in the order form to confirm your order. Your order is dispatched after confirmation, so please keep your phone on.' ),
-		array( 'Orders & Delivery', 'How much are the delivery charges?', 'Delivery charges depend on your city and order. Our team will confirm your delivery charges with you on the order confirmation call.' ),
-		array( 'Orders & Delivery', 'Do you offer Cash on Delivery?', 'Yes. All orders are Cash on Delivery all over Pakistan. You pay the courier in cash when your parcel arrives.' ),
-		array( 'Orders & Delivery', 'How long does delivery take?', 'Orders are dispatched within 1 to 2 working days after confirmation and usually arrive in 2 to 5 working days, depending on your city.' ),
+		array( 'Orders & Delivery', 'How will my order be confirmed?', 'After you place your order, our team will call or WhatsApp you on the phone number you entered in the order form to confirm your order. Please keep your phone on.' ),
+		array( 'Orders & Delivery', 'How do I pay the delivery charges?', 'Delivery charges are paid in advance. On the confirmation call or WhatsApp, our team shares our account details. Send the delivery charges shown at checkout and share the payment slip, then your order is dispatched. If your order has free delivery, no advance payment is needed.' ),
+		array( 'Orders & Delivery', 'How much are the delivery charges?', 'The delivery charges for your city are shown on the website at checkout. Larger orders get free delivery.' ),
+		array( 'Orders & Delivery', 'Do you offer Cash on Delivery?', 'Yes. The order amount is Cash on Delivery all over Pakistan. You pay the rider in cash when your parcel arrives, without the delivery charges, because they are paid in advance.' ),
+		array( 'Orders & Delivery', 'How long does delivery take?', 'Orders are dispatched within 1 to 2 working days after confirmation and payment of the delivery charges, and usually arrive in 2 to 5 working days, depending on your city.' ),
 		array( 'Orders & Delivery', 'How can I track my order?', 'We share the courier tracking number after dispatch. You can also use the Track Your Order page with your order number and email.' ),
 		array( 'Orders & Delivery', 'Can I cancel my order?', 'Yes, you can cancel before your order is dispatched, for example on the confirmation call.' ),
 		array( 'Products', 'How long do your perfumes last?', 'Most MR ZAIB perfumes last 8 to 12 hours on skin, depending on skin type and weather.' ),
