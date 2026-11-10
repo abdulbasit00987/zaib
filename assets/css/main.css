@@ -3,7 +3,7 @@
    ========================================================= */
 :root{
   --black:#111;--ink:#1c1c1c;--muted:#6b6b6b;--line:#e8e5e0;--bg:#fff;--soft:#f6f4f0;
-  --cta:#deba68;--cta-dark:#c9a352;--btn:#deba68;--btn-hover:#c9a352;--btn-text:#111;--gold:#b8955a;--gold-dark:#9c7a42;--sale:#a8843c;--theme:#deba68;--theme-dark:#c9a352;--theme-text:#a8843c;
+  --cta:#deba68;--cta-dark:#c9a352;--btn:#deba68;--btn-hover:#c9a352;--btn-text:#111;--gold:#b8955a;--gold-dark:#9c7a42;--sale:#8a6a28;--theme:#deba68;--theme-dark:#c9a352;--theme-text:#8a6a28;
   --radius:10px;--header-bg:#161616;--container:1320px;
   --font:"Jost",system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif;
   --font-head:"Playfair Display",Georgia,serif;
@@ -294,7 +294,7 @@ body.drawer-lock{overflow:hidden}
 
 /* Footer */
 .site-footer{background:var(--black);color:#cfcfcf;padding-top:56px;font-size:14px}
-.site-footer h4{color:#fff;font-family:var(--font);font-size:15px;letter-spacing:1px;text-transform:uppercase;margin-bottom:16px}
+.site-footer h4,.site-footer .ft-h{color:#fff;font-family:var(--font);font-size:15px;letter-spacing:1px;text-transform:uppercase;margin-bottom:16px}
 .footer-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:30px}
 .footer-links{list-style:none;margin:0;padding:0}
 .footer-links li{margin-bottom:9px}
@@ -1516,7 +1516,7 @@ body{font-size:var(--fs-body)}
   .mz-usp-list li,.mz-acc summary,.mz-acc-body{font-size:13px}
   .woocommerce div.product .summary .product-subtitle,.sp-wqv-content .product-subtitle{font-size:14px}
   .mzc-title{font-size:15px}.mzc-meta,.mzc-subtitle{font-size:12.5px}.mzc-sub>span:first-child,.mzc-sub .mzc-price,.mzc-sub .mzc-price .amount{font-size:16px}
-  .site-footer{font-size:13px}.site-footer h4{font-size:14px}
+  .site-footer{font-size:13px}.site-footer h4,.site-footer .ft-h{font-size:14px}
   .announcement-bar{font-size:12px}
   .mzr-avg strong{font-size:34px}.mzr-step h3{font-size:19px}.mzr-rate-star{font-size:34px}
   .mzp-item a,.mzp-details{font-size:14px}
@@ -1751,3 +1751,13 @@ html[data-mzview="list"] .mzshop-main .card-info{padding-right:56px}
 /* Block checkout: space between First/Last name row and Country (WC sets 0) */
 .wc-block-components-address-form .wc-block-components-address-form__country:not(:first-child){margin-top:12px}
 .wp-block-woocommerce-cart .mz-confirm,.wp-block-woocommerce-checkout .mz-confirm{margin:14px 0}
+
+/* Accessibility / PageSpeed (2026-11-11): AA contrast, 24px tap targets on hero dots */
+.best-sellers .tab-btn{color:#5f5f5f}
+.card-price del,.card-price del .amount{color:#6b6b6b}
+.woocommerce div.product p.price del,.sp-wqv-content .price del{opacity:1}
+.slider-dots{gap:4px;bottom:10px}
+.slider-dots button{position:relative;width:24px;height:24px;border:0;border-radius:0;background:none}
+.slider-dots button::before{content:"";position:absolute;left:50%;top:50%;width:9px;height:9px;transform:translate(-50%,-50%);border-radius:50%;border:1px solid #fff;background:rgba(255,255,255,.3);transition:width .25s}
+.slider-dots button.is-active{width:34px;background:none;border-radius:0}
+.slider-dots button.is-active::before{width:26px;border-radius:5px;background:#fff}

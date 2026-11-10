@@ -26,7 +26,8 @@ $all_products = mrzaib_products_query( array( 'limit' => 12 ) );
 				<a class="slide<?php echo 0 === $n ? ' is-active' : ''; ?>" href="<?php echo esc_url( $sl[2] ); ?>">
 					<picture>
 						<source media="(max-width: 749px)" srcset="<?php echo esc_url( $sl[1] ); ?>">
-						<img src="<?php echo esc_url( $sl[0] ); ?>" alt="<?php echo esc_attr( $sl[3] ); ?>" <?php echo 0 === $n ? 'fetchpriority="high"' : 'loading="lazy"'; ?>>
+						<?php $hd = mrzaib_hero_img_data( $sl[0] ); ?>
+						<img src="<?php echo esc_url( $sl[0] ); ?>"<?php echo $hd['srcset'] ? ' srcset="' . esc_attr( $hd['srcset'] ) . '" sizes="100vw"' : ''; ?> width="<?php echo (int) $hd['w']; ?>" height="<?php echo (int) $hd['h']; ?>" alt="<?php echo esc_attr( $sl[3] ); ?>" <?php echo 0 === $n ? 'fetchpriority="high" decoding="sync"' : 'loading="lazy" decoding="async"'; ?>>
 					</picture>
 				</a>
 			<?php endforeach; ?>
@@ -46,7 +47,14 @@ $all_products = mrzaib_products_query( array( 'limit' => 12 ) );
 				<div class="collection-grid scroll-x">
 					<?php foreach ( $cats as $c ) : ?>
 						<a class="collection-card" href="<?php echo esc_url( $c['link'] ); ?>">
-							<span class="cc-media"><img src="<?php echo esc_url( $c['img'] ); ?>" alt="<?php echo esc_attr( 'MR ZAIB ' . $c['name'] . ' perfumes' ); ?>" loading="lazy"></span>
+							<span class="cc-media"><?php
+							$calt = 'MR ZAIB ' . $c['name'] . ' perfumes';
+							if ( ! empty( $c['id'] ) ) {
+								echo wp_get_attachment_image( $c['id'], 'medium_large', false, array( 'alt' => $calt, 'sizes' => '(max-width: 768px) 45vw, 240px', 'loading' => 'eager', 'decoding' => 'async' ) ); // phpcs:ignore
+							} else {
+								echo '<img src="' . esc_url( $c['img'] ) . '" width="480" height="600" alt="' . esc_attr( $calt ) . '" decoding="async">';
+							}
+							?></span>
 							<span class="cc-title"><?php echo esc_html( $c['name'] ); ?></span>
 						</a>
 					<?php endforeach; ?>
@@ -99,7 +107,7 @@ $all_products = mrzaib_products_query( array( 'limit' => 12 ) );
 					<div class="product-grid grid-5 bs-grid scroll-x<?php echo count( $items ) < 3 ? ' is-few' : ''; ?>">
 						<?php foreach ( $items as $p ) { mrzaib_product_card( $p ); } ?>
 						<a class="discover-card" href="<?php echo esc_url( $link ); ?>">
-							<img src="<?php echo esc_url( $bg ); ?>" alt="" loading="lazy">
+							<?php echo $bgid ? wp_get_attachment_image( $bgid, 'medium_large', false, array( 'alt' => '', 'sizes' => '(max-width: 768px) 45vw, 260px', 'loading' => 'lazy', 'decoding' => 'async' ) ) : '<img src="' . esc_url( $bg ) . '" alt="" loading="lazy" decoding="async">'; // phpcs:ignore ?>
 							<span class="dc-panel">
 								<span class="dc-title"><?php echo $more ? esc_html( sprintf( __( 'Discover %d More', 'mrzaib' ), $more ) ) : esc_html__( 'Discover More', 'mrzaib' ); ?> &#8599;</span>
 								<span class="dc-btn"><?php esc_html_e( 'Explore', 'mrzaib' ); ?></span>

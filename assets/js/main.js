@@ -3,12 +3,33 @@
   'use strict';
   var $body = $('body');
 
+  /* Hidden panels are inert (not focusable) until opened: keep `inert` in sync with aria-hidden. */
+  ['mobile-nav', 'drawer-menu', 'mz-hcart', 'search-overlay'].forEach(function (id) {
+    var el = document.getElementById(id);
+    if (!el || !('MutationObserver' in window)) { if (el) el.removeAttribute('inert'); return; }
+    var sync = function () { if (el.getAttribute('aria-hidden') === 'false') el.removeAttribute('inert'); else el.setAttribute('inert', ''); };
+    new MutationObserver(sync).observe(el, { attributes: true, attributeFilter: ['aria-hidden'] });
+    sync();
+  });
+
+  /* Auto-rotating parts (announcement, hero) start after the first user interaction
+     or after a few seconds, so the first paint stays still (better Speed Index). */
+  var mzWake = (function () {
+    var q = [], done = false;
+    function run() { if (done) return; done = true; q.forEach(function (f) { f(); }); q = []; ['scroll', 'pointermove', 'pointerdown', 'keydown', 'touchstart', 'wheel'].forEach(function (e) { window.removeEventListener(e, run); }); }
+    ['scroll', 'pointermove', 'pointerdown', 'keydown', 'touchstart', 'wheel'].forEach(function (e) { window.addEventListener(e, run, { passive: true }); });
+    setTimeout(run, 9000);
+    return function (f) { if (done) f(); else q.push(f); };
+  })();
+
   /* Announcement bar rotation */
   $('[data-announcement]').each(function () {
     var $items = $(this).find('.ann-item'), i = 0;
     if ($items.length < 2) { $(this).find('.ann-nav').hide(); return; }
     function go(n) { $items.eq(i).removeClass('is-active'); i = (n + $items.length) % $items.length; $items.eq(i).addClass('is-active'); }
-    var t = setInterval(function () { go(i + 1); }, 4000);
+    var t, stopped = false;
+    mzWake(function () { if (!stopped) t = setInterval(function () { go(i + 1); }, 4000); });
+    $(this).on('click', '.ann-next,.ann-prev', function () { stopped = true; });
     $(this).on('click', '.ann-next', function () { clearInterval(t); go(i + 1); });
     $(this).on('click', '.ann-prev', function () { clearInterval(t); go(i - 1); });
   });
@@ -402,7 +423,7 @@
       if (Math.abs(dx) > 40) { go(dx < 0 ? i + 1 : i - 1); play(); }
       x0 = null;
     });
-    play();
+    mzWake(play);
   });
 
   /* Tabs */

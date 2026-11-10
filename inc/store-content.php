@@ -577,10 +577,13 @@ function mrzaib_home_categories() {
 	foreach ( $terms as $t ) {
 		$tid = (int) get_term_meta( $t->term_id, 'thumbnail_id', true );
 		$own = $tid && ! in_array( $tid, $media, true ) ? wp_get_attachment_image_url( $tid, 'medium_large' ) : '';
+		$iid = 0;
 		if ( $own ) {
 			$img = $own;
+			$iid = $tid;
 		} elseif ( isset( $theme[ $t->slug ] ) ) {
-			$img = mrzaib_img( $theme[ $t->slug ][1] );
+			$webp = preg_replace( '/\.(jpe?g|png)$/', '.webp', $theme[ $t->slug ][1] );
+			$img  = mrzaib_img( file_exists( MRZAIB_DIR . '/assets/images/' . $webp ) ? $webp : $theme[ $t->slug ][1] );
 		} elseif ( $tid && wp_get_attachment_image_url( $tid, 'medium_large' ) ) {
 			$img = wp_get_attachment_image_url( $tid, 'medium_large' );
 		} elseif ( function_exists( 'wc_placeholder_img_src' ) ) {
@@ -588,7 +591,7 @@ function mrzaib_home_categories() {
 		} else {
 			$img = '';
 		}
-		$out[] = array( 'name' => $t->name, 'link' => get_term_link( $t ), 'img' => $img );
+		$out[] = array( 'name' => $t->name, 'link' => get_term_link( $t ), 'img' => $img, 'id' => $iid );
 	}
 	return $out;
 }

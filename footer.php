@@ -16,15 +16,15 @@
 <footer class="site-footer">
 	<div class="container footer-grid">
 		<div class="footer-col">
-			<h4><?php esc_html_e( 'Support', 'mrzaib' ); ?></h4>
+			<h2 class="ft-h"><?php esc_html_e( 'Support', 'mrzaib' ); ?></h2>
 			<?php mrzaib_footer_menu( 'footer-support', array( 'My Account' => 'page:my-account', 'Return Form' => 'page:returns', 'Privacy Policy' => 'page:privacy-policy-2', 'Shipping Policy' => 'page:shipping-policy', 'Terms of Service' => 'page:terms-of-service', 'Track Your Order' => 'page:track-order' ) ); ?>
 		</div>
 		<div class="footer-col">
-			<h4><?php esc_html_e( 'Quick Links', 'mrzaib' ); ?></h4>
+			<h2 class="ft-h"><?php esc_html_e( 'Quick Links', 'mrzaib' ); ?></h2>
 			<?php mrzaib_footer_menu( 'footer-quick', array( 'Men' => 'men', 'Women' => 'women', 'Unisex' => 'unisex', 'Attar' => 'attar', 'Tester' => 'tester' ) ); ?>
 		</div>
 		<div class="footer-col">
-			<h4><?php esc_html_e( 'Get in touch', 'mrzaib' ); ?></h4>
+			<h2 class="ft-h"><?php esc_html_e( 'Get in touch', 'mrzaib' ); ?></h2>
 			<ul class="footer-links">
 				<?php if ( mrzaib_opt( 'phone' ) ) : ?><li><a class="ft-contact" href="tel:<?php echo esc_attr( preg_replace( '/[^\d+]/', '', mrzaib_opt( 'phone' ) ) ); ?>"><?php echo mrzaib_icon( 'phone' ); // phpcs:ignore ?><span><?php echo esc_html( mrzaib_opt( 'phone' ) ); ?></span></a></li><?php endif; ?>
 				<?php if ( mrzaib_opt( 'email' ) ) : ?><li><a class="ft-contact" href="mailto:<?php echo esc_attr( mrzaib_opt( 'email' ) ); ?>"><?php echo mrzaib_icon( 'mail' ); // phpcs:ignore ?><span><?php echo esc_html( mrzaib_opt( 'email' ) ); ?></span></a></li><?php endif; ?>
@@ -39,7 +39,7 @@
 		</div>
 		<?php if ( mrzaib_opt( 'address' ) ) : ?>
 		<div class="footer-col footer-address">
-			<h4><?php esc_html_e( 'Address', 'mrzaib' ); ?></h4>
+			<h2 class="ft-h"><?php esc_html_e( 'Address', 'mrzaib' ); ?></h2>
 			<p><?php echo esc_html( mrzaib_opt( 'address' ) ); ?></p>
 		</div>
 		<?php endif; ?>

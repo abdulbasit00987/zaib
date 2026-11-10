@@ -48,12 +48,13 @@ add_action( 'after_setup_theme', 'mrzaib_setup' );
  * Assets
  * ------------------------------------------------------------------ */
 function mrzaib_assets() {
-	wp_enqueue_style( 'mrzaib-fonts', 'https://fonts.googleapis.com/css2?family=Jost:wght@300;400;500;600;700&family=Playfair+Display:wght@500;600;700&display=swap', array(), null );
-	wp_enqueue_style( 'mrzaib-main', MRZAIB_URI . '/assets/css/main.css', array(), MRZAIB_VERSION . '.' . filemtime( MRZAIB_DIR . '/assets/css/main.css' ) );
-	wp_enqueue_style( 'mrzaib-style', get_stylesheet_uri(), array( 'mrzaib-main' ), MRZAIB_VERSION );
-	wp_enqueue_script( 'mrzaib-main', MRZAIB_URI . '/assets/js/main.js', array( 'jquery' ), MRZAIB_VERSION . '.' . filemtime( MRZAIB_DIR . '/assets/js/main.js' ), true );
+	$css = mrzaib_asset( '/assets/css/main.css' );
+	wp_enqueue_style( 'mrzaib-main', $css[0], array(), $css[1] );
+	$js = mrzaib_asset( '/assets/js/main.js' );
+	wp_enqueue_script( 'mrzaib-main', $js[0], array( 'jquery' ), $js[1], true );
 	if ( function_exists( 'is_product' ) && is_product() ) {
-		wp_enqueue_script( 'mrzaib-reviews', MRZAIB_URI . '/assets/js/reviews.js', array(), MRZAIB_VERSION . '.' . filemtime( MRZAIB_DIR . '/assets/js/reviews.js' ), true );
+		$rj = mrzaib_asset( '/assets/js/reviews.js' );
+		wp_enqueue_script( 'mrzaib-reviews', $rj[0], array(), $rj[1], true );
 	}
 	if ( class_exists( 'WooCommerce' ) ) {
 		wp_enqueue_script( 'wc-cart-fragments' );
@@ -167,6 +168,7 @@ require MRZAIB_DIR . '/inc/header-cart.php';
 require MRZAIB_DIR . '/inc/reviews.php';
 require MRZAIB_DIR . '/inc/policies.php';
 require MRZAIB_DIR . '/inc/security.php';
+require MRZAIB_DIR . '/inc/performance.php';
 require MRZAIB_DIR . '/inc/store-content.php';
 require MRZAIB_DIR . '/inc/demo-import.php';
 require MRZAIB_DIR . '/inc/yoast-setup.php';

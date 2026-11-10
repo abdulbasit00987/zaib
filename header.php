@@ -46,7 +46,7 @@ if ( $announcements ) :
 				if ( $logo_id ) {
 					echo wp_get_attachment_image( $logo_id, 'full', false, array( 'class' => 'logo-img', 'alt' => get_bloginfo( 'name' ) ) );
 				} else {
-					echo '<img class="logo-img" src="' . mrzaib_img( 'logo-gold.png' ) . '" alt="' . esc_attr( get_bloginfo( 'name' ) ) . '">'; // phpcs:ignore
+					echo '<img class="logo-img" src="' . mrzaib_img( 'logo-gold.webp' ) . '" width="340" height="113" alt="' . esc_attr( get_bloginfo( 'name' ) ) . '">'; // phpcs:ignore
 				}
 				?>
 				<span class="screen-reader-text"><?php bloginfo( 'name' ); ?></span>
@@ -78,20 +78,20 @@ if ( $announcements ) :
 		</div>
 	</nav>
 	<div class="mz-hsearch" id="mz-hsearch"><div class="container"><?php mrzaib_search_form( 'search-form-header-m' ); ?></div></div>
-	<div class="mobile-nav" id="mobile-nav" aria-hidden="true"><div class="mobile-nav-animate"><?php mrzaib_mobile_nav(); ?></div></div>
+	<div class="mobile-nav" id="mobile-nav" aria-hidden="true" inert><div class="mobile-nav-animate"><?php mrzaib_mobile_nav(); ?></div></div>
 </header>
 </div>
 
 <!-- Drawer: menu -->
-<div class="drawer drawer-left" id="drawer-menu" aria-hidden="true">
+<div class="drawer drawer-left" id="drawer-menu" aria-hidden="true" inert>
 	<div class="drawer-panel">
 		<div class="drawer-head">
-			<img class="drawer-logo" src="<?php echo mrzaib_img( 'logo-gold.png' ); // phpcs:ignore ?>" alt="">
+			<img class="drawer-logo" src="<?php echo mrzaib_img( 'logo-gold.webp' ); // phpcs:ignore ?>" width="340" height="113" alt="" loading="lazy">
 			<button class="icon-btn" data-close aria-label="<?php esc_attr_e( 'Close', 'mrzaib' ); ?>"><?php echo mrzaib_icon( 'close' ); // phpcs:ignore ?></button>
 		</div>
 		<div class="drawer-promo">
-			<a href="<?php echo esc_url( mrzaib_cat_link( 'men' ) ); ?>"><img src="<?php echo mrzaib_img( 'cat-men.jpg' ); // phpcs:ignore ?>" alt=""><span><?php esc_html_e( 'Men', 'mrzaib' ); ?></span></a>
-			<a href="<?php echo esc_url( mrzaib_cat_link( 'unisex' ) ); ?>"><img src="<?php echo mrzaib_img( 'cat-unisex.jpg' ); // phpcs:ignore ?>" alt=""><span><?php esc_html_e( 'Unisex', 'mrzaib' ); ?></span></a>
+			<a href="<?php echo esc_url( mrzaib_cat_link( 'men' ) ); ?>"><img src="<?php echo mrzaib_img( 'cat-men.webp' ); // phpcs:ignore ?>" width="480" height="600" alt="" loading="lazy"><span><?php esc_html_e( 'Men', 'mrzaib' ); ?></span></a>
+			<a href="<?php echo esc_url( mrzaib_cat_link( 'unisex' ) ); ?>"><img src="<?php echo mrzaib_img( 'cat-unisex.webp' ); // phpcs:ignore ?>" width="480" height="600" alt="" loading="lazy"><span><?php esc_html_e( 'Unisex', 'mrzaib' ); ?></span></a>
 		</div>
 		<nav class="drawer-nav">
 			<?php
@@ -119,11 +119,11 @@ if ( $announcements ) :
 
 <!-- Header cart dropdown -->
 <?php if ( class_exists( 'WooCommerce' ) ) : ?>
-<div class="mz-hcart" id="mz-hcart" aria-hidden="true"><?php echo mrzaib_hcart_inner(); // phpcs:ignore ?></div>
+<div class="mz-hcart" id="mz-hcart" aria-hidden="true" inert><?php echo mrzaib_hcart_inner(); // phpcs:ignore ?></div>
 <?php endif; ?>
 
 <!-- Search overlay -->
-<div class="search-overlay" id="search-overlay" aria-hidden="true">
+<div class="search-overlay" id="search-overlay" aria-hidden="true" inert>
 	<div class="container">
 		<div class="search-overlay-inner">
 			<div class="search-overlay-form"><?php mrzaib_search_form( 'search-form-big' ); ?></div>
