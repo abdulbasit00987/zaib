@@ -5,23 +5,7 @@
  * @package mrzaib
  */
 get_header();
-$faqs = array(
-	'Orders & Delivery' => array(
-		array( 'How long does delivery take?', function_exists( 'mrzaib_delivery_text' ) ? mrzaib_delivery_text() : 'Orders are delivered in 2 to 5 working days all over Pakistan.' ),
-		array( 'Do you offer Cash on Delivery?', 'Yes, Cash on Delivery is available on all orders across Pakistan.' ),
-		array( 'Is shipping free?', ( function_exists( 'mrzaib_ship_long' ) && mrzaib_ship_long() ? mrzaib_ship_long() : 'Free delivery applies on larger orders; a small delivery charge applies below that.' ) ),
-		array( 'How can I track my order?', 'Use the Track Your Order page with your order number and email.' ),
-	),
-	'Products' => array(
-		array( 'How long do your perfumes last?', 'Most MR ZAIB perfumes last 8 to 12 hours on skin, depending on skin type and weather.' ),
-		array( 'Are your perfumes original?', 'All fragrances are made by MR ZAIB with high-concentration, super-macerated oils.' ),
-		array( 'Can I try before buying?', 'Yes! Our Tester Box lets you sample several scents before choosing a full bottle.' ),
-	),
-	'Returns' => array(
-		array( 'What is your return policy?', 'You can return or exchange within 15 days of delivery. The bottle must be at least 80% full with original packaging.' ),
-		array( 'How do I start a return?', 'Fill the Return Form and our team will contact you within 24 hours.' ),
-	),
-);
+$faqs = function_exists( 'mrzaib_faq_groups' ) ? mrzaib_faq_groups() : array();
 ?>
 <main id="MainContent" class="site-main section">
 	<div class="container narrow">

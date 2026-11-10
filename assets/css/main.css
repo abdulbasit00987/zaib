@@ -1735,3 +1735,15 @@ html[data-mzview="list"] .mzshop-main .card-info{padding-right:56px}
 .mzr-qwho strong{font-size:14px}
 .mzr-qwho .mzr-date{font-size:12.5px}
 .mzr-question .mzr-q{margin:0 0 12px}
+/* order confirmation note (inc/policies.php) */
+.mz-confirm{display:flex;gap:12px;align-items:flex-start;background:#fbf6ea;border:1px solid #ecd9a8;border-left:3px solid var(--theme);border-radius:8px;padding:12px 14px;margin:14px 0;color:#222}
+.mz-confirm p{margin:0;font-size:13.5px;line-height:1.55}
+.mz-confirm-ico{flex:0 0 auto;color:var(--theme-text);display:flex;padding-top:1px}
+.mz-confirm--checkout{margin:0 0 16px}
+.mz-confirm--cart{margin:0 0 14px}
+.mz-confirm--thanks{margin:0 0 24px}
+.sp-wqv-content .mz-confirm{display:none}
+/* policy pages */
+.entry-content h2{margin:28px 0 10px}
+.entry-content ul{padding-left:20px;margin:0 0 16px}
+.entry-content li{margin:0 0 6px;line-height:1.6}
