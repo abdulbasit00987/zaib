@@ -92,6 +92,37 @@ add_filter( 'woocommerce_gateway_description', function ( $desc, $id ) {
 	return $desc;
 }, 10, 2 );
 
+
+/* Block Cart / Checkout (React): classic hooks do not run, so place the note with JS. */
+add_action( 'wp_footer', function () {
+	if ( ! function_exists( 'is_cart' ) || ! ( is_cart() || ( is_checkout() && ! is_wc_endpoint_url() ) ) ) {
+		return;
+	}
+	$full = is_checkout();
+	$html = mrzaib_confirm_box( $full, $full ? 'mz-confirm--checkout' : 'mz-confirm--cart' );
+	if ( ! $html ) {
+		return;
+	}
+	?>
+<template id="mz-confirm-tpl"><?php echo $html; // phpcs:ignore ?></template>
+<script>(function(){var t=document.getElementById('mz-confirm-tpl');if(!t)return;
+var sel=<?php echo $full ? "'.wc-block-checkout__actions'" : "'.wc-block-cart__submit-container'"; ?>;
+function put(){if(document.querySelector('.mz-confirm--cart,.mz-confirm--checkout'))return;var a=document.querySelector(sel);if(!a)return;a.parentNode.insertBefore(t.content.firstElementChild.cloneNode(true),a);}
+put();new MutationObserver(put).observe(document.body,{childList:true,subtree:true});})();</script>
+	<?php
+}, 50 );
+
+/* COD description (classic and block checkout read the gateway setting). */
+add_filter( 'option_woocommerce_cod_settings', function ( $v ) {
+	if ( is_array( $v ) && ! is_admin() && mrzaib_opt( 'confirm_on', '1' ) ) {
+		$d = isset( $v['description'] ) ? trim( $v['description'] ) : '';
+		if ( '' === $d || in_array( $d, array( 'Pay with cash upon delivery.', 'Pay with cash when your parcel arrives.' ), true ) ) {
+			$v['description'] = 'Pay the order amount in cash to the rider on delivery. Delivery charges are paid in advance after our team confirms your order.';
+		}
+	}
+	return $v;
+} );
+
 /* ---------- shortcodes used in the policy pages ---------- */
 add_shortcode( 'mrzaib_contact_line', function () {
 	$parts = array();

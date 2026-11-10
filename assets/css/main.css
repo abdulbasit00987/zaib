@@ -1747,3 +1747,7 @@ html[data-mzview="list"] .mzshop-main .card-info{padding-right:56px}
 .entry-content h2{margin:28px 0 10px}
 .entry-content ul{padding-left:20px;margin:0 0 16px}
 .entry-content li{margin:0 0 6px;line-height:1.6}
+
+/* Block checkout: space between First/Last name row and Country (WC sets 0) */
+.wc-block-components-address-form .wc-block-components-address-form__country:not(:first-child){margin-top:12px}
+.wp-block-woocommerce-cart .mz-confirm,.wp-block-woocommerce-checkout .mz-confirm{margin:14px 0}
