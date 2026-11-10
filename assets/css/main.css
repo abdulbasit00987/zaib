@@ -1728,7 +1728,7 @@ html[data-mzview="list"] .mzshop-main .card-info{padding-right:56px}
 .mzr-strip-arrow{display:none}
 .mzr-strip.is-scroll .mzr-strip-arrow{display:block}
 .mzr-strip.is-scroll .mzr-strip-arrow[hidden]{display:none}
-.mzr-who{align-items:center}
+.mzr-who{align-items:center;align-self:start}
 .mzr-question{padding:22px 0}
 .mzr-qhead{display:flex;align-items:center;gap:12px;margin-bottom:10px}
 .mzr-qwho{display:flex;flex-direction:column;line-height:1.35}
