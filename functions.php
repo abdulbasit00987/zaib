@@ -166,6 +166,7 @@ require MRZAIB_DIR . '/inc/newsletter.php';
 require MRZAIB_DIR . '/inc/header-cart.php';
 require MRZAIB_DIR . '/inc/reviews.php';
 require MRZAIB_DIR . '/inc/policies.php';
+require MRZAIB_DIR . '/inc/security.php';
 require MRZAIB_DIR . '/inc/store-content.php';
 require MRZAIB_DIR . '/inc/demo-import.php';
 require MRZAIB_DIR . '/inc/yoast-setup.php';
