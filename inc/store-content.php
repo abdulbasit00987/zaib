@@ -252,6 +252,44 @@ function mrzaib_store_products() {
 				'keywords' => 'OUD X perfume, OUD X unisex oud perfume, MR ZAIB OUD X, oud perfume, oud perfume Pakistan, unisex perfume, unisex perfume Pakistan, oud perfume for men, oud perfume for women, long lasting oud perfume, woody perfume, ambergris perfume, inspired by Ouray, best oud perfume in Pakistan, luxury perfume Pakistan, gift for him, gift for her',
 			),
 		),
+		array(
+			'name'     => 'RAAZ',
+			'slug'     => 'raaz-perfume',
+			'subtitle' => 'Long Lasting Spicy Tobacco Perfume for Men | 50ml',
+			'sku'      => 'MZ-RAAZ-50',
+			'regular'  => '4000',
+			'sale'     => '3500',
+			'cats'     => array( 'men' ),
+			'images'   => array( 'raaz-main.jpg', 'raaz-banner.jpg', 'raaz-notes-top.jpg', 'raaz-notes-middle.jpg', 'raaz-notes-base.jpg' ),
+			'alts'     => array( 'RAAZ long lasting perfume for men by MR ZAIB 50ml', 'MR ZAIB RAAZ perfume for men fragrance notes', 'RAAZ top notes red apple mandarin orange', 'RAAZ middle notes pepper sage', 'RAAZ base notes tobacco benzoin woody notes patchouli' ),
+			'notes'    => array(
+				'Top Notes'    => 'Red Apple, Mandarin Orange',
+				'Middle Notes' => 'Pepper, Sage',
+				'Base Notes'   => 'Tobacco, Benzoin, Woodsy Notes, Patchouli',
+			),
+			'short'    => '<p><strong>RAAZ by MR ZAIB</strong> is a long lasting perfume for men, inspired by Ackley. It opens with juicy <strong>red apple and mandarin orange</strong>, moves into a spicy, aromatic heart of <strong>pepper and sage</strong>, and settles into a warm, smoky base of <strong>tobacco, benzoin, woodsy notes and patchouli</strong>. A mysterious, masculine scent for men who want to be remembered.</p>'
+				. '<ul><li><strong>Top Notes:</strong> Red Apple, Mandarin Orange</li><li><strong>Middle Notes:</strong> Pepper, Sage</li><li><strong>Base Notes:</strong> Tobacco, Benzoin, Woodsy Notes, Patchouli</li><li><strong>Size:</strong> 50ml</li><li><strong>For:</strong> Men</li></ul>',
+			'long'     => '<h2>RAAZ: Long Lasting Spicy Tobacco Perfume for Men in Pakistan</h2>'
+				. '<p><strong>RAAZ</strong>, meaning "secret", is a premium perfume for men from <strong>MR ZAIB Luxury Perfumes</strong>, inspired by Ackley. It pairs a fresh, fruity opening with warm spice and a deep tobacco and resin dry-down, giving you a confident, mysterious trail that lasts for hours. Made for men who want to <em>leave their presence</em>.</p>'
+				. '<h3>Fragrance Notes of RAAZ</h3>'
+				. '<p><strong>Top Notes: Red Apple and Mandarin Orange.</strong> A bright, juicy start of crisp red apple and sweet, zesty mandarin.</p>'
+				. '<p><strong>Middle Notes: Pepper and Sage.</strong> A spicy, aromatic heart where black pepper meets fresh herbal sage for a clean, masculine character.</p>'
+				. '<p><strong>Base Notes: Tobacco, Benzoin, Woodsy Notes and Patchouli.</strong> A rich, long lasting finish of smooth tobacco leaf, warm sweet benzoin, dry woods and earthy patchouli.</p>'
+				. '<h3>Fragrance Profile</h3>'
+				. '<ul><li><strong>Family:</strong> Spicy, Tobacco, Woody, Fruity</li><li><strong>Character:</strong> Mysterious, warm, bold, masculine</li><li><strong>Best season:</strong> Autumn and winter, and cool evenings all year</li><li><strong>Occasions:</strong> Evening outings, dinners, weddings, events, office and everyday signature wear</li></ul>'
+				. '<h3>Why Choose MR ZAIB RAAZ?</h3>'
+				. '<ul><li>Fruity, spicy and smoky tobacco blend in one bottle</li><li>Long lasting men\'s perfume with a strong, warm trail</li><li>Elegant white 50ml bottle with a gold cap, a perfect gift for him</li><li>Premium quality at Rs. 3,500</li><li>Cash on Delivery all over Pakistan</li></ul>'
+				. '<h3>How to Apply</h3>'
+				. '<p>Spray 3 to 4 times on pulse points (neck, wrists and chest) from about 15 cm. Apply on clean, moisturised skin and do not rub, so the fragrance lasts longer. A light spray on clothes keeps the tobacco trail going all day.</p>'
+				. '<p>Looking for the <strong>best long lasting tobacco perfume for men in Pakistan</strong>? Order <strong>RAAZ by MR ZAIB</strong> online today.</p>',
+			'tags'     => array( 'RAAZ', 'RAAZ Perfume', 'Perfume for Men', 'Men Perfume Pakistan', 'Long Lasting Perfume for Men', 'Tobacco Perfume', 'Spicy Perfume', 'Woody Perfume', 'Fruity Perfume', 'Apple Perfume', 'Patchouli Perfume', 'Benzoin Perfume', 'Inspired by Ackley', 'Winter Perfume', 'Evening Perfume', 'Wedding Perfume', 'Gift for Him', 'Luxury Perfume', 'MR ZAIB' ),
+			'seo'      => array(
+				'title'    => 'RAAZ Long Lasting Tobacco Perfume for Men 50ml | MR ZAIB Pakistan',
+				'desc'     => 'Shop RAAZ by MR ZAIB, a long lasting perfume for men inspired by Ackley, with red apple, mandarin, pepper, sage, tobacco and patchouli. 50ml, Rs. 3,500. COD in Pakistan.',
+				'focus'    => 'RAAZ perfume for men',
+				'keywords' => 'RAAZ perfume, RAAZ perfume for men, MR ZAIB RAAZ, perfume for men, men perfume Pakistan, long lasting perfume for men, tobacco perfume for men, spicy perfume for men, woody perfume, apple tobacco perfume, patchouli perfume, inspired by Ackley, best perfume for men in Pakistan, luxury perfume Pakistan, winter perfume for men, gift for him',
+			),
+		),
 	);
 }
 
