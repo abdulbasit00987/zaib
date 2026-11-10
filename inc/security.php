@@ -12,7 +12,7 @@
 
 defined( 'ABSPATH' ) || exit;
 
-define( 'MRZAIB_WF_V', 1 );
+define( 'MRZAIB_WF_V', 2 );
 define( 'MRZAIB_WF_SLUG', 'wordfence' );
 define( 'MRZAIB_WF_FILE', 'wordfence/wordfence.php' );
 
@@ -171,6 +171,14 @@ function mrzaib_wf_configure() {
 			// One setting failing (e.g. .htaccess not writable) must not stop the rest.
 		}
 	}
+	// Wordfence Login Security: protect the WooCommerce login / register forms too.
+	if ( class_exists( '\\WordfenceLS\\Controller_Settings' ) ) {
+		try {
+			\WordfenceLS\Controller_Settings::shared()->set( \WordfenceLS\Controller_Settings::OPTION_ENABLE_WOOCOMMERCE_INTEGRATION, true );
+			$done++;
+		} catch ( Exception $e ) { // phpcs:ignore Generic.CodeAnalysis.EmptyStatement
+		}
+	}
 	update_option( 'mrzaib_wf_v', MRZAIB_WF_V );
 	return sprintf( 'Wordfence configured with MR ZAIB recommended settings (%d settings).', $done );
 }
@@ -193,7 +201,7 @@ add_action( 'admin_notices', function () {
 		}
 		if ( get_transient( 'mrzaib_wf_done' ) ) {
 			delete_transient( 'mrzaib_wf_done' );
-			echo '<div class="notice notice-success is-dismissible"><p><strong>MR ZAIB:</strong> ' . esc_html__( 'Wordfence is set up with the recommended settings. Last step: open Wordfence > Firewall and click "Optimize the Wordfence Firewall" (choose the suggested server setting and download the backup if asked). The firewall learns your site for 7 days, then blocks attacks on its own.', 'mrzaib' ) . '</p></div>';
+			echo '<div class="notice notice-success is-dismissible"><p><strong>MR ZAIB:</strong> ' . esc_html__( 'Wordfence is set up with the recommended settings. Finish the Wordfence installation (free license), then open Wordfence > Firewall and click "Optimize the Wordfence Firewall". The firewall learns your site for 7 days, then blocks attacks on its own.', 'mrzaib' ) . '</p></div>';
 		}
 		return;
 	}
