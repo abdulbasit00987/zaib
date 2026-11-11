@@ -13,12 +13,11 @@
   });
 
   /* Auto-rotating parts (announcement, hero) start after the first user interaction
-     or after a few seconds, so the first paint stays still (better Speed Index). */
+     so the first paint stays still (better Speed Index). */
   var mzWake = (function () {
     var q = [], done = false;
     function run() { if (done) return; done = true; q.forEach(function (f) { f(); }); q = []; ['scroll', 'pointermove', 'pointerdown', 'keydown', 'touchstart', 'wheel'].forEach(function (e) { window.removeEventListener(e, run); }); }
     ['scroll', 'pointermove', 'pointerdown', 'keydown', 'touchstart', 'wheel'].forEach(function (e) { window.addEventListener(e, run, { passive: true }); });
-    setTimeout(run, 9000);
     return function (f) { if (done) f(); else q.push(f); };
   })();
 
@@ -410,7 +409,14 @@
       i = (n + $slides.length) % $slides.length;
       $slides.eq(i).addClass('is-active'); $dots.children().eq(i).addClass('is-active');
     }
-    function play() { clearInterval(t); t = setInterval(function () { go(i + 1); }, parseInt($s.data('autoplay'), 10) || 5000); }
+    var hyd = false;
+    function hydrate() {
+      if (hyd) return; hyd = true;
+      $s.find('[data-srcset]').each(function () { this.setAttribute('srcset', this.getAttribute('data-srcset')); this.removeAttribute('data-srcset'); });
+      $s.find('img[data-src]').each(function () { this.src = this.getAttribute('data-src'); this.removeAttribute('data-src'); });
+    }
+    var go0 = go; go = function (n) { hydrate(); go0(n); };
+    function play() { hydrate(); clearInterval(t); t = setInterval(function () { go(i + 1); }, parseInt($s.data('autoplay'), 10) || 5000); }
     $s.on('click', '.next', function () { go(i + 1); play(); });
     $s.on('click', '.prev', function () { go(i - 1); play(); });
     $dots.on('click', 'button', function () { go($(this).index()); play(); });

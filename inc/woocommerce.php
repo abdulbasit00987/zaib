@@ -119,8 +119,8 @@ function mrzaib_product_card( $product ) {
 	$link    = get_permalink( $id );
 	$sub     = get_post_meta( $id, '_mrzaib_subtitle', true );
 	$gallery = $product->get_gallery_image_ids();
-	$img1    = $product->get_image_id() ? wp_get_attachment_image( $product->get_image_id(), 'woocommerce_thumbnail', false, array( 'class' => 'img-main', 'loading' => 'lazy' ) ) : wc_placeholder_img( 'woocommerce_thumbnail' );
-	$img2    = $gallery ? wp_get_attachment_image( $gallery[0], 'woocommerce_thumbnail', false, array( 'class' => 'img-hover', 'loading' => 'lazy' ) ) : '';
+	$img1    = $product->get_image_id() ? wp_get_attachment_image( $product->get_image_id(), 'woocommerce_thumbnail', false, array( 'class' => 'img-main', 'loading' => 'lazy', 'sizes' => '(max-width: 768px) 60vw, (max-width: 1200px) 25vw, 300px' ) ) : wc_placeholder_img( 'woocommerce_thumbnail' );
+	$img2    = $gallery ? wp_get_attachment_image( $gallery[0], 'woocommerce_thumbnail', false, array( 'class' => 'img-hover', 'loading' => 'lazy', 'sizes' => '(max-width: 768px) 60vw, (max-width: 1200px) 25vw, 300px' ) ) : '';
 	?>
 	<div class="product-card<?php echo $img2 ? ' has-hover' : ''; ?>">
 		<div class="card-media-wrap">

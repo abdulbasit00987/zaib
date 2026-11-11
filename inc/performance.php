@@ -38,15 +38,21 @@ function mrzaib_hero_img_data( $url ) {
 	if ( isset( $cache[ $url ] ) ) {
 		return $cache[ $url ];
 	}
-	$d  = array( 'srcset' => '', 'w' => 1920, 'h' => 760 );
+	$d  = array( 'srcset' => '', 'w' => 1920, 'h' => 760, 'src' => $url );
 	$id = $url ? attachment_url_to_postid( strtok( $url, '?' ) ) : 0;
 	if ( $id ) {
+		$GLOBALS['mrzaib_webp_force'] = true;
+		$wu = function_exists( 'mrzaib_webp_url' ) ? mrzaib_webp_url( $url ) : '';
+		if ( $wu ) {
+			$d['src'] = $wu;
+		}
 		$meta = wp_get_attachment_metadata( $id );
 		if ( ! empty( $meta['width'] ) ) {
 			$d['w'] = (int) $meta['width'];
 			$d['h'] = (int) $meta['height'];
 		}
 		$ss = wp_get_attachment_image_srcset( $id, 'full' );
+		$GLOBALS['mrzaib_webp_force'] = false;
 		if ( $ss ) {
 			$d['srcset'] = $ss;
 		}
@@ -72,8 +78,9 @@ add_action( 'wp_head', function () {
 		return;
 	}
 	$dk = mrzaib_hero_img_data( $sl[0][0] );
-	echo '<link rel="preload" as="image" fetchpriority="high" href="' . esc_url( $sl[0][0] ) . '"' . ( $dk['srcset'] ? ' imagesrcset="' . esc_attr( $dk['srcset'] ) . '" imagesizes="100vw"' : '' ) . ' media="(min-width: 750px)">' . "\n";
-	echo '<link rel="preload" as="image" fetchpriority="high" href="' . esc_url( $sl[0][1] ) . '" media="(max-width: 749px)">' . "\n";
+	echo '<link rel="preload" as="image" fetchpriority="high" href="' . esc_url( $dk['src'] ) . '"' . ( $dk['srcset'] ? ' imagesrcset="' . esc_attr( $dk['srcset'] ) . '" imagesizes="100vw"' : '' ) . ' media="(min-width: 750px)">' . "\n";
+	$ms = mrzaib_hero_mobile_srcset( $sl[0][1] );
+	echo '<link rel="preload" as="image" fetchpriority="high" href="' . esc_url( $sl[0][1] ) . '"' . ( $ms ? ' imagesrcset="' . esc_attr( $ms ) . '" imagesizes="100vw"' : '' ) . ' media="(max-width: 749px)">' . "\n";
 }, 3 );
 
 /* ------------------------------------------------------------------
@@ -239,3 +246,220 @@ add_filter( 'wp_get_attachment_image_attributes', function ( $attr ) {
 	}
 	return $attr;
 } );
+
+/* ------------------------------------------------------------------
+ * 8. WebP copies of uploaded JPEG/PNG images, made once on first use
+ *    (file.jpg -> file.jpg.webp, plus a few right-sized widths),
+ *    swapped into the page's <img> src/srcset. Originals untouched.
+ * ------------------------------------------------------------------ */
+function mrzaib_webp_on() {
+	static $ok = null;
+	if ( null === $ok ) {
+		$ok = function_exists( 'wp_image_editor_supports' ) && wp_image_editor_supports( array( 'mime_type' => 'image/webp' ) );
+	}
+	return $ok;
+}
+
+/** Page-body flag: true after <head> is printed (keeps OG/schema images as JPEG for social apps). */
+$GLOBALS['mrzaib_webp_live'] = false;
+add_action( 'wp_head', function () {
+	$GLOBALS['mrzaib_webp_live'] = true;
+}, PHP_INT_MAX );
+
+function mrzaib_url_to_path( $url ) {
+	static $up = null;
+	if ( null === $up ) {
+		$up = wp_get_upload_dir();
+	}
+	$url  = strtok( (string) $url, '?' );
+	$base = preg_replace( '#^https?:#', '', $up['baseurl'] );
+	$u    = preg_replace( '#^https?:#', '', $url );
+	if ( 0 === strpos( $u, $base . '/' ) ) {
+		return array( $up['basedir'] . substr( $u, strlen( $base ) ), $up['baseurl'] . substr( $u, strlen( $base ) ) );
+	}
+	return false;
+}
+
+/**
+ * WebP version of an uploaded image, optionally resized to $w px wide.
+ * Returns its URL, or '' when not possible (it is then made on a later request).
+ */
+function mrzaib_webp_url( $url, $w = 0 ) {
+	if ( ! mrzaib_webp_on() ) {
+		return '';
+	}
+	$m = mrzaib_url_to_path( $url );
+	if ( ! $m || ! preg_match( '/\.(jpe?g|png)$/i', $m[0] ) ) {
+		return '';
+	}
+	list( $src, $srcurl ) = $m;
+	$suffix = $w ? '-mz2w' . (int) $w . '.webp' : '.webp';
+	$dest   = $src . $suffix;
+	if ( ! file_exists( $dest ) ) {
+		static $start = null, $made = 0;
+		if ( null === $start ) {
+			$start = microtime( true );
+		}
+		if ( ! file_exists( $src ) || $made >= 40 || microtime( true ) - $start > 8 || ! wp_is_writable( dirname( $src ) ) ) {
+			return '';
+		}
+		$ed = wp_get_image_editor( $src );
+		if ( is_wp_error( $ed ) ) {
+			return '';
+		}
+		if ( $w ) {
+			$sz = $ed->get_size();
+			if ( empty( $sz['width'] ) || $sz['width'] <= $w ) {
+				return '';
+			}
+			$ed->resize( $w, null );
+		}
+		$ed->set_quality( $w ? 68 : 75 );
+		$r = $ed->save( $dest, 'image/webp' );
+		$made++;
+		if ( is_wp_error( $r ) || ! file_exists( $dest ) ) {
+			return '';
+		}
+		// Keep the WebP only when it is actually smaller.
+		if ( ! $w && filesize( $dest ) >= filesize( $src ) ) {
+			@unlink( $dest ); // phpcs:ignore
+			@copy( $src, $dest . '.skip' ); // phpcs:ignore
+			return '';
+		}
+	}
+	return $srcurl . $suffix;
+}
+
+function mrzaib_webp_active() {
+	return ! is_admin() && ! wp_doing_ajax() && ! is_feed() && ! ( defined( 'REST_REQUEST' ) && REST_REQUEST ) && ! empty( $GLOBALS['mrzaib_webp_live'] ) && mrzaib_webp_on();
+}
+
+/** srcset: WebP for every width, plus in-between widths so phones never get a far bigger file. */
+function mrzaib_webp_srcset_sources( $sources, $full_url, $full_w ) {
+	foreach ( $sources as $k => $s ) {
+		$wu = mrzaib_webp_url( $s['url'] );
+		if ( $wu ) {
+			$sources[ $k ]['url'] = $wu;
+		}
+	}
+	if ( $full_url && $full_w ) {
+		foreach ( array( 360, 450, 720, 1080 ) as $want ) {
+			if ( $want >= $full_w * 0.9 ) {
+				continue;
+			}
+			$near = false;
+			foreach ( $sources as $s ) {
+				if ( abs( (int) $s['value'] - $want ) <= $want * 0.15 ) {
+					$near = true;
+				}
+			}
+			if ( ! $near ) {
+				$wu = mrzaib_webp_url( $full_url, $want );
+				if ( $wu ) {
+					$sources[ $want ] = array( 'url' => $wu, 'descriptor' => 'w', 'value' => $want );
+				}
+			}
+		}
+		ksort( $sources );
+	}
+	return $sources;
+}
+
+add_filter( 'wp_calculate_image_srcset', function ( $sources, $size_array, $image_src, $image_meta, $attachment_id ) {
+	if ( ! mrzaib_webp_active() && empty( $GLOBALS['mrzaib_webp_force'] ) ) {
+		return $sources;
+	}
+	$full = $attachment_id ? wp_get_attachment_url( $attachment_id ) : '';
+	$fw   = ! empty( $image_meta['width'] ) ? (int) $image_meta['width'] : 0;
+	return mrzaib_webp_srcset_sources( (array) $sources, $full, $fw );
+}, 20, 5 );
+
+add_filter( 'wp_get_attachment_image_src', function ( $image ) {
+	if ( $image && ( mrzaib_webp_active() || ! empty( $GLOBALS['mrzaib_webp_force'] ) ) ) {
+		$wu = mrzaib_webp_url( $image[0] );
+		if ( $wu ) {
+			$image[0] = $wu;
+		}
+	}
+	return $image;
+}, 20 );
+
+/** Hero mobile picture: right-sized WebP widths for phones (shown full width, ~720px on most phones). */
+function mrzaib_hero_mobile_srcset( $url ) {
+	$GLOBALS['mrzaib_webp_force'] = true;
+	$out = '';
+	$m   = mrzaib_url_to_path( $url );
+	if ( $m && file_exists( $m[0] ) ) {
+		$sz    = @getimagesize( $m[0] ); // phpcs:ignore
+		$parts = array();
+		foreach ( array( 480, 768 ) as $w ) {
+			$wu = mrzaib_webp_url( $url, $w );
+			if ( $wu ) {
+				$parts[] = $wu . ' ' . $w . 'w';
+			}
+		}
+		$full = mrzaib_webp_url( $url );
+		if ( $sz ) {
+			$parts[] = ( $full ? $full : $url ) . ' ' . (int) $sz[0] . 'w';
+			$out     = implode( ', ', $parts );
+		}
+	}
+	$GLOBALS['mrzaib_webp_force'] = false;
+	return $out;
+}
+
+/* ------------------------------------------------------------------
+ * 9. Home page: its stylesheets are inlined (no render-blocking
+ *    CSS requests before the first paint).
+ * ------------------------------------------------------------------ */
+add_filter( 'style_loader_tag', function ( $tag, $handle, $href ) {
+	if ( is_admin() || ! is_front_page() || ! in_array( $handle, array( 'woocommerce-layout', 'woocommerce-general', 'mrzaib-main' ), true ) ) {
+		return $tag;
+	}
+	$u    = strtok( $href, '?' );
+	$cu   = preg_replace( '#^https?:#', '', content_url() );
+	$uu   = preg_replace( '#^https?:#', '', $u );
+	if ( 0 !== strpos( $uu, $cu . '/' ) ) {
+		return $tag;
+	}
+	$path = WP_CONTENT_DIR . substr( $uu, strlen( $cu ) );
+	if ( ! is_readable( $path ) || filesize( $path ) > 300000 ) {
+		return $tag;
+	}
+	$css  = (string) file_get_contents( $path ); // phpcs:ignore
+	$base = trailingslashit( dirname( $u ) );
+	$css  = preg_replace_callback( '/url\(\s*([\'"]?)(?!data:|https?:|\/\/|\/|#)([^\'")]+)\1\s*\)/i', function ( $m ) use ( $base ) {
+		return 'url(' . $m[1] . $base . $m[2] . $m[1] . ')';
+	}, $css );
+	$css   = str_replace( '</style', '<\/style', $css );
+	$media = preg_match( "/media=['\"]([^'\"]+)['\"]/", $tag, $mm ) ? $mm[1] : 'all';
+	return '<style id="' . esc_attr( $handle ) . '-inline-css"' . ( 'all' !== $media ? ' media="' . esc_attr( $media ) . '"' : '' ) . '>' . $css . "</style>\n";
+}, 20, 3 );
+
+/* ------------------------------------------------------------------
+ * 10. WooCommerce cart-fragments refresh waits for the first
+ *     interaction (the header cart is already printed by PHP; ajax
+ *     add-to-cart returns its own fragments).
+ * ------------------------------------------------------------------ */
+add_filter( 'script_loader_tag', function ( $tag, $handle, $src ) {
+	if ( is_admin() || 'wc-cart-fragments' !== $handle ) {
+		return $tag;
+	}
+	return str_replace( array( '<script ', ' src=' ), array( '<script type="text/mzlazy" ', ' data-src=' ), $tag );
+}, 20, 3 );
+
+add_action( 'wp_footer', function () {
+	echo "<script>(function(){var d=0,E=['scroll','pointerdown','keydown','touchstart','wheel','mousemove'];function g(){if(d)return;d=1;E.forEach(function(e){removeEventListener(e,g)});document.querySelectorAll('script[type=\"text/mzlazy\"]').forEach(function(o){var s=document.createElement('script');s.src=o.getAttribute('data-src');document.body.appendChild(s)})}E.forEach(function(e){addEventListener(e,g,{passive:true,once:true})});addEventListener('pageshow',function(e){if(e.persisted)g()})})();</script>\n";
+}, 100 );
+
+/** WebP copy of an uploaded image URL when available, else the URL itself. */
+function mrzaib_webp_or( $url, $w = 0 ) {
+	if ( ! function_exists( 'mrzaib_webp_url' ) || ! $url ) {
+		return $url;
+	}
+	$wu = $w ? mrzaib_webp_url( $url, $w ) : '';
+	if ( ! $wu ) {
+		$wu = mrzaib_webp_url( $url );
+	}
+	return $wu ? $wu : $url;
+}

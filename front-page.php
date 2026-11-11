@@ -25,9 +25,19 @@ $all_products = mrzaib_products_query( array( 'limit' => 12 ) );
 			<?php foreach ( mrzaib_hero_slides() as $n => $sl ) : ?>
 				<a class="slide<?php echo 0 === $n ? ' is-active' : ''; ?>" href="<?php echo esc_url( $sl[2] ); ?>">
 					<picture>
-						<source media="(max-width: 749px)" srcset="<?php echo esc_url( $sl[1] ); ?>">
-						<?php $hd = mrzaib_hero_img_data( $sl[0] ); ?>
-						<img src="<?php echo esc_url( $sl[0] ); ?>"<?php echo $hd['srcset'] ? ' srcset="' . esc_attr( $hd['srcset'] ) . '" sizes="100vw"' : ''; ?> width="<?php echo (int) $hd['w']; ?>" height="<?php echo (int) $hd['h']; ?>" alt="<?php echo esc_attr( $sl[3] ); ?>" <?php echo 0 === $n ? 'fetchpriority="high" decoding="sync"' : 'loading="lazy" decoding="async"'; ?>>
+						<?php
+						$hd  = mrzaib_hero_img_data( $sl[0] );
+						$ms  = mrzaib_hero_mobile_srcset( $sl[1] );
+						$msr = $ms ? $ms : esc_url( $sl[1] );
+						$px  = 'data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==';
+						if ( 0 === $n ) :
+							?>
+						<source media="(max-width: 749px)" srcset="<?php echo esc_attr( $msr ); ?>" sizes="100vw">
+						<img src="<?php echo esc_url( $hd['src'] ); ?>"<?php echo $hd['srcset'] ? ' srcset="' . esc_attr( $hd['srcset'] ) . '" sizes="100vw"' : ''; ?> width="<?php echo (int) $hd['w']; ?>" height="<?php echo (int) $hd['h']; ?>" alt="<?php echo esc_attr( $sl[3] ); ?>" fetchpriority="high" decoding="sync">
+						<?php else : /* later slides load after the first interaction (see main.js), so they never compete with the first one */ ?>
+						<source media="(max-width: 749px)" data-srcset="<?php echo esc_attr( $msr ); ?>" sizes="100vw">
+						<img src="<?php echo esc_attr( $px ); ?>" data-src="<?php echo esc_url( $hd['src'] ); ?>"<?php echo $hd['srcset'] ? ' data-srcset="' . esc_attr( $hd['srcset'] ) . '" sizes="100vw"' : ''; ?> width="<?php echo (int) $hd['w']; ?>" height="<?php echo (int) $hd['h']; ?>" alt="<?php echo esc_attr( $sl[3] ); ?>" decoding="async">
+						<?php endif; ?>
 					</picture>
 				</a>
 			<?php endforeach; ?>
@@ -143,6 +153,7 @@ $all_products = mrzaib_products_query( array( 'limit' => 12 ) );
 		if ( $vurl && ! $is_theme && ( $poster === mrzaib_video_default( $i, 'jpg' ) || $poster === mrzaib_home_media_url( 'video_poster_' . $i ) ) ) {
 			$poster = '';
 		}
+		$poster = $poster ? mrzaib_webp_or( $poster, 480 ) : '';
 		if ( ! $vurl && ! $poster ) {
 			continue; // Nothing to show in this slot.
 		}
@@ -192,8 +203,9 @@ $all_products = mrzaib_products_query( array( 'limit' => 12 ) );
 		<div class="container">
 			<a class="promo-band" href="<?php echo esc_url( mrzaib_opt( 'promo_link', mrzaib_shop_link() ) ); ?>">
 				<picture>
-					<source media="(max-width: 749px)" srcset="<?php echo esc_url( mrzaib_opt( 'promo_img_m' ) ? mrzaib_opt( 'promo_img_m' ) : mrzaib_img( 'promo-band-mobile.jpg' ) ); ?>">
-					<img src="<?php echo esc_url( mrzaib_opt( 'promo_img_d' ) ? mrzaib_opt( 'promo_img_d' ) : mrzaib_img( 'promo-band-desktop.jpg' ) ); ?>" alt="<?php esc_attr_e( 'MR ZAIB long lasting perfumes: Arvon, OUD X, Zay-ab, Kahn-vahl, Kireza and Hoor', 'mrzaib' ); ?>" loading="lazy" width="1920" height="384">
+					<?php $pm = mrzaib_opt( 'promo_img_m' ) ? mrzaib_opt( 'promo_img_m' ) : mrzaib_img( 'promo-band-mobile.jpg' ); $pms = mrzaib_hero_mobile_srcset( $pm ); ?>
+					<source media="(max-width: 749px)" srcset="<?php echo $pms ? esc_attr( $pms ) : esc_url( $pm ); ?>" sizes="100vw">
+					<img src="<?php echo esc_url( mrzaib_webp_or( mrzaib_opt( 'promo_img_d' ) ? mrzaib_opt( 'promo_img_d' ) : mrzaib_img( 'promo-band-desktop.jpg' ) ) ); ?>" alt="<?php esc_attr_e( 'MR ZAIB long lasting perfumes: Arvon, OUD X, Zay-ab, Kahn-vahl, Kireza and Hoor', 'mrzaib' ); ?>" loading="lazy" width="1920" height="384">
 				</picture>
 			</a>
 		</div>
