@@ -171,6 +171,7 @@ require MRZAIB_DIR . '/inc/security.php';
 require MRZAIB_DIR . '/inc/performance.php';
 require MRZAIB_DIR . '/inc/store-content.php';
 require MRZAIB_DIR . '/inc/demo-import.php';
+require MRZAIB_DIR . '/inc/blog-content.php';
 require MRZAIB_DIR . '/inc/yoast-setup.php';
 require MRZAIB_DIR . '/inc/media-cleanup.php';
 require MRZAIB_DIR . '/inc/branding.php';

@@ -348,6 +348,11 @@ function mrzaib_remove_dummy() {
 	foreach ( mrzaib_store_products() as $p ) {
 		$keep = array_merge( $keep, $p['images'] );
 	}
+	if ( function_exists( 'mrzaib_blog_posts' ) ) {
+		foreach ( mrzaib_blog_posts() as $b ) {
+			$keep[] = $b['image'];
+		}
+	}
 	foreach ( $map as $file => $aid ) {
 		if ( ! in_array( $file, $keep, true ) ) {
 			if ( (int) get_theme_mod( 'custom_logo' ) === (int) $aid ) {

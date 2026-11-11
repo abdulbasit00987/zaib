@@ -657,3 +657,12 @@ jQuery(function ($) {
 			});
 	});
 })();
+
+/* Blog: copy link button */
+document.addEventListener('click', function (e) {
+  var b = e.target.closest && e.target.closest('.mzb-copy');
+  if (!b) return;
+  var u = b.getAttribute('data-url');
+  var done = function () { b.classList.add('is-copied'); setTimeout(function () { b.classList.remove('is-copied'); }, 1500); };
+  if (navigator.clipboard) navigator.clipboard.writeText(u).then(done, done); else { var t = document.createElement('input'); t.value = u; document.body.appendChild(t); t.select(); document.execCommand('copy'); t.remove(); done(); }
+});
