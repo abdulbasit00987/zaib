@@ -103,7 +103,7 @@ function mrzaib_video_product( $n ) {
  * as real media (with previews) and can be picked again from Media.
  * Only fields still using the theme default (or empty) are changed.
  */
-define( 'MRZAIB_HOME_MEDIA_V', 5 );
+define( 'MRZAIB_HOME_MEDIA_V', 6 );
 
 function mrzaib_home_media_items() {
 	$items = array();
@@ -113,12 +113,13 @@ function mrzaib_home_media_items() {
 		$items[ 'feat_icon_' . $i ]    = array( 'assets/images/icons/' . basename( mrzaib_feat_default_icon( $i ) ), mrzaib_feat_default_icon( $i ) );
 	}
 	foreach ( mrzaib_hero_defaults() as $i => $d ) {
-		$items[ 'hero_img_' . $i ] = array( 'assets/images/hero-' . $i . '-desktop.jpg', $d[0] );
-		$items[ 'hero_mob_' . $i ] = array( 'assets/images/hero-' . $i . '-mobile.jpg', $d[1] );
+		$tag                       = $i >= 8 ? 'v2' : ''; // v2 = podium scenes for RAAZ to Baraan.
+		$items[ 'hero_img_' . $i ] = array( 'assets/images/hero-' . $i . '-desktop.jpg', $d[0], $tag );
+		$items[ 'hero_mob_' . $i ] = array( 'assets/images/hero-' . $i . '-mobile.jpg', $d[1], $tag );
 	}
-	/* Third value = version tag: a new tag imports the updated file again (v5 = 13 bottles). */
-	$items['promo_img_d'] = array( 'assets/images/promo-band-desktop.jpg', MRZAIB_URI . '/assets/images/promo-band-desktop.jpg', 'v5' );
-	$items['promo_img_m'] = array( 'assets/images/promo-band-mobile.jpg', MRZAIB_URI . '/assets/images/promo-band-mobile.jpg', 'v5' );
+	/* Third value = version tag: a new tag imports the updated file again (v6 = 13 bottles on marble riser). */
+	$items['promo_img_d'] = array( 'assets/images/promo-band-desktop.jpg', MRZAIB_URI . '/assets/images/promo-band-desktop.jpg', 'v6' );
+	$items['promo_img_m'] = array( 'assets/images/promo-band-mobile.jpg', MRZAIB_URI . '/assets/images/promo-band-mobile.jpg', 'v6' );
 	return $items;
 }
 
