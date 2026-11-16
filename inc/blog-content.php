@@ -8,7 +8,7 @@
 
 defined( 'ABSPATH' ) || exit;
 
-define( 'MRZAIB_BLOG_V', 3 );
+define( 'MRZAIB_BLOG_V', 4 );
 
 /** Fragrance-notes block used inside the articles. */
 function mrzaib_blog_notes_html( $top, $heart, $base ) {
@@ -268,6 +268,30 @@ function mrzaib_blog_posts() {
 					'Can I wear ZAUQ all year?' => 'Yes. The citrus and herbal notes keep it fresh in summer, and the spicy balsamic base keeps it warm in winter.',
 				),
 				'end'   => '<h2>The Verdict</h2><p><strong>ZAUQ</strong> is good taste in a bottle: fresh, herbal and woody, with a warm finish that lasts. If you want one refined scent for work, weekends and evenings, ZAUQ is an easy choice.</p>',
+			),
+		),
+		array(
+			'slug'    => 'mehfil-fruity-woody-perfume-for-men',
+			'title'   => 'Mehfil: The Fruity Woody Perfume That Owns Every Gathering',
+			'product' => 'mehfil-perfume',
+			'name'    => 'Mehfil',
+			'image'   => 'blog-mehfil.jpg',
+			'alt'     => 'Mehfil fruity woody perfume for men by MR ZAIB teal bottle',
+			'excerpt' => 'Bergamot, apple and pink pepper, a juicy pineapple and jasmine heart, and a smoky base of birch, oak moss and musk. Mehfil is the MR ZAIB scent made for the centre of the room.',
+			'tags'    => array( 'Mehfil', 'Perfume for Men', 'Fruity Perfume', 'Woody Perfume', 'Wedding Perfume' ),
+			'seo'     => array( 'Mehfil Fruity Woody Perfume for Men: Notes & Tips | MR ZAIB Blog', 'Mehfil by MR ZAIB is a long lasting fruity woody perfume for men with bergamot, apple, pineapple, jasmine, birch, oak moss, musk and ambroxan.', 'Mehfil perfume' ),
+			'body'    => array(
+				'intro' => '<p>A <strong>mehfil</strong> is where people gather: weddings, dinners, late-night chai with friends. Every mehfil has one person everyone remembers. <strong>Mehfil by MR ZAIB</strong> is made to make that person you. It is a <strong>long lasting fruity woody perfume for men</strong> with a fresh, juicy opening and a smoky, confident trail, bottled in a striking teal and gold bottle.</p>',
+				'notes' => array( 'Bergamot, Black Currant, Apple, Lemon, Pink Pepper', 'Pineapple, Patchouli, Moroccan Jasmine', 'Birch, Musk, Oak Moss, Cedarwood, Ambroxan' ),
+				'story' => '<h2>What Mehfil Smells Like</h2><p>The first spray is bright and energetic. Zesty <strong>bergamot</strong> and <strong>lemon</strong>, crisp <strong>apple</strong>, tart <strong>black currant</strong> and a tingle of <strong>pink pepper</strong> make it instantly fresh and likeable.</p><p>Then comes the signature heart. Juicy <strong>pineapple</strong> gives Mehfil its famous fruity character, earthy <strong>patchouli</strong> keeps it masculine, and smooth <strong>Moroccan jasmine</strong> adds polish.</p><p>The base is where Mehfil earns its reputation. Smoky <strong>birch</strong>, green <strong>oak moss</strong>, dry <strong>cedarwood</strong>, clean <strong>musk</strong> and warm <strong>ambroxan</strong> create a rich, long lasting trail that feels expensive and gets compliments all evening.</p>',
+				'wear'  => '<h2>When to Wear Mehfil</h2><ul><li><strong>Weddings and functions:</strong> fresh enough for a crowded hall, bold enough to be noticed.</li><li><strong>Office and meetings:</strong> two sprays give a confident, clean presence.</li><li><strong>Dinners and date nights:</strong> the smoky birch base feels warm and magnetic.</li><li><strong>All seasons:</strong> fruity and fresh in summer, woody and smoky in winter.</li></ul>',
+				'tip'   => '<strong>Two sprays on the neck, one on the chest.</strong> Mehfil projects well, so this is enough for most of the day; add one on clothes for long evenings.',
+				'faq'   => array(
+					'What does Mehfil smell like?' => 'Mehfil is fruity and woody: fresh bergamot, apple and pink pepper, a pineapple and jasmine heart, and a smoky base of birch, oak moss, musk and ambroxan.',
+					'Is Mehfil good for weddings?' => 'Yes. Its fresh opening and confident smoky woody base make it one of the best MR ZAIB choices for weddings and gatherings.',
+					'Can I wear Mehfil every day?' => 'Yes. Mehfil is versatile enough for the office, casual days and evenings, all year round.',
+				),
+				'end'   => '<h2>The Verdict</h2><p><strong>Mehfil</strong> is fresh, fruity and smoky, a scent that makes an entrance and stays in the memory. If you want the perfume people ask about at every gathering, Mehfil is the one.</p>',
 			),
 		),
 	);

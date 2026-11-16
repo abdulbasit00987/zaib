@@ -366,6 +366,44 @@ function mrzaib_store_products() {
 				'keywords' => 'ZAUQ perfume, ZAUQ perfume for men, MR ZAIB ZAUQ, perfume for men, men perfume Pakistan, long lasting perfume for men, aromatic perfume for men, woody perfume for men, citrus perfume, herbal perfume, musky perfume, spicy perfume, fresh perfume for men, office perfume for men, best perfume for men in Pakistan, luxury perfume Pakistan, gift for him',
 			),
 		),
+		array(
+			'name'     => 'Mehfil',
+			'slug'     => 'mehfil-perfume',
+			'subtitle' => 'Long Lasting Fruity Woody Perfume for Men | 50ml',
+			'sku'      => 'MZ-MEHFIL-50',
+			'regular'  => '4000',
+			'sale'     => '3500',
+			'cats'     => array( 'men' ),
+			'images'   => array( 'mehfil-main.jpg', 'mehfil-banner.jpg', 'mehfil-notes-top.jpg', 'mehfil-notes-middle.jpg', 'mehfil-notes-base.jpg' ),
+			'alts'     => array( 'Mehfil long lasting perfume for men by MR ZAIB 50ml', 'MR ZAIB Mehfil perfume for men fragrance notes', 'Mehfil top notes bergamot black currant apple lemon pink pepper', 'Mehfil middle notes pineapple patchouli moroccan jasmine', 'Mehfil base notes birch musk oak moss cedarwood ambroxan' ),
+			'notes'    => array(
+				'Top Notes'    => 'Bergamot, Black Currant, Apple, Lemon, Pink Pepper',
+				'Middle Notes' => 'Pineapple, Patchouli, Moroccan Jasmine',
+				'Base Notes'   => 'Birch, Musk, Oak Moss, Cedarwood, Ambroxan',
+			),
+			'short'    => '<p><strong>Mehfil by MR ZAIB</strong> is a long lasting fruity woody perfume for men, inspired by Creed Aventus. It opens with fresh <strong>bergamot, black currant, apple, lemon and pink pepper</strong>, reveals a bold heart of <strong>pineapple, patchouli and Moroccan jasmine</strong>, and dries down to a smoky, woody base of <strong>birch, musk, oak moss, cedarwood and ambroxan</strong>. A confident signature scent that owns every gathering.</p>'
+				. '<ul><li><strong>Top Notes:</strong> Bergamot, Black Currant, Apple, Lemon, Pink Pepper</li><li><strong>Middle Notes:</strong> Pineapple, Patchouli, Moroccan Jasmine</li><li><strong>Base Notes:</strong> Birch, Musk, Oak Moss, Cedarwood, Ambroxan</li><li><strong>Size:</strong> 50ml</li><li><strong>For:</strong> Men</li></ul>',
+			'long'     => '<h2>Mehfil: Long Lasting Fruity Woody Perfume for Men in Pakistan</h2>'
+				. '<p><strong>Mehfil</strong>, meaning a gathering, is a premium perfume for men from <strong>MR ZAIB Luxury Perfumes</strong>, inspired by Creed Aventus. Fresh and fruity at first, bold in the heart and smoky-woody in the dry-down, it is made for the man who walks into a room and becomes the centre of the mehfil, a scent to <em>leave your presence</em>.</p>'
+				. '<h3>Fragrance Notes of Mehfil</h3>'
+				. '<p><strong>Top Notes: Bergamot, Black Currant, Apple, Lemon and Pink Pepper.</strong> A bright, juicy opening of citrus and crisp fruit with a lively pink pepper sparkle.</p>'
+				. '<p><strong>Middle Notes: Pineapple, Patchouli and Moroccan Jasmine.</strong> The signature heart: sweet, juicy pineapple balanced by earthy patchouli and smooth jasmine.</p>'
+				. '<p><strong>Base Notes: Birch, Musk, Oak Moss, Cedarwood and Ambroxan.</strong> A long lasting, masculine finish of smoky birch, clean musk, green oak moss, dry cedar and the warm, skin-like glow of ambroxan.</p>'
+				. '<h3>Fragrance Profile</h3>'
+				. '<ul><li><strong>Family:</strong> Fruity, Chypre, Woody, Smoky</li><li><strong>Character:</strong> Confident, fresh, bold, masculine</li><li><strong>Best season:</strong> All year round</li><li><strong>Occasions:</strong> Office, dinners, weddings, parties, gatherings, date nights and everyday signature wear</li></ul>'
+				. '<h3>Why Choose MR ZAIB Mehfil?</h3>'
+				. '<ul><li>Fresh fruity opening with a smoky birch and woody base</li><li>Long lasting men\'s perfume with strong projection and a memorable trail</li><li>Elegant teal and gold 50ml bottle with a black cap, a perfect gift for him</li><li>Premium quality at Rs. 3,500</li><li>Cash on Delivery all over Pakistan</li></ul>'
+				. '<h3>How to Apply</h3>'
+				. '<p>Spray 3 to 4 times on pulse points (neck, wrists and chest) from about 15 cm. Apply on clean, moisturised skin and do not rub, so the fragrance lasts longer. A light spray on clothes keeps the smoky woody trail going all day.</p>'
+				. '<p>Looking for the <strong>best long lasting fruity perfume for men in Pakistan</strong>? Order <strong>Mehfil by MR ZAIB</strong> online today.</p>',
+			'tags'     => array( 'Mehfil', 'Mehfil Perfume', 'Perfume for Men', 'Men Perfume Pakistan', 'Long Lasting Perfume for Men', 'Fruity Perfume', 'Woody Perfume', 'Smoky Perfume', 'Pineapple Perfume', 'Citrus Perfume', 'Birch Perfume', 'Musk Perfume', 'Chypre Perfume', 'Inspired by Creed Aventus', 'Office Perfume', 'Wedding Perfume', 'Party Perfume', 'Everyday Perfume', 'Gift for Him', 'Luxury Perfume', 'MR ZAIB' ),
+			'seo'      => array(
+				'title'    => 'Mehfil Long Lasting Fruity Woody Perfume for Men 50ml | MR ZAIB',
+				'desc'     => 'Shop Mehfil by MR ZAIB, a long lasting perfume for men inspired by Creed Aventus, with bergamot, apple, pineapple, jasmine, birch and musk. 50ml, Rs. 3,500. COD in Pakistan.',
+				'focus'    => 'Mehfil perfume for men',
+				'keywords' => 'Mehfil perfume, Mehfil perfume for men, MR ZAIB Mehfil, perfume for men, men perfume Pakistan, long lasting perfume for men, fruity perfume for men, woody perfume for men, smoky perfume, pineapple perfume, birch perfume, inspired by Creed Aventus, Aventus inspired perfume Pakistan, best perfume for men in Pakistan, luxury perfume Pakistan, wedding perfume for men, gift for him',
+			),
+		),
 	);
 }
 
