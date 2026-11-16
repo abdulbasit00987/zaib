@@ -8,7 +8,7 @@
 
 defined( 'ABSPATH' ) || exit;
 
-define( 'MRZAIB_BLOG_V', 5 );
+define( 'MRZAIB_BLOG_V', 6 );
 
 /** Fragrance-notes block used inside the articles. */
 function mrzaib_blog_notes_html( $top, $heart, $base ) {
@@ -316,6 +316,30 @@ function mrzaib_blog_posts() {
 					'Does Dazor last long?' => 'Yes. Its vanilla and musk base keeps the scent on skin for many hours, and longer on clothes.',
 				),
 				'end'   => '<h2>The Verdict</h2><p><strong>Dazor</strong> is fresh, confident and easy to love. If you want one perfume that works every day and still turns heads in the evening, Dazor is an easy pick.</p>',
+			),
+		),
+		array(
+			'slug'    => 'brave-fresh-fruity-perfume-for-men',
+			'title'   => 'Brave: A Fresh, Fearless Perfume for Men Who Stand Out',
+			'product' => 'brave-perfume',
+			'name'    => 'Brave',
+			'image'   => 'blog-brave.jpg',
+			'alt'     => 'Brave fresh fruity perfume for men by MR ZAIB smoky black bottle',
+			'excerpt' => 'Juicy citrus, guava and peach, a smooth licorice and white-flower heart, and a creamy sandalwood musk base. Brave is the MR ZAIB scent for confident men.',
+			'tags'    => array( 'Brave', 'Perfume for Men', 'Fresh Perfume for Men', 'Fruity Perfume', 'Summer Perfume for Men' ),
+			'seo'     => array( 'Brave Fresh Fruity Perfume for Men: Notes & Tips | MR ZAIB Blog', 'Brave by MR ZAIB is a long lasting fresh fruity perfume for men with lemon, mandarin, guava, peach, licorice, jasmine, sandalwood, musk and cedar.', 'Brave perfume' ),
+			'body'    => array(
+				'intro' => '<p>Confidence has a scent. <strong>Brave by MR ZAIB</strong> is a <strong>long lasting fresh fruity perfume for men</strong> made for the days you want to be noticed: juicy and bright when you walk in, smooth and warm long after you leave. It comes in a bold smoky black bottle that looks as fearless as it smells.</p>',
+				'notes' => array( 'Lemon, Mandarin Orange, Guava, Peach', 'Licorice, Jasmine, Tuberose, Lily, Aloe Vera', 'Sandalwood, Musk, Cedar' ),
+				'story' => '<h2>What Brave Smells Like</h2><p>The first spray is a splash of fruit. Zesty <strong>lemon</strong> and <strong>mandarin orange</strong> meet sweet, tropical <strong>guava</strong> and soft <strong>peach</strong>, fresh and full of energy.</p><p>The heart is where Brave gets its character. A smooth, slightly sweet <strong>licorice</strong> accord sits with <strong>jasmine</strong>, <strong>tuberose</strong> and <strong>lily</strong>, while cool <strong>aloe vera</strong> keeps everything fresh and clean.</p><p>In the dry-down, creamy <strong>sandalwood</strong>, clean <strong>musk</strong> and dry <strong>cedar</strong> give Brave a warm, masculine finish that lasts for hours.</p>',
+				'wear'  => '<h2>When to Wear Brave</h2><ul><li><strong>Office and university:</strong> fresh, clean and easy to like.</li><li><strong>Summer days:</strong> the citrus and fruit opening feels cool in the heat.</li><li><strong>Parties and outings:</strong> the sandalwood musk base keeps you noticed all night.</li><li><strong>Gifting:</strong> a crowd-pleasing scent in a striking bottle.</li></ul>',
+				'tip'   => '<strong>Spray on the neck and chest, then one on your shirt.</strong> Fabric holds the fresh fruity notes longer, while skin brings out the sandalwood base.',
+				'faq'   => array(
+					'What does Brave smell like?' => 'Brave is fresh and fruity: lemon, mandarin, guava and peach on top, licorice with white flowers and aloe vera in the heart, and sandalwood, musk and cedar in the base.',
+					'Is Brave good for summer?' => 'Yes. Its juicy citrus and fruity opening makes Brave one of the best MR ZAIB perfumes for men in warm weather, and it works all year.',
+					'Does Brave last long?' => 'Yes. The sandalwood, musk and cedar base keeps Brave on skin for many hours, and longer on clothes.',
+				),
+				'end'   => '<h2>The Verdict</h2><p><strong>Brave</strong> is fresh, bold and confident. If you want a fruity perfume for men that feels clean in the day and warm at night, Brave is made for you.</p>',
 			),
 		),
 	);

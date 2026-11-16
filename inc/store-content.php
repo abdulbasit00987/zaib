@@ -442,6 +442,44 @@ function mrzaib_store_products() {
 				'keywords' => 'Dazor perfume, Dazor perfume for men, MR ZAIB Dazor, perfume for men, men perfume Pakistan, long lasting perfume for men, fresh perfume for men, fruity perfume for men, woody perfume for men, apple perfume, vanilla musk perfume, inspired by Dunhill Desire, Dunhill Desire inspired perfume Pakistan, best perfume for men in Pakistan, office perfume for men, luxury perfume Pakistan, gift for him',
 			),
 		),
+		array(
+			'name'     => 'Brave',
+			'slug'     => 'brave-perfume',
+			'subtitle' => 'Long Lasting Fresh Fruity Floral Woody Perfume for Men | 50ml',
+			'sku'      => 'MZ-BRAVE-50',
+			'regular'  => '4000',
+			'sale'     => '3500',
+			'cats'     => array( 'men' ),
+			'images'   => array( 'brave-main.jpg', 'brave-banner.jpg', 'brave-notes-top.jpg', 'brave-notes-middle.jpg', 'brave-notes-base.jpg' ),
+			'alts'     => array( 'Brave long lasting perfume for men by MR ZAIB 50ml', 'MR ZAIB Brave perfume for men fragrance notes', 'Brave top notes lemon mandarin orange guava peach', 'Brave middle notes licorice jasmine tuberose lily aloe vera', 'Brave base notes sandalwood musk cedar' ),
+			'notes'    => array(
+				'Top Notes'    => 'Lemon, Mandarin Orange, Guava, Peach',
+				'Middle Notes' => 'Licorice, Jasmine, Tuberose, Lily, Aloe Vera',
+				'Base Notes'   => 'Sandalwood, Musk, Cedar',
+			),
+			'short'    => '<p><strong>Brave by MR ZAIB</strong> is a long lasting fresh fruity woody perfume for men, inspired by Diesel Orleans. It bursts open with juicy <strong>lemon, mandarin orange, guava and peach</strong>, reveals a smooth heart of <strong>licorice, jasmine, tuberose, lily and aloe vera</strong>, and finishes on a creamy, masculine base of <strong>sandalwood, musk and cedar</strong>. A bold, fearless scent for the man who stands out.</p>'
+				. '<ul><li><strong>Top Notes:</strong> Lemon, Mandarin Orange, Guava, Peach</li><li><strong>Middle Notes:</strong> Licorice, Jasmine, Tuberose, Lily, Aloe Vera</li><li><strong>Base Notes:</strong> Sandalwood, Musk, Cedar</li><li><strong>Size:</strong> 50ml</li><li><strong>For:</strong> Men</li></ul>',
+			'long'     => '<h2>Brave: Long Lasting Fresh Fruity Woody Perfume for Men in Pakistan</h2>'
+				. '<p><strong>Brave</strong> is a premium perfume for men from <strong>MR ZAIB Luxury Perfumes</strong>, inspired by Diesel Orleans. Fresh and juicy at the start, smooth and floral in the heart, and warm and woody in the dry-down, it is made for the confident man who is never afraid to stand out, a scent to <em>leave your presence</em>.</p>'
+				. '<h3>Fragrance Notes of Brave</h3>'
+				. '<p><strong>Top Notes: Lemon, Mandarin Orange, Guava and Peach.</strong> A sparkling, juicy opening of zesty citrus and sweet tropical fruit.</p>'
+				. '<p><strong>Middle Notes: Licorice, Jasmine, Tuberose, Lily and Aloe Vera.</strong> A smooth, slightly sweet licorice accord wrapped in white flowers and a cool, green touch of aloe vera.</p>'
+				. '<p><strong>Base Notes: Sandalwood, Musk and Cedar.</strong> A long lasting, masculine finish of creamy sandalwood, clean musk and dry cedar.</p>'
+				. '<h3>Fragrance Profile</h3>'
+				. '<ul><li><strong>Family:</strong> Fresh, Fruity, Floral, Woody</li><li><strong>Character:</strong> Bold, energetic, smooth, masculine</li><li><strong>Best season:</strong> All year round, especially spring and summer</li><li><strong>Occasions:</strong> Office, university, outings, parties, evenings and everyday signature wear</li></ul>'
+				. '<h3>Why Choose MR ZAIB Brave?</h3>'
+				. '<ul><li>Juicy citrus and fruit opening with a creamy sandalwood base</li><li>Long lasting men\'s perfume with a fresh, confident trail</li><li>Bold smoky black 50ml bottle with a black cap, a perfect gift for him</li><li>Premium quality at Rs. 3,500</li><li>Cash on Delivery all over Pakistan</li></ul>'
+				. '<h3>How to Apply</h3>'
+				. '<p>Spray 3 to 4 times on pulse points (neck, wrists and chest) from about 15 cm. Apply on clean, moisturised skin and do not rub, so the fragrance lasts longer. A light spray on clothes keeps the scent with you all day.</p>'
+				. '<p>Looking for the <strong>best long lasting fresh perfume for men in Pakistan</strong>? Order <strong>Brave by MR ZAIB</strong> online today.</p>',
+			'tags'     => array( 'Brave', 'Brave Perfume', 'Perfume for Men', 'Men Perfume Pakistan', 'Long Lasting Perfume for Men', 'Fresh Perfume for Men', 'Fruity Perfume', 'Citrus Perfume', 'Floral Woody Perfume', 'Sandalwood Perfume', 'Musk Perfume', 'Summer Perfume for Men', 'Inspired by Diesel Orleans', 'Office Perfume', 'University Perfume', 'Party Perfume', 'Everyday Perfume', 'Gift for Him', 'Luxury Perfume', 'MR ZAIB' ),
+			'seo'      => array(
+				'title'    => 'Brave Long Lasting Fresh Fruity Perfume for Men 50ml | MR ZAIB',
+				'desc'     => 'Shop Brave by MR ZAIB, a long lasting perfume for men inspired by Diesel Orleans, with lemon, mandarin, guava, peach, jasmine, sandalwood and musk. 50ml, Rs. 3,500. COD in Pakistan.',
+				'focus'    => 'Brave perfume for men',
+				'keywords' => 'Brave perfume, Brave perfume for men, MR ZAIB Brave, perfume for men, men perfume Pakistan, long lasting perfume for men, fresh perfume for men, fruity perfume for men, citrus perfume for men, sandalwood musk perfume, summer perfume for men, inspired by Diesel Orleans, Diesel inspired perfume Pakistan, best perfume for men in Pakistan, office perfume for men, luxury perfume Pakistan, gift for him men',
+			),
+		),
 	);
 }
 
