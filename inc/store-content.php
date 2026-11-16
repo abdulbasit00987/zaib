@@ -328,6 +328,44 @@ function mrzaib_store_products() {
 				'keywords' => 'Velora perfume, Velora unisex perfume, MR ZAIB Velora, unisex perfume, unisex perfume Pakistan, perfume for men and women, long lasting perfume, rose perfume, leather perfume, rose leather perfume, amber perfume, iris perfume, inspired by Bidford, best unisex perfume in Pakistan, luxury perfume Pakistan, winter perfume, gift for him, gift for her',
 			),
 		),
+		array(
+			'name'     => 'ZAUQ',
+			'slug'     => 'zauq-perfume',
+			'subtitle' => 'Long Lasting Aromatic Woody Perfume for Men | 50ml',
+			'sku'      => 'MZ-ZAUQ-50',
+			'regular'  => '4000',
+			'sale'     => '3500',
+			'cats'     => array( 'men' ),
+			'images'   => array( 'zauq-main.jpg', 'zauq-banner.jpg', 'zauq-notes-top.jpg', 'zauq-notes-middle.jpg', 'zauq-notes-base.jpg' ),
+			'alts'     => array( 'ZAUQ long lasting perfume for men by MR ZAIB 50ml frosted bottle', 'MR ZAIB ZAUQ perfume for men fragrance notes', 'ZAUQ top notes amber aromatic citrus', 'ZAUQ middle notes herbal musky woody', 'ZAUQ base notes fresh spicy bitter balsamic' ),
+			'notes'    => array(
+				'Top Notes'    => 'Amber, Aromatic, Citrus',
+				'Middle Notes' => 'Herbal, Musky, Woody',
+				'Base Notes'   => 'Fresh, Spicy, Bitter, Balsamic',
+			),
+			'short'    => '<p><strong>ZAUQ by MR ZAIB</strong> is a long lasting aromatic woody perfume for men. It opens with a bright blend of <strong>amber, aromatic herbs and citrus</strong>, moves into a refined heart of <strong>herbal, musky and woody</strong> accords, and settles on a <strong>fresh, spicy, bitter and balsamic</strong> base. A clean, classy scent for men of good taste.</p>'
+				. '<ul><li><strong>Top Notes:</strong> Amber, Aromatic, Citrus</li><li><strong>Middle Notes:</strong> Herbal, Musky, Woody</li><li><strong>Base Notes:</strong> Fresh, Spicy, Bitter, Balsamic</li><li><strong>Size:</strong> 50ml</li><li><strong>For:</strong> Men</li></ul>',
+			'long'     => '<h2>ZAUQ: Long Lasting Aromatic Woody Perfume for Men in Pakistan</h2>'
+				. '<p><strong>ZAUQ</strong>, meaning "taste" and "refinement", is a premium perfume for men from <strong>MR ZAIB Luxury Perfumes</strong>. Fresh and zesty at first, herbal and woody at heart and warmly spicy in the dry-down, it is made for the man whose style speaks before he does, a scent to <em>leave your presence</em>.</p>'
+				. '<h3>Fragrance Notes of ZAUQ</h3>'
+				. '<p><strong>Top Notes: Amber, Aromatic and Citrus.</strong> A lively opening of juicy citrus and aromatic herbs like lavender and rosemary, warmed by a soft glow of amber.</p>'
+				. '<p><strong>Middle Notes: Herbal, Musky and Woody.</strong> A smooth, masculine heart where green herbs meet clean musk and dry woods.</p>'
+				. '<p><strong>Base Notes: Fresh, Spicy, Bitter and Balsamic.</strong> A long lasting finish of warm spice, a refined bitter edge and rich balsamic resins, kept fresh and wearable.</p>'
+				. '<h3>Fragrance Profile</h3>'
+				. '<ul><li><strong>Family:</strong> Aromatic, Woody, Citrus, Spicy</li><li><strong>Character:</strong> Classy, fresh, confident, masculine</li><li><strong>Best season:</strong> All year round</li><li><strong>Occasions:</strong> Office, daily wear, dinners, evening outings, weddings and events</li></ul>'
+				. '<h3>Why Choose MR ZAIB ZAUQ?</h3>'
+				. '<ul><li>Fresh citrus and herbs with a warm, spicy woody base</li><li>Long lasting men\'s perfume that works day and night</li><li>Elegant frosted 50ml bottle with a gold cap, a perfect gift for him</li><li>Premium quality at Rs. 3,500</li><li>Cash on Delivery all over Pakistan</li></ul>'
+				. '<h3>How to Apply</h3>'
+				. '<p>Spray 3 to 4 times on pulse points (neck, wrists and chest) from about 15 cm. Apply on clean, moisturised skin and do not rub, so the fragrance lasts longer. A light spray on clothes keeps the woody trail going all day.</p>'
+				. '<p>Looking for the <strong>best long lasting aromatic perfume for men in Pakistan</strong>? Order <strong>ZAUQ by MR ZAIB</strong> online today.</p>',
+			'tags'     => array( 'ZAUQ', 'ZAUQ Perfume', 'Perfume for Men', 'Men Perfume Pakistan', 'Long Lasting Perfume for Men', 'Aromatic Perfume', 'Woody Perfume', 'Citrus Perfume', 'Herbal Perfume', 'Musky Perfume', 'Spicy Perfume', 'Amber Perfume', 'Fresh Perfume for Men', 'Office Perfume', 'Everyday Perfume', 'Evening Perfume', 'Gift for Him', 'Luxury Perfume', 'MR ZAIB' ),
+			'seo'      => array(
+				'title'    => 'ZAUQ Long Lasting Aromatic Woody Perfume for Men 50ml | MR ZAIB',
+				'desc'     => 'Shop ZAUQ by MR ZAIB, a long lasting aromatic woody perfume for men with citrus, amber, herbs, musk, woods and warm spice. 50ml, Rs. 3,500. COD in Pakistan.',
+				'focus'    => 'ZAUQ perfume for men',
+				'keywords' => 'ZAUQ perfume, ZAUQ perfume for men, MR ZAIB ZAUQ, perfume for men, men perfume Pakistan, long lasting perfume for men, aromatic perfume for men, woody perfume for men, citrus perfume, herbal perfume, musky perfume, spicy perfume, fresh perfume for men, office perfume for men, best perfume for men in Pakistan, luxury perfume Pakistan, gift for him',
+			),
+		),
 	);
 }
 

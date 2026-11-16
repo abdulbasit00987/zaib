@@ -8,7 +8,7 @@
 
 defined( 'ABSPATH' ) || exit;
 
-define( 'MRZAIB_BLOG_V', 2 );
+define( 'MRZAIB_BLOG_V', 3 );
 
 /** Fragrance-notes block used inside the articles. */
 function mrzaib_blog_notes_html( $top, $heart, $base ) {
@@ -244,6 +244,30 @@ function mrzaib_blog_posts() {
 					'Is Velora good for weddings?' => 'Yes. Its rich rose heart and long lasting amber and leather base make it a great choice for weddings and evening events.',
 				),
 				'end'   => '<h2>The Verdict</h2><p><strong>Velora</strong> is rose for people who never liked "pretty" perfumes: green, romantic and wrapped in leather. If you want a signature scent that is elegant and bold at the same time, Velora is the one to try.</p>',
+			),
+		),
+		array(
+			'slug'    => 'zauq-aromatic-woody-perfume-for-men',
+			'title'   => 'ZAUQ: An Aromatic Woody Perfume for Men of Good Taste',
+			'product' => 'zauq-perfume',
+			'name'    => 'ZAUQ',
+			'image'   => 'blog-zauq.jpg',
+			'alt'     => 'ZAUQ aromatic woody perfume for men by MR ZAIB frosted bottle',
+			'excerpt' => 'Citrus, herbs and amber up top, a herbal, musky and woody heart, and a warm base that is spicy, bitter and balsamic. ZAUQ is the refined everyday signature for men.',
+			'tags'    => array( 'ZAUQ', 'Perfume for Men', 'Aromatic Perfume', 'Woody Perfume', 'Office Perfume' ),
+			'seo'     => array( 'ZAUQ Aromatic Woody Perfume for Men: Notes & Tips | MR ZAIB Blog', 'ZAUQ by MR ZAIB is a long lasting aromatic woody perfume for men with citrus, amber, herbs, musk, woods and a warm spicy balsamic base.', 'ZAUQ perfume' ),
+			'body'    => array(
+				'intro' => '<p><strong>Zauq</strong> means taste, the kind of refinement people notice without being told. <strong>ZAUQ by MR ZAIB</strong> bottles that idea into a <strong>long lasting aromatic woody perfume for men</strong>: fresh, clean and quietly confident. In its frosted bottle with a gold cap, it is understated luxury from the first look to the last note.</p>',
+				'notes' => array( 'Amber, Aromatic, Citrus', 'Herbal, Musky, Woody', 'Fresh, Spicy, Bitter, Balsamic' ),
+				'story' => '<h2>What ZAUQ Smells Like</h2><p>The opening is bright and uplifting. Juicy <strong>citrus</strong> sparkles first, <strong>aromatic</strong> herbs such as lavender and rosemary give it a clean barbershop freshness, and a soft touch of <strong>amber</strong> warms it from underneath.</p><p>The heart is calm and masculine. <strong>Herbal</strong> greens blend with clean <strong>musk</strong> and dry <strong>woods</strong>, the kind of smooth, polished accord that feels right with a crisp shirt or a well-cut kurta.</p><p>In the dry-down ZAUQ shows its depth. A <strong>fresh</strong> lift keeps it wearable, gentle <strong>spice</strong> adds warmth, a refined <strong>bitter</strong> edge keeps it grown-up, and rich <strong>balsamic</strong> resins give it a long lasting, comforting trail.</p>',
+				'wear'  => '<h2>When to Wear ZAUQ</h2><ul><li><strong>Office and meetings:</strong> clean, professional and never overpowering.</li><li><strong>Everyday signature:</strong> fresh enough for summer, warm enough for winter.</li><li><strong>Dinners and evenings out:</strong> the balsamic base adds quiet warmth at night.</li><li><strong>Gifting:</strong> a safe, classy gift for a father, brother, husband or friend.</li></ul>',
+				'tip'   => '<strong>Refresh the opening at midday.</strong> One spray on the chest after lunch brings back the citrus and herbs while the woody base is still going.',
+				'faq'   => array(
+					'What does ZAUQ smell like?' => 'ZAUQ is an aromatic woody scent: fresh citrus and herbs with amber at the start, herbal musk and woods in the heart, and a warm spicy, balsamic base.',
+					'Is ZAUQ good for the office?' => 'Yes. Its clean aromatic character makes it one of the best MR ZAIB choices for office and daily wear.',
+					'Can I wear ZAUQ all year?' => 'Yes. The citrus and herbal notes keep it fresh in summer, and the spicy balsamic base keeps it warm in winter.',
+				),
+				'end'   => '<h2>The Verdict</h2><p><strong>ZAUQ</strong> is good taste in a bottle: fresh, herbal and woody, with a warm finish that lasts. If you want one refined scent for work, weekends and evenings, ZAUQ is an easy choice.</p>',
 			),
 		),
 	);
