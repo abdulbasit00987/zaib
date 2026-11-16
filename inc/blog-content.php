@@ -8,7 +8,7 @@
 
 defined( 'ABSPATH' ) || exit;
 
-define( 'MRZAIB_BLOG_V', 1 );
+define( 'MRZAIB_BLOG_V', 2 );
 
 /** Fragrance-notes block used inside the articles. */
 function mrzaib_blog_notes_html( $top, $heart, $base ) {
@@ -222,6 +222,30 @@ function mrzaib_blog_posts() {
 				'end'   => '<h2>The Verdict</h2><p><strong>RAAZ</strong> is for the man who prefers to be remembered rather than announced: fresh at first, spicy at heart and warmly mysterious to the end.</p>',
 			),
 		),
+		array(
+			'slug'    => 'velora-rose-leather-unisex-perfume',
+			'title'   => 'Velora: A Modern Rose Leather Perfume for Men and Women',
+			'product' => 'velora-perfume',
+			'name'    => 'Velora',
+			'image'   => 'blog-velora.jpg',
+			'alt'     => 'Velora rose leather unisex perfume by MR ZAIB blue bottle',
+			'excerpt' => 'Green tomato leaf, spice and tuberose open into a deep heart of dried rose and iris, then settle on amber, metallic notes and leather. Velora is rose, reimagined for everyone.',
+			'tags'    => array( 'Velora', 'Unisex Perfume', 'Rose Perfume', 'Leather Perfume', 'Evening Perfume' ),
+			'seo'     => array( 'Velora Rose Leather Unisex Perfume: Notes & Tips | MR ZAIB Blog', 'Velora by MR ZAIB is a long lasting unisex rose leather perfume with tomato leaf, spices, tuberose, dried rose, iris, amber, metallic notes and leather.', 'Velora perfume' ),
+			'body'    => array(
+				'intro' => '<p>Rose perfumes are often called "for women only". <strong>Velora by MR ZAIB</strong> proves otherwise. This <strong>long lasting unisex rose leather perfume</strong> wraps a rich bouquet of roses in amber and smooth leather, giving it a bold, modern edge that suits men and women equally. In its royal blue bottle with a gold cap, it looks as striking as it smells.</p>',
+				'notes' => array( 'Tomato Leaf, Spices, Tuberose', 'Dried Rose, Rose Petals, Rose, Iris', 'Amber, Metallic Notes, Leather' ),
+				'story' => '<h2>What Velora Smells Like</h2><p>The opening is unexpected in the best way. <strong>Tomato leaf</strong> gives a crisp, green, garden-fresh snap, warm <strong>spices</strong> add energy, and creamy <strong>tuberose</strong> softens everything with a white-floral glow.</p><p>Then the roses arrive in layers: fresh <strong>rose petals</strong>, a classic velvety <strong>rose</strong> and a deeper, jammy <strong>dried rose</strong>. Powdery <strong>iris</strong> polishes the heart so it feels refined rather than sweet.</p><p>The dry-down is where Velora becomes unforgettable. Warm <strong>amber</strong>, cool <strong>metallic notes</strong> and supple <strong>leather</strong> turn the rose dark, smooth and confident. It is a trail that lingers on clothes and gets compliments long after you leave the room.</p>',
+				'wear'  => '<h2>When to Wear Velora</h2><ul><li><strong>Evenings and dinners:</strong> rose and leather feel elegant and magnetic at night.</li><li><strong>Weddings and functions:</strong> rich enough to stand out in a crowded hall.</li><li><strong>Autumn and winter:</strong> amber and leather bloom beautifully in cool air.</li><li><strong>Couples and gifting:</strong> one bottle both partners can share, and a memorable gift for him or her.</li></ul>',
+				'tip'   => '<strong>Spray once on a scarf or collar.</strong> Fabric holds the rose and leather base for hours, so the trail stays with you through a long evening.',
+				'faq'   => array(
+					'Is Velora for men or women?' => 'Both. Velora is a unisex perfume: the rose and tuberose suit women, and the amber and leather base gives it a bold edge that suits men.',
+					'Is Velora a sweet rose perfume?' => 'No. Its green tomato leaf opening, powdery iris and leather base keep the rose dark, smooth and modern rather than sugary.',
+					'Is Velora good for weddings?' => 'Yes. Its rich rose heart and long lasting amber and leather base make it a great choice for weddings and evening events.',
+				),
+				'end'   => '<h2>The Verdict</h2><p><strong>Velora</strong> is rose for people who never liked "pretty" perfumes: green, romantic and wrapped in leather. If you want a signature scent that is elegant and bold at the same time, Velora is the one to try.</p>',
+			),
+		),
 	);
 }
 
@@ -272,7 +296,7 @@ function mrzaib_blog_page() {
 }
 
 /** Add or update the articles. $only = article slug, or '' for all. */
-function mrzaib_install_blogs( $only = '' ) {
+function mrzaib_install_blogs( $only = '', $missing_only = false ) {
 	mrzaib_blog_mute_newsletter();
 	$cat = term_exists( 'Perfume Guide', 'category' );
 	if ( ! $cat ) {
@@ -293,6 +317,9 @@ function mrzaib_install_blogs( $only = '' ) {
 			continue;
 		}
 		$ex  = mrzaib_find_blog( $d['slug'] );
+		if ( $missing_only && $ex ) {
+			continue; // Auto-run never overwrites an article that already exists (or was deleted to trash).
+		}
 		$arr = array(
 			'post_type'      => 'post',
 			'post_title'     => $d['title'],
@@ -340,7 +367,7 @@ add_action( 'admin_init', function () {
 	}
 	update_option( 'mrzaib_blog_v', MRZAIB_BLOG_V, false );
 	@set_time_limit( 300 ); // phpcs:ignore
-	mrzaib_install_blogs();
+	mrzaib_install_blogs( '', true );
 } );
 
 /** Posts > MR ZAIB Blogs: add or restore any article. */

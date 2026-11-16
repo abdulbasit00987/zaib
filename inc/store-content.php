@@ -290,6 +290,44 @@ function mrzaib_store_products() {
 				'keywords' => 'RAAZ perfume, RAAZ perfume for men, MR ZAIB RAAZ, perfume for men, men perfume Pakistan, long lasting perfume for men, tobacco perfume for men, spicy perfume for men, woody perfume, apple tobacco perfume, patchouli perfume, inspired by Ackley, best perfume for men in Pakistan, luxury perfume Pakistan, winter perfume for men, gift for him',
 			),
 		),
+		array(
+			'name'     => 'Velora',
+			'slug'     => 'velora-perfume',
+			'subtitle' => 'Long Lasting Rose Leather Unisex Perfume | 50ml',
+			'sku'      => 'MZ-VELORA-50',
+			'regular'  => '4000',
+			'sale'     => '3500',
+			'cats'     => array( 'unisex' ),
+			'images'   => array( 'velora-main.jpg', 'velora-banner.jpg', 'velora-notes-top.jpg', 'velora-notes-middle.jpg', 'velora-notes-base.jpg' ),
+			'alts'     => array( 'Velora long lasting unisex perfume by MR ZAIB 50ml blue bottle', 'MR ZAIB Velora unisex perfume fragrance notes', 'Velora top notes tomato leaf spices tuberose', 'Velora middle notes dried rose rose petals rose iris', 'Velora base notes amber metallic notes leather' ),
+			'notes'    => array(
+				'Top Notes'    => 'Tomato Leaf, Spices, Tuberose',
+				'Middle Notes' => 'Dried Rose, Rose Petals, Rose, Iris',
+				'Base Notes'   => 'Amber, Metallic Notes, Leather',
+			),
+			'short'    => '<p><strong>Velora by MR ZAIB</strong> is a long lasting unisex perfume for men and women, inspired by Bidford. It opens with green <strong>tomato leaf, warm spices and creamy tuberose</strong>, blooms into a rich rose heart of <strong>dried rose, rose petals, rose and iris</strong>, and settles on a bold base of <strong>amber, metallic notes and leather</strong>. A modern rose leather fragrance for people who want to stand out.</p>'
+				. '<ul><li><strong>Top Notes:</strong> Tomato Leaf, Spices, Tuberose</li><li><strong>Middle Notes:</strong> Dried Rose, Rose Petals, Rose, Iris</li><li><strong>Base Notes:</strong> Amber, Metallic Notes, Leather</li><li><strong>Size:</strong> 50ml</li><li><strong>For:</strong> Men &amp; Women (Unisex)</li></ul>',
+			'long'     => '<h2>Velora: Long Lasting Rose Leather Unisex Perfume in Pakistan</h2>'
+				. '<p><strong>Velora</strong> is a luxurious unisex fragrance from <strong>MR ZAIB Luxury Perfumes</strong>, inspired by Bidford. Green and spicy at first, deeply romantic in the heart and smooth, dark and leathery in the dry-down, it is a modern rose scent that men and women can both wear with confidence. Made for those who want to <em>leave their presence</em>.</p>'
+				. '<h3>Fragrance Notes of Velora</h3>'
+				. '<p><strong>Top Notes: Tomato Leaf, Spices and Tuberose.</strong> A fresh, green snap of tomato leaf warmed by spices and softened by creamy white tuberose, an unusual and memorable opening.</p>'
+				. '<p><strong>Middle Notes: Dried Rose, Rose Petals, Rose and Iris.</strong> A rich, layered rose heart, from velvety fresh petals to deep dried rose, polished with powdery iris.</p>'
+				. '<p><strong>Base Notes: Amber, Metallic Notes and Leather.</strong> A long lasting finish of glowing amber, cool metallic facets and smooth leather that gives Velora its bold, modern edge.</p>'
+				. '<h3>Fragrance Profile</h3>'
+				. '<ul><li><strong>Family:</strong> Floral Rose, Leather, Amber, Spicy Green</li><li><strong>Character:</strong> Elegant, bold, romantic, modern</li><li><strong>Best season:</strong> Autumn and winter, and evenings all year</li><li><strong>Occasions:</strong> Evening outings, dinners, weddings, events, parties and signature wear</li></ul>'
+				. '<h3>Why Choose MR ZAIB Velora?</h3>'
+				. '<ul><li>Rare blend of green tomato leaf, rose and leather in one bottle</li><li>Long lasting unisex perfume with a rich, noticeable trail</li><li>Royal blue 50ml bottle with a gold cap, a perfect gift for him or her</li><li>Premium quality at Rs. 3,500</li><li>Cash on Delivery all over Pakistan</li></ul>'
+				. '<h3>How to Apply</h3>'
+				. '<p>Spray 3 to 4 times on pulse points (neck, wrists and chest) from about 15 cm. Apply on clean, moisturised skin and do not rub, so the fragrance lasts longer. A light spray on clothes keeps the rose and leather trail going all day.</p>'
+				. '<p>Looking for the <strong>best long lasting rose leather perfume in Pakistan</strong> for men and women? Order <strong>Velora by MR ZAIB</strong> online today.</p>',
+			'tags'     => array( 'Velora', 'Velora Perfume', 'Unisex Perfume', 'Perfume for Men and Women', 'Unisex Perfume Pakistan', 'Long Lasting Perfume', 'Rose Perfume', 'Leather Perfume', 'Rose Leather Perfume', 'Amber Perfume', 'Iris Perfume', 'Tuberose Perfume', 'Spicy Perfume', 'Inspired by Bidford', 'Winter Perfume', 'Evening Perfume', 'Wedding Perfume', 'Gift for Him', 'Gift for Her', 'Luxury Perfume', 'MR ZAIB' ),
+			'seo'      => array(
+				'title'    => 'Velora Long Lasting Unisex Rose Leather Perfume 50ml | MR ZAIB',
+				'desc'     => 'Shop Velora by MR ZAIB, a long lasting unisex perfume inspired by Bidford, with tomato leaf, tuberose, rose, iris, amber and leather. 50ml, Rs. 3,500. COD in Pakistan.',
+				'focus'    => 'Velora unisex perfume',
+				'keywords' => 'Velora perfume, Velora unisex perfume, MR ZAIB Velora, unisex perfume, unisex perfume Pakistan, perfume for men and women, long lasting perfume, rose perfume, leather perfume, rose leather perfume, amber perfume, iris perfume, inspired by Bidford, best unisex perfume in Pakistan, luxury perfume Pakistan, winter perfume, gift for him, gift for her',
+			),
+		),
 	);
 }
 
