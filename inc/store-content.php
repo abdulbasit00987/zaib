@@ -404,6 +404,44 @@ function mrzaib_store_products() {
 				'keywords' => 'Mehfil perfume, Mehfil perfume for men, MR ZAIB Mehfil, perfume for men, men perfume Pakistan, long lasting perfume for men, fruity perfume for men, woody perfume for men, smoky perfume, pineapple perfume, birch perfume, inspired by Creed Aventus, Aventus inspired perfume Pakistan, best perfume for men in Pakistan, luxury perfume Pakistan, wedding perfume for men, gift for him',
 			),
 		),
+		array(
+			'name'     => 'Dazor',
+			'slug'     => 'dazor-perfume',
+			'subtitle' => 'Long Lasting Fresh Fruity Woody Perfume for Men | 50ml',
+			'sku'      => 'MZ-DAZOR-50',
+			'regular'  => '4000',
+			'sale'     => '3500',
+			'cats'     => array( 'men' ),
+			'images'   => array( 'dazor-main.jpg', 'dazor-banner.jpg', 'dazor-notes-top.jpg', 'dazor-notes-middle.jpg', 'dazor-notes-base.jpg' ),
+			'alts'     => array( 'Dazor long lasting perfume for men by MR ZAIB 50ml', 'MR ZAIB Dazor perfume for men fragrance notes', 'Dazor top notes apple lemon bergamot orange blossom', 'Dazor middle notes rose teak wood patchouli', 'Dazor base notes vanilla musk' ),
+			'notes'    => array(
+				'Top Notes'    => 'Apple, Lemon, Bergamot, Orange Blossom',
+				'Middle Notes' => 'Rose, Teak Wood, Patchouli',
+				'Base Notes'   => 'Vanilla, Musk',
+			),
+			'short'    => '<p><strong>Dazor by MR ZAIB</strong> is a long lasting fresh fruity woody perfume for men, inspired by Dunhill Desire. It opens with crisp <strong>apple, lemon, bergamot and orange blossom</strong>, flows into a warm heart of <strong>rose, teak wood and patchouli</strong>, and settles on a smooth base of <strong>vanilla and musk</strong>. A bold, attractive everyday scent for the modern man.</p>'
+				. '<ul><li><strong>Top Notes:</strong> Apple, Lemon, Bergamot, Orange Blossom</li><li><strong>Middle Notes:</strong> Rose, Teak Wood, Patchouli</li><li><strong>Base Notes:</strong> Vanilla, Musk</li><li><strong>Size:</strong> 50ml</li><li><strong>For:</strong> Men</li></ul>',
+			'long'     => '<h2>Dazor: Long Lasting Fresh Fruity Woody Perfume for Men in Pakistan</h2>'
+				. '<p><strong>Dazor</strong> is a premium perfume for men from <strong>MR ZAIB Luxury Perfumes</strong>, inspired by Dunhill Desire. Juicy and fresh at first, warm and woody in the heart, and soft and sensual in the dry-down, it is made for the man who wants a confident, attractive scent that works from morning to night, a scent to <em>leave your presence</em>.</p>'
+				. '<h3>Fragrance Notes of Dazor</h3>'
+				. '<p><strong>Top Notes: Apple, Lemon, Bergamot and Orange Blossom.</strong> A crisp, juicy opening of red apple and zesty citrus, lifted by bright orange blossom.</p>'
+				. '<p><strong>Middle Notes: Rose, Teak Wood and Patchouli.</strong> A masculine heart where a touch of rose meets dry teak wood and earthy patchouli.</p>'
+				. '<p><strong>Base Notes: Vanilla and Musk.</strong> A smooth, long lasting finish of creamy vanilla and clean, skin-like musk.</p>'
+				. '<h3>Fragrance Profile</h3>'
+				. '<ul><li><strong>Family:</strong> Fresh, Fruity, Woody, Musky</li><li><strong>Character:</strong> Energetic, attractive, warm, masculine</li><li><strong>Best season:</strong> All year round</li><li><strong>Occasions:</strong> Office, university, casual outings, dinners, date nights and everyday signature wear</li></ul>'
+				. '<h3>Why Choose MR ZAIB Dazor?</h3>'
+				. '<ul><li>Fresh apple and citrus opening with a warm woody vanilla base</li><li>Long lasting men\'s perfume with a smooth, attractive trail</li><li>Elegant clear glass 50ml bottle with a silver cap, a perfect gift for him</li><li>Premium quality at Rs. 3,500</li><li>Cash on Delivery all over Pakistan</li></ul>'
+				. '<h3>How to Apply</h3>'
+				. '<p>Spray 3 to 4 times on pulse points (neck, wrists and chest) from about 15 cm. Apply on clean, moisturised skin and do not rub, so the fragrance lasts longer. A light spray on clothes keeps the scent with you all day.</p>'
+				. '<p>Looking for the <strong>best long lasting fresh perfume for men in Pakistan</strong>? Order <strong>Dazor by MR ZAIB</strong> online today.</p>',
+			'tags'     => array( 'Dazor', 'Dazor Perfume', 'Perfume for Men', 'Men Perfume Pakistan', 'Long Lasting Perfume for Men', 'Fresh Perfume for Men', 'Fruity Perfume', 'Woody Perfume', 'Apple Perfume', 'Citrus Perfume', 'Vanilla Perfume', 'Musk Perfume', 'Inspired by Dunhill Desire', 'Office Perfume', 'University Perfume', 'Everyday Perfume', 'Date Night Perfume', 'Gift for Him', 'Luxury Perfume', 'MR ZAIB' ),
+			'seo'      => array(
+				'title'    => 'Dazor Long Lasting Fresh Fruity Perfume for Men 50ml | MR ZAIB',
+				'desc'     => 'Shop Dazor by MR ZAIB, a long lasting perfume for men inspired by Dunhill Desire, with apple, lemon, bergamot, rose, teak wood, vanilla and musk. 50ml, Rs. 3,500. COD in Pakistan.',
+				'focus'    => 'Dazor perfume for men',
+				'keywords' => 'Dazor perfume, Dazor perfume for men, MR ZAIB Dazor, perfume for men, men perfume Pakistan, long lasting perfume for men, fresh perfume for men, fruity perfume for men, woody perfume for men, apple perfume, vanilla musk perfume, inspired by Dunhill Desire, Dunhill Desire inspired perfume Pakistan, best perfume for men in Pakistan, office perfume for men, luxury perfume Pakistan, gift for him',
+			),
+		),
 	);
 }
 

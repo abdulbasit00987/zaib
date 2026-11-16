@@ -8,7 +8,7 @@
 
 defined( 'ABSPATH' ) || exit;
 
-define( 'MRZAIB_BLOG_V', 4 );
+define( 'MRZAIB_BLOG_V', 5 );
 
 /** Fragrance-notes block used inside the articles. */
 function mrzaib_blog_notes_html( $top, $heart, $base ) {
@@ -292,6 +292,30 @@ function mrzaib_blog_posts() {
 					'Can I wear Mehfil every day?' => 'Yes. Mehfil is versatile enough for the office, casual days and evenings, all year round.',
 				),
 				'end'   => '<h2>The Verdict</h2><p><strong>Mehfil</strong> is fresh, fruity and smoky, a scent that makes an entrance and stays in the memory. If you want the perfume people ask about at every gathering, Mehfil is the one.</p>',
+			),
+		),
+		array(
+			'slug'    => 'dazor-fresh-fruity-perfume-for-men',
+			'title'   => 'Dazor: A Fresh Fruity Woody Perfume for the Modern Man',
+			'product' => 'dazor-perfume',
+			'name'    => 'Dazor',
+			'image'   => 'blog-dazor.jpg',
+			'alt'     => 'Dazor fresh fruity woody perfume for men by MR ZAIB clear bottle',
+			'excerpt' => 'Crisp apple and citrus, a heart of rose, teak wood and patchouli, and a smooth vanilla musk base. Dazor is the MR ZAIB everyday scent with a magnetic finish.',
+			'tags'    => array( 'Dazor', 'Perfume for Men', 'Fresh Perfume for Men', 'Fruity Perfume', 'Everyday Perfume' ),
+			'seo'     => array( 'Dazor Fresh Fruity Perfume for Men: Notes & Tips | MR ZAIB Blog', 'Dazor by MR ZAIB is a long lasting fresh fruity woody perfume for men with apple, lemon, bergamot, rose, teak wood, patchouli, vanilla and musk.', 'Dazor perfume' ),
+			'body'    => array(
+				'intro' => '<p>Some perfumes are only for special nights. <strong>Dazor by MR ZAIB</strong> is the one you reach for every day and still get noticed. It is a <strong>long lasting fresh fruity woody perfume for men</strong>: juicy and bright at first, warm and smooth by evening, in a clean clear glass bottle with a polished silver cap.</p>',
+				'notes' => array( 'Apple, Lemon, Bergamot, Orange Blossom', 'Rose, Teak Wood, Patchouli', 'Vanilla, Musk' ),
+				'story' => '<h2>What Dazor Smells Like</h2><p>The opening is crisp and mouth-watering. Red <strong>apple</strong> leads, with zesty <strong>lemon</strong> and <strong>bergamot</strong> and a bright lift of <strong>orange blossom</strong>. It feels fresh, clean and full of energy.</p><p>In the heart, a touch of <strong>rose</strong> meets dry <strong>teak wood</strong> and earthy <strong>patchouli</strong>, turning the freshness into something more grown-up and masculine.</p><p>The dry-down is soft and inviting: creamy <strong>vanilla</strong> and clean <strong>musk</strong> stay close to the skin for hours and leave a smooth, attractive trail.</p>',
+				'wear'  => '<h2>When to Wear Dazor</h2><ul><li><strong>Office and university:</strong> fresh, clean and never too heavy.</li><li><strong>Casual outings:</strong> the apple and citrus opening feels easy and friendly.</li><li><strong>Dinners and date nights:</strong> the vanilla musk base turns warm and magnetic.</li><li><strong>All seasons:</strong> fresh enough for summer, warm enough for winter.</li></ul>',
+				'tip'   => '<strong>Spray on the neck and wrists after a shower.</strong> Warm, clean skin brings out the vanilla musk base and helps Dazor last longer.',
+				'faq'   => array(
+					'What does Dazor smell like?' => 'Dazor is fresh, fruity and woody: apple, lemon, bergamot and orange blossom on top, rose, teak wood and patchouli in the heart, and vanilla with musk in the base.',
+					'Is Dazor good for daily use?' => 'Yes. Dazor is one of the most versatile MR ZAIB perfumes for men, ideal for office, university and everyday wear.',
+					'Does Dazor last long?' => 'Yes. Its vanilla and musk base keeps the scent on skin for many hours, and longer on clothes.',
+				),
+				'end'   => '<h2>The Verdict</h2><p><strong>Dazor</strong> is fresh, confident and easy to love. If you want one perfume that works every day and still turns heads in the evening, Dazor is an easy pick.</p>',
 			),
 		),
 	);
