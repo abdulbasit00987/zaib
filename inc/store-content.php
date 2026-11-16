@@ -480,6 +480,44 @@ function mrzaib_store_products() {
 				'keywords' => 'Brave perfume, Brave perfume for men, MR ZAIB Brave, perfume for men, men perfume Pakistan, long lasting perfume for men, fresh perfume for men, fruity perfume for men, citrus perfume for men, sandalwood musk perfume, summer perfume for men, inspired by Diesel Orleans, Diesel inspired perfume Pakistan, best perfume for men in Pakistan, office perfume for men, luxury perfume Pakistan, gift for him men',
 			),
 		),
+		array(
+			'name'     => 'Baraan',
+			'slug'     => 'baraan-perfume',
+			'subtitle' => 'Long Lasting Amber Woody Bakhoor Perfume for Men | 50ml',
+			'sku'      => 'MZ-BARAAN-50',
+			'regular'  => '4000',
+			'sale'     => '3500',
+			'cats'     => array( 'men' ),
+			'images'   => array( 'baraan-main.jpg', 'baraan-banner.jpg', 'baraan-notes-top.jpg', 'baraan-notes-middle.jpg', 'baraan-notes-base.jpg' ),
+			'alts'     => array( 'Baraan long lasting bakhoor perfume for men by MR ZAIB 50ml', 'MR ZAIB Baraan perfume for men fragrance notes', 'Baraan top notes amber woody notes', 'Baraan middle notes woody notes vanilla', 'Baraan base notes floral notes fruity notes' ),
+			'notes'    => array(
+				'Top Notes'    => 'Amber, Woody Notes',
+				'Middle Notes' => 'Woody Notes, Vanilla',
+				'Base Notes'   => 'Floral Notes, Fruity Notes',
+			),
+			'short'    => '<p><strong>Baraan by MR ZAIB</strong> is a long lasting amber woody perfume for men, inspired by Bakhour. It opens with warm, glowing <strong>amber and woody notes</strong>, deepens into a rich heart of <strong>woods and vanilla</strong>, and leaves a soft trail of <strong>floral and fruity notes</strong>. A smoky, oriental bakhoor-style scent with a smooth, sweet finish.</p>'
+				. '<ul><li><strong>Top Notes:</strong> Amber, Woody Notes</li><li><strong>Middle Notes:</strong> Woody Notes, Vanilla</li><li><strong>Base Notes:</strong> Floral Notes, Fruity Notes</li><li><strong>Size:</strong> 50ml</li><li><strong>For:</strong> Men</li></ul>',
+			'long'     => '<h2>Baraan: Long Lasting Amber Woody Bakhoor Perfume for Men in Pakistan</h2>'
+				. '<p><strong>Baraan</strong> is a premium perfume for men from <strong>MR ZAIB Luxury Perfumes</strong>, inspired by Bakhour. It captures the warm, smoky richness of traditional bakhoor in a modern spray: amber and woods up front, a creamy vanilla heart, and a gentle floral fruity glow in the dry-down, a scent to <em>leave your presence</em>.</p>'
+				. '<h3>Fragrance Notes of Baraan</h3>'
+				. '<p><strong>Top Notes: Amber and Woody Notes.</strong> A warm, resinous opening that instantly feels rich, smoky and oriental.</p>'
+				. '<p><strong>Middle Notes: Woody Notes and Vanilla.</strong> Deep woods softened by smooth, sweet vanilla for a comforting, luxurious heart.</p>'
+				. '<p><strong>Base Notes: Floral Notes and Fruity Notes.</strong> A soft, long lasting finish where gentle flowers and ripe fruit keep the warmth elegant and wearable.</p>'
+				. '<h3>Fragrance Profile</h3>'
+				. '<ul><li><strong>Family:</strong> Amber, Woody, Oriental, Sweet</li><li><strong>Character:</strong> Warm, smoky, rich, masculine</li><li><strong>Best season:</strong> Autumn and winter, cool evenings all year</li><li><strong>Occasions:</strong> Jummah, Eid, weddings, mehndi, dinners and evening wear</li></ul>'
+				. '<h3>Why Choose MR ZAIB Baraan?</h3>'
+				. '<ul><li>Rich amber and woody bakhoor character with a sweet vanilla heart</li><li>Long lasting men\'s perfume with strong projection and a warm trail</li><li>Striking teal-to-blue 50ml bottle with a black cap, a perfect gift for him</li><li>Premium quality at Rs. 3,500</li><li>Cash on Delivery all over Pakistan</li></ul>'
+				. '<h3>How to Apply</h3>'
+				. '<p>Spray 2 to 3 times on pulse points (neck, wrists and chest) from about 15 cm. Apply on clean, moisturised skin and do not rub, so the fragrance lasts longer. One spray on clothes or a shawl keeps the warm bakhoor trail all day.</p>'
+				. '<p>Looking for the <strong>best long lasting amber oud style perfume for men in Pakistan</strong>? Order <strong>Baraan by MR ZAIB</strong> online today.</p>',
+			'tags'     => array( 'Baraan', 'Baraan Perfume', 'Perfume for Men', 'Men Perfume Pakistan', 'Long Lasting Perfume for Men', 'Bakhoor Perfume', 'Amber Perfume', 'Woody Perfume', 'Vanilla Perfume', 'Oriental Perfume', 'Arabic Perfume', 'Winter Perfume for Men', 'Inspired by Bakhour', 'Eid Perfume', 'Wedding Perfume', 'Evening Perfume', 'Gift for Him', 'Luxury Perfume', 'MR ZAIB' ),
+			'seo'      => array(
+				'title'    => 'Baraan Long Lasting Amber Woody Perfume for Men 50ml | MR ZAIB',
+				'desc'     => 'Shop Baraan by MR ZAIB, a long lasting bakhoor style perfume for men inspired by Bakhour, with amber, woods, vanilla and soft floral fruity notes. 50ml, Rs. 3,500. COD in Pakistan.',
+				'focus'    => 'Baraan perfume for men',
+				'keywords' => 'Baraan perfume, Baraan perfume for men, MR ZAIB Baraan, perfume for men, men perfume Pakistan, long lasting perfume for men, bakhoor perfume, amber perfume for men, woody perfume for men, vanilla perfume for men, oriental perfume, arabic perfume Pakistan, winter perfume for men, inspired by Bakhour, Eid perfume for men, wedding perfume for men, best perfume for men in Pakistan, gift for him',
+			),
+		),
 	);
 }
 

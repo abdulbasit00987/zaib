@@ -8,7 +8,7 @@
 
 defined( 'ABSPATH' ) || exit;
 
-define( 'MRZAIB_BLOG_V', 6 );
+define( 'MRZAIB_BLOG_V', 7 );
 
 /** Fragrance-notes block used inside the articles. */
 function mrzaib_blog_notes_html( $top, $heart, $base ) {
@@ -340,6 +340,30 @@ function mrzaib_blog_posts() {
 					'Does Brave last long?' => 'Yes. The sandalwood, musk and cedar base keeps Brave on skin for many hours, and longer on clothes.',
 				),
 				'end'   => '<h2>The Verdict</h2><p><strong>Brave</strong> is fresh, bold and confident. If you want a fruity perfume for men that feels clean in the day and warm at night, Brave is made for you.</p>',
+			),
+		),
+		array(
+			'slug'    => 'baraan-amber-woody-bakhoor-perfume-for-men',
+			'title'   => 'Baraan: The Warmth of Bakhoor in a Modern Perfume for Men',
+			'product' => 'baraan-perfume',
+			'name'    => 'Baraan',
+			'image'   => 'blog-baraan.jpg',
+			'alt'     => 'Baraan amber woody bakhoor perfume for men by MR ZAIB teal bottle',
+			'excerpt' => 'Glowing amber, deep woods and creamy vanilla with a soft floral fruity finish. Baraan brings the smoky warmth of bakhoor to an easy everyday spray.',
+			'tags'    => array( 'Baraan', 'Perfume for Men', 'Bakhoor Perfume', 'Amber Perfume', 'Winter Perfume for Men' ),
+			'seo'     => array( 'Baraan Amber Woody Bakhoor Perfume for Men | MR ZAIB Blog', 'Baraan by MR ZAIB is a long lasting amber woody bakhoor style perfume for men with amber, woods, vanilla and soft floral fruity notes.', 'Baraan perfume' ),
+			'body'    => array(
+				'intro' => '<p>In Pakistani homes, the smell of <strong>bakhoor</strong> means something special: Jummah, Eid, guests arriving, a wedding in the family. <strong>Baraan by MR ZAIB</strong> bottles that feeling. It is a <strong>long lasting amber woody perfume for men</strong> with the smoky warmth of bakhoor and a smooth, sweet finish, in a striking teal-to-blue bottle.</p>',
+				'notes' => array( 'Amber, Woody Notes', 'Woody Notes, Vanilla', 'Floral Notes, Fruity Notes' ),
+				'story' => '<h2>What Baraan Smells Like</h2><p>Baraan opens warm and glowing. Resinous <strong>amber</strong> and dry <strong>woody notes</strong> give it an instant oriental, incense-like richness.</p><p>As it settles, the woods deepen and a creamy <strong>vanilla</strong> softens the smoke, making the scent feel comforting and luxurious rather than heavy.</p><p>In the dry-down, gentle <strong>floral</strong> and ripe <strong>fruity</strong> notes add a soft sweetness that keeps Baraan elegant and easy to wear for hours.</p>',
+				'wear'  => '<h2>When to Wear Baraan</h2><ul><li><strong>Jummah and Eid:</strong> the bakhoor warmth feels traditional and festive.</li><li><strong>Weddings and mehndi:</strong> rich, long lasting and noticed in a crowd.</li><li><strong>Winter evenings:</strong> amber and vanilla shine in cool weather.</li><li><strong>Dinners:</strong> two sprays give a warm, refined presence.</li></ul>',
+				'tip'   => '<strong>Go light: two or three sprays are enough.</strong> Baraan is rich and projects well; one spray on a shawl or jacket makes the bakhoor trail last all day.',
+				'faq'   => array(
+					'What does Baraan smell like?' => 'Baraan is warm and oriental: amber and woody notes on top, woods and vanilla in the heart, and soft floral and fruity notes in the base, like modern bakhoor.',
+					'Is Baraan good for Eid and weddings?' => 'Yes. Its rich amber, wood and vanilla character makes Baraan a great MR ZAIB choice for Eid, Jummah, weddings and evening events.',
+					'Is Baraan a winter perfume?' => 'It shines most in autumn and winter and on cool evenings, but a light application works all year.',
+				),
+				'end'   => '<h2>The Verdict</h2><p><strong>Baraan</strong> is warm, smoky and smooth, the comfort of bakhoor in a modern perfume. If you love amber, woods and vanilla, Baraan belongs in your collection.</p>',
 			),
 		),
 	);
