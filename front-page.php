@@ -142,7 +142,7 @@ $all_products = mrzaib_products_query( array( 'limit' => 12 ) );
 		4 => array( 'mr-zaib-gift', 'arvon' ),
 	);
 	$tiles  = array();
-	$vcount = min( (int) get_theme_mod( 'mrzaib_video_count', 4 ), defined( 'MRZAIB_VIDEO_MAX' ) ? MRZAIB_VIDEO_MAX : 12 );
+	$vcount = min( (int) get_theme_mod( 'mrzaib_video_count', 4 ), defined( 'MRZAIB_VIDEO_MAX' ) ? MRZAIB_VIDEO_MAX : 24 );
 	for ( $i = 1; $i <= $vcount; $i++ ) {
 		$v     = isset( $vids[ $i ] ) ? $vids[ $i ] : array( '', 1 === $i % 2 ? 'kahn-vahl' : 'arvon' );
 		// Video: Customizer value. Removed (empty) = no video, the cover image is shown instead.

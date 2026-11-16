@@ -192,3 +192,94 @@ function mrzaib_home_media_url( $key ) {
 	$map = (array) get_option( 'mrzaib_home_media', array() );
 	return empty( $map[ $key ] ) ? '' : (string) wp_get_attachment_url( $map[ $key ] );
 }
+
+/**
+ * Product videos (2026-11): one cinematic video per newer product. Each is added once as a
+ * NEW slot after the slots the admin already has (own uploads are never touched), imported
+ * into the Media Library with its cover, and linked to its product. A product that does not
+ * exist yet is added later, on the first admin visit after it is created.
+ */
+function mrzaib_product_video_list() {
+	return array( 'hoor', 'kireza', 'oud-x', 'raaz', 'velora', 'zauq', 'mehfil', 'dazor', 'brave', 'baraan' );
+}
+
+function mrzaib_sideload_theme_file( $rel, $title ) {
+	$tag = $rel . '#pv1';
+	$id  = mrzaib_home_media_find( $tag );
+	if ( $id ) {
+		return $id;
+	}
+	$file = MRZAIB_DIR . '/' . $rel;
+	if ( ! file_exists( $file ) ) {
+		return 0;
+	}
+	require_once ABSPATH . 'wp-admin/includes/file.php';
+	require_once ABSPATH . 'wp-admin/includes/media.php';
+	require_once ABSPATH . 'wp-admin/includes/image.php';
+	$tmp = wp_tempnam( basename( $file ) );
+	copy( $file, $tmp );
+	$id = media_handle_sideload( array( 'name' => 'mr-zaib-' . basename( $file ), 'tmp_name' => $tmp ), 0, $title );
+	if ( is_wp_error( $id ) ) {
+		@unlink( $tmp ); // phpcs:ignore
+		return 0;
+	}
+	update_post_meta( $id, '_mrzaib_src', $tag );
+	return (int) $id;
+}
+
+function mrzaib_add_product_videos() {
+	$done = (array) get_option( 'mrzaib_pvideos_done', array() );
+	$todo = array_diff( mrzaib_product_video_list(), $done );
+	if ( ! $todo || ! function_exists( 'wc_get_product' ) ) {
+		return 0;
+	}
+	$count = (int) get_theme_mod( 'mrzaib_video_count', 4 );
+	$max   = defined( 'MRZAIB_VIDEO_MAX' ) ? MRZAIB_VIDEO_MAX : 24;
+	$added = 0;
+	foreach ( $todo as $slug ) {
+		$pid = 0;
+		foreach ( array( $slug . '-perfume', $slug ) as $s ) {
+			$p = get_page_by_path( $s, OBJECT, 'product' );
+			if ( $p && 'publish' === $p->post_status ) {
+				$pid = (int) $p->ID;
+				break;
+			}
+		}
+		if ( ! $pid ) {
+			continue; // Product not created yet: try again later.
+		}
+		if ( $count >= $max ) {
+			break;
+		}
+		$name = get_the_title( $pid );
+		$vid  = mrzaib_sideload_theme_file( 'assets/video/' . $slug . '.mp4', 'MR ZAIB ' . $name . ' Video' );
+		$pos  = mrzaib_sideload_theme_file( 'assets/video/' . $slug . '.jpg', 'MR ZAIB ' . $name . ' Video Cover' );
+		if ( ! $vid ) {
+			continue;
+		}
+		if ( $pos ) {
+			update_post_meta( $pos, '_wp_attachment_image_alt', $name . ' perfume by MR ZAIB' );
+		}
+		$count++;
+		set_theme_mod( 'mrzaib_video_' . $count, wp_get_attachment_url( $vid ) );
+		set_theme_mod( 'mrzaib_video_poster_' . $count, $pos ? wp_get_attachment_url( $pos ) : '' );
+		set_theme_mod( 'mrzaib_video_product_' . $count, $pid );
+		$done[] = $slug;
+		$added++;
+	}
+	if ( $added ) {
+		set_theme_mod( 'mrzaib_video_count', $count );
+	}
+	update_option( 'mrzaib_pvideos_done', array_values( array_unique( $done ) ), false );
+	return $added;
+}
+
+add_action( 'admin_init', function () {
+	if ( wp_doing_ajax() || ! current_user_can( 'upload_files' ) ) {
+		return;
+	}
+	if ( count( (array) get_option( 'mrzaib_pvideos_done', array() ) ) >= count( mrzaib_product_video_list() ) ) {
+		return;
+	}
+	mrzaib_add_product_videos();
+}, 30 );

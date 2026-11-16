@@ -140,7 +140,7 @@ function mrzaib_customize( $wp_customize ) {
 add_action( 'customize_register', 'mrzaib_customize' );
 
 if ( ! defined( 'MRZAIB_VIDEO_MAX' ) ) {
-	define( 'MRZAIB_VIDEO_MAX', 12 );
+	define( 'MRZAIB_VIDEO_MAX', 24 );
 }
 if ( ! defined( 'MRZAIB_HERO_MAX' ) ) {
 	define( 'MRZAIB_HERO_MAX', 16 );
