@@ -6,14 +6,14 @@
  */
 
 function mrzaib_seo_default_intro() {
-	return '<strong>MR ZAIB Luxury Perfumes</strong> is a Pakistani perfume brand creating <strong>long lasting perfumes</strong> for men, women and unisex lovers. Our promise is simple: <em>Leave Your Presence</em>. Choose from thirteen signature 50ml fragrances: <strong>perfumes for men</strong> like Kahn-vahl, Zay-ab, RAAZ, ZAUQ, Mehfil, Dazor, Brave and Baraan, <strong>perfumes for women</strong> like Hoor and Kireza, and <strong>unisex perfumes</strong> like Arvon, Velora and OUD X, with prices from Rs. 2,500 and Cash on Delivery all over Pakistan. Whether you want a fresh everyday scent, an <strong>oud perfume</strong>, a bakhoor-style Arabic fragrance, a wedding perfume or a thoughtful gift, MR ZAIB has the <strong>best perfume in Pakistan</strong> for you.';
+	return '<strong>MR ZAIB Luxury Perfumes</strong> is a Pakistani perfume brand creating <strong>long lasting perfumes</strong> for men, women and unisex lovers. Our promise is simple: <em>Leave Your Presence</em>. Choose from thirteen signature 50ml fragrances: <strong>perfumes for men</strong> like Kahn-vahl, Zay-ab, RAAZ, ZAUQ, Mehfil, Dazor, Brave and Baraan, <strong>perfumes for women</strong> like Hoor and Kireza, and <strong>unisex perfumes</strong> like Arvon, Velora and OUD X, with prices from Rs. 2,000 and Cash on Delivery all over Pakistan. Whether you want a fresh everyday scent, an <strong>oud perfume</strong>, a bakhoor-style Arabic fragrance, a wedding perfume or a thoughtful gift, MR ZAIB has the <strong>best perfume in Pakistan</strong> for you.';
 }
 
 function mrzaib_seo_default_more() {
 	$p = function ( $slug, $text ) {
 		return '<a href="' . esc_url( mrzaib_product_link( $slug ) ) . '">' . $text . '</a>';
 	};
-	return '<p>At <strong>MR ZAIB</strong>, we put most of our cost into the perfume oil itself, so you get a high concentration, <strong>super macerated perfume</strong> at affordable prices from Rs. 2,500. We share the full top, middle and base notes of every fragrance, so you can choose a scent that matches your personality before you buy.</p>' .
+	return '<p>At <strong>MR ZAIB</strong>, we put most of our cost into the perfume oil itself, so you get a high concentration, <strong>super macerated perfume</strong> at affordable prices from Rs. 2,000. We share the full top, middle and base notes of every fragrance, so you can choose a scent that matches your personality before you buy.</p>' .
 		'<h3>Best Long Lasting Perfumes for Men in Pakistan</h3>' .
 		'<p>' . $p( 'kahn-vahl-perfume', 'Kahn-vahl perfume for men' ) . ' is a fresh aquatic fragrance in a deep blue bottle, with coconut water, jasmine, iris, vanilla, sandalwood and amber for the office, outings and summer evenings.</p>' .
 		'<p>' . $p( 'zay-ab-perfume', 'Zay-ab perfume for men' ) . ' (Zayab) is a royal oriental scent of rose, frankincense, labdanum, white musk, benzoin and ambergris, made for weddings, Eid, Jummah and winter nights.</p>' .
@@ -103,7 +103,7 @@ function mrzaib_video_product( $n ) {
  * as real media (with previews) and can be picked again from Media.
  * Only fields still using the theme default (or empty) are changed.
  */
-define( 'MRZAIB_HOME_MEDIA_V', 7 );
+define( 'MRZAIB_HOME_MEDIA_V', 8 );
 
 function mrzaib_home_media_items() {
 	$items = array();
@@ -113,7 +113,7 @@ function mrzaib_home_media_items() {
 		$items[ 'feat_icon_' . $i ]    = array( 'assets/images/icons/' . basename( mrzaib_feat_default_icon( $i ) ), mrzaib_feat_default_icon( $i ) );
 	}
 	foreach ( mrzaib_hero_defaults() as $i => $d ) {
-		$tag                       = $i >= 8 ? 'v2' : ''; // v2 = podium scenes for RAAZ to Baraan.
+		$tag                       = 3 === (int) $i ? '' : 'p2'; // p2 = new prices (2026-11-18): Kahn-vahl Rs. 3,000, others Rs. 2,000.
 		$items[ 'hero_img_' . $i ] = array( 'assets/images/hero-' . $i . '-desktop.jpg', $d[0], $tag );
 		$items[ 'hero_mob_' . $i ] = array( 'assets/images/hero-' . $i . '-mobile.jpg', $d[1], $tag );
 	}

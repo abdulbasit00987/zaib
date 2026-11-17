@@ -128,7 +128,7 @@ function mrzaib_configure_yoast() {
 	) );
 	$og_id0 = function_exists( 'mrzaib_og_image_id' ) ? mrzaib_og_image_id() : 0;
 	$t['open_graph_frontpage_title']    = 'MR ZAIB | Luxury Long Lasting Perfumes in Pakistan';
-	$t['open_graph_frontpage_desc']     = 'Shop MR ZAIB long lasting perfumes for men, women and unisex: Kahn-vahl, Zay-ab, Hoor and Arvon. Rs. 2,500 per 50ml with Cash on Delivery all over Pakistan.';
+	$t['open_graph_frontpage_desc']     = 'Shop MR ZAIB long lasting perfumes for men, women and unisex: Kahn-vahl, Zay-ab, Hoor and Arvon. From Rs. 2,000 per 50ml with Cash on Delivery all over Pakistan.';
 	$t['open_graph_frontpage_image']    = $og_id0 ? wp_get_attachment_url( $og_id0 ) : $logo;
 	$t['open_graph_frontpage_image_id'] = $og_id0 ? $og_id0 : $logo_id;
 	update_option( 'wpseo_titles', $t );
@@ -143,7 +143,7 @@ function mrzaib_configure_yoast() {
 	$og_url = $og_id ? wp_get_attachment_url( $og_id ) : $logo;
 	$og_id  = $og_id ? $og_id : $logo_id;
 	$og_t   = 'MR ZAIB | Luxury Long Lasting Perfumes in Pakistan';
-	$og_d   = 'Shop MR ZAIB long lasting perfumes for men, women and unisex: Kahn-vahl, Zay-ab, Hoor and Arvon. Rs. 2,500 per 50ml with Cash on Delivery all over Pakistan.';
+	$og_d   = 'Shop MR ZAIB long lasting perfumes for men, women and unisex: Kahn-vahl, Zay-ab, Hoor and Arvon. From Rs. 2,000 per 50ml with Cash on Delivery all over Pakistan.';
 	$s['og_default_image']    = $og_url;
 	$s['og_default_image_id'] = $og_id;
 	$s['og_frontpage_title']  = $og_t;
@@ -225,7 +225,7 @@ function mrzaib_configure_yoast() {
 	/* ---- Pages ---- */
 	$front = (int) get_option( 'page_on_front' );
 	$pages = array(
-		$front => array( 'MR ZAIB %%sep%% Luxury Long Lasting Perfumes in Pakistan', 'Shop MR ZAIB luxury perfumes: long lasting fragrances for men, women and unisex in Pakistan. Rs. 2,500 per 50ml with Cash on Delivery all over Pakistan.', 'luxury perfumes Pakistan' ),
+		$front => array( 'MR ZAIB %%sep%% Luxury Long Lasting Perfumes in Pakistan', 'Shop MR ZAIB luxury perfumes: long lasting fragrances for men, women and unisex in Pakistan. From Rs. 2,000 per 50ml with Cash on Delivery all over Pakistan.', 'luxury perfumes Pakistan' ),
 	);
 	if ( function_exists( 'wc_get_page_id' ) ) {
 		$pages[ wc_get_page_id( 'shop' ) ] = array( 'Shop Perfumes Online in Pakistan %%sep%% %%sitename%%', 'Shop all MR ZAIB perfumes online: long lasting luxury fragrances for men, women and unisex. Cash on Delivery all over Pakistan.', 'buy perfume online Pakistan' );
