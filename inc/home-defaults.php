@@ -304,3 +304,87 @@ add_action( 'admin_init', function () {
 	}
 	mrzaib_add_product_videos();
 }, 30 );
+
+/**
+ * Hero reset (user, 2026-11-18): all 14 built-in slides (13 products + collection) in order,
+ * with the current podium banners and prices. Slides that still hold an older theme banner are
+ * replaced; the admin's own slide images are kept and moved after the 14 built-in slides.
+ * Runs once automatically (MRZAIB_HERO_RESET_V) and from Appearance > MR ZAIB Setup.
+ */
+define( 'MRZAIB_HERO_RESET_V', 1 );
+
+function mrzaib_is_theme_hero( $url ) {
+	$b = basename( (string) strtok( (string) $url, '?' ) );
+	return '' === $url || false !== strpos( (string) $url, '/themes/' ) || preg_match( '/hero-\d+-(desktop|mobile)/', $b );
+}
+
+function mrzaib_reset_hero_banners() {
+	if ( ! function_exists( 'mrzaib_hero_defaults' ) ) {
+		return 0;
+	}
+	require_once ABSPATH . 'wp-admin/includes/file.php';
+	require_once ABSPATH . 'wp-admin/includes/media.php';
+	require_once ABSPATH . 'wp-admin/includes/image.php';
+	$hd   = mrzaib_hero_defaults();
+	$old  = max( 1, (int) get_theme_mod( 'mrzaib_hero_count', 14 ) );
+	$own  = array();
+	for ( $i = 1; $i <= MRZAIB_HERO_MAX; $i++ ) {
+		$img = (string) get_theme_mod( 'mrzaib_hero_img_' . $i, '' );
+		if ( $i <= $old && $img && ! get_theme_mod( 'mrzaib_hero_rm_' . $i ) && ! mrzaib_is_theme_hero( $img ) ) {
+			$mob   = (string) get_theme_mod( 'mrzaib_hero_mob_' . $i, '' );
+			$own[] = array( $img, mrzaib_is_theme_hero( $mob ) ? '' : $mob, (string) get_theme_mod( 'mrzaib_hero_link_' . $i, '' ) );
+		}
+		foreach ( array( 'img', 'mob', 'link', 'rm' ) as $f ) {
+			remove_theme_mod( 'mrzaib_hero_' . $f . '_' . $i );
+		}
+	}
+	$map = (array) get_option( 'mrzaib_home_media', array() );
+	foreach ( $hd as $i => $d ) {
+		foreach ( array( 'img' => 'desktop', 'mob' => 'mobile' ) as $f => $kind ) {
+			$rel  = 'assets/images/hero-' . $i . '-' . $kind . '.jpg';
+			$tag  = 3 === (int) $i ? $rel : $rel . '#p2';
+			$file = MRZAIB_DIR . '/' . $rel;
+			$id   = mrzaib_home_media_find( $tag );
+			if ( ! $id && file_exists( $file ) ) {
+				$tmp = wp_tempnam( basename( $file ) );
+				copy( $file, $tmp );
+				$id = media_handle_sideload( array( 'name' => 'mr-zaib-' . basename( $file ), 'tmp_name' => $tmp ), 0, 'MR ZAIB Hero ' . $i . ' ' . ucfirst( $kind ) );
+				if ( is_wp_error( $id ) ) {
+					@unlink( $tmp ); // phpcs:ignore
+					$id = 0;
+				} else {
+					update_post_meta( $id, '_mrzaib_src', $tag );
+					update_post_meta( $id, '_wp_attachment_image_alt', $d[3] );
+				}
+			}
+			$url = $id ? wp_get_attachment_url( $id ) : $d[ 'img' === $f ? 0 : 1 ];
+			set_theme_mod( 'mrzaib_hero_' . $f . '_' . $i, $url );
+			if ( $id ) {
+				$map[ 'hero_' . $f . '_' . $i ] = (int) $id;
+			}
+		}
+		set_theme_mod( 'mrzaib_hero_link_' . $i, $d[2] );
+	}
+	$n = count( $hd );
+	foreach ( $own as $k => $o ) {
+		$j = $n + 1 + $k;
+		if ( $j > MRZAIB_HERO_MAX ) {
+			break;
+		}
+		set_theme_mod( 'mrzaib_hero_img_' . $j, $o[0] );
+		set_theme_mod( 'mrzaib_hero_mob_' . $j, $o[1] );
+		set_theme_mod( 'mrzaib_hero_link_' . $j, $o[2] );
+	}
+	set_theme_mod( 'mrzaib_hero_count', min( MRZAIB_HERO_MAX, $n + count( $own ) ) );
+	update_option( 'mrzaib_home_media', $map, false );
+	update_option( 'mrzaib_hero_v', '14' );
+	update_option( 'mrzaib_hero_reset_v', MRZAIB_HERO_RESET_V );
+	return $n;
+}
+
+add_action( 'admin_init', function () {
+	if ( (int) get_option( 'mrzaib_hero_reset_v' ) >= MRZAIB_HERO_RESET_V || ! current_user_can( 'upload_files' ) || wp_doing_ajax() ) {
+		return;
+	}
+	mrzaib_reset_hero_banners();
+}, 40 );

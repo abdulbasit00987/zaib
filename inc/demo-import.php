@@ -238,6 +238,13 @@ function mrzaib_setup_page() {
 	if ( isset( $_POST['mrzaib_aws'] ) && check_admin_referer( 'mrzaib_aws' ) ) {
 		echo '<div class="notice notice-info"><p>' . esc_html( mrzaib_install_aws() ) . '</p></div>';
 	}
+	if ( isset( $_POST['mrzaib_hero_reset'] ) && check_admin_referer( 'mrzaib_hero_reset' ) && function_exists( 'mrzaib_reset_hero_banners' ) ) {
+		$hn = mrzaib_reset_hero_banners();
+		echo '<div class="notice notice-success"><p>' . esc_html( sprintf( 'Hero slider reset: %d MR ZAIB banners are back in order (desktop + mobile).', $hn ) ) . '</p></div>';
+	}
+	echo '<form method="post">';
+	wp_nonce_field( 'mrzaib_hero_reset' );
+	echo '<p><button class="button" name="mrzaib_hero_reset" value="1">' . esc_html__( 'Reset Hero Slider banners', 'mrzaib' ) . '</button> <span class="description">' . esc_html__( 'Puts all 14 MR ZAIB banners (13 perfumes + collection) back with the latest prices. Your own uploaded slides are kept at the end.', 'mrzaib' ) . '</span></p></form>';
 	if ( isset( $_POST['mrzaib_import'] ) && check_admin_referer( 'mrzaib_import' ) ) {
 		@set_time_limit( 600 ); // phpcs:ignore
 		$log  = mrzaib_run_import();
