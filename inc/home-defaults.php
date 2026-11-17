@@ -204,7 +204,7 @@ function mrzaib_product_video_list() {
 }
 
 function mrzaib_sideload_theme_file( $rel, $title ) {
-	$tag = $rel . '#pv1';
+	$tag = $rel . '#pv2';
 	$id  = mrzaib_home_media_find( $tag );
 	if ( $id ) {
 		return $id;
@@ -228,7 +228,7 @@ function mrzaib_sideload_theme_file( $rel, $title ) {
 }
 
 function mrzaib_add_product_videos() {
-	$done = (array) get_option( 'mrzaib_pvideos_done', array() );
+	$done = (array) get_option( 'mrzaib_pvideos_done2', array() );
 	$todo = array_diff( mrzaib_product_video_list(), $done );
 	if ( ! $todo || ! function_exists( 'wc_get_product' ) ) {
 		return 0;
@@ -248,7 +248,15 @@ function mrzaib_add_product_videos() {
 		if ( ! $pid ) {
 			continue; // Product not created yet: try again later.
 		}
-		if ( $count >= $max ) {
+		// Slot that already holds this product's earlier theme video (v1): replace it in place.
+		$slot = 0;
+		for ( $i = 1; $i <= $count; $i++ ) {
+			if ( (int) get_theme_mod( 'mrzaib_video_product_' . $i ) === $pid && false !== strpos( (string) get_theme_mod( 'mrzaib_video_' . $i ), 'mr-zaib-' . $slug ) ) {
+				$slot = $i;
+				break;
+			}
+		}
+		if ( ! $slot && $count >= $max ) {
 			break;
 		}
 		$name = get_the_title( $pid );
@@ -260,17 +268,20 @@ function mrzaib_add_product_videos() {
 		if ( $pos ) {
 			update_post_meta( $pos, '_wp_attachment_image_alt', $name . ' perfume by MR ZAIB' );
 		}
-		$count++;
-		set_theme_mod( 'mrzaib_video_' . $count, wp_get_attachment_url( $vid ) );
-		set_theme_mod( 'mrzaib_video_poster_' . $count, $pos ? wp_get_attachment_url( $pos ) : '' );
-		set_theme_mod( 'mrzaib_video_product_' . $count, $pid );
+		if ( ! $slot ) {
+			$count++;
+			$slot = $count;
+		}
+		set_theme_mod( 'mrzaib_video_' . $slot, wp_get_attachment_url( $vid ) );
+		set_theme_mod( 'mrzaib_video_poster_' . $slot, $pos ? wp_get_attachment_url( $pos ) : '' );
+		set_theme_mod( 'mrzaib_video_product_' . $slot, $pid );
 		$done[] = $slug;
 		$added++;
 	}
 	if ( $added ) {
 		set_theme_mod( 'mrzaib_video_count', $count );
 	}
-	update_option( 'mrzaib_pvideos_done', array_values( array_unique( $done ) ), false );
+	update_option( 'mrzaib_pvideos_done2', array_values( array_unique( $done ) ), false );
 	return $added;
 }
 
@@ -278,7 +289,7 @@ add_action( 'admin_init', function () {
 	if ( wp_doing_ajax() || ! current_user_can( 'upload_files' ) ) {
 		return;
 	}
-	if ( count( (array) get_option( 'mrzaib_pvideos_done', array() ) ) >= count( mrzaib_product_video_list() ) ) {
+	if ( count( (array) get_option( 'mrzaib_pvideos_done2', array() ) ) >= count( mrzaib_product_video_list() ) ) {
 		return;
 	}
 	mrzaib_add_product_videos();
