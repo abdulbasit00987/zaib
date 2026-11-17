@@ -482,6 +482,9 @@ function mrzaib_install_blogs( $only = '', $missing_only = false ) {
 
 /** Once after the theme update: add the articles. */
 add_action( 'admin_init', function () {
+	if ( ! mrzaib_data_ready() ) {
+		return;
+	}
 	if ( (int) get_option( 'mrzaib_blog_v' ) >= MRZAIB_BLOG_V || ! current_user_can( 'publish_posts' ) || wp_doing_ajax() ) {
 		return;
 	}

@@ -12,7 +12,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 add_action( 'admin_menu', function () {
-	add_theme_page( __( 'MR ZAIB Setup', 'mrzaib' ), __( 'MR ZAIB Setup', 'mrzaib' ), 'manage_options', 'mrzaib-setup', 'mrzaib_setup_page' );
+	add_theme_page( __( 'MR ZAIB Setup', 'mrzaib' ), __( 'MR ZAIB Setup', 'mrzaib' ), 'manage_options', 'mrzaib-setup', 'mrzaib_setup_wizard_page' );
 } );
 
 /* Nudge after activation */
@@ -20,9 +20,12 @@ add_action( 'after_switch_theme', function () {
 	set_transient( 'mrzaib_activated', 1, 300 );
 } );
 add_action( 'admin_notices', function () {
-	if ( get_transient( 'mrzaib_activated' ) && ! get_option( 'mrzaib_demo_imported' ) ) {
-		echo '<div class="notice notice-success is-dismissible"><p><strong>MR ZAIB theme activated!</strong> ';
-		echo 'Go to <a href="' . esc_url( admin_url( 'themes.php?page=mrzaib-setup' ) ) . '">Appearance &rarr; MR ZAIB Setup</a> to import the demo website in one click.</p></div>';
+	if ( ! current_user_can( 'install_plugins' ) || ( isset( $_GET['page'] ) && 'mrzaib-setup' === $_GET['page'] ) ) { // phpcs:ignore
+		return;
+	}
+	if ( ! mrzaib_setup_plugins_ok() || ! mrzaib_data_ready() ) {
+		echo '<div class="notice notice-success"><p><strong>MR ZAIB theme is active.</strong> ';
+		echo '<a class="button button-primary" href="' . esc_url( admin_url( 'themes.php?page=mrzaib-setup' ) ) . '">Open MR ZAIB Setup</a></p></div>';
 	}
 } );
 
@@ -213,87 +216,6 @@ function mrzaib_install_card_plugins() {
 	return implode( ' ', $out );
 }
 
-function mrzaib_setup_page() {
-	if ( ! current_user_can( 'manage_options' ) ) {
-		return;
-	}
-	$done = false;
-	$log  = array();
-	if ( isset( $_POST['mrzaib_woo'] ) && check_admin_referer( 'mrzaib_woo' ) ) {
-		@set_time_limit( 300 ); // phpcs:ignore
-		echo '<div class="notice notice-info"><p>' . esc_html( mrzaib_install_plugin( 'woocommerce', 'woocommerce/woocommerce.php', 'WooCommerce' ) ) . '</p></div>';
-		echo '<script>setTimeout(function(){location.href=' . wp_json_encode( admin_url( 'themes.php?page=mrzaib-setup' ) ) . ';},1500);</script>';
-	}
-	if ( isset( $_POST['mrzaib_yoast_apply'] ) && check_admin_referer( 'mrzaib_yoast_apply' ) ) {
-		echo '<div class="notice notice-success"><p>' . esc_html( mrzaib_configure_yoast() ) . '</p></div>';
-	}
-	if ( defined( 'WPSEO_VERSION' ) ) {
-		echo '<form method="post" style="margin:12px 0">';
-		wp_nonce_field( 'mrzaib_yoast_apply' );
-		echo '<p><button class="button" name="mrzaib_yoast_apply" value="1">' . esc_html__( 'Apply MR ZAIB Yoast SEO settings', 'mrzaib' ) . '</button> <span class="description">' . esc_html__( 'Fills only empty SEO titles, descriptions and keyphrases; your edits are kept.', 'mrzaib' ) . '</span></p></form>';
-	}
-	if ( isset( $_POST['mrzaib_cardplugins'] ) && check_admin_referer( 'mrzaib_cardplugins' ) ) {
-		echo '<div class="notice notice-info"><p>' . esc_html( mrzaib_install_card_plugins() ) . '</p></div>';
-	}
-	if ( isset( $_POST['mrzaib_aws'] ) && check_admin_referer( 'mrzaib_aws' ) ) {
-		echo '<div class="notice notice-info"><p>' . esc_html( mrzaib_install_aws() ) . '</p></div>';
-	}
-	if ( isset( $_POST['mrzaib_hero_reset'] ) && check_admin_referer( 'mrzaib_hero_reset' ) && function_exists( 'mrzaib_reset_hero_banners' ) ) {
-		$hn = mrzaib_reset_hero_banners();
-		echo '<div class="notice notice-success"><p>' . esc_html( sprintf( 'Hero slider reset: %d MR ZAIB banners are back in order (desktop + mobile).', $hn ) ) . '</p></div>';
-	}
-	echo '<form method="post">';
-	wp_nonce_field( 'mrzaib_hero_reset' );
-	echo '<p><button class="button" name="mrzaib_hero_reset" value="1">' . esc_html__( 'Reset Hero Slider banners', 'mrzaib' ) . '</button> <span class="description">' . esc_html__( 'Puts all 13 MR ZAIB perfume banners back with the latest prices. Your own uploaded slides are kept at the end.', 'mrzaib' ) . '</span></p></form>';
-	if ( isset( $_POST['mrzaib_import'] ) && check_admin_referer( 'mrzaib_import' ) ) {
-		@set_time_limit( 600 ); // phpcs:ignore
-		$log  = mrzaib_run_import();
-		$done = true;
-	}
-	$woo = class_exists( 'WooCommerce' );
-	?>
-	<div class="wrap">
-		<h1>MR ZAIB &mdash; Store Setup</h1>
-		<p style="font-size:15px;max-width:720px">This removes all old dummy data (demo perfumes, demo categories, demo blog posts, demo images and menus) and sets up your real MR ZAIB store: categories <strong>Men, Women, Unisex, Attar, Tester</strong>, your perfumes <strong>Kahn-vahl</strong> (Men) and <strong>Arvon</strong> (Unisex) with photos, notes, descriptions and SEO keywords, the homepage banners, pages and menus. It also sets PKR currency and Cash on Delivery. Products you added yourself are not touched.</p>
-		<?php if ( ! $woo ) : ?>
-			<div class="notice notice-error inline"><p><strong>WooCommerce is required.</strong> Install &amp; activate it first: <a href="<?php echo esc_url( admin_url( 'plugin-install.php?s=woocommerce&tab=search&type=term' ) ); ?>">Plugins &rarr; Add New &rarr; WooCommerce</a>. Then come back here.</p></div>
-			<form method="post"><?php wp_nonce_field( 'mrzaib_woo' ); ?><p><button class="button button-primary" name="mrzaib_woo" value="1">Install &amp; Activate WooCommerce</button></p></form>
-		<?php endif; ?>
-		<?php if ( $done ) : ?>
-			<div class="notice notice-success inline"><p><strong>Store set up!</strong> <a href="<?php echo esc_url( home_url( '/' ) ); ?>" target="_blank">View your website &rarr;</a></p></div>
-			<ul style="background:#fff;padding:12px 24px;max-width:720px;list-style:disc"><?php foreach ( $log as $l ) { echo '<li>' . esc_html( $l ) . '</li>'; } ?></ul>
-		<?php endif; ?>
-		<?php if ( get_option( 'mrzaib_demo_imported' ) && ! $done ) : ?>
-			<p><em>Already run once. Running again is safe: it removes any leftover dummy data and refreshes Kahn-vahl and Arvon (prices, notes, descriptions).</em></p>
-		<?php endif; ?>
-		<form method="post">
-			<?php wp_nonce_field( 'mrzaib_import' ); ?>
-			<p><button class="button button-primary button-hero" name="mrzaib_import" value="1" <?php disabled( ! $woo ); ?>>Set Up MR ZAIB Store (remove dummy data)</button></p>
-		</form>
-		<h2>Header search: Advanced Woo Search</h2>
-		<?php if ( function_exists( 'aws_get_search_form' ) ) : ?>
-			<p>&#10004; <strong>Advanced Woo Search is active.</strong> The search box left of the logo shows live product results with images and prices. Settings: <a href="<?php echo esc_url( admin_url( 'admin.php?page=aws-options' ) ); ?>">Advanced Woo Search &rarr; Settings</a>.</p>
-		<?php else : ?>
-			<p>The search box left of the logo uses the free <strong>Advanced Woo Search</strong> plugin for live results with product images. (The demo import installs it too.)</p>
-			<form method="post"><?php wp_nonce_field( 'mrzaib_aws' ); ?><p><button class="button button-secondary" name="mrzaib_aws" value="1">Install &amp; Activate Advanced Woo Search</button></p></form>
-		<?php endif; ?>
-		<h2>Quick View, Cart Drawer &amp; Product Gallery plugins</h2>
-		<?php $qv = class_exists( 'SP_Woo_Quick_View' ); $mc = class_exists( '\Minicart_Lite\Modules\MCN_Settings' ) || is_plugin_active( 'woo-mini-cart-drawer/woo-mini-cart-drawer.php' ); ?>
-		<p>Hovering a product shows two icons: the top one opens <strong>Quick View for WooCommerce (Reno QuickView)</strong>, the bottom cart icon adds simple products straight to the <strong>Mini Cart Drawer for WooCommerce</strong>; products with sizes open the Quick View to choose a size first, then the cart drawer opens.</p>
-		<p>Quick View: <?php echo $qv ? '&#10004; active' : '&#10008; not active'; ?> &nbsp; | &nbsp; Mini Cart Drawer: <?php echo $mc ? '&#10004; active' : '&#10008; not active'; ?> &nbsp; | &nbsp; Product Gallery Slider: <?php echo defined( 'CIPG_VERSION' ) ? '&#10004; active' : '&#10008; not active'; ?></p>
-		<form method="post"><?php wp_nonce_field( 'mrzaib_cardplugins' ); ?><p><button class="button button-secondary" name="mrzaib_cardplugins" value="1">Install, Activate &amp; Configure all 3 plugins</button></p></form>
-		<h2>After import</h2>
-		<ol style="font-size:14px">
-			<li>Appearance &rarr; Customize &rarr; Site Identity: upload your logo.</li>
-			<li>Appearance &rarr; Customize &rarr; MR ZAIB Options: announcement bar, hero slides, WhatsApp, phone, address, social links.</li>
-			<li>Products &rarr; edit each product: real name, price, photos. Field &ldquo;Subtitle&rdquo; is the small line under the name.</li>
-			<li>WooCommerce &rarr; Settings &rarr; Payments: Cash on Delivery is on. Add JazzCash / Easypaisa / card plugins if you want.</li>
-			<li>WooCommerce &rarr; Settings &rarr; Shipping: zones &ldquo;Karachi&rdquo; and &ldquo;Rest of Pakistan&rdquo; are created automatically; edit their charges there and the site text updates.</li>
-		</ol>
-	</div>
-	<?php
-}
-
 /* ------------------------------------------------------------------ */
 
 function mrzaib_post_exists( $title, $type ) {
@@ -393,9 +315,8 @@ function mrzaib_lorem_desc( $name ) {
 		. '<ul><li>Concentration: Eau de Parfum</li><li>Lasting: 8&ndash;12 hours</li><li>Projection: Strong</li><li>Season: All year</li></ul>';
 }
 
-function mrzaib_run_import() {
-	$log = array();
-
+/** Store settings: PKR, COD, Pakistan only, AJAX add to cart. */
+function mrzaib_wc_base_settings() {
 	/* --- WooCommerce settings --- */
 	update_option( 'woocommerce_currency', 'PKR' );
 	update_option( 'woocommerce_price_num_decimals', 0 );
@@ -412,19 +333,10 @@ function mrzaib_run_import() {
 		'enable_for_methods' => array(),
 		'enable_for_virtual' => 'yes',
 	) );
-	$log[] = 'Currency set to PKR (Rs.), Cash on Delivery enabled, AJAX add-to-cart on.';
+}
 
-	/* --- Shipping zones: Karachi + Rest of Pakistan --- */
-	if ( function_exists( 'mrzaib_setup_shipping_zones' ) && MRZAIB_SHIP_V !== get_option( 'mrzaib_ship_v' ) ) {
-		$log[] = mrzaib_setup_shipping_zones();
-	}
-
-	/* --- Remove old dummy data, then add the real MR ZAIB catalogue --- */
-	$log[]   = mrzaib_remove_dummy();
-	$cat_ids = mrzaib_install_categories();
-	$log[]   = count( $cat_ids ) . ' categories ready: Men, Women, Unisex, Attar, Tester.';
-	$log[]   = mrzaib_install_products( $cat_ids );
-
+/** Home, Blogs, Contact, FAQs, Track Order, Return Form and policy pages; Home = front page. */
+function mrzaib_install_pages() {
 	/* --- Pages --- */
 	$pages = array(
 		'home'              => array( 'Home', '', '' ),
@@ -460,6 +372,27 @@ function mrzaib_run_import() {
 	update_option( 'show_on_front', 'page' );
 	update_option( 'page_on_front', $page_ids['home'] );
 	update_option( 'page_for_posts', $page_ids['blog'] );
+	return $page_ids;
+}
+
+function mrzaib_run_import() {
+	$log = array();
+
+	mrzaib_wc_base_settings();
+	$log[] = 'Currency set to PKR (Rs.), Cash on Delivery enabled, AJAX add-to-cart on.';
+
+	/* --- Shipping zones: Karachi + Rest of Pakistan --- */
+	if ( function_exists( 'mrzaib_setup_shipping_zones' ) && MRZAIB_SHIP_V !== get_option( 'mrzaib_ship_v' ) ) {
+		$log[] = mrzaib_setup_shipping_zones();
+	}
+
+	/* --- Remove old dummy data, then add the real MR ZAIB catalogue --- */
+	$log[]   = mrzaib_remove_dummy();
+	$cat_ids = mrzaib_install_categories();
+	$log[]   = count( $cat_ids ) . ' categories ready: Men, Women, Unisex, Attar, Tester.';
+	$log[]   = mrzaib_install_products( $cat_ids );
+
+	$page_ids = mrzaib_install_pages();
 	$log[] = count( $page_ids ) . ' pages ready. Home set as front page.';
 
 	/* --- Menus --- */
@@ -578,7 +511,7 @@ function mrzaib_page_story() {
 
 /** Ask the admin to install Yoast SEO (the theme leaves all SEO meta to it). */
 add_action( 'admin_notices', function () {
-	if ( defined( 'WPSEO_VERSION' ) || ! current_user_can( 'install_plugins' ) ) {
+	if ( defined( 'WPSEO_VERSION' ) || ! current_user_can( 'install_plugins' ) || ! mrzaib_setup_plugins_ok() ) {
 		return;
 	}
 	if ( isset( $_GET['mrzaib_yoast'] ) && check_admin_referer( 'mrzaib_yoast' ) ) { // phpcs:ignore

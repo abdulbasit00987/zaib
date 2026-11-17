@@ -152,6 +152,13 @@ function mrzaib_icon( $name ) {
 /* ------------------------------------------------------------------
  * Includes
  * ------------------------------------------------------------------ */
+/**
+ * True once the store data is in (Setup > "Add All Data", or an older store import).
+ * On a fresh install nothing is imported automatically until the admin clicks the button.
+ */
+function mrzaib_data_ready() {
+	return (bool) ( get_option( 'mrzaib_data_done' ) || get_option( 'mrzaib_demo_imported' ) );
+}
 require MRZAIB_DIR . '/inc/wc-compat.php';
 require MRZAIB_DIR . '/inc/search-suggest.php';
 require MRZAIB_DIR . '/inc/home-defaults.php';
@@ -171,6 +178,7 @@ require MRZAIB_DIR . '/inc/security.php';
 require MRZAIB_DIR . '/inc/performance.php';
 require MRZAIB_DIR . '/inc/store-content.php';
 require MRZAIB_DIR . '/inc/demo-import.php';
+require MRZAIB_DIR . '/inc/setup-wizard.php';
 require MRZAIB_DIR . '/inc/blog-content.php';
 require MRZAIB_DIR . '/inc/yoast-setup.php';
 require MRZAIB_DIR . '/inc/media-cleanup.php';

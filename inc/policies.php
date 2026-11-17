@@ -316,6 +316,9 @@ function mrzaib_fill_policy_pages( $force = false ) {
 	return $done;
 }
 add_action( 'admin_init', function () {
+	if ( ! mrzaib_data_ready() ) {
+		return;
+	}
 	if ( (int) get_option( 'mrzaib_policy_v' ) >= MRZAIB_POLICY_V || ! current_user_can( 'edit_pages' ) ) {
 		return;
 	}

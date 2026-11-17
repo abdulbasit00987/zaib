@@ -191,7 +191,7 @@ add_action( 'admin_init', function () {
 }, 40 );
 
 add_action( 'admin_notices', function () {
-	if ( ! current_user_can( 'install_plugins' ) ) {
+	if ( ! current_user_can( 'install_plugins' ) || ! mrzaib_setup_plugins_ok() ) {
 		return;
 	}
 	if ( mrzaib_wf_active() ) {

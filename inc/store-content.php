@@ -831,6 +831,10 @@ function mrzaib_home_categories() {
 
 /** One-time update: Ethereal category becomes Attar; old category artwork is replaced. */
 function mrzaib_migrate_categories_v2() {
+	if ( ! mrzaib_data_ready() ) {
+		return;
+	}
+
 	if ( (int) get_option( 'mrzaib_cat_v' ) >= 3 || ! taxonomy_exists( 'product_cat' ) ) {
 		return;
 	}
@@ -886,6 +890,10 @@ function mrzaib_price_for( $prod ) {
 	return array( '2499', '2000', 'Rs. 2,000' );
 }
 function mrzaib_apply_prices_v2() {
+	if ( ! mrzaib_data_ready() ) {
+		return;
+	}
+
 	if ( ! function_exists( 'wc_get_products' ) || (int) get_option( 'mrzaib_price_v' ) >= MRZAIB_PRICE_V ) {
 		return;
 	}

@@ -123,7 +123,7 @@ add_action( 'admin_init', function () {
 
 /* Install / activate button when the plugin is missing. */
 add_action( 'admin_notices', function () {
-	if ( mrzaib_es_active() || ! current_user_can( 'install_plugins' ) ) {
+	if ( mrzaib_es_active() || ! current_user_can( 'install_plugins' ) || ! mrzaib_setup_plugins_ok() ) {
 		return;
 	}
 	if ( isset( $_GET['mrzaib_es_install'] ) && check_admin_referer( 'mrzaib_es_install' ) && function_exists( 'mrzaib_install_plugin' ) ) {

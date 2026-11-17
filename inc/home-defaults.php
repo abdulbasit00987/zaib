@@ -191,6 +191,9 @@ function mrzaib_import_home_media( $force = false ) {
 }
 
 add_action( 'admin_init', function () {
+	if ( ! mrzaib_data_ready() ) {
+		return;
+	}
 	if ( (int) get_option( 'mrzaib_home_media_v' ) >= MRZAIB_HOME_MEDIA_V || ! current_user_can( 'upload_files' ) || wp_doing_ajax() ) {
 		return;
 	}
@@ -296,6 +299,9 @@ function mrzaib_add_product_videos() {
 }
 
 add_action( 'admin_init', function () {
+	if ( ! mrzaib_data_ready() ) {
+		return;
+	}
 	if ( wp_doing_ajax() || ! current_user_can( 'upload_files' ) ) {
 		return;
 	}
@@ -396,6 +402,9 @@ function mrzaib_reset_hero_banners() {
 }
 
 add_action( 'admin_init', function () {
+	if ( ! mrzaib_data_ready() ) {
+		return;
+	}
 	if ( (int) get_option( 'mrzaib_hero_reset_v' ) >= MRZAIB_HERO_RESET_V || ! current_user_can( 'upload_files' ) || wp_doing_ajax() ) {
 		return;
 	}

@@ -47,6 +47,9 @@ function mrzaib_og_image_id() {
 }
 
 add_action( 'admin_init', function () {
+	if ( ! mrzaib_data_ready() ) {
+		return;
+	}
 	if ( (int) get_option( 'mrzaib_brand_v' ) >= MRZAIB_BRAND_V || ! current_user_can( 'manage_options' ) || wp_doing_ajax() ) {
 		return;
 	}
