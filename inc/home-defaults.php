@@ -103,12 +103,12 @@ function mrzaib_video_product( $n ) {
  * as real media (with previews) and can be picked again from Media.
  * Only fields still using the theme default (or empty) are changed.
  */
-define( 'MRZAIB_HOME_MEDIA_V', 8 );
+define( 'MRZAIB_HOME_MEDIA_V', 9 );
 
 function mrzaib_home_media_items() {
 	$items = array();
 	for ( $i = 1; $i <= 4; $i++ ) {
-		$items[ 'video_' . $i ]        = array( 'assets/video/' . basename( mrzaib_video_default( $i ) ), mrzaib_video_default( $i ) );
+		$items[ 'video_' . $i ]        = array( 'assets/video/' . basename( mrzaib_video_default( $i ) ), mrzaib_video_default( $i ), 'p2' ); // p2 = new price captions.
 		$items[ 'video_poster_' . $i ] = array( 'assets/video/' . basename( mrzaib_video_default( $i, 'jpg' ) ), mrzaib_video_default( $i, 'jpg' ) );
 		$items[ 'feat_icon_' . $i ]    = array( 'assets/images/icons/' . basename( mrzaib_feat_default_icon( $i ) ), mrzaib_feat_default_icon( $i ) );
 	}
@@ -143,6 +143,16 @@ function mrzaib_import_home_media( $force = false ) {
 		$cur_base  = $cur ? strtok( $cur, '?' ) : '';
 		$old_id    = empty( $map[ $key ] ) ? 0 : (int) $map[ $key ];
 		$ours      = $old_id && $cur_base && (string) wp_parse_url( $cur_base, PHP_URL_PATH ) === (string) wp_parse_url( (string) wp_get_attachment_url( $old_id ), PHP_URL_PATH );
+		if ( ! $ours && $cur_base && function_exists( 'attachment_url_to_postid' ) ) {
+			$cur_id = (int) attachment_url_to_postid( $cur_base );
+			$src    = $cur_id ? (string) get_post_meta( $cur_id, '_mrzaib_src', true ) : '';
+			if ( $src && 0 === strpos( $src, strtok( $rel, '#' ) ) ) {
+				$ours   = true; // An older theme copy of this same file (e.g. banner with old price).
+				$old_id = $cur_id;
+			} elseif ( $cur_id && 0 === strpos( $key, 'hero_' ) && preg_match( '/mr-zaib-hero-\d+-(desktop|mobile)/', $cur_base ) ) {
+				$ours   = true; // Theme banner re-picked from Media by hand.
+			}
+		}
 		if ( $cur && ! $force && ! $ours && strtok( $theme_url, '?' ) !== $cur_base && false === strpos( $cur_base, '/themes/' ) ) {
 			continue; // Admin already chose own media.
 		}

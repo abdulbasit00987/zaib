@@ -50,7 +50,7 @@ function mrzaib_store_products() {
 				. '<h3>Fragrance Profile</h3>'
 				. '<ul><li><strong>Family:</strong> Fresh Aquatic, Floral, Woody Amber</li><li><strong>Character:</strong> Clean, fresh, elegant, warm</li><li><strong>Best season:</strong> Summer and all year round</li><li><strong>Occasions:</strong> Office, daily wear, university, dinners, date nights and gatherings</li></ul>'
 				. '<h3>Why Choose MR ZAIB Kahn-vahl?</h3>'
-				. '<ul><li>Fresh aquatic opening with a warm vanilla, sandalwood and amber base</li><li>Long lasting fragrance with a noticeable trail</li><li>Luxurious 50ml crystal-cut blue bottle with gold crown cap, a perfect gift for men</li><li>Affordable luxury perfume under Rs. 3000</li><li>Cash on Delivery all over Pakistan</li></ul>'
+				. '<ul><li>Fresh aquatic opening with a warm vanilla, sandalwood and amber base</li><li>Long lasting fragrance with a noticeable trail</li><li>Luxurious 50ml crystal-cut blue bottle with gold crown cap, a perfect gift for men</li><li>Premium quality at Rs. 3,000</li><li>Cash on Delivery all over Pakistan</li></ul>'
 				. '<h3>How to Apply</h3>'
 				. '<p>Spray 3 to 4 times on pulse points (neck, wrists, chest and behind the ears) from about 15 cm. Apply on clean, moisturised skin and do not rub, so the fragrance lasts longer.</p>'
 				. '<p>Looking for the <strong>best perfume for men in Pakistan</strong> that smells fresh, classy and lasts all day? Order <strong>Kahn-vahl by MR ZAIB</strong> online today.</p>',
@@ -88,7 +88,7 @@ function mrzaib_store_products() {
 				. '<h3>Fragrance Profile</h3>'
 				. '<ul><li><strong>Family:</strong> Fruity Spicy, Floral, Gourmand Amber Woody</li><li><strong>Character:</strong> Rich, warm, sweet, seductive</li><li><strong>Best season:</strong> Winter, autumn and evenings all year</li><li><strong>Occasions:</strong> Parties, weddings, dinners, date nights and special events</li></ul>'
 				. '<h3>Why Choose MR ZAIB Arvon?</h3>'
-				. '<ul><li>Rich fruity-spicy opening, elegant floral heart and gourmand cacao-vanilla base</li><li>Long lasting unisex fragrance with strong projection</li><li>Perfect for him, for her, or to share</li><li>Luxurious 50ml crystal-cut black bottle with gold crown cap, a perfect gift</li><li>Affordable luxury perfume under Rs. 3000</li><li>Cash on Delivery all over Pakistan</li></ul>'
+				. '<ul><li>Rich fruity-spicy opening, elegant floral heart and gourmand cacao-vanilla base</li><li>Long lasting unisex fragrance with strong projection</li><li>Perfect for him, for her, or to share</li><li>Luxurious 50ml crystal-cut black bottle with gold crown cap, a perfect gift</li><li>Premium quality at Rs. 2,000</li><li>Cash on Delivery all over Pakistan</li></ul>'
 				. '<h3>How to Apply</h3>'
 				. '<p>Spray 3 to 4 times on pulse points (neck, wrists, chest and behind the ears) from about 15 cm. Apply on clean, moisturised skin and do not rub, so the fragrance lasts longer.</p>'
 				. '<p>Looking for the <strong>best unisex perfume in Pakistan</strong> that smells rich, warm and lasts all night? Order <strong>Arvon by MR ZAIB</strong> online today.</p>',
@@ -126,7 +126,7 @@ function mrzaib_store_products() {
 				. '<h3>Fragrance Profile</h3>'
 				. '<ul><li><strong>Family:</strong> Oriental, Incense, Amber Musk</li><li><strong>Character:</strong> Royal, smoky, warm, sensual</li><li><strong>Best season:</strong> Winter, autumn and evenings all year</li><li><strong>Occasions:</strong> Weddings, Eid, Jummah, dinners, formal events and special nights</li></ul>'
 				. '<h3>Why Choose MR ZAIB Zay-ab?</h3>'
-				. '<ul><li>Rich oriental blend of rose, frankincense, labdanum and ambergris</li><li>Long lasting fragrance with a strong, elegant trail</li><li>Luxurious 50ml crystal-cut red bottle with gold crown cap, a perfect gift for men</li><li>Affordable luxury perfume under Rs. 3000</li><li>Cash on Delivery all over Pakistan</li></ul>'
+				. '<ul><li>Rich oriental blend of rose, frankincense, labdanum and ambergris</li><li>Long lasting fragrance with a strong, elegant trail</li><li>Luxurious 50ml crystal-cut red bottle with gold crown cap, a perfect gift for men</li><li>Premium quality at Rs. 2,000</li><li>Cash on Delivery all over Pakistan</li></ul>'
 				. '<h3>How to Apply</h3>'
 				. '<p>Spray 3 to 4 times on pulse points (neck, wrists, chest and behind the ears) from about 15 cm. Apply on clean, moisturised skin and do not rub, so the fragrance lasts longer.</p>'
 				. '<p>Looking for the <strong>best oriental perfume for men in Pakistan</strong> that smells royal and lasts all day? Order <strong>Zay-ab by MR ZAIB</strong> online today.</p>',
@@ -164,7 +164,7 @@ function mrzaib_store_products() {
 				. '<h3>Fragrance Profile</h3>'
 				. '<ul><li><strong>Family:</strong> Fruity Floral, Musky</li><li><strong>Character:</strong> Feminine, sweet, fresh, elegant</li><li><strong>Best season:</strong> Spring, summer and all year round</li><li><strong>Occasions:</strong> Daily wear, office, university, brunches, mehndi, weddings and parties</li></ul>'
 				. '<h3>Why Choose MR ZAIB Hoor?</h3>'
-				. '<ul><li>Fruity floral blend of black currant, rose, peony and musk</li><li>Long lasting women\'s fragrance with a soft, pretty trail</li><li>Elegant 50ml pink crystal bottle, a perfect gift for her</li><li>Affordable luxury perfume under Rs. 3000</li><li>Cash on Delivery all over Pakistan</li></ul>'
+				. '<ul><li>Fruity floral blend of black currant, rose, peony and musk</li><li>Long lasting women\'s fragrance with a soft, pretty trail</li><li>Elegant 50ml pink crystal bottle, a perfect gift for her</li><li>Premium quality at Rs. 2,000</li><li>Cash on Delivery all over Pakistan</li></ul>'
 				. '<h3>How to Apply</h3>'
 				. '<p>Spray 3 to 4 times on pulse points (neck, wrists and behind the ears) from about 15 cm. Apply on clean, moisturised skin and do not rub, so the fragrance lasts longer. A light mist on hair or scarf leaves a lovely trail.</p>'
 				. '<p>Looking for the <strong>best perfume for women in Pakistan</strong> that smells fresh, floral and lasts all day? Order <strong>Hoor by MR ZAIB</strong> online today.</p>',
@@ -876,7 +876,7 @@ add_action( 'admin_init', 'mrzaib_migrate_categories_v2' );
  * Price update v2 (user, 2026-11-18): every product Rs. 2,499 regular / Rs. 2,000 sale,
  * except Kahn-vahl Rs. 4,000 regular / Rs. 3,000 sale. Runs once in admin; bump MRZAIB_PRICE_V to re-run.
  */
-define( 'MRZAIB_PRICE_V', 2 );
+define( 'MRZAIB_PRICE_V', 3 );
 function mrzaib_price_for( $prod ) {
 	$slug = $prod->get_slug();
 	$name = strtolower( $prod->get_name() );
@@ -911,6 +911,21 @@ function mrzaib_apply_prices_v2() {
 		if ( $prod->is_type( 'variable' ) && class_exists( 'WC_Product_Variable' ) ) {
 			WC_Product_Variable::sync( $id );
 		}
+		// Price text inside the description / short description (v3).
+		$fix = function ( $t ) use ( $reg, $txt ) {
+			$t = str_replace( 'Affordable luxury perfume under Rs. 3000', 'Premium quality at ' . $txt, $t );
+			$t = preg_replace( '/Premium quality at Rs\. ?[0-9,]+/', 'Premium quality at ' . $txt, $t );
+			$t = preg_replace( '/Rs\. ?(2,500|3,500|2500|3500)\b/', $txt, $t );
+			return preg_replace( '/Rs\. ?(2,800|2800)\b/', 'Rs. ' . number_format( (float) $reg ), $t );
+		};
+		$post = get_post( $id );
+		if ( $post ) {
+			$c = $fix( $post->post_content );
+			$e = $fix( $post->post_excerpt );
+			if ( $c !== $post->post_content || $e !== $post->post_excerpt ) {
+				wp_update_post( array( 'ID' => $id, 'post_content' => $c, 'post_excerpt' => $e ) );
+			}
+		}
 		$md = get_post_meta( $id, '_yoast_wpseo_metadesc', true );
 		if ( $md && preg_match( '/Rs\. ?[0-9],[0-9]{3}/', $md ) ) {
 			update_post_meta( $id, '_yoast_wpseo_metadesc', preg_replace( '/Rs\. ?[0-9],[0-9]{3}/', $txt, $md ) );
@@ -927,10 +942,24 @@ function mrzaib_apply_prices_v2() {
 			update_post_meta( $front, '_yoast_wpseo_metadesc', str_replace( 'Rs. 2,500 per 50ml', 'From Rs. 2,000 per 50ml', $md ) );
 		}
 	}
-	$wt = get_option( 'wpseo_titles' );
-	if ( is_array( $wt ) && isset( $wt['open_graph_frontpage_desc'] ) ) {
-		$wt['open_graph_frontpage_desc'] = str_replace( 'Rs. 2,500 per 50ml', 'From Rs. 2,000 per 50ml', $wt['open_graph_frontpage_desc'] );
-		update_option( 'wpseo_titles', $wt );
+	foreach ( array( 'wpseo_titles', 'wpseo_social' ) as $opt ) {
+		$wt = get_option( $opt );
+		if ( is_array( $wt ) ) {
+			foreach ( $wt as $k => $v ) {
+				if ( is_string( $v ) && false !== strpos( $v, 'Rs. 2,500' ) ) {
+					$wt[ $k ] = str_replace( array( 'Rs. 2,500 per 50ml', 'Rs. 2,500' ), array( 'From Rs. 2,000 per 50ml', 'Rs. 2,000' ), $v );
+				}
+			}
+			update_option( $opt, $wt );
+		}
+	}
+	foreach ( get_posts( array( 'post_type' => array( 'post', 'page' ), 'post_status' => 'any', 'numberposts' => -1, 'fields' => 'ids' ) ) as $pid ) {
+		foreach ( array( '_yoast_wpseo_metadesc', '_yoast_wpseo_opengraph-description', '_yoast_wpseo_twitter-description' ) as $mk ) {
+			$v = get_post_meta( $pid, $mk, true );
+			if ( is_string( $v ) && false !== strpos( $v, 'Rs. 2,500' ) ) {
+				update_post_meta( $pid, $mk, str_replace( array( 'Rs. 2,500 per 50ml', 'Rs. 2,500' ), array( 'From Rs. 2,000 per 50ml', 'Rs. 2,000' ), $v ) );
+			}
+		}
 	}
 	foreach ( array( 'mrzaib_seo_intro', 'mrzaib_seo_more' ) as $mod ) {
 		$v = get_theme_mod( $mod );
