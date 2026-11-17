@@ -113,9 +113,9 @@ function mrzaib_home_media_items() {
 		$items[ 'feat_icon_' . $i ]    = array( 'assets/images/icons/' . basename( mrzaib_feat_default_icon( $i ) ), mrzaib_feat_default_icon( $i ) );
 	}
 	foreach ( mrzaib_hero_defaults() as $i => $d ) {
-		$tag                       = 3 === (int) $i ? '' : 'p2'; // p2 = new prices (2026-11-18): Kahn-vahl Rs. 3,000, others Rs. 2,000.
-		$items[ 'hero_img_' . $i ] = array( 'assets/images/hero-' . $i . '-desktop.jpg', $d[0], $tag );
-		$items[ 'hero_mob_' . $i ] = array( 'assets/images/hero-' . $i . '-mobile.jpg', $d[1], $tag );
+		$tag                       = 'p2'; // p2 = new prices (2026-11-18): Kahn-vahl Rs. 3,000, others Rs. 2,000.
+		$items[ 'hero_img_' . $i ] = array( 'assets/images/' . basename( strtok( $d[0], '?' ) ), $d[0], $tag );
+		$items[ 'hero_mob_' . $i ] = array( 'assets/images/' . basename( strtok( $d[1], '?' ) ), $d[1], $tag );
 	}
 	/* Third value = version tag: a new tag imports the updated file again (v7 = 13 bottles on marble riser, band background kept). */
 	$items['promo_img_d'] = array( 'assets/images/promo-band-desktop.jpg', MRZAIB_URI . '/assets/images/promo-band-desktop.jpg', 'v7' );
@@ -306,12 +306,12 @@ add_action( 'admin_init', function () {
 }, 30 );
 
 /**
- * Hero reset (user, 2026-11-18): all 14 built-in slides (13 products + collection) in order,
+ * Hero reset (user, 2026-11-18): all 13 built-in perfume slides in order (collection slide removed),
  * with the current podium banners and prices. Slides that still hold an older theme banner are
  * replaced; the admin's own slide images are kept and moved after the 14 built-in slides.
  * Runs once automatically (MRZAIB_HERO_RESET_V) and from Appearance > MR ZAIB Setup.
  */
-define( 'MRZAIB_HERO_RESET_V', 1 );
+define( 'MRZAIB_HERO_RESET_V', 2 ); // v2: collection slide removed, 13 perfume slides.
 
 function mrzaib_is_theme_hero( $url ) {
 	$b = basename( (string) strtok( (string) $url, '?' ) );
@@ -326,7 +326,7 @@ function mrzaib_reset_hero_banners() {
 	require_once ABSPATH . 'wp-admin/includes/media.php';
 	require_once ABSPATH . 'wp-admin/includes/image.php';
 	$hd   = mrzaib_hero_defaults();
-	$old  = max( 1, (int) get_theme_mod( 'mrzaib_hero_count', 14 ) );
+	$old  = max( 1, (int) get_theme_mod( 'mrzaib_hero_count', 13 ) );
 	$own  = array();
 	for ( $i = 1; $i <= MRZAIB_HERO_MAX; $i++ ) {
 		$img = (string) get_theme_mod( 'mrzaib_hero_img_' . $i, '' );
@@ -341,8 +341,8 @@ function mrzaib_reset_hero_banners() {
 	$map = (array) get_option( 'mrzaib_home_media', array() );
 	foreach ( $hd as $i => $d ) {
 		foreach ( array( 'img' => 'desktop', 'mob' => 'mobile' ) as $f => $kind ) {
-			$rel  = 'assets/images/hero-' . $i . '-' . $kind . '.jpg';
-			$tag  = 3 === (int) $i ? $rel : $rel . '#p2';
+			$rel  = 'assets/images/' . basename( strtok( $d[ 'img' === $f ? 0 : 1 ], '?' ) );
+			$tag  = $rel . '#p2';
 			$file = MRZAIB_DIR . '/' . $rel;
 			$id   = mrzaib_home_media_find( $tag );
 			if ( ! $id && file_exists( $file ) ) {

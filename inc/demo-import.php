@@ -244,7 +244,7 @@ function mrzaib_setup_page() {
 	}
 	echo '<form method="post">';
 	wp_nonce_field( 'mrzaib_hero_reset' );
-	echo '<p><button class="button" name="mrzaib_hero_reset" value="1">' . esc_html__( 'Reset Hero Slider banners', 'mrzaib' ) . '</button> <span class="description">' . esc_html__( 'Puts all 14 MR ZAIB banners (13 perfumes + collection) back with the latest prices. Your own uploaded slides are kept at the end.', 'mrzaib' ) . '</span></p></form>';
+	echo '<p><button class="button" name="mrzaib_hero_reset" value="1">' . esc_html__( 'Reset Hero Slider banners', 'mrzaib' ) . '</button> <span class="description">' . esc_html__( 'Puts all 13 MR ZAIB perfume banners back with the latest prices. Your own uploaded slides are kept at the end.', 'mrzaib' ) . '</span></p></form>';
 	if ( isset( $_POST['mrzaib_import'] ) && check_admin_referer( 'mrzaib_import' ) ) {
 		@set_time_limit( 600 ); // phpcs:ignore
 		$log  = mrzaib_run_import();

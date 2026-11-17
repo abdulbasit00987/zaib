@@ -148,7 +148,7 @@ if ( ! defined( 'MRZAIB_HERO_MAX' ) ) {
 
 /** Built-in hero slides (desktop, mobile, link, alt). */
 function mrzaib_hero_defaults() {
-	return array(
+	$d = array(
 		1 => array( mrzaib_img( 'hero-1-desktop.jpg' ), mrzaib_img( 'hero-1-mobile.jpg' ), mrzaib_cat_link( 'men' ), 'Kahn-vahl perfume for men by MR ZAIB' ),
 		2 => array( mrzaib_img( 'hero-2-desktop.jpg' ), mrzaib_img( 'hero-2-mobile.jpg' ), mrzaib_cat_link( 'unisex' ), 'Arvon unisex perfume by MR ZAIB' ),
 		3 => array( mrzaib_img( 'hero-3-desktop.jpg' ), mrzaib_img( 'hero-3-mobile.jpg' ), mrzaib_shop_link(), 'The MR ZAIB luxury perfume collection' ),
@@ -164,6 +164,8 @@ function mrzaib_hero_defaults() {
 		13 => array( mrzaib_img( 'hero-13-desktop.jpg' ), mrzaib_img( 'hero-13-mobile.jpg' ), mrzaib_product_slug_link( 'brave-perfume', 'men' ), 'Brave long lasting fresh fruity perfume for men by MR ZAIB' ),
 		14 => array( mrzaib_img( 'hero-14-desktop.jpg' ), mrzaib_img( 'hero-14-mobile.jpg' ), mrzaib_product_slug_link( 'baraan-perfume', 'men' ), 'Baraan long lasting amber woody bakhoor perfume for men by MR ZAIB' ),
 	);
+	unset( $d[3] ); // Collection slide removed by user (2026-11-18): 13 perfume slides only.
+	return array_combine( range( 1, count( $d ) ), array_values( $d ) );
 }
 
 /** Alt text of a Media Library image by URL (Media > Alt Text), else $fallback, else the image title. */
@@ -265,13 +267,13 @@ add_action( 'init', function () {
 	}
 	$c = get_theme_mod( 'mrzaib_hero_count' );
 	if ( false === $c || in_array( (int) $c, array( 3, 5, 7 ), true ) ) {
-		set_theme_mod( 'mrzaib_hero_count', 14 );
+		set_theme_mod( 'mrzaib_hero_count', 13 );
 	}
 	update_option( 'mrzaib_hero_v', '14' );
 } );
 
 function mrzaib_hero_count() {
-	return max( 1, min( MRZAIB_HERO_MAX, (int) get_theme_mod( 'mrzaib_hero_count', 14 ) ) );
+	return max( 1, min( MRZAIB_HERO_MAX, (int) get_theme_mod( 'mrzaib_hero_count', 13 ) ) );
 }
 
 /** Slides to render: [desktop, mobile, link, alt]; slides without a desktop image are skipped. */
