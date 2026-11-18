@@ -1,0 +1,989 @@
+<?php
+/**
+ * MR ZAIB real store content: categories, products (Kahn-vahl, Arvon), SEO,
+ * and removal of the old dummy/demo data.
+ *
+ * @package mrzaib
+ */
+
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
+
+/** The store's categories: slug => array( name, image, description ). */
+function mrzaib_store_categories() {
+	return array(
+		'men'      => array( 'Men', 'cat-men.jpg', 'Long lasting perfumes for men by MR ZAIB. Fresh, woody and aquatic fragrances made to leave your presence.' ),
+		'women'    => array( 'Women', 'cat-women.jpg', 'Elegant, long lasting perfumes for women by MR ZAIB.' ),
+		'unisex'   => array( 'Unisex', 'cat-unisex.jpg', 'Unisex perfumes by MR ZAIB that suit men and women alike.' ),
+		'attar'    => array( 'Attar', 'cat-attar.jpg', 'Traditional long lasting attar (perfume oil) by MR ZAIB: rich oud, rose, musk and amber.' ),
+		'tester'   => array( 'Tester', 'cat-tester.jpg', 'MR ZAIB perfume testers: try a scent before you buy the full bottle.' ),
+	);
+}
+
+/** The store's products. */
+function mrzaib_store_products() {
+	return array(
+		array(
+			'name'     => 'Kahn-vahl',
+			'slug'     => 'kahn-vahl-perfume',
+			'subtitle' => 'Long Lasting Fresh Perfume for Men | 50ml',
+			'sku'      => 'MZ-KAHNVAHL-50',
+			'regular'  => '4000',
+			'sale'     => '3000',
+			'cats'     => array( 'men' ),
+			'images'   => array( 'kahn-vahl-main.jpg', 'kahn-vahl-banner.jpg', 'kahn-vahl-notes-top.jpg', 'kahn-vahl-notes-middle.jpg', 'kahn-vahl-notes-base.jpg' ),
+			'alts'     => array( 'Kahn-vahl long lasting perfume for men by MR ZAIB 50ml blue bottle', 'MR ZAIB Kahn-vahl men perfume fragrance notes', 'Kahn-vahl top notes coconut water fresh aquatic perfume', 'Kahn-vahl middle notes jasmine and iris', 'Kahn-vahl base notes vanilla sandalwood amber' ),
+			'notes'    => array(
+				'Top Notes'    => 'Coconut Water',
+				'Middle Notes' => 'Jasmine, Iris',
+				'Base Notes'   => 'Vanilla, Sandalwood, Amber',
+			),
+			'short'    => '<p><strong>Kahn-vahl by MR ZAIB</strong> is a long lasting, fresh aquatic perfume for men. It opens with cool <strong>coconut water</strong>, flows into an elegant heart of <strong>jasmine and iris</strong>, and settles on a warm, smooth base of <strong>vanilla, sandalwood and amber</strong>. A clean, classy men\'s fragrance for daily wear, office and evenings.</p>'
+				. '<ul><li><strong>Top Notes:</strong> Coconut Water</li><li><strong>Middle Notes:</strong> Jasmine, Iris</li><li><strong>Base Notes:</strong> Vanilla, Sandalwood, Amber</li><li><strong>Size:</strong> 50ml</li><li><strong>For:</strong> Men</li></ul>',
+			'long'     => '<h2>Kahn-vahl: Long Lasting Fresh Perfume for Men in Pakistan</h2>'
+				. '<p><strong>Kahn-vahl</strong> is a premium men\'s perfume from <strong>MR ZAIB Luxury Perfumes</strong>, made for the man who wants to <em>leave his presence</em>. It opens fresh and bright, becomes refined in the heart and dries down warm and creamy on the skin. Fresh enough for hot days in Pakistan, smooth enough for formal evenings.</p>'
+				. '<h3>Fragrance Notes of Kahn-vahl</h3>'
+				. '<p><strong>Top Notes: Coconut Water.</strong> The first spray is cool, clean and watery, a light tropical freshness that feels effortless in warm weather.</p>'
+				. '<p><strong>Middle Notes: Jasmine and Iris.</strong> White jasmine adds a soft floral glow, while iris brings a powdery, polished elegance that makes the scent feel expensive.</p>'
+				. '<p><strong>Base Notes: Vanilla, Sandalwood and Amber.</strong> Creamy sandalwood, sweet vanilla and glowing amber give Kahn-vahl its long lasting, warm trail that people remember.</p>'
+				. '<h3>Fragrance Profile</h3>'
+				. '<ul><li><strong>Family:</strong> Fresh Aquatic, Floral, Woody Amber</li><li><strong>Character:</strong> Clean, fresh, elegant, warm</li><li><strong>Best season:</strong> Summer and all year round</li><li><strong>Occasions:</strong> Office, daily wear, university, dinners, date nights and gatherings</li></ul>'
+				. '<h3>Why Choose MR ZAIB Kahn-vahl?</h3>'
+				. '<ul><li>Fresh aquatic opening with a warm vanilla, sandalwood and amber base</li><li>Long lasting fragrance with a noticeable trail</li><li>Luxurious 50ml crystal-cut blue bottle with gold crown cap, a perfect gift for men</li><li>Premium quality at Rs. 3,000</li><li>Cash on Delivery all over Pakistan</li></ul>'
+				. '<h3>How to Apply</h3>'
+				. '<p>Spray 3 to 4 times on pulse points (neck, wrists, chest and behind the ears) from about 15 cm. Apply on clean, moisturised skin and do not rub, so the fragrance lasts longer.</p>'
+				. '<p>Looking for the <strong>best perfume for men in Pakistan</strong> that smells fresh, classy and lasts all day? Order <strong>Kahn-vahl by MR ZAIB</strong> online today.</p>',
+			'tags'     => array( 'Kahn-vahl', 'Perfume for Men', 'Men Perfume Pakistan', 'Long Lasting Perfume', 'Fresh Perfume', 'Aquatic Perfume', 'Coconut Perfume', 'Vanilla Perfume', 'Sandalwood Perfume', 'Amber Perfume', 'Summer Perfume', 'Office Perfume', 'Gift for Men', 'Luxury Perfume', 'MR ZAIB' ),
+			'seo'      => array(
+				'title'    => 'Kahn-vahl Long Lasting Perfume for Men 50ml | MR ZAIB Pakistan',
+				'desc'     => 'Shop Kahn-vahl by MR ZAIB, a fresh long lasting perfume for men with coconut water, jasmine, iris, vanilla, sandalwood and amber. 50ml, Rs. 3,000. COD in Pakistan.',
+				'focus'    => 'Kahn-vahl perfume for men',
+				'keywords' => 'Kahn-vahl perfume, Kahn-vahl perfume for men, MR ZAIB perfume, perfume for men, men perfume Pakistan, long lasting perfume for men, fresh perfume for men, aquatic perfume, coconut water perfume, vanilla sandalwood amber perfume, best perfume for men in Pakistan, summer perfume for men, office perfume for men, luxury perfume Pakistan, perfume under 3000',
+			),
+		),
+		array(
+			'name'     => 'Arvon',
+			'slug'     => 'arvon-perfume',
+			'subtitle' => 'Long Lasting Unisex Perfume for Men & Women | 50ml',
+			'sku'      => 'MZ-ARVON-50',
+			'regular'  => '2499',
+			'sale'     => '2000',
+			'cats'     => array( 'unisex' ),
+			'images'   => array( 'arvon-main.jpg', 'arvon-banner.jpg', 'arvon-notes-top.jpg', 'arvon-notes-middle.jpg', 'arvon-notes-base.jpg' ),
+			'alts'     => array( 'Arvon long lasting unisex perfume by MR ZAIB 50ml black bottle', 'MR ZAIB Arvon unisex perfume fragrance notes', 'Arvon top notes pineapple nutmeg cinnamon red apple plum pepper cassia bitter orange', 'Arvon middle notes magnolia orchid lily of the valley jasmine moroccan rose iris', 'Arvon base notes cacao vanilla white musk amber sandalwood cedar' ),
+			'notes'    => array(
+				'Top Notes'    => 'Pineapple, Nutmeg, Cinnamon, Red Apple, Plum, Pepper, Cassia, Bitter Orange',
+				'Middle Notes' => 'Magnolia, Orchid, Lily-of-the-Valley, Jasmine, Moroccan Rose, Iris',
+				'Base Notes'   => 'Cacao, Vanilla, White Musk, Amber, Sandalwood, Cedar',
+			),
+			'short'    => '<p><strong>Arvon by MR ZAIB</strong> is a rich, long lasting unisex perfume for men and women. A juicy, spicy opening of <strong>pineapple, red apple, plum, cinnamon and bitter orange</strong> leads to a floral heart of <strong>magnolia, orchid, jasmine and Moroccan rose</strong>, then melts into a deep, warm base of <strong>cacao, vanilla, white musk, amber, sandalwood and cedar</strong>. A bold statement fragrance for evenings, parties and weddings.</p>'
+				. '<ul><li><strong>Top Notes:</strong> Pineapple, Nutmeg, Cinnamon, Red Apple, Plum, Pepper, Cassia, Bitter Orange</li><li><strong>Middle Notes:</strong> Magnolia, Orchid, Lily-of-the-Valley, Jasmine, Moroccan Rose, Iris</li><li><strong>Base Notes:</strong> Cacao, Vanilla, White Musk, Amber, Sandalwood, Cedar</li><li><strong>Size:</strong> 50ml</li><li><strong>For:</strong> Men &amp; Women (Unisex)</li></ul>',
+			'long'     => '<h2>Arvon: Long Lasting Unisex Perfume in Pakistan</h2>'
+				. '<p><strong>Arvon</strong> is a bold, luxurious unisex fragrance from <strong>MR ZAIB Luxury Perfumes</strong>, created for men and women who want a scent that gets noticed and remembered. Fruity and spicy at first, floral and elegant in the heart, and deep, warm and gourmand in the dry-down.</p>'
+				. '<h3>Fragrance Notes of Arvon</h3>'
+				. '<p><strong>Top Notes: Pineapple, Nutmeg, Cinnamon, Red Apple, Plum, Pepper, Cassia and Bitter Orange.</strong> A fresh blend of fruity, spicy and citrus notes that ignites the senses: juicy pineapple and apple warmed by cinnamon, nutmeg and pepper.</p>'
+				. '<p><strong>Middle Notes: Magnolia, Orchid, Lily-of-the-Valley, Jasmine, Moroccan Rose and Iris.</strong> A floral heart of elegance, where every note blooms with sophistication.</p>'
+				. '<p><strong>Base Notes: Cacao, Vanilla, White Musk, Amber, Sandalwood and Cedar.</strong> A deep, warm foundation that lingers long after the first impression: dark cacao and vanilla over smooth woods, glowing amber and clean musk.</p>'
+				. '<h3>Fragrance Profile</h3>'
+				. '<ul><li><strong>Family:</strong> Fruity Spicy, Floral, Gourmand Amber Woody</li><li><strong>Character:</strong> Rich, warm, sweet, seductive</li><li><strong>Best season:</strong> Winter, autumn and evenings all year</li><li><strong>Occasions:</strong> Parties, weddings, dinners, date nights and special events</li></ul>'
+				. '<h3>Why Choose MR ZAIB Arvon?</h3>'
+				. '<ul><li>Rich fruity-spicy opening, elegant floral heart and gourmand cacao-vanilla base</li><li>Long lasting unisex fragrance with strong projection</li><li>Perfect for him, for her, or to share</li><li>Luxurious 50ml crystal-cut black bottle with gold crown cap, a perfect gift</li><li>Premium quality at Rs. 2,000</li><li>Cash on Delivery all over Pakistan</li></ul>'
+				. '<h3>How to Apply</h3>'
+				. '<p>Spray 3 to 4 times on pulse points (neck, wrists, chest and behind the ears) from about 15 cm. Apply on clean, moisturised skin and do not rub, so the fragrance lasts longer.</p>'
+				. '<p>Looking for the <strong>best unisex perfume in Pakistan</strong> that smells rich, warm and lasts all night? Order <strong>Arvon by MR ZAIB</strong> online today.</p>',
+			'tags'     => array( 'Arvon', 'Unisex Perfume', 'Perfume for Men and Women', 'Unisex Perfume Pakistan', 'Long Lasting Perfume', 'Fruity Perfume', 'Spicy Perfume', 'Gourmand Perfume', 'Vanilla Perfume', 'Amber Perfume', 'Winter Perfume', 'Party Perfume', 'Wedding Perfume', 'Luxury Perfume', 'MR ZAIB' ),
+			'seo'      => array(
+				'title'    => 'Arvon Long Lasting Unisex Perfume 50ml | MR ZAIB Pakistan',
+				'desc'     => 'Shop Arvon by MR ZAIB, a long lasting unisex perfume with pineapple, cinnamon, Moroccan rose, cacao, vanilla and amber. 50ml, Rs. 2,000. COD in Pakistan.',
+				'focus'    => 'Arvon unisex perfume',
+				'keywords' => 'Arvon perfume, Arvon unisex perfume, MR ZAIB Arvon, unisex perfume, unisex perfume Pakistan, perfume for men and women, long lasting unisex perfume, fruity spicy perfume, cacao vanilla perfume, gourmand perfume, party perfume, wedding perfume, winter perfume, luxury perfume Pakistan, perfume under 3000',
+			),
+		),
+		array(
+			'name'     => 'Zay-ab',
+			'slug'     => 'zay-ab-perfume',
+			'subtitle' => 'Long Lasting Oriental Perfume for Men | 50ml',
+			'sku'      => 'MZ-ZAYAB-50',
+			'regular'  => '2499',
+			'sale'     => '2000',
+			'cats'     => array( 'men' ),
+			'images'   => array( 'zay-ab-main.jpg', 'zay-ab-banner.jpg', 'zay-ab-notes-top.jpg', 'zay-ab-notes-middle.jpg', 'zay-ab-notes-base.jpg' ),
+			'alts'     => array( 'Zay-ab long lasting oriental perfume for men by MR ZAIB 50ml red bottle', 'MR ZAIB Zay-ab men perfume fragrance notes', 'Zay-ab top notes aldehydes lily of the valley rose', 'Zay-ab middle notes frankincense mystikal labdanum', 'Zay-ab base notes white musk benzoin ambergris' ),
+			'notes'    => array(
+				'Top Notes'    => 'Aldehydes, Lily of the Valley, Rose',
+				'Middle Notes' => 'Frankincense, Mystikal, Labdanum',
+				'Base Notes'   => 'White Musk, Benzoin, Ambergris',
+			),
+			'short'    => '<p><strong>Zay-ab by MR ZAIB</strong> is a long lasting oriental perfume for men. It opens with sparkling <strong>aldehydes, lily of the valley and rose</strong>, deepens into a smoky, resinous heart of <strong>frankincense, mystikal and labdanum</strong>, and settles on a warm, sensual base of <strong>white musk, benzoin and ambergris</strong>. A royal, rich fragrance for evenings, weddings and special occasions.</p>'
+				. '<ul><li><strong>Top Notes:</strong> Aldehydes, Lily of the Valley, Rose</li><li><strong>Middle Notes:</strong> Frankincense, Mystikal, Labdanum</li><li><strong>Base Notes:</strong> White Musk, Benzoin, Ambergris</li><li><strong>Size:</strong> 50ml</li><li><strong>For:</strong> Men</li></ul>',
+			'long'     => '<h2>Zay-ab: Long Lasting Oriental Perfume for Men in Pakistan</h2>'
+				. '<p><strong>Zay-ab</strong> is a royal oriental fragrance from <strong>MR ZAIB Luxury Perfumes</strong>, made for the man who wants to <em>leave his presence</em> wherever he goes. Bright rose and aldehydes on top, smoky incense and resins in the heart, and a warm musky-amber trail that stays for hours.</p>'
+				. '<h3>Fragrance Notes of Zay-ab</h3>'
+				. '<p><strong>Top Notes: Aldehydes, Lily of the Valley and Rose.</strong> A delicate, sparkling opening: fresh aldehydes lift a soft bouquet of lily of the valley and velvety red rose.</p>'
+				. '<p><strong>Middle Notes: Frankincense, Mystikal and Labdanum.</strong> The heart turns deep and mysterious, with smoky frankincense, resinous mystikal and rich, leathery labdanum giving Zay-ab its oriental, oud-like character.</p>'
+				. '<p><strong>Base Notes: White Musk, Benzoin and Ambergris.</strong> A warm, sensual foundation of clean white musk, sweet balsamic benzoin and salty ambergris that lingers long on skin and clothes.</p>'
+				. '<h3>Fragrance Profile</h3>'
+				. '<ul><li><strong>Family:</strong> Oriental, Incense, Amber Musk</li><li><strong>Character:</strong> Royal, smoky, warm, sensual</li><li><strong>Best season:</strong> Winter, autumn and evenings all year</li><li><strong>Occasions:</strong> Weddings, Eid, Jummah, dinners, formal events and special nights</li></ul>'
+				. '<h3>Why Choose MR ZAIB Zay-ab?</h3>'
+				. '<ul><li>Rich oriental blend of rose, frankincense, labdanum and ambergris</li><li>Long lasting fragrance with a strong, elegant trail</li><li>Luxurious 50ml crystal-cut red bottle with gold crown cap, a perfect gift for men</li><li>Premium quality at Rs. 2,000</li><li>Cash on Delivery all over Pakistan</li></ul>'
+				. '<h3>How to Apply</h3>'
+				. '<p>Spray 3 to 4 times on pulse points (neck, wrists, chest and behind the ears) from about 15 cm. Apply on clean, moisturised skin and do not rub, so the fragrance lasts longer.</p>'
+				. '<p>Looking for the <strong>best oriental perfume for men in Pakistan</strong> that smells royal and lasts all day? Order <strong>Zay-ab by MR ZAIB</strong> online today.</p>',
+			'tags'     => array( 'Zay-ab', 'Zayab Perfume', 'Perfume for Men', 'Men Perfume Pakistan', 'Long Lasting Perfume', 'Oriental Perfume', 'Incense Perfume', 'Frankincense Perfume', 'Rose Perfume', 'Musk Perfume', 'Amber Perfume', 'Winter Perfume', 'Wedding Perfume', 'Gift for Men', 'Luxury Perfume', 'MR ZAIB' ),
+			'seo'      => array(
+				'title'    => 'Zay-ab Long Lasting Oriental Perfume for Men 50ml | MR ZAIB',
+				'desc'     => 'Shop Zay-ab (Zayab) by MR ZAIB, a long lasting oriental perfume for men with rose, frankincense, labdanum, musk and ambergris. 50ml, Rs. 2,000. COD in Pakistan.',
+				'focus'    => 'Zay-ab perfume for men',
+				'keywords' => 'Zay-ab perfume, Zayab perfume, Zay-ab perfume for men, MR ZAIB perfume, perfume for men, men perfume Pakistan, long lasting perfume for men, oriental perfume for men, frankincense perfume, incense perfume, rose musk perfume, ambergris perfume, wedding perfume for men, winter perfume for men, luxury perfume Pakistan, perfume under 3000',
+			),
+		),
+		array(
+			'name'     => 'Hoor',
+			'slug'     => 'hoor-perfume',
+			'subtitle' => 'Long Lasting Floral Perfume for Women | 50ml',
+			'sku'      => 'MZ-HOOR-50',
+			'regular'  => '2499',
+			'sale'     => '2000',
+			'cats'     => array( 'women' ),
+			'images'   => array( 'hoor-main.jpg', 'hoor-banner.jpg', 'hoor-notes-top.jpg', 'hoor-notes-middle.jpg', 'hoor-notes-base.jpg' ),
+			'alts'     => array( 'Hoor long lasting floral perfume for women by MR ZAIB 50ml pink bottle', 'MR ZAIB Hoor women perfume fragrance notes', 'Hoor top notes black currant pineapple orange red apple', 'Hoor middle notes rose freesia peony', 'Hoor base notes musk iris sandalwood' ),
+			'notes'    => array(
+				'Top Notes'    => 'Black Currant, Pineapple, Orange, Red Apple',
+				'Middle Notes' => 'Rose, Freesia, Peony',
+				'Base Notes'   => 'Musk, Iris, Sandalwood',
+			),
+			'short'    => '<p><strong>Hoor by MR ZAIB</strong> is a long lasting fruity floral perfume for women, inspired by Myton Floral. It opens with juicy <strong>black currant, pineapple, orange and red apple</strong>, blooms into a romantic heart of <strong>rose, freesia and peony</strong>, and settles on a soft, elegant base of <strong>musk, iris and sandalwood</strong>. A feminine, sweet and graceful fragrance for every day and every celebration.</p>'
+				. '<ul><li><strong>Top Notes:</strong> Black Currant, Pineapple, Orange, Red Apple</li><li><strong>Middle Notes:</strong> Rose, Freesia, Peony</li><li><strong>Base Notes:</strong> Musk, Iris, Sandalwood</li><li><strong>Size:</strong> 50ml</li><li><strong>For:</strong> Women</li></ul>',
+			'long'     => '<h2>Hoor: Long Lasting Floral Perfume for Women in Pakistan</h2>'
+				. '<p><strong>Hoor</strong> is a beautiful women\'s perfume from <strong>MR ZAIB Luxury Perfumes</strong>, inspired by Myton Floral. Made for the woman who wants to <em>leave her presence</em>, Hoor is fresh and fruity at first, romantic and floral in the heart, and soft and creamy in the dry-down.</p>'
+				. '<h3>Fragrance Notes of Hoor</h3>'
+				. '<p><strong>Top Notes: Black Currant, Pineapple, Orange and Red Apple.</strong> A bright, juicy opening of sweet berries, tropical pineapple, sparkling orange and crisp red apple.</p>'
+				. '<p><strong>Middle Notes: Rose, Freesia and Peony.</strong> A romantic floral bouquet: velvety pink rose, airy freesia and soft peony give Hoor its graceful, feminine heart.</p>'
+				. '<p><strong>Base Notes: Musk, Iris and Sandalwood.</strong> A smooth, powdery and warm finish of clean musk, elegant iris and creamy sandalwood that stays close to the skin for hours.</p>'
+				. '<h3>Fragrance Profile</h3>'
+				. '<ul><li><strong>Family:</strong> Fruity Floral, Musky</li><li><strong>Character:</strong> Feminine, sweet, fresh, elegant</li><li><strong>Best season:</strong> Spring, summer and all year round</li><li><strong>Occasions:</strong> Daily wear, office, university, brunches, mehndi, weddings and parties</li></ul>'
+				. '<h3>Why Choose MR ZAIB Hoor?</h3>'
+				. '<ul><li>Fruity floral blend of black currant, rose, peony and musk</li><li>Long lasting women\'s fragrance with a soft, pretty trail</li><li>Elegant 50ml pink crystal bottle, a perfect gift for her</li><li>Premium quality at Rs. 2,000</li><li>Cash on Delivery all over Pakistan</li></ul>'
+				. '<h3>How to Apply</h3>'
+				. '<p>Spray 3 to 4 times on pulse points (neck, wrists and behind the ears) from about 15 cm. Apply on clean, moisturised skin and do not rub, so the fragrance lasts longer. A light mist on hair or scarf leaves a lovely trail.</p>'
+				. '<p>Looking for the <strong>best perfume for women in Pakistan</strong> that smells fresh, floral and lasts all day? Order <strong>Hoor by MR ZAIB</strong> online today.</p>',
+			'tags'     => array( 'Hoor', 'Perfume for Women', 'Women Perfume Pakistan', 'Ladies Perfume', 'Long Lasting Perfume', 'Floral Perfume', 'Fruity Floral Perfume', 'Rose Perfume', 'Peony Perfume', 'Musk Perfume', 'Inspired by Myton Floral', 'Summer Perfume', 'Gift for Her', 'Wedding Perfume', 'Luxury Perfume', 'MR ZAIB' ),
+			'seo'      => array(
+				'title'    => 'Hoor Long Lasting Perfume for Women 50ml | MR ZAIB Pakistan',
+				'desc'     => 'Shop Hoor by MR ZAIB, a long lasting fruity floral perfume for women with black currant, rose, peony, musk and sandalwood. 50ml, Rs. 2,000. COD in Pakistan.',
+				'focus'    => 'Hoor perfume for women',
+				'keywords' => 'Hoor perfume, Hoor perfume for women, MR ZAIB Hoor, perfume for women, women perfume Pakistan, ladies perfume, long lasting perfume for women, floral perfume for women, fruity floral perfume, rose perfume for women, inspired by Myton Floral, best perfume for women in Pakistan, gift for her, luxury perfume Pakistan, perfume under 3000',
+			),
+		),
+		array(
+			'name'     => 'Kireza',
+			'slug'     => 'kireza-perfume',
+			'subtitle' => 'Long Lasting Fruity Marine Perfume for Women | 50ml',
+			'sku'      => 'MZ-KIREZA-50',
+			'regular'  => '2499',
+			'sale'     => '2000',
+			'cats'     => array( 'women' ),
+			'images'   => array( 'kireza-main.jpg', 'kireza-banner.jpg', 'kireza-notes-top.jpg', 'kireza-notes-middle.jpg', 'kireza-notes-base.jpg' ),
+			'alts'     => array( 'Kireza long lasting perfume for women by MR ZAIB 50ml ruby red bottle', 'MR ZAIB Kireza women perfume fragrance notes', 'Kireza top notes raspberry rose black currant', 'Kireza middle notes seaweed calone hedione', 'Kireza base notes musk ambroxan cedar' ),
+			'notes'    => array(
+				'Top Notes'    => 'Raspberry, Rose, Black Currant',
+				'Middle Notes' => 'Seaweed, Calone, Hedione',
+				'Base Notes'   => 'Musk, Ambroxan, Cedar',
+			),
+			'short'    => '<p><strong>Kireza by MR ZAIB</strong> is a long lasting luxury perfume for women, inspired by Megamari. It opens with juicy <strong>raspberry, red rose and black currant</strong>, flows into a fresh, airy heart of <strong>seaweed, calone and hedione</strong>, and settles on a powerful, sensual base of <strong>musk, ambroxan and cedar</strong>. A bold, glamorous fragrance with strong projection for women who love to be noticed.</p>'
+				. '<ul><li><strong>Top Notes:</strong> Raspberry, Rose, Black Currant</li><li><strong>Middle Notes:</strong> Seaweed, Calone, Hedione</li><li><strong>Base Notes:</strong> Musk, Ambroxan, Cedar</li><li><strong>Size:</strong> 50ml</li><li><strong>For:</strong> Women</li></ul>',
+			'long'     => '<h2>Kireza: Long Lasting Luxury Perfume for Women in Pakistan</h2>'
+				. '<p><strong>Kireza</strong> is a premium women\'s perfume from <strong>MR ZAIB Luxury Perfumes</strong>, inspired by Megamari. Presented in a ruby red bottle with a gold crown cap, Kireza is made for the confident woman who wants to <em>leave her presence</em>: fruity and romantic at first, fresh and luminous in the heart, and deep, musky and woody in the dry-down.</p>'
+				. '<h3>Fragrance Notes of Kireza</h3>'
+				. '<p><strong>Top Notes: Raspberry, Rose and Black Currant.</strong> A sweet, juicy opening of ripe raspberry and dark black currant wrapped around a velvety red rose.</p>'
+				. '<p><strong>Middle Notes: Seaweed, Calone and Hedione.</strong> A fresh marine heart: salty seaweed and watery calone meet radiant, jasmine-like hedione for a clean, glowing sea-breeze feel.</p>'
+				. '<p><strong>Base Notes: Musk, Ambroxan and Cedar.</strong> A strong, addictive finish of soft musk, ambery ambroxan and dry cedarwood that lasts for hours and leaves a rich trail.</p>'
+				. '<h3>Fragrance Profile</h3>'
+				. '<ul><li><strong>Family:</strong> Fruity Floral, Marine, Amber Woody</li><li><strong>Character:</strong> Bold, glamorous, fresh, sensual</li><li><strong>Best season:</strong> All year round, day and night</li><li><strong>Occasions:</strong> Parties, weddings, dinners, office, outings and special evenings</li></ul>'
+				. '<h3>Why Choose MR ZAIB Kireza?</h3>'
+				. '<ul><li>Unique blend of raspberry, rose, sea notes, ambroxan and musk</li><li>Long lasting women\'s perfume with strong projection and sillage</li><li>Luxurious 50ml ruby red bottle with gold cap, a perfect gift for her</li><li>Premium quality at Rs. 2,000</li><li>Cash on Delivery all over Pakistan</li></ul>'
+				. '<h3>How to Apply</h3>'
+				. '<p>Spray 3 to 4 times on pulse points (neck, wrists and behind the ears) from about 15 cm. Apply on clean, moisturised skin and do not rub, so the fragrance lasts longer. A light mist on hair or clothes keeps the trail going all day.</p>'
+				. '<p>Looking for the <strong>best long lasting perfume for women in Pakistan</strong> with a bold, luxurious trail? Order <strong>Kireza by MR ZAIB</strong> online today.</p>',
+			'tags'     => array( 'Kireza', 'Kireza Perfume', 'Perfume for Women', 'Women Perfume Pakistan', 'Ladies Perfume', 'Long Lasting Perfume', 'Fruity Floral Perfume', 'Marine Perfume', 'Raspberry Perfume', 'Rose Perfume', 'Musk Perfume', 'Ambroxan Perfume', 'Inspired by Megamari', 'Megamare Inspired Perfume', 'Party Perfume', 'Wedding Perfume', 'Gift for Her', 'Luxury Perfume', 'MR ZAIB' ),
+			'seo'      => array(
+				'title'    => 'Kireza Long Lasting Perfume for Women 50ml | MR ZAIB Pakistan',
+				'desc'     => 'Shop Kireza by MR ZAIB, a long lasting perfume for women inspired by Megamari, with raspberry, rose, sea notes, ambroxan and musk. 50ml, Rs. 2,000. COD in Pakistan.',
+				'focus'    => 'Kireza perfume for women',
+				'keywords' => 'Kireza perfume, Kireza perfume for women, MR ZAIB Kireza, perfume for women, women perfume Pakistan, ladies perfume, long lasting perfume for women, luxury perfume for women, raspberry rose perfume, marine perfume for women, ambroxan perfume, inspired by Megamari, Megamare inspired perfume Pakistan, best perfume for women in Pakistan, gift for her, party perfume for women',
+			),
+		),
+		array(
+			'name'     => 'OUD X',
+			'slug'     => 'oud-x-perfume',
+			'subtitle' => 'Long Lasting Oud Woody Unisex Perfume | 50ml',
+			'sku'      => 'MZ-OUDX-50',
+			'regular'  => '2499',
+			'sale'     => '2000',
+			'cats'     => array( 'unisex' ),
+			'images'   => array( 'oud-x-main.jpg', 'oud-x-banner.jpg', 'oud-x-notes-top.jpg', 'oud-x-notes-middle.jpg', 'oud-x-notes-base.jpg' ),
+			'alts'     => array( 'OUD X long lasting unisex oud perfume by MR ZAIB 50ml', 'MR ZAIB OUD X unisex perfume fragrance notes', 'OUD X top notes aquatic notes bergamot citrus', 'OUD X middle notes cinnamon apple', 'OUD X base notes ambergris musk woody notes' ),
+			'notes'    => array(
+				'Top Notes'    => 'Aquatic Notes, Bergamot, Citrus',
+				'Middle Notes' => 'Cinnamon, Apple',
+				'Base Notes'   => 'Ambergris, Musk, Woody Notes',
+			),
+			'short'    => '<p><strong>OUD X by MR ZAIB</strong> is a long lasting unisex oud perfume, inspired by Ouray. It opens fresh with <strong>aquatic notes, bergamot and citrus</strong>, warms up with a spicy-sweet heart of <strong>cinnamon and apple</strong>, and dries down to a rich, smoky base of <strong>ambergris, musk and woody notes</strong>. A modern oud-style fragrance for men and women who want a bold, classy signature.</p>'
+				. '<ul><li><strong>Top Notes:</strong> Aquatic Notes, Bergamot, Citrus</li><li><strong>Middle Notes:</strong> Cinnamon, Apple</li><li><strong>Base Notes:</strong> Ambergris, Musk, Woody Notes</li><li><strong>Size:</strong> 50ml</li><li><strong>For:</strong> Men &amp; Women (Unisex)</li></ul>',
+			'long'     => '<h2>OUD X: Long Lasting Unisex Oud Perfume in Pakistan</h2>'
+				. '<p><strong>OUD X</strong> is a premium unisex perfume from <strong>MR ZAIB Luxury Perfumes</strong>, inspired by Ouray. It blends the freshness of the sea and citrus with warm spice and a deep, woody, ambery dry-down, giving you the luxury feel of an oud fragrance that is easy to wear every day. Made for anyone who wants to <em>leave their presence</em>.</p>'
+				. '<h3>Fragrance Notes of OUD X</h3>'
+				. '<p><strong>Top Notes: Aquatic Notes, Bergamot and Citrus.</strong> A cool, sparkling opening of watery freshness, zesty bergamot and juicy citrus.</p>'
+				. '<p><strong>Middle Notes: Cinnamon and Apple.</strong> A warm, spicy-sweet heart where golden cinnamon meets crisp red apple for a smooth, inviting character.</p>'
+				. '<p><strong>Base Notes: Ambergris, Musk and Woody Notes.</strong> A rich, long lasting finish of salty ambergris, soft musk and dark woods that gives OUD X its luxurious oud-like depth and trail.</p>'
+				. '<h3>Fragrance Profile</h3>'
+				. '<ul><li><strong>Family:</strong> Woody, Amber, Fresh Spicy</li><li><strong>Character:</strong> Bold, classy, warm, fresh</li><li><strong>Best season:</strong> All year round, especially autumn and winter evenings</li><li><strong>Occasions:</strong> Office, Jummah, dinners, weddings, events and everyday signature wear</li></ul>'
+				. '<h3>Why Choose MR ZAIB OUD X?</h3>'
+				. '<ul><li>Fresh, spicy and woody blend with ambergris and musk</li><li>Long lasting unisex perfume with strong projection</li><li>Elegant 50ml bottle with a black cap, a perfect gift for him or her</li><li>Premium quality at Rs. 2,000</li><li>Cash on Delivery all over Pakistan</li></ul>'
+				. '<h3>How to Apply</h3>'
+				. '<p>Spray 3 to 4 times on pulse points (neck, wrists and chest) from about 15 cm. Apply on clean, moisturised skin and do not rub, so the fragrance lasts longer. A light spray on clothes keeps the woody trail going all day.</p>'
+				. '<p>Looking for the <strong>best long lasting oud perfume in Pakistan</strong> for men and women? Order <strong>OUD X by MR ZAIB</strong> online today.</p>',
+			'tags'     => array( 'OUD X', 'Oud Perfume', 'Unisex Perfume', 'Unisex Perfume Pakistan', 'Oud Perfume for Men', 'Oud Perfume for Women', 'Long Lasting Perfume', 'Woody Perfume', 'Amber Perfume', 'Ambergris Perfume', 'Musk Perfume', 'Spicy Perfume', 'Aquatic Perfume', 'Inspired by Ouray', 'Winter Perfume', 'Wedding Perfume', 'Gift for Him', 'Gift for Her', 'Luxury Perfume', 'MR ZAIB' ),
+			'seo'      => array(
+				'title'    => 'OUD X Long Lasting Unisex Oud Perfume 50ml | MR ZAIB Pakistan',
+				'desc'     => 'Shop OUD X by MR ZAIB, a long lasting unisex oud perfume inspired by Ouray, with bergamot, cinnamon, apple, ambergris, musk and woods. 50ml, Rs. 2,000. COD in Pakistan.',
+				'focus'    => 'OUD X unisex oud perfume',
+				'keywords' => 'OUD X perfume, OUD X unisex oud perfume, MR ZAIB OUD X, oud perfume, oud perfume Pakistan, unisex perfume, unisex perfume Pakistan, oud perfume for men, oud perfume for women, long lasting oud perfume, woody perfume, ambergris perfume, inspired by Ouray, best oud perfume in Pakistan, luxury perfume Pakistan, gift for him, gift for her',
+			),
+		),
+		array(
+			'name'     => 'RAAZ',
+			'slug'     => 'raaz-perfume',
+			'subtitle' => 'Long Lasting Spicy Tobacco Perfume for Men | 50ml',
+			'sku'      => 'MZ-RAAZ-50',
+			'regular'  => '2499',
+			'sale'     => '2000',
+			'cats'     => array( 'men' ),
+			'images'   => array( 'raaz-main.jpg', 'raaz-banner.jpg', 'raaz-notes-top.jpg', 'raaz-notes-middle.jpg', 'raaz-notes-base.jpg' ),
+			'alts'     => array( 'RAAZ long lasting perfume for men by MR ZAIB 50ml', 'MR ZAIB RAAZ perfume for men fragrance notes', 'RAAZ top notes red apple mandarin orange', 'RAAZ middle notes pepper sage', 'RAAZ base notes tobacco benzoin woody notes patchouli' ),
+			'notes'    => array(
+				'Top Notes'    => 'Red Apple, Mandarin Orange',
+				'Middle Notes' => 'Pepper, Sage',
+				'Base Notes'   => 'Tobacco, Benzoin, Woodsy Notes, Patchouli',
+			),
+			'short'    => '<p><strong>RAAZ by MR ZAIB</strong> is a long lasting perfume for men, inspired by Ackley. It opens with juicy <strong>red apple and mandarin orange</strong>, moves into a spicy, aromatic heart of <strong>pepper and sage</strong>, and settles into a warm, smoky base of <strong>tobacco, benzoin, woodsy notes and patchouli</strong>. A mysterious, masculine scent for men who want to be remembered.</p>'
+				. '<ul><li><strong>Top Notes:</strong> Red Apple, Mandarin Orange</li><li><strong>Middle Notes:</strong> Pepper, Sage</li><li><strong>Base Notes:</strong> Tobacco, Benzoin, Woodsy Notes, Patchouli</li><li><strong>Size:</strong> 50ml</li><li><strong>For:</strong> Men</li></ul>',
+			'long'     => '<h2>RAAZ: Long Lasting Spicy Tobacco Perfume for Men in Pakistan</h2>'
+				. '<p><strong>RAAZ</strong>, meaning "secret", is a premium perfume for men from <strong>MR ZAIB Luxury Perfumes</strong>, inspired by Ackley. It pairs a fresh, fruity opening with warm spice and a deep tobacco and resin dry-down, giving you a confident, mysterious trail that lasts for hours. Made for men who want to <em>leave their presence</em>.</p>'
+				. '<h3>Fragrance Notes of RAAZ</h3>'
+				. '<p><strong>Top Notes: Red Apple and Mandarin Orange.</strong> A bright, juicy start of crisp red apple and sweet, zesty mandarin.</p>'
+				. '<p><strong>Middle Notes: Pepper and Sage.</strong> A spicy, aromatic heart where black pepper meets fresh herbal sage for a clean, masculine character.</p>'
+				. '<p><strong>Base Notes: Tobacco, Benzoin, Woodsy Notes and Patchouli.</strong> A rich, long lasting finish of smooth tobacco leaf, warm sweet benzoin, dry woods and earthy patchouli.</p>'
+				. '<h3>Fragrance Profile</h3>'
+				. '<ul><li><strong>Family:</strong> Spicy, Tobacco, Woody, Fruity</li><li><strong>Character:</strong> Mysterious, warm, bold, masculine</li><li><strong>Best season:</strong> Autumn and winter, and cool evenings all year</li><li><strong>Occasions:</strong> Evening outings, dinners, weddings, events, office and everyday signature wear</li></ul>'
+				. '<h3>Why Choose MR ZAIB RAAZ?</h3>'
+				. '<ul><li>Fruity, spicy and smoky tobacco blend in one bottle</li><li>Long lasting men\'s perfume with a strong, warm trail</li><li>Elegant white 50ml bottle with a gold cap, a perfect gift for him</li><li>Premium quality at Rs. 2,000</li><li>Cash on Delivery all over Pakistan</li></ul>'
+				. '<h3>How to Apply</h3>'
+				. '<p>Spray 3 to 4 times on pulse points (neck, wrists and chest) from about 15 cm. Apply on clean, moisturised skin and do not rub, so the fragrance lasts longer. A light spray on clothes keeps the tobacco trail going all day.</p>'
+				. '<p>Looking for the <strong>best long lasting tobacco perfume for men in Pakistan</strong>? Order <strong>RAAZ by MR ZAIB</strong> online today.</p>',
+			'tags'     => array( 'RAAZ', 'RAAZ Perfume', 'Perfume for Men', 'Men Perfume Pakistan', 'Long Lasting Perfume for Men', 'Tobacco Perfume', 'Spicy Perfume', 'Woody Perfume', 'Fruity Perfume', 'Apple Perfume', 'Patchouli Perfume', 'Benzoin Perfume', 'Inspired by Ackley', 'Winter Perfume', 'Evening Perfume', 'Wedding Perfume', 'Gift for Him', 'Luxury Perfume', 'MR ZAIB' ),
+			'seo'      => array(
+				'title'    => 'RAAZ Long Lasting Tobacco Perfume for Men 50ml | MR ZAIB Pakistan',
+				'desc'     => 'Shop RAAZ by MR ZAIB, a long lasting perfume for men inspired by Ackley, with red apple, mandarin, pepper, sage, tobacco and patchouli. 50ml, Rs. 2,000. COD in Pakistan.',
+				'focus'    => 'RAAZ perfume for men',
+				'keywords' => 'RAAZ perfume, RAAZ perfume for men, MR ZAIB RAAZ, perfume for men, men perfume Pakistan, long lasting perfume for men, tobacco perfume for men, spicy perfume for men, woody perfume, apple tobacco perfume, patchouli perfume, inspired by Ackley, best perfume for men in Pakistan, luxury perfume Pakistan, winter perfume for men, gift for him',
+			),
+		),
+		array(
+			'name'     => 'Velora',
+			'slug'     => 'velora-perfume',
+			'subtitle' => 'Long Lasting Rose Leather Unisex Perfume | 50ml',
+			'sku'      => 'MZ-VELORA-50',
+			'regular'  => '2499',
+			'sale'     => '2000',
+			'cats'     => array( 'unisex' ),
+			'images'   => array( 'velora-main.jpg', 'velora-banner.jpg', 'velora-notes-top.jpg', 'velora-notes-middle.jpg', 'velora-notes-base.jpg' ),
+			'alts'     => array( 'Velora long lasting unisex perfume by MR ZAIB 50ml blue bottle', 'MR ZAIB Velora unisex perfume fragrance notes', 'Velora top notes tomato leaf spices tuberose', 'Velora middle notes dried rose rose petals rose iris', 'Velora base notes amber metallic notes leather' ),
+			'notes'    => array(
+				'Top Notes'    => 'Tomato Leaf, Spices, Tuberose',
+				'Middle Notes' => 'Dried Rose, Rose Petals, Rose, Iris',
+				'Base Notes'   => 'Amber, Metallic Notes, Leather',
+			),
+			'short'    => '<p><strong>Velora by MR ZAIB</strong> is a long lasting unisex perfume for men and women, inspired by Bidford. It opens with green <strong>tomato leaf, warm spices and creamy tuberose</strong>, blooms into a rich rose heart of <strong>dried rose, rose petals, rose and iris</strong>, and settles on a bold base of <strong>amber, metallic notes and leather</strong>. A modern rose leather fragrance for people who want to stand out.</p>'
+				. '<ul><li><strong>Top Notes:</strong> Tomato Leaf, Spices, Tuberose</li><li><strong>Middle Notes:</strong> Dried Rose, Rose Petals, Rose, Iris</li><li><strong>Base Notes:</strong> Amber, Metallic Notes, Leather</li><li><strong>Size:</strong> 50ml</li><li><strong>For:</strong> Men &amp; Women (Unisex)</li></ul>',
+			'long'     => '<h2>Velora: Long Lasting Rose Leather Unisex Perfume in Pakistan</h2>'
+				. '<p><strong>Velora</strong> is a luxurious unisex fragrance from <strong>MR ZAIB Luxury Perfumes</strong>, inspired by Bidford. Green and spicy at first, deeply romantic in the heart and smooth, dark and leathery in the dry-down, it is a modern rose scent that men and women can both wear with confidence. Made for those who want to <em>leave their presence</em>.</p>'
+				. '<h3>Fragrance Notes of Velora</h3>'
+				. '<p><strong>Top Notes: Tomato Leaf, Spices and Tuberose.</strong> A fresh, green snap of tomato leaf warmed by spices and softened by creamy white tuberose, an unusual and memorable opening.</p>'
+				. '<p><strong>Middle Notes: Dried Rose, Rose Petals, Rose and Iris.</strong> A rich, layered rose heart, from velvety fresh petals to deep dried rose, polished with powdery iris.</p>'
+				. '<p><strong>Base Notes: Amber, Metallic Notes and Leather.</strong> A long lasting finish of glowing amber, cool metallic facets and smooth leather that gives Velora its bold, modern edge.</p>'
+				. '<h3>Fragrance Profile</h3>'
+				. '<ul><li><strong>Family:</strong> Floral Rose, Leather, Amber, Spicy Green</li><li><strong>Character:</strong> Elegant, bold, romantic, modern</li><li><strong>Best season:</strong> Autumn and winter, and evenings all year</li><li><strong>Occasions:</strong> Evening outings, dinners, weddings, events, parties and signature wear</li></ul>'
+				. '<h3>Why Choose MR ZAIB Velora?</h3>'
+				. '<ul><li>Rare blend of green tomato leaf, rose and leather in one bottle</li><li>Long lasting unisex perfume with a rich, noticeable trail</li><li>Royal blue 50ml bottle with a gold cap, a perfect gift for him or her</li><li>Premium quality at Rs. 2,000</li><li>Cash on Delivery all over Pakistan</li></ul>'
+				. '<h3>How to Apply</h3>'
+				. '<p>Spray 3 to 4 times on pulse points (neck, wrists and chest) from about 15 cm. Apply on clean, moisturised skin and do not rub, so the fragrance lasts longer. A light spray on clothes keeps the rose and leather trail going all day.</p>'
+				. '<p>Looking for the <strong>best long lasting rose leather perfume in Pakistan</strong> for men and women? Order <strong>Velora by MR ZAIB</strong> online today.</p>',
+			'tags'     => array( 'Velora', 'Velora Perfume', 'Unisex Perfume', 'Perfume for Men and Women', 'Unisex Perfume Pakistan', 'Long Lasting Perfume', 'Rose Perfume', 'Leather Perfume', 'Rose Leather Perfume', 'Amber Perfume', 'Iris Perfume', 'Tuberose Perfume', 'Spicy Perfume', 'Inspired by Bidford', 'Winter Perfume', 'Evening Perfume', 'Wedding Perfume', 'Gift for Him', 'Gift for Her', 'Luxury Perfume', 'MR ZAIB' ),
+			'seo'      => array(
+				'title'    => 'Velora Long Lasting Unisex Rose Leather Perfume 50ml | MR ZAIB',
+				'desc'     => 'Shop Velora by MR ZAIB, a long lasting unisex perfume inspired by Bidford, with tomato leaf, tuberose, rose, iris, amber and leather. 50ml, Rs. 2,000. COD in Pakistan.',
+				'focus'    => 'Velora unisex perfume',
+				'keywords' => 'Velora perfume, Velora unisex perfume, MR ZAIB Velora, unisex perfume, unisex perfume Pakistan, perfume for men and women, long lasting perfume, rose perfume, leather perfume, rose leather perfume, amber perfume, iris perfume, inspired by Bidford, best unisex perfume in Pakistan, luxury perfume Pakistan, winter perfume, gift for him, gift for her',
+			),
+		),
+		array(
+			'name'     => 'ZAUQ',
+			'slug'     => 'zauq-perfume',
+			'subtitle' => 'Long Lasting Aromatic Woody Perfume for Men | 50ml',
+			'sku'      => 'MZ-ZAUQ-50',
+			'regular'  => '2499',
+			'sale'     => '2000',
+			'cats'     => array( 'men' ),
+			'images'   => array( 'zauq-main.jpg', 'zauq-banner.jpg', 'zauq-notes-top.jpg', 'zauq-notes-middle.jpg', 'zauq-notes-base.jpg' ),
+			'alts'     => array( 'ZAUQ long lasting perfume for men by MR ZAIB 50ml frosted bottle', 'MR ZAIB ZAUQ perfume for men fragrance notes', 'ZAUQ top notes amber aromatic citrus', 'ZAUQ middle notes herbal musky woody', 'ZAUQ base notes fresh spicy bitter balsamic' ),
+			'notes'    => array(
+				'Top Notes'    => 'Amber, Aromatic, Citrus',
+				'Middle Notes' => 'Herbal, Musky, Woody',
+				'Base Notes'   => 'Fresh, Spicy, Bitter, Balsamic',
+			),
+			'short'    => '<p><strong>ZAUQ by MR ZAIB</strong> is a long lasting aromatic woody perfume for men. It opens with a bright blend of <strong>amber, aromatic herbs and citrus</strong>, moves into a refined heart of <strong>herbal, musky and woody</strong> accords, and settles on a <strong>fresh, spicy, bitter and balsamic</strong> base. A clean, classy scent for men of good taste.</p>'
+				. '<ul><li><strong>Top Notes:</strong> Amber, Aromatic, Citrus</li><li><strong>Middle Notes:</strong> Herbal, Musky, Woody</li><li><strong>Base Notes:</strong> Fresh, Spicy, Bitter, Balsamic</li><li><strong>Size:</strong> 50ml</li><li><strong>For:</strong> Men</li></ul>',
+			'long'     => '<h2>ZAUQ: Long Lasting Aromatic Woody Perfume for Men in Pakistan</h2>'
+				. '<p><strong>ZAUQ</strong>, meaning "taste" and "refinement", is a premium perfume for men from <strong>MR ZAIB Luxury Perfumes</strong>. Fresh and zesty at first, herbal and woody at heart and warmly spicy in the dry-down, it is made for the man whose style speaks before he does, a scent to <em>leave your presence</em>.</p>'
+				. '<h3>Fragrance Notes of ZAUQ</h3>'
+				. '<p><strong>Top Notes: Amber, Aromatic and Citrus.</strong> A lively opening of juicy citrus and aromatic herbs like lavender and rosemary, warmed by a soft glow of amber.</p>'
+				. '<p><strong>Middle Notes: Herbal, Musky and Woody.</strong> A smooth, masculine heart where green herbs meet clean musk and dry woods.</p>'
+				. '<p><strong>Base Notes: Fresh, Spicy, Bitter and Balsamic.</strong> A long lasting finish of warm spice, a refined bitter edge and rich balsamic resins, kept fresh and wearable.</p>'
+				. '<h3>Fragrance Profile</h3>'
+				. '<ul><li><strong>Family:</strong> Aromatic, Woody, Citrus, Spicy</li><li><strong>Character:</strong> Classy, fresh, confident, masculine</li><li><strong>Best season:</strong> All year round</li><li><strong>Occasions:</strong> Office, daily wear, dinners, evening outings, weddings and events</li></ul>'
+				. '<h3>Why Choose MR ZAIB ZAUQ?</h3>'
+				. '<ul><li>Fresh citrus and herbs with a warm, spicy woody base</li><li>Long lasting men\'s perfume that works day and night</li><li>Elegant frosted 50ml bottle with a gold cap, a perfect gift for him</li><li>Premium quality at Rs. 2,000</li><li>Cash on Delivery all over Pakistan</li></ul>'
+				. '<h3>How to Apply</h3>'
+				. '<p>Spray 3 to 4 times on pulse points (neck, wrists and chest) from about 15 cm. Apply on clean, moisturised skin and do not rub, so the fragrance lasts longer. A light spray on clothes keeps the woody trail going all day.</p>'
+				. '<p>Looking for the <strong>best long lasting aromatic perfume for men in Pakistan</strong>? Order <strong>ZAUQ by MR ZAIB</strong> online today.</p>',
+			'tags'     => array( 'ZAUQ', 'ZAUQ Perfume', 'Perfume for Men', 'Men Perfume Pakistan', 'Long Lasting Perfume for Men', 'Aromatic Perfume', 'Woody Perfume', 'Citrus Perfume', 'Herbal Perfume', 'Musky Perfume', 'Spicy Perfume', 'Amber Perfume', 'Fresh Perfume for Men', 'Office Perfume', 'Everyday Perfume', 'Evening Perfume', 'Gift for Him', 'Luxury Perfume', 'MR ZAIB' ),
+			'seo'      => array(
+				'title'    => 'ZAUQ Long Lasting Aromatic Woody Perfume for Men 50ml | MR ZAIB',
+				'desc'     => 'Shop ZAUQ by MR ZAIB, a long lasting aromatic woody perfume for men with citrus, amber, herbs, musk, woods and warm spice. 50ml, Rs. 2,000. COD in Pakistan.',
+				'focus'    => 'ZAUQ perfume for men',
+				'keywords' => 'ZAUQ perfume, ZAUQ perfume for men, MR ZAIB ZAUQ, perfume for men, men perfume Pakistan, long lasting perfume for men, aromatic perfume for men, woody perfume for men, citrus perfume, herbal perfume, musky perfume, spicy perfume, fresh perfume for men, office perfume for men, best perfume for men in Pakistan, luxury perfume Pakistan, gift for him',
+			),
+		),
+		array(
+			'name'     => 'Mehfil',
+			'slug'     => 'mehfil-perfume',
+			'subtitle' => 'Long Lasting Fruity Woody Perfume for Men | 50ml',
+			'sku'      => 'MZ-MEHFIL-50',
+			'regular'  => '2499',
+			'sale'     => '2000',
+			'cats'     => array( 'men' ),
+			'images'   => array( 'mehfil-main.jpg', 'mehfil-banner.jpg', 'mehfil-notes-top.jpg', 'mehfil-notes-middle.jpg', 'mehfil-notes-base.jpg' ),
+			'alts'     => array( 'Mehfil long lasting perfume for men by MR ZAIB 50ml', 'MR ZAIB Mehfil perfume for men fragrance notes', 'Mehfil top notes bergamot black currant apple lemon pink pepper', 'Mehfil middle notes pineapple patchouli moroccan jasmine', 'Mehfil base notes birch musk oak moss cedarwood ambroxan' ),
+			'notes'    => array(
+				'Top Notes'    => 'Bergamot, Black Currant, Apple, Lemon, Pink Pepper',
+				'Middle Notes' => 'Pineapple, Patchouli, Moroccan Jasmine',
+				'Base Notes'   => 'Birch, Musk, Oak Moss, Cedarwood, Ambroxan',
+			),
+			'short'    => '<p><strong>Mehfil by MR ZAIB</strong> is a long lasting fruity woody perfume for men, inspired by Creed Aventus. It opens with fresh <strong>bergamot, black currant, apple, lemon and pink pepper</strong>, reveals a bold heart of <strong>pineapple, patchouli and Moroccan jasmine</strong>, and dries down to a smoky, woody base of <strong>birch, musk, oak moss, cedarwood and ambroxan</strong>. A confident signature scent that owns every gathering.</p>'
+				. '<ul><li><strong>Top Notes:</strong> Bergamot, Black Currant, Apple, Lemon, Pink Pepper</li><li><strong>Middle Notes:</strong> Pineapple, Patchouli, Moroccan Jasmine</li><li><strong>Base Notes:</strong> Birch, Musk, Oak Moss, Cedarwood, Ambroxan</li><li><strong>Size:</strong> 50ml</li><li><strong>For:</strong> Men</li></ul>',
+			'long'     => '<h2>Mehfil: Long Lasting Fruity Woody Perfume for Men in Pakistan</h2>'
+				. '<p><strong>Mehfil</strong>, meaning a gathering, is a premium perfume for men from <strong>MR ZAIB Luxury Perfumes</strong>, inspired by Creed Aventus. Fresh and fruity at first, bold in the heart and smoky-woody in the dry-down, it is made for the man who walks into a room and becomes the centre of the mehfil, a scent to <em>leave your presence</em>.</p>'
+				. '<h3>Fragrance Notes of Mehfil</h3>'
+				. '<p><strong>Top Notes: Bergamot, Black Currant, Apple, Lemon and Pink Pepper.</strong> A bright, juicy opening of citrus and crisp fruit with a lively pink pepper sparkle.</p>'
+				. '<p><strong>Middle Notes: Pineapple, Patchouli and Moroccan Jasmine.</strong> The signature heart: sweet, juicy pineapple balanced by earthy patchouli and smooth jasmine.</p>'
+				. '<p><strong>Base Notes: Birch, Musk, Oak Moss, Cedarwood and Ambroxan.</strong> A long lasting, masculine finish of smoky birch, clean musk, green oak moss, dry cedar and the warm, skin-like glow of ambroxan.</p>'
+				. '<h3>Fragrance Profile</h3>'
+				. '<ul><li><strong>Family:</strong> Fruity, Chypre, Woody, Smoky</li><li><strong>Character:</strong> Confident, fresh, bold, masculine</li><li><strong>Best season:</strong> All year round</li><li><strong>Occasions:</strong> Office, dinners, weddings, parties, gatherings, date nights and everyday signature wear</li></ul>'
+				. '<h3>Why Choose MR ZAIB Mehfil?</h3>'
+				. '<ul><li>Fresh fruity opening with a smoky birch and woody base</li><li>Long lasting men\'s perfume with strong projection and a memorable trail</li><li>Elegant teal and gold 50ml bottle with a black cap, a perfect gift for him</li><li>Premium quality at Rs. 2,000</li><li>Cash on Delivery all over Pakistan</li></ul>'
+				. '<h3>How to Apply</h3>'
+				. '<p>Spray 3 to 4 times on pulse points (neck, wrists and chest) from about 15 cm. Apply on clean, moisturised skin and do not rub, so the fragrance lasts longer. A light spray on clothes keeps the smoky woody trail going all day.</p>'
+				. '<p>Looking for the <strong>best long lasting fruity perfume for men in Pakistan</strong>? Order <strong>Mehfil by MR ZAIB</strong> online today.</p>',
+			'tags'     => array( 'Mehfil', 'Mehfil Perfume', 'Perfume for Men', 'Men Perfume Pakistan', 'Long Lasting Perfume for Men', 'Fruity Perfume', 'Woody Perfume', 'Smoky Perfume', 'Pineapple Perfume', 'Citrus Perfume', 'Birch Perfume', 'Musk Perfume', 'Chypre Perfume', 'Inspired by Creed Aventus', 'Office Perfume', 'Wedding Perfume', 'Party Perfume', 'Everyday Perfume', 'Gift for Him', 'Luxury Perfume', 'MR ZAIB' ),
+			'seo'      => array(
+				'title'    => 'Mehfil Long Lasting Fruity Woody Perfume for Men 50ml | MR ZAIB',
+				'desc'     => 'Shop Mehfil by MR ZAIB, a long lasting perfume for men inspired by Creed Aventus, with bergamot, apple, pineapple, jasmine, birch and musk. 50ml, Rs. 2,000. COD in Pakistan.',
+				'focus'    => 'Mehfil perfume for men',
+				'keywords' => 'Mehfil perfume, Mehfil perfume for men, MR ZAIB Mehfil, perfume for men, men perfume Pakistan, long lasting perfume for men, fruity perfume for men, woody perfume for men, smoky perfume, pineapple perfume, birch perfume, inspired by Creed Aventus, Aventus inspired perfume Pakistan, best perfume for men in Pakistan, luxury perfume Pakistan, wedding perfume for men, gift for him',
+			),
+		),
+		array(
+			'name'     => 'Dazor',
+			'slug'     => 'dazor-perfume',
+			'subtitle' => 'Long Lasting Fresh Fruity Woody Perfume for Men | 50ml',
+			'sku'      => 'MZ-DAZOR-50',
+			'regular'  => '2499',
+			'sale'     => '2000',
+			'cats'     => array( 'men' ),
+			'images'   => array( 'dazor-main.jpg', 'dazor-banner.jpg', 'dazor-notes-top.jpg', 'dazor-notes-middle.jpg', 'dazor-notes-base.jpg' ),
+			'alts'     => array( 'Dazor long lasting perfume for men by MR ZAIB 50ml', 'MR ZAIB Dazor perfume for men fragrance notes', 'Dazor top notes apple lemon bergamot orange blossom', 'Dazor middle notes rose teak wood patchouli', 'Dazor base notes vanilla musk' ),
+			'notes'    => array(
+				'Top Notes'    => 'Apple, Lemon, Bergamot, Orange Blossom',
+				'Middle Notes' => 'Rose, Teak Wood, Patchouli',
+				'Base Notes'   => 'Vanilla, Musk',
+			),
+			'short'    => '<p><strong>Dazor by MR ZAIB</strong> is a long lasting fresh fruity woody perfume for men, inspired by Dunhill Desire. It opens with crisp <strong>apple, lemon, bergamot and orange blossom</strong>, flows into a warm heart of <strong>rose, teak wood and patchouli</strong>, and settles on a smooth base of <strong>vanilla and musk</strong>. A bold, attractive everyday scent for the modern man.</p>'
+				. '<ul><li><strong>Top Notes:</strong> Apple, Lemon, Bergamot, Orange Blossom</li><li><strong>Middle Notes:</strong> Rose, Teak Wood, Patchouli</li><li><strong>Base Notes:</strong> Vanilla, Musk</li><li><strong>Size:</strong> 50ml</li><li><strong>For:</strong> Men</li></ul>',
+			'long'     => '<h2>Dazor: Long Lasting Fresh Fruity Woody Perfume for Men in Pakistan</h2>'
+				. '<p><strong>Dazor</strong> is a premium perfume for men from <strong>MR ZAIB Luxury Perfumes</strong>, inspired by Dunhill Desire. Juicy and fresh at first, warm and woody in the heart, and soft and sensual in the dry-down, it is made for the man who wants a confident, attractive scent that works from morning to night, a scent to <em>leave your presence</em>.</p>'
+				. '<h3>Fragrance Notes of Dazor</h3>'
+				. '<p><strong>Top Notes: Apple, Lemon, Bergamot and Orange Blossom.</strong> A crisp, juicy opening of red apple and zesty citrus, lifted by bright orange blossom.</p>'
+				. '<p><strong>Middle Notes: Rose, Teak Wood and Patchouli.</strong> A masculine heart where a touch of rose meets dry teak wood and earthy patchouli.</p>'
+				. '<p><strong>Base Notes: Vanilla and Musk.</strong> A smooth, long lasting finish of creamy vanilla and clean, skin-like musk.</p>'
+				. '<h3>Fragrance Profile</h3>'
+				. '<ul><li><strong>Family:</strong> Fresh, Fruity, Woody, Musky</li><li><strong>Character:</strong> Energetic, attractive, warm, masculine</li><li><strong>Best season:</strong> All year round</li><li><strong>Occasions:</strong> Office, university, casual outings, dinners, date nights and everyday signature wear</li></ul>'
+				. '<h3>Why Choose MR ZAIB Dazor?</h3>'
+				. '<ul><li>Fresh apple and citrus opening with a warm woody vanilla base</li><li>Long lasting men\'s perfume with a smooth, attractive trail</li><li>Elegant clear glass 50ml bottle with a silver cap, a perfect gift for him</li><li>Premium quality at Rs. 2,000</li><li>Cash on Delivery all over Pakistan</li></ul>'
+				. '<h3>How to Apply</h3>'
+				. '<p>Spray 3 to 4 times on pulse points (neck, wrists and chest) from about 15 cm. Apply on clean, moisturised skin and do not rub, so the fragrance lasts longer. A light spray on clothes keeps the scent with you all day.</p>'
+				. '<p>Looking for the <strong>best long lasting fresh perfume for men in Pakistan</strong>? Order <strong>Dazor by MR ZAIB</strong> online today.</p>',
+			'tags'     => array( 'Dazor', 'Dazor Perfume', 'Perfume for Men', 'Men Perfume Pakistan', 'Long Lasting Perfume for Men', 'Fresh Perfume for Men', 'Fruity Perfume', 'Woody Perfume', 'Apple Perfume', 'Citrus Perfume', 'Vanilla Perfume', 'Musk Perfume', 'Inspired by Dunhill Desire', 'Office Perfume', 'University Perfume', 'Everyday Perfume', 'Date Night Perfume', 'Gift for Him', 'Luxury Perfume', 'MR ZAIB' ),
+			'seo'      => array(
+				'title'    => 'Dazor Long Lasting Fresh Fruity Perfume for Men 50ml | MR ZAIB',
+				'desc'     => 'Shop Dazor by MR ZAIB, a long lasting perfume for men inspired by Dunhill Desire, with apple, lemon, bergamot, rose, teak wood, vanilla and musk. 50ml, Rs. 2,000. COD in Pakistan.',
+				'focus'    => 'Dazor perfume for men',
+				'keywords' => 'Dazor perfume, Dazor perfume for men, MR ZAIB Dazor, perfume for men, men perfume Pakistan, long lasting perfume for men, fresh perfume for men, fruity perfume for men, woody perfume for men, apple perfume, vanilla musk perfume, inspired by Dunhill Desire, Dunhill Desire inspired perfume Pakistan, best perfume for men in Pakistan, office perfume for men, luxury perfume Pakistan, gift for him',
+			),
+		),
+		array(
+			'name'     => 'Brave',
+			'slug'     => 'brave-perfume',
+			'subtitle' => 'Long Lasting Fresh Fruity Floral Woody Perfume for Men | 50ml',
+			'sku'      => 'MZ-BRAVE-50',
+			'regular'  => '2499',
+			'sale'     => '2000',
+			'cats'     => array( 'men' ),
+			'images'   => array( 'brave-main.jpg', 'brave-banner.jpg', 'brave-notes-top.jpg', 'brave-notes-middle.jpg', 'brave-notes-base.jpg' ),
+			'alts'     => array( 'Brave long lasting perfume for men by MR ZAIB 50ml', 'MR ZAIB Brave perfume for men fragrance notes', 'Brave top notes lemon mandarin orange guava peach', 'Brave middle notes licorice jasmine tuberose lily aloe vera', 'Brave base notes sandalwood musk cedar' ),
+			'notes'    => array(
+				'Top Notes'    => 'Lemon, Mandarin Orange, Guava, Peach',
+				'Middle Notes' => 'Licorice, Jasmine, Tuberose, Lily, Aloe Vera',
+				'Base Notes'   => 'Sandalwood, Musk, Cedar',
+			),
+			'short'    => '<p><strong>Brave by MR ZAIB</strong> is a long lasting fresh fruity woody perfume for men, inspired by Diesel Orleans. It bursts open with juicy <strong>lemon, mandarin orange, guava and peach</strong>, reveals a smooth heart of <strong>licorice, jasmine, tuberose, lily and aloe vera</strong>, and finishes on a creamy, masculine base of <strong>sandalwood, musk and cedar</strong>. A bold, fearless scent for the man who stands out.</p>'
+				. '<ul><li><strong>Top Notes:</strong> Lemon, Mandarin Orange, Guava, Peach</li><li><strong>Middle Notes:</strong> Licorice, Jasmine, Tuberose, Lily, Aloe Vera</li><li><strong>Base Notes:</strong> Sandalwood, Musk, Cedar</li><li><strong>Size:</strong> 50ml</li><li><strong>For:</strong> Men</li></ul>',
+			'long'     => '<h2>Brave: Long Lasting Fresh Fruity Woody Perfume for Men in Pakistan</h2>'
+				. '<p><strong>Brave</strong> is a premium perfume for men from <strong>MR ZAIB Luxury Perfumes</strong>, inspired by Diesel Orleans. Fresh and juicy at the start, smooth and floral in the heart, and warm and woody in the dry-down, it is made for the confident man who is never afraid to stand out, a scent to <em>leave your presence</em>.</p>'
+				. '<h3>Fragrance Notes of Brave</h3>'
+				. '<p><strong>Top Notes: Lemon, Mandarin Orange, Guava and Peach.</strong> A sparkling, juicy opening of zesty citrus and sweet tropical fruit.</p>'
+				. '<p><strong>Middle Notes: Licorice, Jasmine, Tuberose, Lily and Aloe Vera.</strong> A smooth, slightly sweet licorice accord wrapped in white flowers and a cool, green touch of aloe vera.</p>'
+				. '<p><strong>Base Notes: Sandalwood, Musk and Cedar.</strong> A long lasting, masculine finish of creamy sandalwood, clean musk and dry cedar.</p>'
+				. '<h3>Fragrance Profile</h3>'
+				. '<ul><li><strong>Family:</strong> Fresh, Fruity, Floral, Woody</li><li><strong>Character:</strong> Bold, energetic, smooth, masculine</li><li><strong>Best season:</strong> All year round, especially spring and summer</li><li><strong>Occasions:</strong> Office, university, outings, parties, evenings and everyday signature wear</li></ul>'
+				. '<h3>Why Choose MR ZAIB Brave?</h3>'
+				. '<ul><li>Juicy citrus and fruit opening with a creamy sandalwood base</li><li>Long lasting men\'s perfume with a fresh, confident trail</li><li>Bold smoky black 50ml bottle with a black cap, a perfect gift for him</li><li>Premium quality at Rs. 2,000</li><li>Cash on Delivery all over Pakistan</li></ul>'
+				. '<h3>How to Apply</h3>'
+				. '<p>Spray 3 to 4 times on pulse points (neck, wrists and chest) from about 15 cm. Apply on clean, moisturised skin and do not rub, so the fragrance lasts longer. A light spray on clothes keeps the scent with you all day.</p>'
+				. '<p>Looking for the <strong>best long lasting fresh perfume for men in Pakistan</strong>? Order <strong>Brave by MR ZAIB</strong> online today.</p>',
+			'tags'     => array( 'Brave', 'Brave Perfume', 'Perfume for Men', 'Men Perfume Pakistan', 'Long Lasting Perfume for Men', 'Fresh Perfume for Men', 'Fruity Perfume', 'Citrus Perfume', 'Floral Woody Perfume', 'Sandalwood Perfume', 'Musk Perfume', 'Summer Perfume for Men', 'Inspired by Diesel Orleans', 'Office Perfume', 'University Perfume', 'Party Perfume', 'Everyday Perfume', 'Gift for Him', 'Luxury Perfume', 'MR ZAIB' ),
+			'seo'      => array(
+				'title'    => 'Brave Long Lasting Fresh Fruity Perfume for Men 50ml | MR ZAIB',
+				'desc'     => 'Shop Brave by MR ZAIB, a long lasting perfume for men inspired by Diesel Orleans, with lemon, mandarin, guava, peach, jasmine, sandalwood and musk. 50ml, Rs. 2,000. COD in Pakistan.',
+				'focus'    => 'Brave perfume for men',
+				'keywords' => 'Brave perfume, Brave perfume for men, MR ZAIB Brave, perfume for men, men perfume Pakistan, long lasting perfume for men, fresh perfume for men, fruity perfume for men, citrus perfume for men, sandalwood musk perfume, summer perfume for men, inspired by Diesel Orleans, Diesel inspired perfume Pakistan, best perfume for men in Pakistan, office perfume for men, luxury perfume Pakistan, gift for him men',
+			),
+		),
+		array(
+			'name'     => 'Baraan',
+			'slug'     => 'baraan-perfume',
+			'subtitle' => 'Long Lasting Amber Woody Bakhoor Perfume for Men | 50ml',
+			'sku'      => 'MZ-BARAAN-50',
+			'regular'  => '2499',
+			'sale'     => '2000',
+			'cats'     => array( 'men' ),
+			'images'   => array( 'baraan-main.jpg', 'baraan-banner.jpg', 'baraan-notes-top.jpg', 'baraan-notes-middle.jpg', 'baraan-notes-base.jpg' ),
+			'alts'     => array( 'Baraan long lasting bakhoor perfume for men by MR ZAIB 50ml', 'MR ZAIB Baraan perfume for men fragrance notes', 'Baraan top notes amber woody notes', 'Baraan middle notes woody notes vanilla', 'Baraan base notes floral notes fruity notes' ),
+			'notes'    => array(
+				'Top Notes'    => 'Amber, Woody Notes',
+				'Middle Notes' => 'Woody Notes, Vanilla',
+				'Base Notes'   => 'Floral Notes, Fruity Notes',
+			),
+			'short'    => '<p><strong>Baraan by MR ZAIB</strong> is a long lasting amber woody perfume for men, inspired by Bakhour. It opens with warm, glowing <strong>amber and woody notes</strong>, deepens into a rich heart of <strong>woods and vanilla</strong>, and leaves a soft trail of <strong>floral and fruity notes</strong>. A smoky, oriental bakhoor-style scent with a smooth, sweet finish.</p>'
+				. '<ul><li><strong>Top Notes:</strong> Amber, Woody Notes</li><li><strong>Middle Notes:</strong> Woody Notes, Vanilla</li><li><strong>Base Notes:</strong> Floral Notes, Fruity Notes</li><li><strong>Size:</strong> 50ml</li><li><strong>For:</strong> Men</li></ul>',
+			'long'     => '<h2>Baraan: Long Lasting Amber Woody Bakhoor Perfume for Men in Pakistan</h2>'
+				. '<p><strong>Baraan</strong> is a premium perfume for men from <strong>MR ZAIB Luxury Perfumes</strong>, inspired by Bakhour. It captures the warm, smoky richness of traditional bakhoor in a modern spray: amber and woods up front, a creamy vanilla heart, and a gentle floral fruity glow in the dry-down, a scent to <em>leave your presence</em>.</p>'
+				. '<h3>Fragrance Notes of Baraan</h3>'
+				. '<p><strong>Top Notes: Amber and Woody Notes.</strong> A warm, resinous opening that instantly feels rich, smoky and oriental.</p>'
+				. '<p><strong>Middle Notes: Woody Notes and Vanilla.</strong> Deep woods softened by smooth, sweet vanilla for a comforting, luxurious heart.</p>'
+				. '<p><strong>Base Notes: Floral Notes and Fruity Notes.</strong> A soft, long lasting finish where gentle flowers and ripe fruit keep the warmth elegant and wearable.</p>'
+				. '<h3>Fragrance Profile</h3>'
+				. '<ul><li><strong>Family:</strong> Amber, Woody, Oriental, Sweet</li><li><strong>Character:</strong> Warm, smoky, rich, masculine</li><li><strong>Best season:</strong> Autumn and winter, cool evenings all year</li><li><strong>Occasions:</strong> Jummah, Eid, weddings, mehndi, dinners and evening wear</li></ul>'
+				. '<h3>Why Choose MR ZAIB Baraan?</h3>'
+				. '<ul><li>Rich amber and woody bakhoor character with a sweet vanilla heart</li><li>Long lasting men\'s perfume with strong projection and a warm trail</li><li>Striking teal-to-blue 50ml bottle with a black cap, a perfect gift for him</li><li>Premium quality at Rs. 2,000</li><li>Cash on Delivery all over Pakistan</li></ul>'
+				. '<h3>How to Apply</h3>'
+				. '<p>Spray 2 to 3 times on pulse points (neck, wrists and chest) from about 15 cm. Apply on clean, moisturised skin and do not rub, so the fragrance lasts longer. One spray on clothes or a shawl keeps the warm bakhoor trail all day.</p>'
+				. '<p>Looking for the <strong>best long lasting amber oud style perfume for men in Pakistan</strong>? Order <strong>Baraan by MR ZAIB</strong> online today.</p>',
+			'tags'     => array( 'Baraan', 'Baraan Perfume', 'Perfume for Men', 'Men Perfume Pakistan', 'Long Lasting Perfume for Men', 'Bakhoor Perfume', 'Amber Perfume', 'Woody Perfume', 'Vanilla Perfume', 'Oriental Perfume', 'Arabic Perfume', 'Winter Perfume for Men', 'Inspired by Bakhour', 'Eid Perfume', 'Wedding Perfume', 'Evening Perfume', 'Gift for Him', 'Luxury Perfume', 'MR ZAIB' ),
+			'seo'      => array(
+				'title'    => 'Baraan Long Lasting Amber Woody Perfume for Men 50ml | MR ZAIB',
+				'desc'     => 'Shop Baraan by MR ZAIB, a long lasting bakhoor style perfume for men inspired by Bakhour, with amber, woods, vanilla and soft floral fruity notes. 50ml, Rs. 2,000. COD in Pakistan.',
+				'focus'    => 'Baraan perfume for men',
+				'keywords' => 'Baraan perfume, Baraan perfume for men, MR ZAIB Baraan, perfume for men, men perfume Pakistan, long lasting perfume for men, bakhoor perfume, amber perfume for men, woody perfume for men, vanilla perfume for men, oriental perfume, arabic perfume Pakistan, winter perfume for men, inspired by Bakhour, Eid perfume for men, wedding perfume for men, best perfume for men in Pakistan, gift for him',
+			),
+		),
+	);
+}
+
+/** Old demo product titles that must be removed from live stores. */
+function mrzaib_old_demo_titles() {
+	return array( 'Royal Oud', 'Midnight Code', 'Ocean Breeze', 'Rose Velvet', 'Green Vetiver', 'Amber Night', 'Golden Saffron', 'Blue Legend', 'Black Musk', 'Desert Rose', 'Citrus Bloom', 'Vanilla Dream', 'Leather Noir', 'Royal Duo', 'Floral Duo', 'Two Of A Kind', 'Cool Breeze Duo', 'Oud Supreme - Attar (8ML)', 'Saffron Gold - Attar (8ML)', 'White Jasmine - Attar (8ML)', 'Top 5 Samples', 'Top 10 Sample Set', 'Aroma Plug-In Diffuser', 'Smart Scent Diffuser', 'Silver Mist Body Mist', 'Pocket Oud 20ml', 'Amber Perfume Wax' );
+}
+
+/** Old demo category slugs. */
+function mrzaib_old_demo_cats() {
+	return array( 'perfumes-for-men', 'perfumes-for-women', 'unisex-perfumes', 'best-sellers-men', 'best-sellers-women', 'signature-range', 'executive-range', 'royal-range', 'new-arrivals', 'gift-box', 'gourmand', 'attar', 'air-care', 'oud', 'tester-box', 'under-2000', 'body-mist', 'perfume-wax', 'pocket-perfumes', 'seasonal', 'genre', 'winter-perfume', 'summer-perfume', 'spring-perfume', 'autumn-perfume', 'arabic-perfume', 'french-perfume', 'western-perfume', 'eastern-perfume' );
+}
+
+/** Delete every piece of dummy demo content. */
+function mrzaib_remove_dummy() {
+	$n = array( 'products' => 0, 'cats' => 0, 'posts' => 0, 'pages' => 0, 'media' => 0 );
+
+	foreach ( mrzaib_old_demo_titles() as $title ) {
+		foreach ( get_posts( array( 'post_type' => 'product', 'title' => $title, 'post_status' => 'any', 'numberposts' => -1, 'fields' => 'ids' ) ) as $pid ) {
+			$p = function_exists( 'wc_get_product' ) ? wc_get_product( $pid ) : null;
+			if ( $p && $p->is_type( 'variable' ) ) {
+				foreach ( $p->get_children() as $vid ) {
+					wp_delete_post( $vid, true );
+				}
+			}
+			wp_delete_post( $pid, true ); // also deletes its reviews/questions.
+			$n['products']++;
+		}
+	}
+	foreach ( mrzaib_old_demo_cats() as $slug ) {
+		$t = get_term_by( 'slug', $slug, 'product_cat' );
+		if ( $t ) {
+			wp_delete_term( $t->term_id, 'product_cat' );
+			$n['cats']++;
+		}
+	}
+	foreach ( array( 'How to Make Your Perfume Last All Day', 'Best Perfumes for Winter in Pakistan', 'Attar vs Perfume: What Is the Difference?' ) as $title ) {
+		foreach ( get_posts( array( 'post_type' => 'post', 'title' => $title, 'post_status' => 'any', 'numberposts' => -1, 'fields' => 'ids' ) ) as $id ) {
+			wp_delete_post( $id, true );
+			$n['posts']++;
+		}
+	}
+	foreach ( array( 'quiz', 'loyalty', 'corporate', 'our-outlets', 'our-story' ) as $slug ) {
+		$p = get_page_by_path( $slug );
+		if ( $p ) {
+			wp_delete_post( $p->ID, true );
+			$n['pages']++;
+		}
+	}
+	/* Dummy images that were copied into the media library. */
+	$map  = get_option( 'mrzaib_demo_media', array() );
+	$keep = array( 'logo-gold.png' );
+	foreach ( mrzaib_store_categories() as $c ) {
+		$keep[] = $c[1];
+	}
+	foreach ( mrzaib_store_products() as $p ) {
+		$keep = array_merge( $keep, $p['images'] );
+	}
+	if ( function_exists( 'mrzaib_blog_posts' ) ) {
+		foreach ( mrzaib_blog_posts() as $b ) {
+			$keep[] = $b['image'];
+		}
+	}
+	foreach ( $map as $file => $aid ) {
+		if ( ! in_array( $file, $keep, true ) ) {
+			if ( (int) get_theme_mod( 'custom_logo' ) === (int) $aid ) {
+				remove_theme_mod( 'custom_logo' );
+			}
+			wp_delete_attachment( $aid, true );
+			unset( $map[ $file ] );
+			$n['media']++;
+		}
+	}
+	update_option( 'mrzaib_demo_media', $map, false );
+	/* Old menus are rebuilt from scratch. */
+	foreach ( array( 'MR ZAIB Main', 'Footer About', 'Footer Support', 'Footer Quick Links' ) as $menu ) {
+		if ( wp_get_nav_menu_object( $menu ) ) {
+			wp_delete_nav_menu( $menu );
+		}
+	}
+	/* Dummy Customizer texts. */
+	foreach ( array( 'address', 'outlet_text', 'stat_1', 'stat_2', 'stat_3' ) as $mod ) {
+		remove_theme_mod( 'mrzaib_' . $mod );
+	}
+	if ( function_exists( 'wc_delete_product_transients' ) ) {
+		wc_delete_product_transients();
+	}
+	return sprintf( 'Dummy data removed: %d products, %d categories, %d blog posts, %d pages, %d images.', $n['products'], $n['cats'], $n['posts'], $n['pages'], $n['media'] );
+}
+
+/** Create the 5 categories. Returns slug => term_id. */
+function mrzaib_install_categories() {
+	$ids   = array();
+	$order = 0;
+	foreach ( mrzaib_store_categories() as $slug => $c ) {
+		$t = term_exists( $slug, 'product_cat' );
+		if ( ! $t ) {
+			$t = wp_insert_term( $c[0], 'product_cat', array( 'slug' => $slug, 'description' => $c[2] ) );
+		}
+		if ( is_wp_error( $t ) ) {
+			continue;
+		}
+		$tid          = is_array( $t ) ? (int) $t['term_id'] : (int) $t;
+		$ids[ $slug ] = $tid;
+		update_term_meta( $tid, 'order', $order++ );
+		if ( ! get_term_meta( $tid, 'thumbnail_id', true ) ) {
+			$img = mrzaib_import_image( $c[1] );
+			if ( $img ) {
+				update_term_meta( $tid, 'thumbnail_id', $img );
+				update_post_meta( $img, '_wp_attachment_image_alt', 'MR ZAIB ' . $c[0] . ' perfumes' );
+			}
+		}
+	}
+	return $ids;
+}
+
+/** Create / update Kahn-vahl and Arvon. */
+function mrzaib_install_products( $cat_ids, $only = '' ) {
+	$made = 0;
+	foreach ( mrzaib_store_products() as $i => $d ) {
+		if ( $only && $only !== $d['slug'] ) {
+			continue;
+		}
+		$existing = mrzaib_find_store_product( $d );
+		if ( $existing && 'trash' === get_post_status( $existing[0] ) ) {
+			wp_untrash_post( $existing[0] );
+			wp_update_post( array( 'ID' => $existing[0], 'post_status' => 'publish' ) );
+		}
+		$prod     = $existing ? wc_get_product( $existing[0] ) : new WC_Product_Simple();
+		if ( ! $prod ) {
+			continue;
+		}
+		$is_new = ! $existing;
+		$prod->set_name( $d['name'] );
+		if ( $is_new ) {
+			$prod->set_slug( $d['slug'] );
+			// Saved as draft first and published after images/meta, so the newsletter email has the photo.
+			$prod->set_status( 'draft' );
+			$prod->set_catalog_visibility( 'visible' );
+			$prod->set_featured( true );
+			$prod->set_menu_order( $i + 1 );
+			if ( ! wc_get_product_id_by_sku( $d['sku'] ) ) {
+				$prod->set_sku( $d['sku'] );
+			}
+			$prod->set_manage_stock( false );
+			$prod->set_stock_status( 'instock' );
+		}
+		$prod->set_regular_price( $d['regular'] );
+		$prod->set_sale_price( $d['sale'] );
+		$prod->set_short_description( $d['short'] );
+		$prod->set_description( $d['long'] );
+		$cats = array();
+		foreach ( $d['cats'] as $s ) {
+			if ( isset( $cat_ids[ $s ] ) ) {
+				$cats[] = $cat_ids[ $s ];
+			}
+		}
+		$prod->set_category_ids( $cats );
+		$imgs = array();
+		foreach ( $d['images'] as $k => $file ) {
+			$aid = mrzaib_import_image( $file );
+			if ( $aid ) {
+				$imgs[] = $aid;
+				update_post_meta( $aid, '_wp_attachment_image_alt', $d['alts'][ $k ] );
+			}
+		}
+		$note_imgs = array();
+		foreach ( $d['images'] as $k => $file ) {
+			if ( false !== strpos( $file, '-notes' ) && isset( $imgs[ $k ] ) ) {
+				$note_imgs[] = $imgs[ $k ];
+			}
+		}
+		if ( $imgs ) {
+			$prod->set_image_id( array_shift( $imgs ) );
+			$prod->set_gallery_image_ids( $imgs );
+		}
+		$pid = $prod->save();
+		wp_set_object_terms( $pid, $d['tags'], 'product_tag' );
+		update_post_meta( $pid, '_mrzaib_subtitle', $d['subtitle'] );
+		update_post_meta( $pid, '_mrzaib_notes', $d['notes'] );
+		update_post_meta( $pid, '_mrzaib_note_imgs', $note_imgs );
+		/* SEO: Yoast SEO fields only (edit them in the Yoast box on the product page). */
+		update_post_meta( $pid, '_yoast_wpseo_title', $d['seo']['title'] );
+		update_post_meta( $pid, '_yoast_wpseo_metadesc', $d['seo']['desc'] );
+		update_post_meta( $pid, '_yoast_wpseo_focuskw', $d['seo']['focus'] );
+		if ( $is_new ) {
+			wp_update_post( array( 'ID' => $pid, 'post_status' => 'publish' ) );
+		}
+		$made++;
+	}
+	return $made . ' MR ZAIB product(s) added/updated.';
+}
+
+/** Find a theme product by slug, SKU or title (any status, trash included). */
+function mrzaib_find_store_product( $d ) {
+	$q = get_posts( array( 'post_type' => 'product', 'name' => $d['slug'], 'post_status' => 'any', 'numberposts' => 1, 'fields' => 'ids' ) );
+	if ( ! $q ) {
+		$q = get_posts( array( 'post_type' => 'product', 'name' => $d['slug'] . '__trashed', 'post_status' => 'trash', 'numberposts' => 1, 'fields' => 'ids' ) );
+	}
+	if ( ! $q && function_exists( 'wc_get_product_id_by_sku' ) && wc_get_product_id_by_sku( $d['sku'] ) ) {
+		$q = array( wc_get_product_id_by_sku( $d['sku'] ) );
+	}
+	if ( ! $q ) {
+		$q = get_posts( array( 'post_type' => 'product', 'title' => $d['name'], 'post_status' => 'any', 'numberposts' => 1, 'fields' => 'ids' ) );
+	}
+	return $q;
+}
+
+/* ---------- Products > MR ZAIB Products: add / restore theme products one by one ---------- */
+add_action( 'admin_menu', function () {
+	if ( ! class_exists( 'WooCommerce' ) ) {
+		return;
+	}
+	add_submenu_page( 'edit.php?post_type=product', 'MR ZAIB Products', 'MR ZAIB Products', 'manage_woocommerce', 'mrzaib-products', 'mrzaib_products_page' );
+}, 60 );
+
+function mrzaib_products_page() {
+	$msg = '';
+	if ( isset( $_POST['mrzaib_add_product'] ) && check_admin_referer( 'mrzaib_add_product' ) ) {
+		@set_time_limit( 300 ); // phpcs:ignore
+		$slug = sanitize_title( wp_unslash( $_POST['mrzaib_add_product'] ) );
+		$cats = mrzaib_install_categories();
+		$msg  = mrzaib_install_products( $cats, 'all' === $slug ? '' : $slug );
+	}
+	echo '<div class="wrap"><h1>MR ZAIB Products</h1>';
+	echo '<p style="max-width:760px;font-size:14px">Add your MR ZAIB perfumes with photos, fragrance notes, short &amp; long description, tags, subtitle and Yoast SEO (title, meta description, focus keyphrase) in one click. If you deleted a product, click <strong>Add product</strong> to bring it back. Running again updates the product.</p>';
+	if ( $msg ) {
+		echo '<div class="notice notice-success"><p>' . esc_html( $msg ) . '</p></div>';
+	}
+	echo '<form method="post">';
+	wp_nonce_field( 'mrzaib_add_product' );
+	echo '<table class="widefat striped" style="max-width:960px"><thead><tr><th style="width:90px">Photo</th><th>Product</th><th>Category</th><th>Price</th><th>Status</th><th></th></tr></thead><tbody>';
+	foreach ( mrzaib_store_products() as $d ) {
+		$id     = mrzaib_find_store_product( $d );
+		$status = $id ? get_post_status( $id[0] ) : '';
+		$label  = $id && 'trash' !== $status ? 'Update product' : 'Add product';
+		$img    = get_template_directory_uri() . '/assets/images/' . $d['images'][0];
+		echo '<tr><td><img src="' . esc_url( $img ) . '" width="70" height="70" style="object-fit:cover;border-radius:6px"></td>';
+		echo '<td><strong>' . esc_html( $d['name'] ) . '</strong><br><span class="description">' . esc_html( $d['subtitle'] ) . '</span></td>';
+		echo '<td>' . esc_html( ucwords( implode( ', ', $d['cats'] ) ) ) . '</td>';
+		echo '<td><del>Rs. ' . esc_html( number_format( (float) $d['regular'] ) ) . '</del> Rs. ' . esc_html( number_format( (float) $d['sale'] ) ) . '</td>';
+		echo '<td>' . ( $id ? ( 'trash' === $status ? '&#128465; In trash' : '&#10004; ' . esc_html( ucfirst( $status ) ) . ' &middot; <a href="' . esc_url( get_edit_post_link( $id[0] ) ) . '">Edit</a>' ) : '&#10008; Not added' ) . '</td>';
+		echo '<td><button class="button button-primary" name="mrzaib_add_product" value="' . esc_attr( $d['slug'] ) . '">' . esc_html( $label ) . '</button></td></tr>';
+	}
+	echo '</tbody></table>';
+	echo '<p><button class="button" name="mrzaib_add_product" value="all">Add / update all</button></p></form></div>';
+}
+
+/* ---------- SEO is handled by the Yoast SEO plugin (theme outputs no meta tags) ---------- */
+
+/** One-time cleanup of the theme's old custom SEO fields. */
+add_action( 'admin_init', function () {
+	if ( '1' === get_option( 'mrzaib_seo_cleanup' ) ) {
+		return;
+	}
+	foreach ( array( '_mrzaib_seo_title', '_mrzaib_seo_desc', '_mrzaib_seo_keywords' ) as $k ) {
+		delete_post_meta_by_key( $k );
+	}
+	if ( ! class_exists( 'RankMath' ) ) {
+		foreach ( array( 'rank_math_title', 'rank_math_description', 'rank_math_focus_keyword' ) as $k ) {
+			delete_post_meta_by_key( $k );
+		}
+	}
+	remove_theme_mod( 'mrzaib_seo_title' );
+	update_option( 'mrzaib_seo_cleanup', '1' );
+} );
+
+/**
+ * Homepage "Top Perfume Categories": every top-level product category (also empty ones),
+ * ordered like WooCommerce's category order. Theme categories use the theme artwork unless
+ * the admin uploaded their own thumbnail.
+ */
+function mrzaib_home_categories() {
+	$out = array();
+	if ( ! taxonomy_exists( 'product_cat' ) ) {
+		return $out;
+	}
+	$terms = get_terms( array(
+		'taxonomy'   => 'product_cat',
+		'parent'     => 0,
+		'hide_empty' => false,
+		'exclude'    => array( (int) get_option( 'default_product_cat' ) ),
+		'menu_order' => 'asc',
+	) );
+	if ( is_wp_error( $terms ) ) {
+		return $out;
+	}
+	$theme = mrzaib_store_categories();
+	$media = array_map( 'intval', (array) get_option( 'mrzaib_demo_media', array() ) );
+	foreach ( $terms as $t ) {
+		$tid = (int) get_term_meta( $t->term_id, 'thumbnail_id', true );
+		$own = $tid && ! in_array( $tid, $media, true ) ? wp_get_attachment_image_url( $tid, 'medium_large' ) : '';
+		$iid = 0;
+		if ( $own ) {
+			$img = $own;
+			$iid = $tid;
+		} elseif ( isset( $theme[ $t->slug ] ) ) {
+			$webp = preg_replace( '/\.(jpe?g|png)$/', '.webp', $theme[ $t->slug ][1] );
+			$img  = mrzaib_img( file_exists( MRZAIB_DIR . '/assets/images/' . $webp ) ? $webp : $theme[ $t->slug ][1] );
+		} elseif ( $tid && wp_get_attachment_image_url( $tid, 'medium_large' ) ) {
+			$img = wp_get_attachment_image_url( $tid, 'medium_large' );
+		} elseif ( function_exists( 'wc_placeholder_img_src' ) ) {
+			$img = wc_placeholder_img_src( 'medium_large' );
+		} else {
+			$img = '';
+		}
+		$out[] = array( 'name' => $t->name, 'link' => get_term_link( $t ), 'img' => $img, 'id' => $iid );
+	}
+	return $out;
+}
+
+/** One-time update: Ethereal category becomes Attar; old category artwork is replaced. */
+function mrzaib_migrate_categories_v2() {
+	if ( ! mrzaib_data_ready() ) {
+		return;
+	}
+
+	if ( (int) get_option( 'mrzaib_cat_v' ) >= 3 || ! taxonomy_exists( 'product_cat' ) ) {
+		return;
+	}
+	update_option( 'mrzaib_cat_v', 3, false );
+	$eth   = get_term_by( 'slug', 'ethereal', 'product_cat' );
+	$attar = get_term_by( 'slug', 'attar', 'product_cat' );
+	if ( $eth && ! $attar ) {
+		$c = mrzaib_store_categories();
+		wp_update_term( $eth->term_id, 'product_cat', array( 'name' => 'Attar', 'slug' => 'attar', 'description' => $c['attar'][2] ) );
+	} elseif ( $eth && $attar && ! $eth->count ) {
+		wp_delete_term( $eth->term_id, 'product_cat' );
+	}
+	/* Point theme categories' thumbnails at the new artwork. */
+	$map = (array) get_option( 'mrzaib_demo_media', array() );
+	foreach ( array( 'cat-men.jpg', 'cat-women.jpg', 'cat-unisex.jpg', 'cat-tester.jpg', 'cat-ethereal.jpg', 'cat-attar.jpg' ) as $f ) {
+		unset( $map[ $f ] );
+	}
+	$old = array_map( 'intval', (array) get_option( 'mrzaib_demo_media', array() ) );
+	update_option( 'mrzaib_demo_media', $map, false );
+	if ( ! function_exists( 'mrzaib_import_image' ) ) {
+		return;
+	}
+	foreach ( mrzaib_store_categories() as $slug => $c ) {
+		$t = get_term_by( 'slug', $slug, 'product_cat' );
+		if ( ! $t ) {
+			continue;
+		}
+		$tid = (int) get_term_meta( $t->term_id, 'thumbnail_id', true );
+		if ( $tid && ! in_array( $tid, $old, true ) ) {
+			continue; // Admin's own image: keep it.
+		}
+		$img = mrzaib_import_image( $c[1] );
+		if ( $img ) {
+			update_term_meta( $t->term_id, 'thumbnail_id', $img );
+			update_post_meta( $img, '_wp_attachment_image_alt', 'MR ZAIB ' . $c[0] . ' perfumes' );
+		}
+	}
+}
+add_action( 'admin_init', 'mrzaib_migrate_categories_v2' );
+
+
+/**
+ * Price update v2 (user, 2026-11-18): every product Rs. 2,499 regular / Rs. 2,000 sale,
+ * except Kahn-vahl Rs. 4,000 regular / Rs. 3,000 sale. Runs once in admin; bump MRZAIB_PRICE_V to re-run.
+ */
+define( 'MRZAIB_PRICE_V', 3 );
+function mrzaib_price_for( $prod ) {
+	$slug = $prod->get_slug();
+	$name = strtolower( $prod->get_name() );
+	if ( 0 === strpos( $slug, 'kahn-vahl' ) || false !== strpos( $name, 'kahn-vahl' ) || false !== strpos( $name, 'kahn vahl' ) ) {
+		return array( '4000', '3000', 'Rs. 3,000' );
+	}
+	return array( '2499', '2000', 'Rs. 2,000' );
+}
+function mrzaib_apply_prices_v2() {
+	if ( ! mrzaib_data_ready() ) {
+		return;
+	}
+
+	if ( ! function_exists( 'wc_get_products' ) || (int) get_option( 'mrzaib_price_v' ) >= MRZAIB_PRICE_V ) {
+		return;
+	}
+	$ids = wc_get_products( array( 'limit' => -1, 'status' => array( 'publish', 'draft', 'pending', 'private' ), 'return' => 'ids' ) );
+	foreach ( $ids as $id ) {
+		$prod = wc_get_product( $id );
+		if ( ! $prod ) {
+			continue;
+		}
+		list( $reg, $sale, $txt ) = mrzaib_price_for( $prod );
+		$targets = $prod->is_type( 'variable' ) ? $prod->get_children() : array( $id );
+		foreach ( $targets as $tid ) {
+			$t = wc_get_product( $tid );
+			if ( ! $t ) {
+				continue;
+			}
+			$t->set_regular_price( $reg );
+			$t->set_sale_price( $sale );
+			$t->set_date_on_sale_from( '' );
+			$t->set_date_on_sale_to( '' );
+			$t->save();
+		}
+		if ( $prod->is_type( 'variable' ) && class_exists( 'WC_Product_Variable' ) ) {
+			WC_Product_Variable::sync( $id );
+		}
+		// Price text inside the description / short description (v3).
+		$fix = function ( $t ) use ( $reg, $txt ) {
+			$t = str_replace( 'Affordable luxury perfume under Rs. 3000', 'Premium quality at ' . $txt, $t );
+			$t = preg_replace( '/Premium quality at Rs\. ?[0-9,]+/', 'Premium quality at ' . $txt, $t );
+			$t = preg_replace( '/Rs\. ?(2,500|3,500|2500|3500)\b/', $txt, $t );
+			return preg_replace( '/Rs\. ?(2,800|2800)\b/', 'Rs. ' . number_format( (float) $reg ), $t );
+		};
+		$post = get_post( $id );
+		if ( $post ) {
+			$c = $fix( $post->post_content );
+			$e = $fix( $post->post_excerpt );
+			if ( $c !== $post->post_content || $e !== $post->post_excerpt ) {
+				wp_update_post( array( 'ID' => $id, 'post_content' => $c, 'post_excerpt' => $e ) );
+			}
+		}
+		$md = get_post_meta( $id, '_yoast_wpseo_metadesc', true );
+		if ( $md && preg_match( '/Rs\. ?[0-9],[0-9]{3}/', $md ) ) {
+			update_post_meta( $id, '_yoast_wpseo_metadesc', preg_replace( '/Rs\. ?[0-9],[0-9]{3}/', $txt, $md ) );
+		}
+		if ( function_exists( 'wc_delete_product_transients' ) ) {
+			wc_delete_product_transients( $id );
+		}
+	}
+	// Front page + Yoast global texts that quoted the old starting price.
+	$front = (int) get_option( 'page_on_front' );
+	if ( $front ) {
+		$md = get_post_meta( $front, '_yoast_wpseo_metadesc', true );
+		if ( $md ) {
+			update_post_meta( $front, '_yoast_wpseo_metadesc', str_replace( 'Rs. 2,500 per 50ml', 'From Rs. 2,000 per 50ml', $md ) );
+		}
+	}
+	foreach ( array( 'wpseo_titles', 'wpseo_social' ) as $opt ) {
+		$wt = get_option( $opt );
+		if ( is_array( $wt ) ) {
+			foreach ( $wt as $k => $v ) {
+				if ( is_string( $v ) && false !== strpos( $v, 'Rs. 2,500' ) ) {
+					$wt[ $k ] = str_replace( array( 'Rs. 2,500 per 50ml', 'Rs. 2,500' ), array( 'From Rs. 2,000 per 50ml', 'Rs. 2,000' ), $v );
+				}
+			}
+			update_option( $opt, $wt );
+		}
+	}
+	foreach ( get_posts( array( 'post_type' => array( 'post', 'page' ), 'post_status' => 'any', 'numberposts' => -1, 'fields' => 'ids' ) ) as $pid ) {
+		foreach ( array( '_yoast_wpseo_metadesc', '_yoast_wpseo_opengraph-description', '_yoast_wpseo_twitter-description' ) as $mk ) {
+			$v = get_post_meta( $pid, $mk, true );
+			if ( is_string( $v ) && false !== strpos( $v, 'Rs. 2,500' ) ) {
+				update_post_meta( $pid, $mk, str_replace( array( 'Rs. 2,500 per 50ml', 'Rs. 2,500' ), array( 'From Rs. 2,000 per 50ml', 'Rs. 2,000' ), $v ) );
+			}
+		}
+	}
+	foreach ( array( 'mrzaib_seo_intro', 'mrzaib_seo_more' ) as $mod ) {
+		$v = get_theme_mod( $mod );
+		if ( is_string( $v ) && false !== strpos( $v, 'Rs. 2,500' ) ) {
+			set_theme_mod( $mod, str_replace( 'Rs. 2,500', 'Rs. 2,000', $v ) );
+		}
+	}
+	// Share (OG) image quoted the old price: copy the new theme file over the imported one.
+	$og = get_posts( array( 'post_type' => 'attachment', 'post_status' => 'inherit', 'numberposts' => 1, 'fields' => 'ids', 'meta_key' => '_mrzaib_src', 'meta_value' => 'assets/images/og-image.jpg' ) );
+	if ( $og ) {
+		$path = get_attached_file( $og[0] );
+		if ( $path && file_exists( MRZAIB_DIR . '/assets/images/og-image.jpg' ) && @copy( MRZAIB_DIR . '/assets/images/og-image.jpg', $path ) ) { // phpcs:ignore
+			require_once ABSPATH . 'wp-admin/includes/image.php';
+			wp_update_attachment_metadata( $og[0], wp_generate_attachment_metadata( $og[0], $path ) );
+		}
+	}
+	update_option( 'mrzaib_price_v', MRZAIB_PRICE_V );
+}
+add_action( 'admin_init', 'mrzaib_apply_prices_v2', 30 );
