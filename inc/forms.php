@@ -43,7 +43,13 @@ function mrzaib_forms_notify_to() {
 /* ------------------------------------------------------------------
  * Submissions post type
  * ------------------------------------------------------------------ */
+/** Capability required to list/view/manage submissions (store staff only, never Contributors/Authors). */
+function mrzaib_submissions_cap() {
+	return apply_filters( 'mrzaib_submissions_cap', class_exists( 'WooCommerce' ) ? 'manage_woocommerce' : 'manage_options' );
+}
+
 add_action( 'init', function () {
+	$cap = mrzaib_submissions_cap();
 	register_post_type( 'mz_submission', array(
 		'labels'          => array(
 			'name'          => __( 'Form Submissions', 'mrzaib' ),
@@ -60,8 +66,20 @@ add_action( 'init', function () {
 		'menu_position'   => 26,
 		'menu_icon'       => 'dashicons-email-alt',
 		'supports'        => array( 'title' ),
-		'capability_type' => 'post',
-		'capabilities'    => array( 'create_posts' => 'do_not_allow' ),
+		'capability_type' => array( 'mz_submission', 'mz_submissions' ),
+		'capabilities'    => array(
+			'edit_posts'             => $cap,
+			'edit_others_posts'      => $cap,
+			'edit_private_posts'     => $cap,
+			'edit_published_posts'   => $cap,
+			'publish_posts'          => $cap,
+			'read_private_posts'     => $cap,
+			'delete_posts'           => $cap,
+			'delete_private_posts'   => $cap,
+			'delete_published_posts' => $cap,
+			'delete_others_posts'    => $cap,
+			'create_posts'           => 'do_not_allow',
+		),
 		'map_meta_cap'    => true,
 	) );
 } );
@@ -76,6 +94,9 @@ function mrzaib_submission_types() {
 /* Unread bubble on the menu. */
 add_action( 'admin_menu', function () {
 	global $menu;
+	if ( ! current_user_can( mrzaib_submissions_cap() ) ) {
+		return;
+	}
 	$q = new WP_Query( array( 'post_type' => 'mz_submission', 'post_status' => 'any', 'posts_per_page' => 1, 'fields' => 'ids', 'meta_key' => '_mz_status', 'meta_value' => 'new' ) ); // phpcs:ignore
 	$n = (int) $q->found_posts;
 	if ( ! $n || empty( $menu ) ) {
@@ -102,6 +123,9 @@ add_filter( 'manage_mz_submission_posts_columns', function () {
 	);
 } );
 add_action( 'manage_mz_submission_posts_custom_column', function ( $col, $id ) {
+	if ( ! current_user_can( mrzaib_submissions_cap() ) ) {
+		return;
+	}
 	$type = get_post_meta( $id, '_mz_type', true );
 	switch ( $col ) {
 		case 'mz_type':
@@ -173,6 +197,9 @@ add_action( 'add_meta_boxes_mz_submission', function () {
 } );
 
 function mrzaib_submission_box( $post ) {
+	if ( ! current_user_can( mrzaib_submissions_cap() ) ) {
+		return;
+	}
 	$id     = $post->ID;
 	$fields = (array) get_post_meta( $id, '_mz_fields', true );
 	$type   = get_post_meta( $id, '_mz_type', true );
@@ -240,11 +267,33 @@ add_action( 'admin_head', function () {
 /* ------------------------------------------------------------------
  * Front-end handling (POST → save → emails → redirect)
  * ------------------------------------------------------------------ */
+/** Allowed return request types: stable stored value => display label. */
+function mrzaib_return_request_types() {
+	return array(
+		'exchange' => __( 'Exchange', 'mrzaib' ),
+		'refund'   => __( 'Refund', 'mrzaib' ),
+	);
+}
+
+/** Map a submitted request type (stable value, or a label from an old cached form) to its stable value, '' if invalid. */
+function mrzaib_return_request_type( $raw ) {
+	$raw = trim( (string) $raw );
+	if ( '' === $raw ) {
+		return '';
+	}
+	foreach ( mrzaib_return_request_types() as $k => $label ) {
+		if ( sanitize_key( $raw ) === $k || 0 === strcasecmp( $raw, $label ) ) {
+			return $k;
+		}
+	}
+	return '';
+}
+
 /**
- * Validate, store and email one submission. Returns 'ok', 'expired' or 'fields'.
+ * Validate, store and email one submission.
+ * Returns 'ok', 'duplicate' (same request already received), 'expired', 'fields' or 'storage'.
  */
 function mrzaib_forms_process( $type ) {
-	$nonce = isset( $_POST['_wpnonce'] ) ? sanitize_text_field( wp_unslash( $_POST['_wpnonce'] ) ) : '';
 	$nonce = isset( $_POST['_wpnonce'] ) ? sanitize_text_field( wp_unslash( $_POST['_wpnonce'] ) ) : '';
 	if ( ! wp_verify_nonce( $nonce, 'mrzaib_' . $type ) ) {
 		return 'expired';
@@ -278,26 +327,43 @@ function mrzaib_forms_process( $type ) {
 			'Email'        => $email,
 			'Order number' => ltrim( $g( 'r_order' ), '#' ),
 			'Product'      => $g( 'r_product' ),
-			'Request type' => $g( 'r_type' ),
+			'Request type' => '',
 			'Reason'       => $g( 'r_reason', true ),
 		);
-		$ok = $name && $phone && $fields['Order number'] && $fields['Product'] && $fields['Reason'] && is_email( $email );
+		$rtype  = mrzaib_return_request_type( $g( 'r_type' ) );
+		$rtypes = mrzaib_return_request_types();
+		if ( $rtype ) {
+			$fields['Request type'] = $rtypes[ $rtype ];
+		}
+		$ok = $rtype && $name && $phone && $fields['Order number'] && $fields['Product'] && $fields['Reason'] && is_email( $email );
 	}
 	if ( ! $ok ) {
 		return 'fields';
 	}
 
+	// Duplicate guard: the same request (same nonce, email and content) is stored and emailed once per 10 minutes.
+	$dupe_key = 'mz_sub_' . md5( $type . '|' . $nonce . '|' . strtolower( $email ) . '|' . wp_json_encode( $fields ) );
+	if ( get_transient( $dupe_key ) ) {
+		return 'duplicate';
+	}
+	set_transient( $dupe_key, 1, 10 * MINUTE_IN_SECONDS );
+
 	$id = wp_insert_post( array(
 		'post_type'   => 'mz_submission',
 		'post_status' => 'publish',
 		'post_title'  => $name . ( 'return' === $type ? ' — #' . $fields['Order number'] : '' ),
-	) );
-	if ( $id && ! is_wp_error( $id ) ) {
-		update_post_meta( $id, '_mz_type', $type );
-		update_post_meta( $id, '_mz_fields', $fields );
-		update_post_meta( $id, '_mz_email', $email );
-		update_post_meta( $id, '_mz_phone', $phone );
-		update_post_meta( $id, '_mz_status', 'new' );
+	), true );
+	if ( ! $id || is_wp_error( $id ) ) {
+		delete_transient( $dupe_key ); // Nothing was stored: allow a retry.
+		return 'storage';
+	}
+	update_post_meta( $id, '_mz_type', $type );
+	update_post_meta( $id, '_mz_fields', $fields );
+	update_post_meta( $id, '_mz_email', $email );
+	update_post_meta( $id, '_mz_phone', $phone );
+	update_post_meta( $id, '_mz_status', 'new' );
+	if ( 'return' === $type ) {
+		update_post_meta( $id, '_mz_request_type', $rtype );
 	}
 	mrzaib_forms_send_emails( $type, $fields, $email, $id );
 	return 'ok';
@@ -313,6 +379,12 @@ function mrzaib_form_messages( $type, $code ) {
 			? __( 'Return request received. Our team will contact you within 24 hours. A confirmation has been sent to your email.', 'mrzaib' )
 			: __( 'Thank you! Your message has been sent. We will get back to you soon.', 'mrzaib' );
 	}
+	if ( 'duplicate' === $code ) {
+		return __( 'We have already received this submission. Our team will get back to you soon.', 'mrzaib' );
+	}
+	if ( 'storage' === $code ) {
+		return __( 'We could not save your submission right now. Please try again in a moment.', 'mrzaib' );
+	}
 	return 'expired' === $code ? __( 'The form expired. Please refresh the page and try again.', 'mrzaib' ) : __( 'Please fill all required fields correctly.', 'mrzaib' );
 }
 
@@ -323,8 +395,8 @@ function mrzaib_forms_ajax() {
 		wp_send_json_error( array( 'message' => mrzaib_form_messages( 'contact', 'fields' ) ) );
 	}
 	$code = mrzaib_forms_process( $type );
-	if ( 'ok' === $code ) {
-		wp_send_json_success( array( 'message' => mrzaib_form_messages( $type, 'ok' ) ) );
+	if ( 'ok' === $code || 'duplicate' === $code ) {
+		wp_send_json_success( array( 'message' => mrzaib_form_messages( $type, $code ) ) );
 	}
 	wp_send_json_error( array( 'message' => mrzaib_form_messages( $type, $code ) ) );
 }
@@ -343,7 +415,7 @@ add_action( 'template_redirect', function () {
 	$page = is_singular() ? get_permalink( get_queried_object_id() ) : '';
 	$back = remove_query_arg( array( 'mz_sent', 'mz_err' ), $page ? $page : ( wp_get_raw_referer() ? wp_get_raw_referer() : home_url( '/' ) ) );
 	$code = mrzaib_forms_process( $type );
-	$back = 'ok' === $code ? add_query_arg( 'mz_sent', $type, $back ) : add_query_arg( 'mz_err', $code, $back );
+	$back = ( 'ok' === $code || 'duplicate' === $code ) ? add_query_arg( 'mz_sent', $type, $back ) : add_query_arg( 'mz_err', $code, $back );
 	wp_safe_redirect( $back . '#mz-form' );
 	exit;
 } );

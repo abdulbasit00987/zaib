@@ -59,10 +59,13 @@ function mrzaib_ship_rules() {
 		$r    = array( 'id' => $z['id'], 'name' => $zone->get_zone_name(), 'flat' => null, 'free' => null );
 		foreach ( $zone->get_shipping_methods( true ) as $m ) {
 			if ( 'flat_rate' === $m->id && null === $r['flat'] ) {
-				$r['flat'] = (float) $m->get_option( 'cost', 0 );
+				// A fixed number is kept; a formula such as "[qty] * 300" is worked out at checkout ('calc').
+				$cost      = trim( (string) $m->get_option( 'cost', '' ) );
+				$r['flat'] = '' === $cost ? 0.0 : ( is_numeric( $cost ) ? (float) $cost : 'calc' );
 			}
 			if ( 'free_shipping' === $m->id && in_array( $m->get_option( 'requires' ), array( 'min_amount', 'either' ), true ) && (float) $m->get_option( 'min_amount' ) > 0 ) {
-				$r['free'] = (float) $m->get_option( 'min_amount' );
+				$r['free']             = (float) $m->get_option( 'min_amount' );
+				$r['ignore_discounts'] = $m->get_option( 'ignore_discounts', 'no' );
 			}
 		}
 		if ( null !== $r['flat'] || null !== $r['free'] ) {
@@ -94,7 +97,11 @@ function mrzaib_ship_long() {
 	foreach ( mrzaib_ship_rules() as $r ) {
 		$s = $r['name'] . ': ';
 		if ( null !== $r['flat'] ) {
-			$s .= $r['flat'] > 0 ? sprintf( '%s delivery charges', mrzaib_ship_money( $r['flat'] ) ) : 'free delivery';
+			if ( 'calc' === $r['flat'] ) {
+				$s .= 'delivery charge calculated at checkout';
+			} else {
+				$s .= $r['flat'] > 0 ? sprintf( '%s delivery charges', mrzaib_ship_money( $r['flat'] ) ) : 'free delivery';
+			}
 		}
 		if ( $r['free'] ) {
 			$s .= ( null !== $r['flat'] ? ', ' : '' ) . sprintf( 'free delivery on orders of %s or more', mrzaib_ship_money( $r['free'] ) );

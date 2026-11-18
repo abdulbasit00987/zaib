@@ -1,12 +1,13 @@
 === MR ZAIB WordPress Theme ===
 
 INSTALL (5 minutes)
-1. WordPress Admin > Plugins > Add New > search "WooCommerce" > Install > Activate (skip its setup wizard if you like).
-2. Appearance > Themes > Add New > Upload Theme > choose mr-zaib.zip > Install > Activate.
-3. Appearance > MR ZAIB Setup > click "Import Demo Website".
-   This creates: categories, 27 dummy products with images, all pages, blog posts,
-   main mega menu + footer menus, homepage, PKR currency, Cash on Delivery,
-   Pakistan shipping zone (Rs. 250 flat, free over Rs. 3000).
+1. Appearance > Themes > Add New > Upload Theme > choose mr-zaib.zip > Install > Activate.
+2. Appearance > MR ZAIB Setup > click "Install & Activate All Plugins".
+   This installs and activates every plugin the store uses (WooCommerce first) with the store's settings.
+3. Then click "Add All Data".
+   This adds categories, the products with photos, blog posts, pages, menus, policies,
+   homepage banners and videos, PKR currency, Cash on Delivery and shipping:
+   Karachi Rs. 300 (free over Rs. 7,500), rest of Pakistan Rs. 500 (free over Rs. 12,000).
 4. Visit your site. Done.
 
 CUSTOMISE
@@ -25,13 +26,13 @@ CUSTOMISE
   Easypaisa / card plugins if needed.
 
 == Header search ==
-The search box left of the logo uses the free plugin "Advanced Woo Search" (live product results with images & prices). The demo import installs it automatically, or use Appearance > MR ZAIB Setup > Install & Activate Advanced Woo Search. Without the plugin a normal WooCommerce product search is used.
+The search box left of the logo uses the free plugin "Advanced Woo Search" (live product results with images & prices). Appearance > MR ZAIB Setup > "Install & Activate All Plugins" installs and configures it. Without the plugin a normal WooCommerce product search is used.
 
-== Product card icons (Quick View + Cart Drawer) ==
+== Product card icons (Quick View + Cart) ==
 Hovering a product card shows two icons (always visible on phones):
 - Top (eye): opens the "Quick View for WooCommerce – Reno QuickView" modal.
-- Bottom (bag): simple product = AJAX add to cart + "Mini Cart Drawer for WooCommerce" slides in from the right.
+- Bottom (bag): simple product = AJAX add to cart + the theme's own cart drawer slides in from the right.
   Product with sizes (variable) = Quick View modal opens; choose a size, Add to cart, modal closes and the cart drawer opens.
-Both plugins are installed, activated and configured by Appearance > MR ZAIB Setup (demo import, or the separate "Install, Activate & Configure" button).
-The header cart icon opens the plugin drawer; the plugin's floating cart button is hidden.
+Quick View is installed, activated and configured by Appearance > MR ZAIB Setup > "Install & Activate All Plugins".
+The header cart is built into the theme (no cart plugin needed): the header cart icon opens the theme's cart drawer.
 Demo: Royal Oud, Midnight Code, Rose Velvet, Amber Night have 50ml / 100ml sizes.

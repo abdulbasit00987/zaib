@@ -162,11 +162,13 @@ function mrzaib_mnav_products( $slug ) {
 			echo '<span class="mini-badge">' . esc_html__( 'SALE', 'mrzaib' ) . '</span>';
 		}
 		echo '</div><div class="mini-card-info"><span class="mini-card-title">' . esc_html( $p->get_name() ) . '</span><div class="mini-card-price">';
-		$cur = $p->get_price();
-		$reg = $p->get_regular_price();
+		// Storefront display prices (tax-inclusive when the shop shows prices with tax).
 		if ( $p->is_type( 'variable' ) ) {
-			$cur = $p->get_variation_price( 'min' );
-			$reg = $p->get_variation_regular_price( 'min' );
+			$cur = $p->get_variation_price( 'min', true );
+			$reg = $p->get_variation_regular_price( 'min', true );
+		} else {
+			$cur = wc_get_price_to_display( $p );
+			$reg = '' !== $p->get_regular_price() ? wc_get_price_to_display( $p, array( 'price' => $p->get_regular_price() ) ) : '';
 		}
 		echo '<span class="price-current">' . wp_kses_post( wc_price( $cur ) ) . '</span>';
 		if ( $p->is_on_sale() && $reg && $reg > $cur ) {
@@ -264,6 +266,16 @@ function mrzaib_mobile_nav() {
 					<?php else : ?>
 						<ul class="drawer-menu-list">
 							<?php
+							// Parent destination first, unless a child already links to the same place.
+							$has_parent = ! $t[1] || '#' === $t[1];
+							foreach ( $t[3] as $c ) {
+								if ( untrailingslashit( $c[1] ) === untrailingslashit( $t[1] ) ) {
+									$has_parent = true;
+								}
+							}
+							if ( ! $has_parent ) {
+								mrzaib_mnav_row( $t[0], $t[1], '', array() );
+							}
 							foreach ( $t[3] as $c ) {
 								mrzaib_mnav_row( $c[0], $c[1], '', $c[3] );
 							}

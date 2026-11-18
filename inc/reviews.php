@@ -55,10 +55,10 @@ function mrzaib_rel_date( $gmt ) {
 	return date_i18n( 'M j, Y', $ts );
 }
 function mrzaib_stars( $rating, $size = 16 ) {
-	$out = '<span class="mzr-stars" style="--s:' . (int) $size . 'px" aria-label="' . esc_attr( sprintf( __( '%s out of 5 stars', 'mrzaib' ), $rating ) ) . '">';
+	$out = '<span class="mzr-stars" style="--s:' . (int) $size . 'px" role="img" aria-label="' . esc_attr( sprintf( __( '%s out of 5 stars', 'mrzaib' ), $rating ) ) . '">';
 	for ( $i = 1; $i <= 5; $i++ ) {
 		$fill = max( 0, min( 1, $rating - ( $i - 1 ) ) ) * 100;
-		$out .= '<span class="mzr-star"><span style="width:' . esc_attr( $fill ) . '%"></span></span>';
+		$out .= '<span class="mzr-star" aria-hidden="true"><span style="width:' . esc_attr( $fill ) . '%"></span></span>';
 	}
 	return $out . '</span>';
 }
@@ -67,6 +67,15 @@ function mrzaib_store_name() {
 }
 
 /* ---------- data ---------- */
+/* First approved reply written by a shop manager / admin; customer replies never count as the store's answer. */
+function mrzaib_store_answer( $parent_id ) {
+	foreach ( get_comments( array( 'parent' => $parent_id, 'status' => 'approve', 'orderby' => 'comment_date_gmt', 'order' => 'ASC' ) ) as $a ) {
+		if ( (int) $a->user_id && user_can( (int) $a->user_id, 'moderate_comments' ) ) {
+			return $a;
+		}
+	}
+	return null;
+}
 function mrzaib_get_reviews( $pid ) {
 	$comments = get_comments( array( 'post_id' => $pid, 'status' => 'approve', 'type' => 'review', 'parent' => 0, 'orderby' => 'comment_date_gmt', 'order' => 'DESC' ) );
 	$out      = array();
@@ -101,11 +110,8 @@ function mrzaib_get_questions( $pid ) {
 	$qs  = get_comments( array( 'post_id' => $pid, 'status' => 'approve', 'type' => 'mz_question', 'parent' => 0, 'orderby' => 'comment_date_gmt', 'order' => 'DESC' ) );
 	$out = array();
 	foreach ( $qs as $q ) {
-		$ans = null;
-		foreach ( get_comments( array( 'parent' => $q->comment_ID, 'status' => 'approve', 'orderby' => 'comment_date_gmt', 'order' => 'ASC' ) ) as $a ) {
-			$ans = array( 'body' => $a->comment_content, 'date' => mrzaib_rel_date( $a->comment_date_gmt ) );
-			break;
-		}
+		$a   = mrzaib_store_answer( $q->comment_ID );
+		$ans = $a ? array( 'body' => $a->comment_content, 'date' => mrzaib_rel_date( $a->comment_date_gmt ) ) : null;
 		$out[] = array(
 			'id'     => (int) $q->comment_ID,
 			'q'      => $q->comment_content,
@@ -148,13 +154,15 @@ function mrzaib_reviews_widget() {
 	$questions = mrzaib_get_questions( $pid );
 	$count     = count( $reviews );
 	$sum       = 0;
+	$rated     = 0;
 	$dist      = array( 5 => 0, 4 => 0, 3 => 0, 2 => 0, 1 => 0 );
 	$rec_yes   = 0;
 	$rec_all   = 0;
 	$media     = array();
 	foreach ( $reviews as $r ) {
-		$sum += $r['rating'];
 		if ( isset( $dist[ $r['rating'] ] ) ) {
+			$sum += $r['rating'];
+			$rated++;
 			$dist[ $r['rating'] ]++;
 		}
 		if ( $r['recommend'] ) {
@@ -165,7 +173,7 @@ function mrzaib_reviews_widget() {
 			$media[] = $im + array( 'rid' => $r['id'] );
 		}
 	}
-	$avg   = $count ? round( $sum / $count, 1 ) : 0;
+	$avg   = $rated ? round( $sum / $rated, 1 ) : 0;
 	$max   = max( 1, max( $dist ) );
 	$rec   = $rec_all ? round( $rec_yes / $rec_all * 100 ) : 0;
 	$thumb = get_the_post_thumbnail_url( $pid, 'thumbnail' );
@@ -384,6 +392,10 @@ function mrzaib_ajax_review() {
 		wp_send_json_error( array( 'msg' => __( 'Please fill all required fields.', 'mrzaib' ) ) );
 	}
 	$verified = function_exists( 'wc_customer_bought_product' ) && wc_customer_bought_product( $email, get_current_user_id(), $pid );
+	/* Same rule WooCommerce applies on pre_comment_on_post: only logged-in owners may review when verification is required. */
+	if ( 'yes' === get_option( 'woocommerce_review_rating_verification_required' ) && ! ( is_user_logged_in() && function_exists( 'wc_customer_bought_product' ) && wc_customer_bought_product( '', get_current_user_id(), $pid ) ) ) {
+		wp_send_json_error( array( 'msg' => __( 'Only logged in customers who have purchased this product may leave a review.', 'mrzaib' ) ) );
+	}
 	$cid      = wp_new_comment( array(
 		'comment_post_ID'      => $pid,
 		'comment_author'       => $name,
@@ -452,17 +464,41 @@ function mrzaib_ajax_question() {
 	if ( mb_strlen( $q ) < 3 || ! $name || ! is_email( $email ) ) {
 		wp_send_json_error( array( 'msg' => __( 'Please fill all required fields.', 'mrzaib' ) ) );
 	}
-	$cid = wp_insert_comment( array(
+	$ip = isset( $_SERVER['REMOTE_ADDR'] ) ? sanitize_text_field( wp_unslash( $_SERVER['REMOTE_ADDR'] ) ) : '';
+	/* Simple per-IP limit: 5 questions per 10 minutes. */
+	$rl_key = 'mzr_qrl_' . md5( $ip );
+	$rl     = (int) get_transient( $rl_key );
+	if ( $rl >= 5 ) {
+		wp_send_json_error( array( 'msg' => __( 'You are sending questions too quickly. Please wait a few minutes and try again.', 'mrzaib' ) ) );
+	}
+	$data = array(
 		'comment_post_ID'      => $pid,
+		'comment_parent'       => 0,
 		'comment_author'       => $name,
 		'comment_author_email' => $email,
+		'comment_author_url'   => '',
 		'comment_content'      => $q,
 		'comment_type'         => 'mz_question',
-		'comment_approved'     => 0,
-		'comment_author_IP'    => isset( $_SERVER['REMOTE_ADDR'] ) ? sanitize_text_field( wp_unslash( $_SERVER['REMOTE_ADDR'] ) ) : '',
-	) );
+		'comment_author_IP'    => $ip,
+		'comment_agent'        => isset( $_SERVER['HTTP_USER_AGENT'] ) ? substr( sanitize_text_field( wp_unslash( $_SERVER['HTTP_USER_AGENT'] ) ), 0, 254 ) : '',
+		'comment_date_gmt'     => current_time( 'mysql', true ),
+		'user_id'              => get_current_user_id(),
+	);
+	/* WordPress' own duplicate (same author/email + text on this product) and flood checks. */
+	$allowed = wp_allow_comment( $data, true );
+	if ( is_wp_error( $allowed ) ) {
+		$msg = 'comment_duplicate' === $allowed->get_error_code() ? __( 'You have already asked this question. The store will answer it soon.', 'mrzaib' ) : __( 'You are sending questions too quickly. Please wait a moment and try again.', 'mrzaib' );
+		wp_send_json_error( array( 'msg' => $msg ) );
+	}
+	$data['comment_approved'] = in_array( $allowed, array( 'spam', 'trash' ), true ) ? $allowed : 0;
+	unset( $data['comment_date_gmt'] );
+	$cid = wp_insert_comment( $data );
 	if ( ! $cid ) {
 		wp_send_json_error( array( 'msg' => __( 'Could not send. Please try again.', 'mrzaib' ) ) );
+	}
+	set_transient( $rl_key, $rl + 1, 10 * MINUTE_IN_SECONDS );
+	if ( 0 !== $data['comment_approved'] ) {
+		wp_send_json_success(); // Caught by spam / disallowed-keys checks: store it, but do not notify.
 	}
 	/* Email the store in the background so the customer never waits on the mail server. */
 	wp_schedule_single_event( time(), 'mrzaib_notify_question', array( (int) $cid ) );
@@ -551,8 +587,7 @@ function mrzaib_questions_metabox( $post ) {
 		echo '<p class="mzq-none">' . esc_html__( 'No questions yet. Questions customers ask on the product page will show here, separate from reviews.', 'mrzaib' ) . '</p>';
 	}
 	foreach ( $qs as $q ) {
-		$ans     = get_comments( array( 'parent' => $q->comment_ID, 'status' => 'approve', 'number' => 1, 'orderby' => 'comment_date_gmt', 'order' => 'ASC' ) );
-		$ans     = $ans ? $ans[0] : null;
+		$ans     = mrzaib_store_answer( $q->comment_ID );
 		$pending = '1' !== (string) $q->comment_approved;
 		printf( '<div class="mzq-item%s" data-id="%d">', $pending ? ' is-pending' : '', (int) $q->comment_ID );
 		echo '<div class="mzq-head"><span class="mzq-ava">' . esc_html( mrzaib_initials( $q->comment_author ) ) . '</span><div class="mzq-who"><strong>' . esc_html( $q->comment_author ) . '</strong><a href="mailto:' . esc_attr( $q->comment_author_email ) . '">' . esc_html( $q->comment_author_email ) . '</a></div>';
@@ -617,9 +652,9 @@ add_action( 'wp_ajax_mrzaib_q_admin', function () {
 		if ( mb_strlen( $text ) < 2 ) {
 			wp_send_json_error( array( 'msg' => __( 'Write an answer first.', 'mrzaib' ) ) );
 		}
-		$old = get_comments( array( 'parent' => $id, 'status' => 'approve', 'number' => 1, 'orderby' => 'comment_date_gmt', 'order' => 'ASC' ) );
+		$old = mrzaib_store_answer( $id );
 		if ( $old ) {
-			wp_update_comment( array( 'comment_ID' => $old[0]->comment_ID, 'comment_content' => $text ) );
+			wp_update_comment( array( 'comment_ID' => $old->comment_ID, 'comment_content' => $text ) );
 			wp_set_comment_status( $id, 'approve' );
 		} else {
 			$u   = wp_get_current_user();

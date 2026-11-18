@@ -143,7 +143,8 @@ if ( ! defined( 'MRZAIB_VIDEO_MAX' ) ) {
 	define( 'MRZAIB_VIDEO_MAX', 24 );
 }
 if ( ! defined( 'MRZAIB_HERO_MAX' ) ) {
-	define( 'MRZAIB_HERO_MAX', 16 );
+	// 16, or more when the hero reset needed room to keep all of the admin's own slides.
+	define( 'MRZAIB_HERO_MAX', max( 16, (int) get_option( 'mrzaib_hero_max', 16 ) ) );
 }
 
 /** Built-in hero slides (desktop, mobile, link, alt). */
@@ -178,9 +179,11 @@ function mrzaib_media_alt( $url, $fallback = '' ) {
 		}
 		$src = (string) get_post_meta( $id, '_mrzaib_src', true );
 		if ( preg_match( '/hero-(\d+)-(desktop|mobile)/', $src, $m ) ) {
-			$hd = mrzaib_hero_defaults();
-			if ( ! empty( $hd[ (int) $m[1] ][3] ) ) {
-				return $hd[ (int) $m[1] ][3];
+			// Match by the original asset number (hero-N file), not the reindexed slide position.
+			foreach ( mrzaib_hero_defaults() as $d ) {
+				if ( preg_match( '/hero-(\d+)-desktop/', basename( (string) strtok( $d[0], '?' ) ), $dm ) && (int) $dm[1] === (int) $m[1] && ! empty( $d[3] ) ) {
+					return $d[3];
+				}
 			}
 		}
 		if ( '' === $fallback ) {

@@ -296,6 +296,11 @@ function mrzaib_webp_url( $url, $w = 0 ) {
 	$suffix = $w ? '-mz2w' . (int) $w . '.webp' : '.webp';
 	$dest   = $src . $suffix;
 	if ( ! file_exists( $dest ) ) {
+		// A WebP was already tried and was not smaller: skip until the original changes.
+		$skip = $dest . '.skip';
+		if ( ! $w && file_exists( $skip ) && file_exists( $src ) && trim( (string) @file_get_contents( $skip ) ) === filemtime( $src ) . ':' . filesize( $src ) ) { // phpcs:ignore
+			return '';
+		}
 		static $start = null, $made = 0;
 		if ( null === $start ) {
 			$start = microtime( true );
@@ -323,7 +328,7 @@ function mrzaib_webp_url( $url, $w = 0 ) {
 		// Keep the WebP only when it is actually smaller.
 		if ( ! $w && filesize( $dest ) >= filesize( $src ) ) {
 			@unlink( $dest ); // phpcs:ignore
-			@copy( $src, $dest . '.skip' ); // phpcs:ignore
+			@file_put_contents( $skip, filemtime( $src ) . ':' . filesize( $src ) ); // phpcs:ignore -- tiny marker, not an image copy.
 			return '';
 		}
 	}
@@ -335,14 +340,19 @@ function mrzaib_webp_active() {
 }
 
 /** srcset: WebP for every width, plus in-between widths so phones never get a far bigger file. */
-function mrzaib_webp_srcset_sources( $sources, $full_url, $full_w ) {
+function mrzaib_webp_srcset_sources( $sources, $full_url, $full_w, $full_h = 0, $size_array = array() ) {
 	foreach ( $sources as $k => $s ) {
 		$wu = mrzaib_webp_url( $s['url'] );
 		if ( $wu ) {
 			$sources[ $k ]['url'] = $wu;
 		}
 	}
-	if ( $full_url && $full_w ) {
+	// Extra widths are resized from the full image, so add them only when it has the requested crop's shape.
+	$same_ratio = true;
+	if ( ! empty( $size_array[0] ) && ! empty( $size_array[1] ) ) {
+		$same_ratio = $full_h && wp_image_matches_ratio( (int) $size_array[0], (int) $size_array[1], (int) $full_w, (int) $full_h );
+	}
+	if ( $full_url && $full_w && $same_ratio ) {
 		foreach ( array( 360, 450, 720, 1080 ) as $want ) {
 			if ( $want >= $full_w * 0.9 ) {
 				continue;
@@ -371,8 +381,42 @@ add_filter( 'wp_calculate_image_srcset', function ( $sources, $size_array, $imag
 	}
 	$full = $attachment_id ? wp_get_attachment_url( $attachment_id ) : '';
 	$fw   = ! empty( $image_meta['width'] ) ? (int) $image_meta['width'] : 0;
-	return mrzaib_webp_srcset_sources( (array) $sources, $full, $fw );
+	$fh   = ! empty( $image_meta['height'] ) ? (int) $image_meta['height'] : 0;
+	return mrzaib_webp_srcset_sources( (array) $sources, $full, $fw, $fh, (array) $size_array );
 }, 20, 5 );
+
+/** Remove the WebP sidecars (.webp, -mz2w*.webp) and .skip markers of an attachment's files when it is deleted. */
+add_action( 'delete_attachment', function ( $post_id ) {
+	$file = get_attached_file( $post_id, true );
+	if ( ! $file ) {
+		return;
+	}
+	$files = array( $file );
+	$dir   = dirname( $file );
+	$meta  = wp_get_attachment_metadata( $post_id );
+	if ( ! empty( $meta['original_image'] ) ) {
+		$files[] = $dir . '/' . $meta['original_image'];
+	}
+	if ( ! empty( $meta['sizes'] ) && is_array( $meta['sizes'] ) ) {
+		foreach ( $meta['sizes'] as $sz ) {
+			if ( ! empty( $sz['file'] ) ) {
+				$files[] = $dir . '/' . $sz['file'];
+			}
+		}
+	}
+	foreach ( array_unique( $files ) as $f ) {
+		$side = array( $f . '.webp', $f . '.webp.skip' );
+		$found = glob( str_replace( array( '[', ']', '*', '?' ), array( '[[]', '[]]', '[*]', '[?]' ), $f ) . '-mz2w*.webp*' );
+		if ( $found ) {
+			$side = array_merge( $side, $found );
+		}
+		foreach ( $side as $sf ) {
+			if ( is_file( $sf ) ) {
+				wp_delete_file( $sf );
+			}
+		}
+	}
+} );
 
 add_filter( 'wp_get_attachment_image_src', function ( $image ) {
 	if ( $image && ( mrzaib_webp_active() || ! empty( $GLOBALS['mrzaib_webp_force'] ) ) ) {

@@ -34,7 +34,7 @@ while ( have_posts() ) :
 		<div class="mzb-layout<?php echo $mz_prod ? ' has-aside' : ''; ?>">
 			<article <?php post_class( 'mzb-article' ); ?>>
 				<?php if ( has_excerpt() ) : ?><p class="mzb-lead"><?php echo esc_html( get_the_excerpt() ); ?></p><?php endif; ?>
-				<div class="entry-content mzb-content"><?php the_content(); ?></div>
+				<div class="entry-content mzb-content"><?php the_content(); wp_link_pages( array( 'before' => '<nav class="page-links">' . esc_html__( 'Pages:', 'mrzaib' ), 'after' => '</nav>' ) ); ?></div>
 
 				<footer class="mzb-foot">
 					<?php $mz_tags = get_the_tags(); if ( $mz_tags ) : ?>

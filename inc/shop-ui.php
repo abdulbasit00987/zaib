@@ -126,7 +126,7 @@ function mrzaib_shop_widget_price() {
 	echo '<input type="range" class="mzp-lo" name="min_price" min="' . (int) $lo . '" max="' . (int) $hi . '" step="' . (int) $step . '" value="' . (int) $cur_lo . '" aria-label="' . esc_attr__( 'Minimum price', 'mrzaib' ) . '">';
 	echo '<input type="range" class="mzp-hi" name="max_price" min="' . (int) $lo . '" max="' . (int) $hi . '" step="' . (int) $step . '" value="' . (int) $cur_hi . '" aria-label="' . esc_attr__( 'Maximum price', 'mrzaib' ) . '">';
 	echo '</div><div class="mzp-row"><span class="mzp-label">' . esc_html__( 'Price:', 'mrzaib' ) . ' <b class="mzp-v-lo">' . esc_html( $sym . ' ' . number_format( $cur_lo ) ) . '</b> — <b class="mzp-v-hi">' . esc_html( $sym . ' ' . number_format( $cur_hi ) ) . '</b></span>';
-	foreach ( array( 'orderby', 'product_tag', 's', 'post_type' ) as $keep ) {
+	foreach ( array( 'orderby', 'product_tag', 's', 'post_type', 'mz_featured' ) as $keep ) {
 		if ( isset( $_GET[ $keep ] ) ) { // phpcs:ignore
 			echo '<input type="hidden" name="' . esc_attr( $keep ) . '" value="' . esc_attr( sanitize_text_field( wp_unslash( $_GET[ $keep ] ) ) ) . '">'; // phpcs:ignore
 		}

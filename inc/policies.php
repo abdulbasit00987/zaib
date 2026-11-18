@@ -47,7 +47,7 @@ add_action( 'customize_register', function ( $c ) {
 		'description' => __( 'This note tells customers that your team will call or WhatsApp them to confirm the order, that they send the delivery charges in advance with a payment slip, and pay the rest in cash to the rider. The short text shows on product pages and the cart. The full text shows on checkout, the thank-you page and order emails.', 'mrzaib' ),
 		'priority'    => 160,
 	) );
-	$c->add_setting( 'mrzaib_confirm_on', array( 'default' => '1', 'sanitize_callback' => function ( $v ) { return $v ? '1' : ''; } ) );
+	$c->add_setting( 'mrzaib_confirm_on', array( 'default' => '1', 'sanitize_callback' => function ( $v ) { return ( $v && 'false' !== $v ) ? '1' : '0'; } ) ); // '0' (not '') so mrzaib_opt() keeps "off".
 	$c->add_control( 'mrzaib_confirm_on', array( 'label' => __( 'Show the order confirmation note', 'mrzaib' ), 'section' => 'mrzaib_confirm', 'type' => 'checkbox' ) );
 	$c->add_setting( 'mrzaib_confirm_short', array( 'default' => mrzaib_confirm_default_short(), 'sanitize_callback' => 'sanitize_textarea_field' ) );
 	$c->add_control( 'mrzaib_confirm_short', array( 'label' => __( 'Short text (product page, cart)', 'mrzaib' ), 'section' => 'mrzaib_confirm', 'type' => 'textarea' ) );
@@ -288,26 +288,37 @@ function mrzaib_policy_content( $slug ) {
 	return '';
 }
 
-/* Fill the policy pages once. A page the admin already wrote is never touched. */
+/** Policy text for comparing whole pages: tags, entities and spacing ignored. */
+function mrzaib_policy_norm( $html ) {
+	$t = html_entity_decode( wp_strip_all_tags( (string) $html ), ENT_QUOTES, 'UTF-8' );
+	return trim( preg_replace( '/\s+/u', ' ', $t ) );
+}
+
+/**
+ * Hashes (md5 of mrzaib_policy_norm()) of every complete, unmodified policy text the theme ever
+ * created: the old demo placeholders and each earlier generated version. Only a page that still
+ * matches one of these in full is replaced; a page the admin edited, even slightly, is kept.
+ */
+function mrzaib_old_policy_hashes() {
+	return array(
+		'privacy-policy-2' => array( '209457b19e4ae0d3fce8091e8fbf47a1', '27b2cd9c407d847e3c6b3d9f4adae983' ),
+		'shipping-policy'  => array( '0f7797e389a1be1ea1a96b090bffbf69', '105d989b54f11ae5ba81ce3fcd8aca21', '43244cb0e7c9de16a586561c48735bfb', '5a7a742bccc79c66fba8407b9e8434e9', '2ad41ab78fc7fb29964a4fa1c7973de2' ),
+		'terms-of-service' => array( '3c3620ce3631fe011ad766e9363b4168', '7f0b8c9cade0d3ac33e7a891b0773484' ),
+		'refund-policy'    => array( 'ec7c6f5ba4e390e9da3f611db01f4c66', 'f06936b62fe80e3c1780bade2be400d7' ),
+	);
+}
+
+/* Fill the policy pages. Only empty pages and pages that are exactly an older theme text are updated. */
 function mrzaib_fill_policy_pages( $force = false ) {
-	$done = 0;
+	$done   = 0;
+	$hashes = mrzaib_old_policy_hashes();
 	foreach ( array( 'privacy-policy-2', 'shipping-policy', 'terms-of-service', 'refund-policy' ) as $slug ) {
 		$page = get_page_by_path( $slug );
 		if ( ! $page ) {
 			continue;
 		}
-		$c   = trim( wp_strip_all_tags( $page->post_content ) );
-		$v1  = false !== strpos( $page->post_content, 'will be confirmed with you when our team calls' )
-			|| false !== strpos( $page->post_content, 'Delivery charges are confirmed with you on this confirmation call' )
-			|| false !== strpos( $page->post_content, 'to confirm your order and its delivery charges' )
-			|| false !== strpos( $page->post_content, 'Because all orders are Cash on Delivery, refunds are sent' );
-		$v1  = $v1 || false !== strpos( $page->post_content, 'If your order has free delivery, no advance payment is needed' );
-		$old = $v1 || '' === $c
-			|| false !== strpos( $c, '(Replace with' )
-			|| ( false !== strpos( $page->post_content, '[mrzaib_shipping]' ) && false === strpos( $page->post_content, 'How your order works' ) )
-			|| 0 === strpos( $c, 'Not happy with a fragrance? Return it within 15 days' )
-			|| 0 === strpos( $c, 'Return & Refund PolicyNot happy with a fragrance?' )
-			|| 0 === strpos( $c, 'Return &amp; Refund PolicyNot happy with a fragrance?' );
+		$c   = mrzaib_policy_norm( $page->post_content );
+		$old = '' === $c || in_array( md5( $c ), $hashes[ $slug ], true );
 		if ( $force || $old ) {
 			wp_update_post( array( 'ID' => $page->ID, 'post_content' => mrzaib_policy_content( $slug ) ) );
 			$done++;
@@ -327,13 +338,22 @@ add_action( 'admin_init', function () {
 } );
 
 /* ---------- FAQs (Pages > FAQ Questions) ---------- */
+/** Default "How long does delivery take?" answer, built from the delivery settings (Shipping). */
+function mrzaib_default_delivery_answer() {
+	$time = function_exists( 'mrzaib_delivery_text' ) ? trim( wp_strip_all_tags( (string) mrzaib_delivery_text() ) ) : '';
+	if ( '' === $time ) {
+		$time = 'They usually arrive in 2 to 5 working days, depending on your city.';
+	}
+	return 'Orders are dispatched within 1 to 2 working days after confirmation and payment of the delivery charges. ' . $time;
+}
+
 function mrzaib_default_faqs() {
 	return array(
 		array( 'Orders & Delivery', 'How will my order be confirmed?', 'After you place your order, our team will call or WhatsApp you on the phone number you entered in the order form to confirm your order. Please keep your phone on.' ),
 		array( 'Orders & Delivery', 'How do I pay the delivery charges?', 'Delivery charges are paid in advance. On the confirmation call or WhatsApp, our team shares our account details. Send the delivery charges shown at checkout and share the payment slip, then your order is dispatched.' ),
 		array( 'Orders & Delivery', 'How much are the delivery charges?', 'The delivery charges for your city are shown on the website at checkout.' ),
 		array( 'Orders & Delivery', 'Do you offer Cash on Delivery?', 'Yes. The order amount is Cash on Delivery all over Pakistan. You pay the rider in cash when your parcel arrives, without the delivery charges, because they are paid in advance.' ),
-		array( 'Orders & Delivery', 'How long does delivery take?', 'Orders are dispatched within 1 to 2 working days after confirmation and payment of the delivery charges, and usually arrive in 2 to 5 working days, depending on your city.' ),
+		array( 'Orders & Delivery', 'How long does delivery take?', mrzaib_default_delivery_answer() ),
 		array( 'Orders & Delivery', 'How can I track my order?', 'We share the courier tracking number after dispatch. You can also use the Track Your Order page with your order number and email.' ),
 		array( 'Orders & Delivery', 'Can I cancel my order?', 'Yes, you can cancel before your order is dispatched, for example on the confirmation call.' ),
 		array( 'Products', 'How long do your perfumes last?', 'Most MR ZAIB perfumes last 8 to 12 hours on skin, depending on skin type and weather.' ),

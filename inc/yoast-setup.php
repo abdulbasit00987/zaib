@@ -78,15 +78,17 @@ function mrzaib_configure_yoast() {
 	}
 	$brand   = 'MR ZAIB';
 
-	/* ---- Let search engines index the site (fixes Yoast "Huge SEO Issue: You're blocking access to robots") ---- */
-	update_option( 'blog_public', '1' );
-	if ( class_exists( 'Yoast_Notification_Center' ) ) {
-		$nc = Yoast_Notification_Center::get();
-		if ( method_exists( $nc, 'remove_notification_by_id' ) ) {
-			$nc->remove_notification_by_id( 'wpseo-search-engines-discouraged' );
+	/* ---- Search visibility (Settings > Reading) is the admin's choice and is never changed here;
+	   a staging / unfinished store can stay hidden. Yoast's warning is cleared only when indexing is on. ---- */
+	if ( '1' === (string) get_option( 'blog_public' ) ) {
+		if ( class_exists( 'Yoast_Notification_Center' ) ) {
+			$nc = Yoast_Notification_Center::get();
+			if ( method_exists( $nc, 'remove_notification_by_id' ) ) {
+				$nc->remove_notification_by_id( 'wpseo-search-engines-discouraged' );
+			}
 		}
+		delete_option( 'wpseo_search_engines_discouraged_notice' );
 	}
-	delete_option( 'wpseo_search_engines_discouraged_notice' );
 
 	$logo_id = mrzaib_seo_logo_id();
 	$logo    = $logo_id ? wp_get_attachment_url( $logo_id ) : '';

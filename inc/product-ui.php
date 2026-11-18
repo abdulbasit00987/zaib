@@ -204,6 +204,11 @@ function mrzaib_pdp_gallery() {
 	echo '<div class="mz-pdp-gallery">' . mrzaib_gallery_html( $product, 'mzgal-pdp' ) . '</div>'; // phpcs:ignore
 }
 
+/* Theme gallery: show the chosen variation's image in the first slide, and put the parent image back on reset. */
+add_action( 'wp_enqueue_scripts', function () {
+	wp_add_inline_script( 'wc-add-to-cart-variation', "jQuery(function($){function g(f){return f.closest('.sp-wqv-content,.product').find('.mzgal').first();}function keep(i){if(i.length&&!i.data('mzo'))i.data('mzo',{src:i.attr('src'),srcset:i.attr('srcset'),sizes:i.attr('sizes'),alt:i.attr('alt')});}function put(i,o){if(!i.length||!o)return;$.each(o,function(k,v){if(v)i.attr(k,v);else i.removeAttr(k);});}function imgs(f){var G=g(f);return{G:G,m:G.find('.mzgal-slide').first().find('img').first(),t:G.find('.mzgal-t').first().find('img').first()};}function reset(f){var x=imgs(f);put(x.m,x.m.data('mzo'));put(x.t,x.t.data('mzo'));}$(document.body).on('found_variation','form.variations_form',function(e,v){var f=$(this),x=imgs(f);if(!x.m.length)return;keep(x.m);keep(x.t);if(v&&v.image&&v.image.src&&v.image.src.length>1){put(x.m,{src:v.image.src,srcset:v.image.srcset||'',sizes:v.image.sizes||'',alt:v.image.alt||x.m.data('mzo').alt});if(v.image.gallery_thumbnail_src)put(x.t,{src:v.image.gallery_thumbnail_src,srcset:'',sizes:'',alt:''});x.G.find('.mzgal-t').first().trigger('click');}else{reset(f);}}).on('reset_image','form.variations_form',function(){reset($(this));});});" );
+}, 100 );
+
 /* Missing gallery-plugin option keys caused PHP warnings ("Undefined array key lightbox_img_count / thumbnail_image_size"). */
 add_filter( 'option_wpgs_form', function ( $o ) {
 	$o = is_array( $o ) ? $o : array();
@@ -247,6 +252,14 @@ function mrzaib_freeship_html() {
 	$min   = $rule && $rule['free'] ? (float) $rule['free'] : 0;
 	$where = $rule ? ' ' . sprintf( __( 'in %s', 'mrzaib' ), $rule['name'] ) : '';
 	$total = (float) WC()->cart->get_displayed_subtotal();
+	// Same total WooCommerce's free-shipping check uses: after coupons unless the method ignores discounts.
+	if ( $rule && 'yes' !== ( isset( $rule['ignore_discounts'] ) ? $rule['ignore_discounts'] : 'no' ) ) {
+		$total -= (float) WC()->cart->get_discount_total();
+		if ( WC()->cart->display_prices_including_tax() ) {
+			$total -= (float) WC()->cart->get_discount_tax();
+		}
+	}
+	$total = round( $total, wc_get_price_decimals() );
 	$count = WC()->cart->get_cart_contents_count();
 	if ( $min <= 0 || ! $count ) {
 		return '<div class="mz-freeship is-empty"></div>';

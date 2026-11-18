@@ -4,7 +4,7 @@
   var $body = $('body');
 
   /* Hidden panels are inert (not focusable) until opened: keep `inert` in sync with aria-hidden. */
-  ['mobile-nav', 'drawer-menu', 'mz-hcart', 'search-overlay'].forEach(function (id) {
+  ['mobile-nav', 'drawer-menu', 'mz-hcart', 'search-overlay', 'mzshop-side'].forEach(function (id) {
     var el = document.getElementById(id);
     if (!el || !('MutationObserver' in window)) { if (el) el.removeAttribute('inert'); return; }
     var sync = function () { if (el.getAttribute('aria-hidden') === 'false') el.removeAttribute('inert'); else el.setAttribute('inert', ''); };
@@ -173,16 +173,50 @@
       $(document.body).trigger('wc_fragments_refreshed');
     }
   }
-  var hcT;
+  /* Cart quantity changes: debounced per cart item, then sent one at a time (latest quantity per
+     item wins), so an older request can never overwrite a newer one on the server. Fragments are
+     applied only when no further change is waiting, so the drawer never jumps back to a stale state. */
+  var hcTimers = {}, hcPending = {}, hcBusy = false;
+  function hcItem(key) { return $('#mz-hcart .mzc-item').filter(function () { return String($(this).data('key')) === key; }); }
+  function hcIdle() { return !hcBusy && $.isEmptyObject(hcPending) && $.isEmptyObject(hcTimers); }
+  function hcPump() {
+    if (hcBusy) return;
+    var key = Object.keys(hcPending)[0];
+    if (key === undefined) return;
+    var q = hcPending[key]; delete hcPending[key];
+    hcBusy = true;
+    hcItem(key).addClass('is-loading');
+    $.post((window.MRZAIB && MRZAIB.ajax) || '/wp-admin/admin-ajax.php', { action: 'mrzaib_hcart_qty', key: key, qty: q })
+      .done(function (res) {
+        hcBusy = false;
+        if (hcIdle()) {
+          hcApply(res);
+          if (res && res.error && res.message) {
+            hcItem(String(res.key || key)).find('.mzc-info').append($('<p class="mzc-err" role="alert"></p>').text(res.message));
+          }
+        }
+      })
+      .fail(function () {
+        hcBusy = false;
+        if (hcIdle()) $(document.body).trigger('wc_fragment_refresh');
+      })
+      .always(function () {
+        hcItem(key).removeClass('is-loading');
+        hcPump();
+      });
+  }
   function hcSetQty($item, q) {
-    $item.addClass('is-loading');
-    $.post((window.MRZAIB && MRZAIB.ajax) || '/wp-admin/admin-ajax.php', { action: 'mrzaib_hcart_qty', key: $item.data('key'), qty: q })
-      .done(hcApply).always(function () { $item.removeClass('is-loading'); });
+    var key = String($item.data('key'));
+    if (hcTimers[key]) { clearTimeout(hcTimers[key]); delete hcTimers[key]; }
+    $item.find('.mzc-err').remove();
+    hcPending[key] = q;
+    hcPump();
   }
   $(document).on('click', '#mz-hcart .mzc-q', function () {
-    var $item = $(this).closest('.mzc-item'), $in = $item.find('input');
+    var $item = $(this).closest('.mzc-item'), $in = $item.find('input'), key = String($item.data('key'));
     var q = Math.max(0, (parseInt($in.val(), 10) || 0) + parseInt($(this).data('d'), 10));
-    $in.val(q); clearTimeout(hcT); hcT = setTimeout(function () { hcSetQty($item, q); }, 250);
+    $in.val(q); clearTimeout(hcTimers[key]);
+    hcTimers[key] = setTimeout(function () { delete hcTimers[key]; hcSetQty($item, q); }, 250);
   });
   $(document).on('change', '#mz-hcart .mzc-qty input', function () {
     hcSetQty($(this).closest('.mzc-item'), Math.max(0, parseInt(this.value, 10) || 0));
@@ -507,8 +541,11 @@
 jQuery(function ($) {
   if (!window.MRZAIB) return;
   var $screen = $('<div class="mzp-screen" hidden></div>').appendTo('body');
-  var timer, xhr, cache = {};
+  var timer, xhr, cache = {}, gen = 0;
+  // Any close (cleared input, Escape, close button, backdrop) invalidates pending/in-flight lookups.
+  function cancel() { gen++; clearTimeout(timer); if (xhr) { xhr.abort(); xhr = null; } }
   function close($f) {
+    cancel();
     ($f || $('form[data-predictive].is-open')).each(function () {
       $(this).removeClass('is-open is-focus').find('.mz-predictive').attr('hidden', true).empty();
       $(this).find('input[type=search]').attr('aria-expanded', 'false');
@@ -527,14 +564,18 @@ jQuery(function ($) {
     if ($.trim(this.value)) $(this).trigger('input');
   });
   $(document).on('input', 'form[data-predictive] input[type=search]', function () {
-    var $f = $(this).closest('form'), q = $.trim(this.value);
-    clearTimeout(timer);
+    var $f = $(this).closest('form'), $in = $(this), q = $.trim(this.value);
+    cancel();
     if (!q) { close($f); $f.addClass('is-focus'); return; }
     if (cache[q]) { show($f, cache[q]); return; }
+    var my = gen;
     timer = setTimeout(function () {
-      if (xhr) xhr.abort();
+      if (my !== gen) return;
       xhr = $.getJSON(MRZAIB.ajax, { action: 'mrzaib_suggest', q: q }, function (r) {
-        cache[q] = r.html; show($f, r.html);
+        cache[q] = r.html;
+        // Show only if this is still the latest lookup and the field still holds this query.
+        if (my !== gen || $.trim($in.val()) !== q) return;
+        show($f, r.html);
       });
     }, 220);
   });
@@ -567,8 +608,24 @@ jQuery(function ($) {
 	document.querySelectorAll('.grid-view-btn').forEach(function (b) {
 		b.addEventListener('click', function () { setView(b.getAttribute('data-view')); });
 	});
-	function open() { shop.classList.add('is-open'); document.body.style.overflow = 'hidden'; }
-	function close() { shop.classList.remove('is-open'); document.body.style.overflow = ''; }
+	/* Below 990px the filter sidebar is an off-canvas drawer: keep it aria-hidden + inert while closed
+	   (the inert observer at the top follows aria-hidden), visible/focusable when open or on desktop. */
+	var side = document.getElementById('mzshop-side');
+	var mq = window.matchMedia ? window.matchMedia('(max-width: 989px)') : null;
+	function syncSide() {
+		if (!side) return;
+		var hidden = !!(mq && mq.matches) && !shop.classList.contains('is-open');
+		if (hidden && side.contains(document.activeElement)) {
+			var opener = document.querySelector('[data-mzshop-open]');
+			if (opener) opener.focus(); else document.activeElement.blur();
+		}
+		side.setAttribute('aria-hidden', hidden ? 'true' : 'false');
+		if (hidden) side.setAttribute('inert', ''); else side.removeAttribute('inert');
+	}
+	syncSide();
+	if (mq) { if (mq.addEventListener) mq.addEventListener('change', syncSide); else if (mq.addListener) mq.addListener(syncSide); }
+	function open() { shop.classList.add('is-open'); document.body.style.overflow = 'hidden'; syncSide(); }
+	function close() { shop.classList.remove('is-open'); document.body.style.overflow = ''; syncSide(); }
 	document.querySelectorAll('[data-mzshop-open]').forEach(function (b) { b.addEventListener('click', open); });
 	shop.querySelectorAll('[data-mzshop-close]').forEach(function (b) { b.addEventListener('click', close); });
 	document.addEventListener('keydown', function (e) { if (e.key === 'Escape') { close(); } });
@@ -644,10 +701,16 @@ jQuery(function ($) {
 				if (ok) form.reset();
 			})
 			.catch(function () {
-				var h = document.createElement('input');
-				h.type = 'hidden'; h.name = btn.name; h.value = '1';
-				form.appendChild(h);
-				HTMLFormElement.prototype.submit.call(form);
+				// The server may already have stored this request (lost connection, bad response),
+				// so never re-POST it natively here: show an error and let the user retry.
+				// (The server also rejects an identical repeat within 10 minutes.)
+				if (box) {
+					box.innerHTML = '';
+					var d = document.createElement('div');
+					d.className = 'form-error';
+					d.textContent = 'We could not confirm your submission. Please check your connection and try again in a moment.';
+					box.appendChild(d);
+				}
 			})
 			.then(function () {
 				btn.classList.remove('is-sending');

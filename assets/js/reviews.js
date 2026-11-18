@@ -16,12 +16,12 @@
   function esc(t) { var d = document.createElement('div'); d.textContent = t == null ? '' : String(t); return d.innerHTML; }
   function nl(t) { return esc(t).replace(/\n/g, '<br>'); }
   function stars(r, size) {
-    var h = '<span class="mzr-stars" style="--s:' + (size || 16) + 'px">';
-    for (var i = 1; i <= 5; i++) { var f = Math.max(0, Math.min(1, r - (i - 1))) * 100; h += '<span class="mzr-star"><span style="width:' + f + '%"></span></span>'; }
+    var h = '<span class="mzr-stars" style="--s:' + (size || 16) + 'px" role="img" aria-label="' + r + ' out of 5 stars">';
+    for (var i = 1; i <= 5; i++) { var f = Math.max(0, Math.min(1, r - (i - 1))) * 100; h += '<span class="mzr-star" aria-hidden="true"><span style="width:' + f + '%"></span></span>'; }
     return h + '</span>';
   }
   var usedKey = 'mzr_useful_' + D.pid;
-  var used = {};
+  var used = {}, pend = {};
   try { used = JSON.parse(localStorage.getItem(usedKey) || '{}'); } catch (e) {}
 
   /* ---------- reviews ---------- */
@@ -62,7 +62,7 @@
     if (r.reply) {
       h += '<div class="mzr-answer"><div class="mzr-ahead"><span class="mzr-ava mzr-ava--store">' + esc(D.storeIni) + '</span><strong>' + esc(D.store) + '</strong><span class="mzr-tag">Store</span><span class="mzr-date">' + esc(r.reply.date) + '</span></div><div class="mzr-text">' + nl(r.reply.body) + '</div></div>';
     }
-    h += '<div class="mzr-actions"><button type="button" class="mzr-act' + (used[r.id] ? ' is-done' : '') + '" data-useful="' + r.id + '"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M7 11v9H4v-9h3Zm0 0 4-8a2 2 0 0 1 2 2v4h5.5a2 2 0 0 1 2 2.3l-1.2 7A2 2 0 0 1 17.3 20H7"/></svg>Useful <span>(' + r.useful + ')</span></button>';
+    h += '<div class="mzr-actions"><button type="button" class="mzr-act' + (used[r.id] || pend[r.id] ? ' is-done' : '') + '" data-useful="' + r.id + '"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M7 11v9H4v-9h3Zm0 0 4-8a2 2 0 0 1 2 2v4h5.5a2 2 0 0 1 2 2.3l-1.2 7A2 2 0 0 1 17.3 20H7"/></svg>Useful <span>(' + r.useful + ')</span></button>';
     h += '<button type="button" class="mzr-act" data-share="' + r.id + '"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 12v7a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1v-7M16 6l-4-4-4 4M12 2v13"/></svg>Share</button></div>';
     return h + '</div></li>';
   }
@@ -153,22 +153,28 @@
   }
   function useful(btn) {
     var id = btn.getAttribute('data-useful');
-    if (used[id]) return;
-    used[id] = 1; try { localStorage.setItem(usedKey, JSON.stringify(used)); } catch (e) {}
+    if (used[id] || pend[id]) return;
+    pend[id] = 1;
     btn.classList.add('is-done');
     var fd = new FormData(); fd.append('cid', id);
+    /* the list may have re-rendered while the vote was in flight */
+    var live = function () { return root.querySelector('[data-useful="' + id + '"]'); };
+    var fail = function () { delete pend[id]; var b = live(); if (b) b.classList.remove('is-done'); };
     post('mzr_useful', fd).then(function (res) {
       if (res && res.success) {
+        delete pend[id];
+        used[id] = 1; try { localStorage.setItem(usedKey, JSON.stringify(used)); } catch (e) {}
         D.reviews.forEach(function (r) { if (String(r.id) === id) r.useful = res.data.n; });
-        btn.querySelector('span').textContent = '(' + res.data.n + ')';
-      }
-    }).catch(function () {});
+        var b = live(); if (b) b.querySelector('span').textContent = '(' + res.data.n + ')';
+      } else fail();
+    }).catch(fail);
   }
   function share(btn) {
     var url = location.href.split('#')[0] + '#review-' + btn.getAttribute('data-share');
     if (navigator.share) { navigator.share({ title: D.title, url: url }).catch(function () {}); return; }
     var done = function () { var o = btn.innerHTML; btn.textContent = 'Link copied'; setTimeout(function () { btn.innerHTML = o; }, 1600); };
-    if (navigator.clipboard) navigator.clipboard.writeText(url).then(done, done); else done();
+    var manual = function () { window.prompt('Copy this link:', url); };
+    if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(url).then(done, manual); else manual();
   }
   function lightbox(src) {
     var lb = $('.mzr-lightbox'); lb.querySelector('img').src = src; lb.hidden = false; document.documentElement.classList.add('mzr-lock');
@@ -179,7 +185,8 @@
   function openModal(name) {
     var m = $('[data-modal="' + name + '"]'); if (!m) return;
     m.hidden = false; openM = m; dirty = false; document.documentElement.classList.add('mzr-lock');
-    resetForm(m); setTimeout(function () { var f = m.querySelector('.mzr-step.is-active button, .mzr-step.is-active textarea, .mzr-step.is-active input:not([type=hidden])'); if (f) f.focus(); }, 30);
+    if (!m.querySelector('form').mzrBusy) resetForm(m); /* keep a pending submission's form intact so its result lands on the same draft */
+    setTimeout(function () { var f = m.querySelector('.mzr-step.is-active button, .mzr-step.is-active textarea, .mzr-step.is-active input:not([type=hidden])'); if (f) f.focus(); }, 30);
   }
   function closeModal(force) {
     if (!openM) return;
@@ -212,9 +219,9 @@
       nb.disabled = len < 10; nb.textContent = len < 10 ? 'Write at least 10 characters' : 'Continue';
       $('.mzr-count', m).textContent = len < 10 ? (10 - len) + ' more characters' : '';
       $('.mzr-step[data-step="4"] .mzr-next', m).disabled = !f.recommend.value;
-      $('.mzr-step[data-step="5"] [type=submit]', m).disabled = !(f.name.value.trim() && /\S+@\S+\.\S+/.test(f.email.value));
+      $('.mzr-step[data-step="5"] [type=submit]', m).disabled = !!f.mzrBusy || !(f.name.value.trim() && /\S+@\S+\.\S+/.test(f.email.value));
     } else {
-      $('[type=submit]', m).disabled = !(f.question.value.trim().length >= 3 && f.name.value.trim() && /\S+@\S+\.\S+/.test(f.email.value));
+      $('[type=submit]', m).disabled = !!f.mzrBusy || !(f.question.value.trim().length >= 3 && f.name.value.trim() && /\S+@\S+\.\S+/.test(f.email.value));
     }
   }
   var files = [];
@@ -248,21 +255,22 @@
     }
     f.addEventListener('submit', function (e) {
       e.preventDefault();
-      var btn = f.querySelector('.mzr-step.is-active [type=submit]'); if (!btn || btn.disabled) return;
+      var btn = f.querySelector('.mzr-step.is-active [type=submit]'); if (!btn || btn.disabled || f.mzrBusy) return;
       var err = f.querySelector('.mzr-step.is-active .mzr-err'); err.hidden = true;
       var fd = new FormData();
       Array.prototype.forEach.call(f.elements, function (el) { if (el.name && el.type !== 'file') fd.append(el.name, el.value); });
       files.forEach(function (file) { fd.append('images[]', file); });
-      var label = btn.textContent; btn.disabled = true; btn.textContent = 'Sending…';
+      var label = btn.textContent; btn.disabled = true; btn.textContent = 'Sending…'; f.mzrBusy = true;
+      var settle = function () { f.mzrBusy = false; btn.textContent = label; validate(m); };
       post(f.getAttribute('data-form') === 'review' ? 'mzr_review' : 'mzr_question', fd).then(function (res) {
-        btn.textContent = label; btn.disabled = false;
+        settle();
         if (res && res.success) {
           f.classList.add('is-sent');
           if (res.data && res.data.approved) f.setAttribute('data-live', '1');
           var msg = f.querySelector('[data-msg]'); if (msg && res.data) msg.textContent = res.data.msg;
           goStep(m, $$('.mzr-step', m).length);
         } else { err.textContent = (res && res.data && res.data.msg) || 'Something went wrong. Please try again.'; err.hidden = false; }
-      }).catch(function () { btn.textContent = label; btn.disabled = false; err.textContent = 'Network error. Please try again.'; err.hidden = false; });
+      }).catch(function () { settle(); err.textContent = 'Network error. Please try again.'; err.hidden = false; });
     });
   });
   function addFiles(list, m) {
@@ -272,9 +280,12 @@
     });
     previews(m);
   }
+  var urls = [];
   function previews(m) {
     var pv = m.querySelector('.mzr-previews');
-    pv.innerHTML = files.map(function (file, i) { return '<span class="mzr-prev"><img src="' + URL.createObjectURL(file) + '" alt=""><button type="button" data-rm="' + i + '" aria-label="Remove">&times;</button></span>'; }).join('');
+    urls.forEach(function (u) { URL.revokeObjectURL(u); }); /* old previews are replaced below */
+    urls = files.map(function (file) { return URL.createObjectURL(file); });
+    pv.innerHTML = files.map(function (file, i) { return '<span class="mzr-prev"><img src="' + urls[i] + '" alt=""><button type="button" data-rm="' + i + '" aria-label="Remove">&times;</button></span>'; }).join('');
     var b = m.querySelector('.mzr-step[data-step="2"] .mzr-next'); if (!b) return;
     b.textContent = files.length ? 'Continue' : 'Skip';
     b.classList.toggle('mzr-btn--primary', !!files.length); b.classList.toggle('mzr-btn--secondary', !files.length);
@@ -304,4 +315,24 @@
   }
 
   renderReviews(); renderQuestions();
+
+  /* shared #review-ID link: page far enough to include it, then scroll to it */
+  function revealReview() {
+    var mt = /^#review-(\d+)$/.exec(location.hash); if (!mt) return;
+    var s = st.reviews, redo = false;
+    var find = function () { var at = -1; reviewList().some(function (r, i) { if (String(r.id) === mt[1]) { at = i; return true; } return false; }); return at; };
+    var idx = find();
+    if (idx === -1 && (s.q || s.filter)) { /* hidden by the current search/filter: clear them */
+      s.q = ''; s.filter = ''; redo = true;
+      var si = $('[data-search="reviews"]'), sf = $('[data-filter="reviews"]'); if (si) si.value = ''; if (sf) sf.value = '';
+      idx = find();
+    }
+    if (idx === -1) { if (redo) renderReviews(); return; }
+    showTab('reviews');
+    if (idx >= s.shown) { s.shown = Math.ceil((idx + 1) / PAGE) * PAGE; redo = true; }
+    if (redo) renderReviews();
+    var el = document.getElementById('review-' + mt[1]); if (el) el.scrollIntoView({ block: 'start' });
+  }
+  revealReview();
+  window.addEventListener('hashchange', revealReview);
 })();

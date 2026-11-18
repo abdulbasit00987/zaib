@@ -531,12 +531,40 @@ function mrzaib_old_demo_cats() {
 	return array( 'perfumes-for-men', 'perfumes-for-women', 'unisex-perfumes', 'best-sellers-men', 'best-sellers-women', 'signature-range', 'executive-range', 'royal-range', 'new-arrivals', 'gift-box', 'gourmand', 'attar', 'air-care', 'oud', 'tester-box', 'under-2000', 'body-mist', 'perfume-wax', 'pocket-perfumes', 'seasonal', 'genre', 'winter-perfume', 'summer-perfume', 'spring-perfume', 'autumn-perfume', 'arabic-perfume', 'french-perfume', 'western-perfume', 'eastern-perfume' );
 }
 
-/** Delete every piece of dummy demo content. */
+/**
+ * Ownership check for old demo content. The old demo importer stored no ownership marker on
+ * posts or terms; its only record is the mrzaib_demo_media map of the images it imported.
+ * So an item counts as theme demo content only when it uses one of those images (or carries an
+ * explicit _mrzaib_demo marker) and, for products, no order contains it. A merchant's own item
+ * with the same title or slug is kept; it can be deleted by hand if it really is old demo content.
+ */
+function mrzaib_is_demo_owned( $id ) {
+	if ( get_post_meta( $id, '_mrzaib_demo', true ) ) {
+		return true;
+	}
+	$media = array_map( 'intval', array_values( (array) get_option( 'mrzaib_demo_media', array() ) ) );
+	$thumb = (int) get_post_thumbnail_id( $id );
+	return $thumb && in_array( $thumb, $media, true );
+}
+
+function mrzaib_product_has_orders( $pid ) {
+	global $wpdb;
+	$table = $wpdb->prefix . 'woocommerce_order_itemmeta';
+	if ( $wpdb->get_var( $wpdb->prepare( 'SHOW TABLES LIKE %s', $table ) ) !== $table ) { // phpcs:ignore
+		return false;
+	}
+	return (bool) $wpdb->get_var( $wpdb->prepare( "SELECT meta_id FROM {$table} WHERE meta_key IN ('_product_id','_variation_id') AND meta_value = %s LIMIT 1", (string) $pid ) ); // phpcs:ignore
+}
+
+/** Delete the old dummy demo content that the theme demo created (see mrzaib_is_demo_owned()). */
 function mrzaib_remove_dummy() {
 	$n = array( 'products' => 0, 'cats' => 0, 'posts' => 0, 'pages' => 0, 'media' => 0 );
 
 	foreach ( mrzaib_old_demo_titles() as $title ) {
 		foreach ( get_posts( array( 'post_type' => 'product', 'title' => $title, 'post_status' => 'any', 'numberposts' => -1, 'fields' => 'ids' ) ) as $pid ) {
+			if ( ! mrzaib_is_demo_owned( $pid ) || mrzaib_product_has_orders( $pid ) ) {
+				continue; // Not provably theme demo content, or already sold: keep.
+			}
 			$p = function_exists( 'wc_get_product' ) ? wc_get_product( $pid ) : null;
 			if ( $p && $p->is_type( 'variable' ) ) {
 				foreach ( $p->get_children() as $vid ) {
@@ -547,22 +575,32 @@ function mrzaib_remove_dummy() {
 			$n['products']++;
 		}
 	}
-	foreach ( mrzaib_old_demo_cats() as $slug ) {
+	$demo_media = array_map( 'intval', array_values( (array) get_option( 'mrzaib_demo_media', array() ) ) );
+	foreach ( array_diff( mrzaib_old_demo_cats(), array_keys( mrzaib_store_categories() ) ) as $slug ) {
 		$t = get_term_by( 'slug', $slug, 'product_cat' );
 		if ( $t ) {
+			$tid = (int) get_term_meta( $t->term_id, 'thumbnail_id', true );
+			$obj = get_objects_in_term( $t->term_id, 'product_cat' );
+			if ( ( is_array( $obj ) && $obj ) || ( $tid && ! in_array( $tid, $demo_media, true ) ) ) {
+				continue; // Still holds products, or uses the merchant's own image: keep.
+			}
 			wp_delete_term( $t->term_id, 'product_cat' );
 			$n['cats']++;
 		}
 	}
 	foreach ( array( 'How to Make Your Perfume Last All Day', 'Best Perfumes for Winter in Pakistan', 'Attar vs Perfume: What Is the Difference?' ) as $title ) {
 		foreach ( get_posts( array( 'post_type' => 'post', 'title' => $title, 'post_status' => 'any', 'numberposts' => -1, 'fields' => 'ids' ) ) as $id ) {
+			if ( ! mrzaib_is_demo_owned( $id ) ) {
+				continue;
+			}
 			wp_delete_post( $id, true );
 			$n['posts']++;
 		}
 	}
 	foreach ( array( 'quiz', 'loyalty', 'corporate', 'our-outlets', 'our-story' ) as $slug ) {
 		$p = get_page_by_path( $slug );
-		if ( $p ) {
+		// Old demo pages had no content of their own; a page with content, or edited since it was created, is kept.
+		if ( $p && ( mrzaib_is_demo_owned( $p->ID ) || ( '' === trim( (string) $p->post_content ) && $p->post_modified_gmt === $p->post_date_gmt ) ) ) {
 			wp_delete_post( $p->ID, true );
 			$n['pages']++;
 		}
@@ -636,7 +674,8 @@ function mrzaib_install_categories() {
 
 /** Create / update Kahn-vahl and Arvon. */
 function mrzaib_install_products( $cat_ids, $only = '' ) {
-	$made = 0;
+	$made   = 0;
+	$failed = array();
 	foreach ( mrzaib_store_products() as $i => $d ) {
 		if ( $only && $only !== $d['slug'] ) {
 			continue;
@@ -656,6 +695,7 @@ function mrzaib_install_products( $cat_ids, $only = '' ) {
 			$prod->set_slug( $d['slug'] );
 			// Saved as draft first and published after images/meta, so the newsletter email has the photo.
 			$prod->set_status( 'draft' );
+			$prod->update_meta_data( '_mrzaib_import_pending', '1' ); // Unfinished import: published on retry.
 			$prod->set_catalog_visibility( 'visible' );
 			$prod->set_featured( true );
 			$prod->set_menu_order( $i + 1 );
@@ -680,7 +720,7 @@ function mrzaib_install_products( $cat_ids, $only = '' ) {
 		foreach ( $d['images'] as $k => $file ) {
 			$aid = mrzaib_import_image( $file );
 			if ( $aid ) {
-				$imgs[] = $aid;
+				$imgs[ $k ] = $aid; // Same index as $d['images'] so note images are picked correctly.
 				update_post_meta( $aid, '_wp_attachment_image_alt', $d['alts'][ $k ] );
 			}
 		}
@@ -690,6 +730,7 @@ function mrzaib_install_products( $cat_ids, $only = '' ) {
 				$note_imgs[] = $imgs[ $k ];
 			}
 		}
+		$imgs = array_values( $imgs ); // Consecutive only after note images were selected.
 		if ( $imgs ) {
 			$prod->set_image_id( array_shift( $imgs ) );
 			$prod->set_gallery_image_ids( $imgs );
@@ -703,10 +744,20 @@ function mrzaib_install_products( $cat_ids, $only = '' ) {
 		update_post_meta( $pid, '_yoast_wpseo_title', $d['seo']['title'] );
 		update_post_meta( $pid, '_yoast_wpseo_metadesc', $d['seo']['desc'] );
 		update_post_meta( $pid, '_yoast_wpseo_focuskw', $d['seo']['focus'] );
-		if ( $is_new ) {
-			wp_update_post( array( 'ID' => $pid, 'post_status' => 'publish' ) );
+		if ( $is_new || get_post_meta( $pid, '_mrzaib_import_pending', true ) ) {
+			// New, or a draft left by an import that stopped before this point: publish now.
+			$res = wp_update_post( array( 'ID' => $pid, 'post_status' => 'publish' ), true );
+			if ( ! $res || is_wp_error( $res ) ) {
+				$failed[] = $d['name'];
+				continue;
+			}
+			delete_post_meta( $pid, '_mrzaib_import_pending' );
 		}
 		$made++;
+	}
+	if ( $failed ) {
+		// Still marked _mrzaib_import_pending, so the next run publishes them.
+		return $made . ' MR ZAIB product(s) added/updated. Could not publish: ' . implode( ', ', $failed ) . '. Run it again.';
 	}
 	return $made . ' MR ZAIB product(s) added/updated.';
 }
@@ -776,7 +827,10 @@ add_action( 'admin_init', function () {
 	foreach ( array( '_mrzaib_seo_title', '_mrzaib_seo_desc', '_mrzaib_seo_keywords' ) as $k ) {
 		delete_post_meta_by_key( $k );
 	}
-	if ( ! class_exists( 'RankMath' ) ) {
+	// Rank Math fields only when the Rank Math plugin is not installed at all (files absent);
+	// installed but inactive (even temporarily) keeps its data.
+	$rm_files = defined( 'WP_PLUGIN_DIR' ) && ( is_dir( WP_PLUGIN_DIR . '/seo-by-rank-math' ) || glob( WP_PLUGIN_DIR . '/*/rank-math.php' ) );
+	if ( ! class_exists( 'RankMath' ) && ! $rm_files ) {
 		foreach ( array( 'rank_math_title', 'rank_math_description', 'rank_math_focus_keyword' ) as $k ) {
 			delete_post_meta_by_key( $k );
 		}
