@@ -16,7 +16,8 @@ get_header();
 			<div class="field-row"><input name="r_name" required placeholder="<?php esc_attr_e( 'Full name', 'mrzaib' ); ?>"><input name="r_phone" required placeholder="<?php esc_attr_e( 'Phone number', 'mrzaib' ); ?>"></div>
 			<div class="field-row"><input type="email" name="r_email" required placeholder="<?php esc_attr_e( 'Email', 'mrzaib' ); ?>"><input name="r_order" required placeholder="<?php esc_attr_e( 'Order number', 'mrzaib' ); ?>"></div>
 			<input name="r_product" required placeholder="<?php esc_attr_e( 'Product name', 'mrzaib' ); ?>">
-			<select name="r_type"><option><?php esc_html_e( 'Exchange', 'mrzaib' ); ?></option><option><?php esc_html_e( 'Refund', 'mrzaib' ); ?></option></select>
+			<label class="screen-reader-text" for="mz-r-type"><?php esc_html_e( 'Request type', 'mrzaib' ); ?></label>
+			<select name="r_type" id="mz-r-type" required><option value="exchange"><?php esc_html_e( 'Exchange', 'mrzaib' ); ?></option><option value="refund"><?php esc_html_e( 'Refund', 'mrzaib' ); ?></option></select>
 			<textarea name="r_reason" rows="5" required placeholder="<?php esc_attr_e( 'Reason for return', 'mrzaib' ); ?>"></textarea>
 			<button class="btn btn-dark" name="mrzaib_return" value="1"><?php esc_html_e( 'Submit Request', 'mrzaib' ); ?></button>
 		</form>

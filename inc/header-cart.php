@@ -75,16 +75,88 @@ function mrzaib_hcart_qty() {
 	if ( ! function_exists( 'WC' ) || ! WC()->cart ) {
 		wp_send_json_error();
 	}
-	$key = isset( $_POST['key'] ) ? sanitize_text_field( wp_unslash( $_POST['key'] ) ) : '';
-	$qty = isset( $_POST['qty'] ) ? max( 0, (int) $_POST['qty'] ) : 0;
-	if ( $key && WC()->cart->get_cart_item( $key ) ) {
+	$key  = isset( $_POST['key'] ) ? sanitize_text_field( wp_unslash( $_POST['key'] ) ) : '';
+	$qty  = isset( $_POST['qty'] ) ? max( 0, (int) $_POST['qty'] ) : 0;
+	$item = $key ? WC()->cart->get_cart_item( $key ) : array();
+	if ( $item ) {
 		if ( $qty ) {
+			$error = mrzaib_hcart_validate_qty( $key, $item, $qty );
+			if ( $error ) {
+				// Cart left unchanged: send the current drawer back so the stepper shows the real quantity.
+				wp_send_json(
+					array(
+						'error'     => true,
+						'key'       => $key,
+						'message'   => $error,
+						'fragments' => apply_filters( 'woocommerce_add_to_cart_fragments', array() ),
+						'cart_hash' => WC()->cart->get_cart_hash(),
+					)
+				);
+			}
 			WC()->cart->set_quantity( $key, $qty, true );
 		} else {
 			WC()->cart->remove_cart_item( $key );
 		}
 	}
 	WC_AJAX::get_refreshed_fragments();
+}
+
+/**
+ * Same checks WooCommerce applies when the cart page updates a quantity, plus stock:
+ * sold-individually limit, stock (incl. other lines sharing the stock), and woocommerce_update_cart_validation.
+ * Returns an error message, or '' when the new quantity is allowed.
+ */
+function mrzaib_hcart_validate_qty( $key, $item, $qty ) {
+	$p = isset( $item['data'] ) ? $item['data'] : null;
+	if ( ! $p || ! is_a( $p, 'WC_Product' ) ) {
+		return __( 'This product can no longer be updated.', 'mrzaib' );
+	}
+	$cur = (int) $item['quantity'];
+	if ( $p->is_sold_individually() && $qty > 1 ) {
+		/* translators: %s: product name */
+		return sprintf( __( 'You can only have 1 %s in your cart.', 'mrzaib' ), $p->get_name() );
+	}
+	// Stock: only block increases (lowering an over-stock quantity is always allowed).
+	if ( $qty > $cur ) {
+		if ( ! $p->is_in_stock() ) {
+			/* translators: %s: product name */
+			return sprintf( __( 'Sorry, "%s" is out of stock.', 'mrzaib' ), $p->get_name() );
+		}
+		if ( $p->managing_stock() && ! $p->backorders_allowed() ) {
+			$in_cart = WC()->cart->get_cart_item_quantities();
+			$sid     = $p->get_stock_managed_by_id();
+			$others  = ( isset( $in_cart[ $sid ] ) ? (int) $in_cart[ $sid ] : 0 ) - $cur;
+			$stock   = (int) $p->get_stock_quantity();
+			if ( function_exists( 'wc_get_held_stock_quantity' ) ) {
+				$order_id = WC()->session ? absint( WC()->session->get( 'order_awaiting_payment' ) ) : 0;
+				$stock   -= (int) wc_get_held_stock_quantity( $p, $order_id );
+			}
+			$avail = max( 0, $stock - max( 0, $others ) );
+			if ( $qty > $avail ) {
+				/* translators: 1: product name, 2: available quantity */
+				return sprintf( __( 'Sorry, only %2$d of "%1$s" available.', 'mrzaib' ), $p->get_name(), $avail );
+			}
+		}
+	}
+	// Third-party / WooCommerce rules (min/max quantity plugins etc.). Capture any error notices they add.
+	$before = function_exists( 'wc_get_notices' ) ? wc_get_notices( 'error' ) : array();
+	$passed = apply_filters( 'woocommerce_update_cart_validation', true, $key, $item, $qty );
+	if ( ! $passed ) {
+		$msg = '';
+		if ( function_exists( 'wc_get_notices' ) ) {
+			$all   = wc_get_notices();
+			$after = isset( $all['error'] ) ? (array) $all['error'] : array();
+			$new   = array_slice( $after, count( $before ) );
+			if ( $new ) {
+				$n   = end( $new );
+				$msg = wp_strip_all_tags( is_array( $n ) ? ( isset( $n['notice'] ) ? $n['notice'] : '' ) : (string) $n );
+				$all['error'] = $before; // Shown here instead of on the next page view.
+				wc_set_notices( $all );
+			}
+		}
+		return $msg ? $msg : __( 'This quantity is not allowed for this product.', 'mrzaib' );
+	}
+	return '';
 }
 add_action( 'wp_ajax_mrzaib_hcart_qty', 'mrzaib_hcart_qty' );
 add_action( 'wp_ajax_nopriv_mrzaib_hcart_qty', 'mrzaib_hcart_qty' );

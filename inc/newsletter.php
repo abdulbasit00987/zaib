@@ -110,6 +110,11 @@ function mrzaib_es_setup( $force = false ) {
 				}
 			}
 		}
+		if ( ! $cid || ! ES()->campaigns_db->get( (int) $cid ) ) {
+			return false; // No campaign yet: the version is not recorded, so setup runs again.
+		}
+	} else {
+		return false; // Campaign store unavailable: setup is retried later.
 	}
 	update_option( 'mrzaib_es_v', MRZAIB_ES_V );
 	return true;

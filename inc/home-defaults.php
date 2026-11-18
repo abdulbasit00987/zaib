@@ -37,26 +37,29 @@ function mrzaib_seo_default_more() {
 		'<p><strong>Buy high quality, long lasting perfumes online in Pakistan at affordable prices with MR ZAIB.</strong></p>';
 }
 
-/* SEO text v4 (13 perfumes): a saved Customizer value that is still an older theme text is
-   cleared once, so the new text shows. Text the admin wrote is left alone. */
+/** SEO text compared as a whole: link targets, entities, whitespace and the old Rs. 2,500 price ignored. */
+function mrzaib_seo_text_norm( $v ) {
+	$v = html_entity_decode( (string) $v, ENT_QUOTES, 'UTF-8' );
+	$v = preg_replace( '/\shref=("[^"]*"|\'[^\']*\')/i', ' href=""', $v );
+	$v = str_replace( 'Rs. 2,500', 'Rs. 2,000', $v );
+	return trim( preg_replace( '/\s+/u', ' ', $v ) );
+}
+
+/* SEO text v4 (13 perfumes): a saved Customizer value that is exactly an older theme text
+   (all earlier theme versions, compared in full) is cleared once, so the new text shows.
+   Any text the admin edited, even partly, is left alone. */
 add_action( 'init', function () {
 	if ( (int) get_option( 'mrzaib_seo_text_v' ) >= 4 ) {
 		return;
 	}
-	$marks = array(
-		'mrzaib_seo_intro' => array( 'MR ZAIB has a scent for you.', 'has the <strong>best perfume in Pakistan</strong> for you.' ),
-		'mrzaib_seo_more'  => array( 'Arvon: Unisex Perfume for Men and Women', 'Shop Perfumes by Category' ),
+	$legacy = array(
+		'mrzaib_seo_intro' => array( '4823c3321a89b53dc268748635925abf', '69f1dbd24ce6d4f13b7b5be5ff8cd5a4', '9aab0950071b68d3a27c9eb131b9e395', 'f9aef12726eece03dc190530523eaabb' ),
+		'mrzaib_seo_more'  => array( '517e98424fcf6224bcfcb448b2054e9b', 'e89f51e0e24785b1772a5998effd3bd1', '70cb6e02b9e548f13f73d01210fc3eee', '53fe61d22943e99d51067bc31ec72874' ),
 	);
-	foreach ( $marks as $mod => $olds ) {
+	foreach ( $legacy as $mod => $hashes ) {
 		$v = (string) get_theme_mod( $mod, '' );
-		if ( '' === $v || false !== strpos( $v, 'Baraan' ) ) {
-			continue;
-		}
-		foreach ( $olds as $old ) {
-			if ( false !== strpos( $v, $old ) ) {
-				remove_theme_mod( $mod );
-				break;
-			}
+		if ( '' !== $v && in_array( md5( mrzaib_seo_text_norm( $v ) ), $hashes, true ) ) {
+			remove_theme_mod( $mod );
 		}
 	}
 	update_option( 'mrzaib_seo_text_v', 4 );
@@ -179,15 +182,55 @@ function mrzaib_import_home_media( $force = false ) {
 			}
 			$n++;
 		}
-		if ( $old_id && $old_id !== (int) $id && get_post_meta( $old_id, '_mrzaib_src', true ) ) {
-			wp_delete_attachment( $old_id, true ); // Older theme copy replaced by the new one.
-		}
 		$map[ $key ] = (int) $id;
 		set_theme_mod( 'mrzaib_' . $key, wp_get_attachment_url( $id ) );
+		if ( $old_id && $old_id !== (int) $id ) {
+			mrzaib_delete_theme_attachment( $old_id ); // Older theme copy, only when nothing else uses it.
+		}
 	}
 	update_option( 'mrzaib_home_media', $map, false );
 	update_option( 'mrzaib_home_media_v', MRZAIB_HOME_MEDIA_V );
 	return $n;
+}
+
+/**
+ * True when an attachment is still used outside the homepage map: its file name or ID in any
+ * post content (pages, products, posts, blocks, galleries) or its URL in a theme setting.
+ */
+function mrzaib_attachment_in_use( $aid ) {
+	global $wpdb;
+	$aid  = (int) $aid;
+	$url  = (string) wp_get_attachment_url( $aid );
+	$file = pathinfo( (string) strtok( $url, '?' ), PATHINFO_FILENAME );
+	$like = array();
+	if ( '' !== $file ) {
+		$like[] = '%' . $wpdb->esc_like( $file ) . '%'; // Also matches resized copies (name-300x200.jpg).
+	}
+	foreach ( array( 'wp-image-' . $aid . '"', 'wp-image-' . $aid . ' ', '"id":' . $aid . ',', '"id":' . $aid . '}', 'ids="' . $aid . ',', 'ids="' . $aid . '"', ',' . $aid . '"', ',' . $aid . ',' ) as $needle ) {
+		$like[] = '%' . $wpdb->esc_like( $needle ) . '%';
+	}
+	foreach ( $like as $l ) {
+		$hit = $wpdb->get_var( $wpdb->prepare( "SELECT ID FROM {$wpdb->posts} WHERE post_type NOT IN ('attachment','revision') AND post_content LIKE %s LIMIT 1", $l ) ); // phpcs:ignore
+		if ( $hit ) {
+			return true;
+		}
+	}
+	if ( '' !== $file ) {
+		foreach ( (array) get_theme_mods() as $v ) {
+			if ( is_string( $v ) && false !== strpos( $v, $file ) ) {
+				return true;
+			}
+		}
+	}
+	return false;
+}
+
+/** Delete an older theme-imported copy (has _mrzaib_src) only when nothing references it. */
+function mrzaib_delete_theme_attachment( $aid ) {
+	if ( ! $aid || ! get_post_meta( $aid, '_mrzaib_src', true ) || mrzaib_attachment_in_use( $aid ) ) {
+		return false;
+	}
+	return (bool) wp_delete_attachment( $aid, true );
 }
 
 add_action( 'admin_init', function () {
@@ -334,6 +377,8 @@ function mrzaib_replace_main_videos() {
 	}
 	$n     = 0;
 	$after = -1;
+	$ok    = true;
+	$max   = defined( 'MRZAIB_VIDEO_MAX' ) ? MRZAIB_VIDEO_MAX : 24;
 	foreach ( array( 'kahn-vahl', 'arvon', 'zay-ab' ) as $slug ) {
 		$pid = 0;
 		foreach ( array( $slug . '-perfume', $slug ) as $sl ) {
@@ -344,12 +389,25 @@ function mrzaib_replace_main_videos() {
 			}
 		}
 		if ( ! $pid ) {
+			$ok = false; // Product missing: retried on a later visit.
+			continue;
+		}
+		$has = false;
+		foreach ( $slots as $sl ) {
+			if ( $sl['p'] === $pid ) {
+				$has = true;
+				break;
+			}
+		}
+		if ( ! $has && count( $slots ) >= $max ) {
+			$ok = false; // Full and no slot of this product: never push out another slot.
 			continue;
 		}
 		$name = get_the_title( $pid );
 		$vid  = mrzaib_sideload_theme_file( 'assets/video/' . $slug . '-v2.mp4', 'MR ZAIB ' . $name . ' Video' );
 		$pos  = mrzaib_sideload_theme_file( 'assets/video/' . $slug . '-v2.jpg', 'MR ZAIB ' . $name . ' Video Cover' );
 		if ( ! $vid ) {
+			$ok = false; // Import failed: retried on a later visit.
 			continue;
 		}
 		if ( $pos ) {
@@ -379,6 +437,10 @@ function mrzaib_replace_main_videos() {
 			}
 		}
 		$slots = array_values( $slots );
+		if ( $first < 0 && count( $slots ) >= $max ) {
+			$ok = false;
+			continue;
+		}
 		if ( $first < 0 ) {
 			array_splice( $slots, $after + 1, 0, array( $new ) );
 			$after++;
@@ -387,9 +449,7 @@ function mrzaib_replace_main_videos() {
 		}
 		$n++;
 	}
-	$slots = array_values( $slots );
-	$max   = defined( 'MRZAIB_VIDEO_MAX' ) ? MRZAIB_VIDEO_MAX : 24;
-	$slots = array_slice( $slots, 0, $max );
+	$slots = array_values( $slots ); // Never sliced: unrelated slots are always kept.
 	foreach ( $slots as $i => $sl ) {
 		set_theme_mod( 'mrzaib_video_' . ( $i + 1 ), $sl['v'] );
 		set_theme_mod( 'mrzaib_video_poster_' . ( $i + 1 ), $sl['c'] );
@@ -401,7 +461,9 @@ function mrzaib_replace_main_videos() {
 		remove_theme_mod( 'mrzaib_video_product_' . $i );
 	}
 	set_theme_mod( 'mrzaib_video_count', count( $slots ) );
-	update_option( 'mrzaib_main_videos_v', MRZAIB_MAIN_VIDEOS_V );
+	if ( $ok ) {
+		update_option( 'mrzaib_main_videos_v', MRZAIB_MAIN_VIDEOS_V ); // Only when all 3 are done; done ones stay on retry.
+	}
 	return $n;
 }
 
@@ -434,13 +496,29 @@ function mrzaib_reset_hero_banners() {
 	require_once ABSPATH . 'wp-admin/includes/image.php';
 	$hd   = mrzaib_hero_defaults();
 	$old  = max( 1, (int) get_theme_mod( 'mrzaib_hero_count', 13 ) );
-	$own  = array();
-	for ( $i = 1; $i <= MRZAIB_HERO_MAX; $i++ ) {
+	$own  = array(); // Admin's visible slides: moved after the built-in ones.
+	$hid  = array(); // Admin's slides beyond the slide count: kept, still hidden.
+	$last = MRZAIB_HERO_MAX;
+	for ( $i = 1; $i <= $last; $i++ ) {
 		$img = (string) get_theme_mod( 'mrzaib_hero_img_' . $i, '' );
-		if ( $i <= $old && $img && ! get_theme_mod( 'mrzaib_hero_rm_' . $i ) && ! mrzaib_is_theme_hero( $img ) ) {
-			$mob   = (string) get_theme_mod( 'mrzaib_hero_mob_' . $i, '' );
-			$own[] = array( $img, mrzaib_is_theme_hero( $mob ) ? '' : $mob, (string) get_theme_mod( 'mrzaib_hero_link_' . $i, '' ) );
+		if ( $img && ! get_theme_mod( 'mrzaib_hero_rm_' . $i ) && ! mrzaib_is_theme_hero( $img ) ) {
+			$mob = (string) get_theme_mod( 'mrzaib_hero_mob_' . $i, '' );
+			$sl  = array( $img, mrzaib_is_theme_hero( $mob ) ? '' : $mob, (string) get_theme_mod( 'mrzaib_hero_link_' . $i, '' ) );
+			if ( $i <= $old ) {
+				$own[] = $sl;
+			} else {
+				$hid[] = $sl;
+			}
 		}
+	}
+	// Capacity first: when 13 built-in + the admin's slides need more than the slide limit,
+	// the limit is raised (mrzaib_hero_max, read by MRZAIB_HERO_MAX) so no custom slide is lost.
+	$need = count( $hd ) + count( $own ) + count( $hid );
+	$cap  = max( MRZAIB_HERO_MAX, $need );
+	if ( $cap > MRZAIB_HERO_MAX ) {
+		update_option( 'mrzaib_hero_max', $cap );
+	}
+	for ( $i = 1; $i <= $last; $i++ ) {
 		foreach ( array( 'img', 'mob', 'link', 'rm' ) as $f ) {
 			remove_theme_mod( 'mrzaib_hero_' . $f . '_' . $i );
 		}
@@ -473,11 +551,8 @@ function mrzaib_reset_hero_banners() {
 		set_theme_mod( 'mrzaib_hero_link_' . $i, $d[2] );
 	}
 	$n = count( $hd );
-	foreach ( $own as $k => $o ) {
-		$j = $n + 1 + $k;
-		if ( $j > MRZAIB_HERO_MAX ) {
-			break;
-		}
+	foreach ( array_merge( $own, $hid ) as $k => $o ) {
+		$j = $n + 1 + $k; // Never beyond $cap (computed above).
 		set_theme_mod( 'mrzaib_hero_img_' . $j, $o[0] );
 		set_theme_mod( 'mrzaib_hero_mob_' . $j, $o[1] );
 		set_theme_mod( 'mrzaib_hero_link_' . $j, $o[2] );
@@ -492,10 +567,10 @@ function mrzaib_reset_hero_banners() {
 	$olds = get_posts( array( 'post_type' => 'attachment', 'post_status' => 'inherit', 'numberposts' => -1, 'fields' => 'ids', 'meta_key' => '_mrzaib_src', 'meta_compare' => 'LIKE', 'meta_value' => 'assets/images/hero-' ) );
 	foreach ( $olds as $aid ) {
 		if ( ! in_array( (int) $aid, $used, true ) && false === strpos( (string) get_post_meta( $aid, '_mrzaib_src', true ), '#p3' ) ) {
-			wp_delete_attachment( $aid, true );
+			mrzaib_delete_theme_attachment( $aid ); // Kept when a page, product or setting still uses it.
 		}
 	}
-	set_theme_mod( 'mrzaib_hero_count', min( MRZAIB_HERO_MAX, $n + count( $own ) ) );
+	set_theme_mod( 'mrzaib_hero_count', min( $cap, $n + count( $own ) ) );
 	update_option( 'mrzaib_home_media', $map, false );
 	update_option( 'mrzaib_hero_v', '14' );
 	update_option( 'mrzaib_hero_reset_v', MRZAIB_HERO_RESET_V );

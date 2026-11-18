@@ -33,6 +33,31 @@ function mrzaib_used_media_ids() {
 	foreach ( $wpdb->get_col( "SELECT meta_value FROM {$wpdb->commentmeta} WHERE meta_key = 'mz_images'" ) as $v ) { // phpcs:ignore
 		$add( implode( ',', (array) maybe_unserialize( $v ) ) );
 	}
+	// IDs inside post content: [gallery ids="1,2"] and other shortcode ID attributes,
+	// wp-image-ID classes, and block attributes such as "id":12 / "ids":[1,2] / "mediaId":12.
+	foreach ( $wpdb->get_col( "SELECT post_content FROM {$wpdb->posts} WHERE post_type NOT IN ('attachment','revision') AND post_status <> 'trash' AND ( post_content LIKE '%[%' OR post_content LIKE '%wp-image-%' OR post_content LIKE '%<!-- wp:%' )" ) as $c ) { // phpcs:ignore
+		if ( preg_match_all( '/\[[a-z0-9_\-]+\s[^\]]*\]/i', $c, $sc ) ) {
+			foreach ( $sc[0] as $tag ) {
+				if ( preg_match_all( '/\b(?:ids?|include|image|images|img|attachment(?:_id)?|image_id|media(?:_id)?)\s*=\s*["\']?([0-9][0-9,\s]*)/i', $tag, $m ) ) {
+					foreach ( $m[1] as $v ) {
+						$add( $v );
+					}
+				}
+			}
+		}
+		if ( preg_match_all( '/wp-image-([0-9]+)/', $c, $m ) ) {
+			$add( implode( ',', $m[1] ) );
+		}
+		if ( preg_match_all( '/<!--\s+wp:\S+\s+(\{.*?\})\s+\/?-->/s', $c, $bl ) ) {
+			foreach ( $bl[1] as $json ) {
+				if ( preg_match_all( '/"(?:id|ids|mediaId|imageId|attachmentId|backgroundImageId)"\s*:\s*(\[[0-9,\s]*\]|[0-9]+)/', $json, $m ) ) {
+					foreach ( $m[1] as $v ) {
+						$add( $v );
+					}
+				}
+			}
+		}
+	}
 	// Logo, site icon, WooCommerce placeholder, theme media map.
 	$add( get_theme_mod( 'custom_logo' ) );
 	$add( get_option( 'site_icon' ) );
@@ -64,7 +89,8 @@ function mrzaib_unused_media() {
 		$hit  = $wpdb->get_var( $wpdb->prepare( "SELECT 1 FROM {$wpdb->posts} WHERE post_type NOT IN ('attachment','revision') AND post_status <> 'trash' AND post_content LIKE %s LIMIT 1", $like ) ) // phpcs:ignore
 			|| $wpdb->get_var( $wpdb->prepare( "SELECT 1 FROM {$wpdb->postmeta} pm INNER JOIN {$wpdb->posts} p ON p.ID = pm.post_id WHERE p.post_type <> 'attachment' AND pm.meta_value LIKE %s LIMIT 1", $like ) ) // phpcs:ignore
 			|| $wpdb->get_var( $wpdb->prepare( "SELECT 1 FROM {$wpdb->options} WHERE option_name NOT LIKE %s AND option_value LIKE %s LIMIT 1", $wpdb->esc_like( '_transient' ) . '%', $like ) ) // phpcs:ignore
-			|| $wpdb->get_var( $wpdb->prepare( "SELECT 1 FROM {$wpdb->termmeta} WHERE meta_value LIKE %s LIMIT 1", $like ) ); // phpcs:ignore
+			|| $wpdb->get_var( $wpdb->prepare( "SELECT 1 FROM {$wpdb->termmeta} WHERE meta_value LIKE %s LIMIT 1", $like ) ) // phpcs:ignore
+			|| $wpdb->get_var( $wpdb->prepare( "SELECT 1 FROM {$wpdb->comments} WHERE comment_approved NOT IN ('spam','trash') AND comment_content LIKE %s LIMIT 1", $like ) ); // phpcs:ignore
 		if ( ! $hit ) {
 			$out[] = $a;
 		}

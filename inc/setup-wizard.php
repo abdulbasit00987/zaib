@@ -100,10 +100,22 @@ function mrzaib_settings_skip( $name ) {
 	return (bool) preg_match( '/(version|_page_id|_db_|install|notice|admin_|onboarding|task_list|tracker|tracking|queue|_id$|_ids$|secret|token|key|pass|cache|transient|last_|timestamp|maxmind|remote|marketplace|inbox|navigation|feature|schedule|cron|guid|lock|migration|usage|telemetry|activated|activation|redirect|_hash|nonce|stats|count|custom_orders_table|hpos|placeholder_image|taxonomy_meta|sent_data|imported|_ver$|email_improvements_first|^wpseo$|_\d+_settings$|ces_shown|tour_shown|sales_record|state_snapshots|header_image|campaign_error|test_mailbox|ssl_checkout)/i', $name );
 }
 
+/**
+ * Site-specific media field (e.g. wpseo_titles.company_logo_id, a logo / image URL): its attachment
+ * is not copied by the importer, so it is never exported or imported and the destination keeps
+ * its own value. Plain options that only mention images (show_image, image_zoom) are kept.
+ */
+function mrzaib_settings_is_media( $k, $x ) {
+	if ( preg_match( '/_ids?$/i', $k ) && ( is_int( $x ) || ( is_string( $x ) && ctype_digit( $x ) ) || ( is_array( $x ) && $x && count( array_filter( $x, 'is_numeric' ) ) === count( $x ) ) ) ) {
+		return true; // Attachment / post IDs differ per site.
+	}
+	return preg_match( '/(logo|image|icon)/i', $k ) && is_string( $x ) && preg_match( '#(://|/wp-content/|\.(png|jpe?g|gif|webp|svg|ico)$)#i', $x );
+}
+
 function mrzaib_settings_strip( $v ) {
 	if ( is_array( $v ) ) {
 		foreach ( $v as $k => $x ) {
-			if ( is_string( $k ) && preg_match( '/(pass|secret|token|api_key|apikey|access|refresh|client_id|client_secret|license)/i', $k ) ) {
+			if ( is_string( $k ) && ( preg_match( '/(pass|secret|token|api_key|apikey|access|refresh|client_id|client_secret|license)/i', $k ) || mrzaib_settings_is_media( $k, $x ) ) ) {
 				unset( $v[ $k ] );
 			} else {
 				$v[ $k ] = mrzaib_settings_strip( $x );
@@ -156,6 +168,7 @@ function mrzaib_setup_import_settings() {
 	$to   = untrailingslashit( home_url() );
 	$n    = 0;
 	foreach ( $data['options'] as $name => $v ) {
+		$v = mrzaib_settings_strip( $v ); // Also for files exported before media fields were excluded.
 		if ( $from && $from !== $to ) {
 			$v = mrzaib_settings_swap_url( $v, $from, $to );
 		}
@@ -226,7 +239,15 @@ function mrzaib_setup_run_step( $step ) {
 	}
 	if ( 0 === strpos( $step, 'product:' ) ) {
 		$cats = mrzaib_install_categories();
-		return mrzaib_install_products( $cats, substr( $step, 8 ) );
+		$slug = substr( $step, 8 );
+		$msg  = mrzaib_install_products( $cats, $slug );
+		foreach ( mrzaib_store_products() as $d ) {
+			$id = $d['slug'] === $slug ? mrzaib_find_store_product( $d ) : array();
+			if ( $id && get_post_meta( $id[0], '_mrzaib_import_pending', true ) ) {
+				return new WP_Error( 'x', $msg ); // Left as an unfinished draft: the step can be retried.
+			}
+		}
+		return $msg;
 	}
 	if ( 0 === strpos( $step, 'blog:' ) ) {
 		return mrzaib_install_blogs( substr( $step, 5 ) );
@@ -272,27 +293,39 @@ function mrzaib_setup_run_step( $step ) {
 			$b = (int) mrzaib_replace_main_videos();
 			return sprintf( '%d product videos added to the homepage.', $a + $b );
 		case 'data:finish':
-			update_option( 'mrzaib_data_done', time() );
-			update_option( 'mrzaib_demo_imported', time() );
-			if ( function_exists( 'mrzaib_migrate_categories_v2' ) ) {
-				mrzaib_migrate_categories_v2();
+			// In-progress context: readiness-gated migrations below see the data as ready (in memory
+			// only). The completion markers are saved only after every finalization call succeeded.
+			$ready = function () {
+				return time();
+			};
+			add_filter( 'pre_option_mrzaib_data_done', $ready );
+			try {
+				if ( function_exists( 'mrzaib_migrate_categories_v2' ) ) {
+					mrzaib_migrate_categories_v2();
+				}
+				if ( function_exists( 'mrzaib_apply_prices_v2' ) ) {
+					mrzaib_apply_prices_v2();
+				}
+				if ( defined( 'WPSEO_VERSION' ) && function_exists( 'mrzaib_configure_yoast' ) ) {
+					mrzaib_configure_yoast();
+				}
+				mrzaib_setup_import_settings(); // the live store's own settings win.
+				update_option( 'woocommerce_coming_soon', 'no' );
+				update_option( 'permalink_structure', '/%postname%/' );
+				flush_rewrite_rules();
+			} catch ( Throwable $e ) {
+				remove_filter( 'pre_option_mrzaib_data_done', $ready );
+				return new WP_Error( 'x', 'Final step failed: ' . $e->getMessage() . ' Run Add All Data again.' );
 			}
-			if ( function_exists( 'mrzaib_apply_prices_v2' ) ) {
-				mrzaib_apply_prices_v2();
-			}
+			remove_filter( 'pre_option_mrzaib_data_done', $ready );
 			if ( defined( 'MRZAIB_BLOG_V' ) ) {
 				update_option( 'mrzaib_blog_v', MRZAIB_BLOG_V, false );
 			}
 			if ( defined( 'MRZAIB_BRAND_V' ) ) {
 				update_option( 'mrzaib_brand_v', MRZAIB_BRAND_V );
 			}
-			if ( defined( 'WPSEO_VERSION' ) && function_exists( 'mrzaib_configure_yoast' ) ) {
-				mrzaib_configure_yoast();
-			}
-			mrzaib_setup_import_settings(); // the live store's own settings win.
-			update_option( 'woocommerce_coming_soon', 'no' );
-			update_option( 'permalink_structure', '/%postname%/' );
-			flush_rewrite_rules();
+			update_option( 'mrzaib_data_done', time() );
+			update_option( 'mrzaib_demo_imported', time() );
 			return 'All data added. Your website is ready.';
 	}
 	return new WP_Error( 'x', 'Unknown step.' );

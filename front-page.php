@@ -107,7 +107,7 @@ $all_products = mrzaib_products_query( array( 'limit' => 12 ) );
 			</div>
 			<?php $n = 0; foreach ( $tabs as $slug => $t ) :
 				$items = 'all' === $slug ? mrzaib_products_query( array( 'limit' => 4, 'mz_top_rated' => true ) ) : $t[2];
-				$total = $t[1] ? (int) $t[1]->count : count( $all_products );
+				$total = $t[1] ? (int) $t[1]->count : count( mrzaib_products_query( array( 'limit' => -1, 'return' => 'ids' ) ) ); // Uncapped count ($all_products stops at 12).
 				$more  = max( 0, $total - count( $items ) );
 				$link  = 'all' === $slug ? mrzaib_shop_link() : mrzaib_cat_link( $slug );
 				$bgid  = $t[1] ? get_term_meta( $t[1]->term_id, 'thumbnail_id', true ) : 0;

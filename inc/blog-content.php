@@ -415,8 +415,25 @@ function mrzaib_blog_page() {
 	return (int) $id;
 }
 
+/** True when the post's content is exactly WordPress's default first-post text (block or classic form). */
+function mrzaib_is_default_hello_world( $post ) {
+	$norm = function ( $t ) {
+		return trim( preg_replace( '/\s+/', ' ', (string) $t ) );
+	};
+	$texts = array_unique( array( 'Welcome to WordPress. This is your first post. Edit or delete it, then start writing!', __( 'Welcome to WordPress. This is your first post. Edit or delete it, then start writing!' ) ) ); // phpcs:ignore
+	foreach ( $texts as $t ) {
+		foreach ( array( $t, '<!-- wp:paragraph --> <p>' . $t . '</p> <!-- /wp:paragraph -->' ) as $default ) {
+			if ( $norm( $post->post_content ) === $norm( $default ) ) {
+				return true;
+			}
+		}
+	}
+	return false;
+}
+
 /** Add or update the articles. $only = article slug, or '' for all. */
 function mrzaib_install_blogs( $only = '', $missing_only = false ) {
+	$GLOBALS['mrzaib_blog_failed'] = array();
 	mrzaib_blog_mute_newsletter();
 	$cat = term_exists( 'Perfume Guide', 'category' );
 	if ( ! $cat ) {
@@ -424,9 +441,9 @@ function mrzaib_install_blogs( $only = '', $missing_only = false ) {
 	}
 	$cat_id = is_array( $cat ) ? (int) $cat['term_id'] : 0;
 	mrzaib_blog_page();
-	/* WordPress's sample "Hello world!" post, only if it was never edited. */
+	/* WordPress's sample "Hello world!" post, only if its content is still exactly WordPress's default. */
 	$hw = get_page_by_path( 'hello-world', OBJECT, 'post' );
-	if ( $hw && false !== strpos( $hw->post_content, 'Welcome to WordPress' ) ) {
+	if ( $hw && mrzaib_is_default_hello_world( $hw ) && current_user_can( 'delete_post', $hw->ID ) ) {
 		wp_trash_post( $hw->ID );
 	}
 	$n     = 0;
@@ -450,6 +467,9 @@ function mrzaib_install_blogs( $only = '', $missing_only = false ) {
 			'comment_status' => 'closed',
 			'post_category'  => $cat_id ? array( $cat_id ) : array(),
 		);
+		if ( $ex && ! current_user_can( 'edit_post', $ex->ID ) ) {
+			continue; // Never replace an article the current user may not edit.
+		}
 		if ( $ex ) {
 			$arr['ID'] = $ex->ID;
 			if ( 'trash' === $ex->post_status ) {
@@ -461,6 +481,7 @@ function mrzaib_install_blogs( $only = '', $missing_only = false ) {
 		}
 		$id = $ex ? wp_update_post( wp_slash( $arr ) ) : wp_insert_post( wp_slash( $arr ) );
 		if ( ! $id || is_wp_error( $id ) ) {
+			$GLOBALS['mrzaib_blog_failed'][] = $d['slug']; // Read by the automatic run before it records completion.
 			continue;
 		}
 		wp_set_post_tags( $id, array_merge( $d['tags'], array( 'MR ZAIB' ) ), false );
@@ -488,17 +509,23 @@ add_action( 'admin_init', function () {
 	if ( (int) get_option( 'mrzaib_blog_v' ) >= MRZAIB_BLOG_V || ! current_user_can( 'publish_posts' ) || wp_doing_ajax() ) {
 		return;
 	}
-	update_option( 'mrzaib_blog_v', MRZAIB_BLOG_V, false );
 	@set_time_limit( 300 ); // phpcs:ignore
 	mrzaib_install_blogs( '', true );
+	if ( ! empty( $GLOBALS['mrzaib_blog_failed'] ) ) {
+		return; // An article could not be added: not recorded, retried on a later visit.
+	}
+	update_option( 'mrzaib_blog_v', MRZAIB_BLOG_V, false );
 } );
 
 /** Posts > MR ZAIB Blogs: add or restore any article. */
 add_action( 'admin_menu', function () {
-	add_submenu_page( 'edit.php', 'MR ZAIB Blogs', 'MR ZAIB Blogs', 'publish_posts', 'mrzaib-blogs', 'mrzaib_blogs_page' );
+	add_submenu_page( 'edit.php', 'MR ZAIB Blogs', 'MR ZAIB Blogs', 'manage_options', 'mrzaib-blogs', 'mrzaib_blogs_page' );
 } );
 
 function mrzaib_blogs_page() {
+	if ( ! current_user_can( 'manage_options' ) ) {
+		wp_die( esc_html__( 'Sorry, you are not allowed to manage these articles.', 'mrzaib' ) );
+	}
 	$msg = '';
 	if ( isset( $_POST['mrzaib_add_blog'] ) && check_admin_referer( 'mrzaib_add_blog' ) ) {
 		@set_time_limit( 300 ); // phpcs:ignore

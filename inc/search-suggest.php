@@ -28,7 +28,12 @@ function mrzaib_suggest() {
 	}
 	$type = post_type_exists( 'product' ) ? 'product' : 'post';
 
-	$products = get_posts( array( 'post_type' => $type, 'post_status' => 'publish', 's' => $q, 'posts_per_page' => 3, 'suppress_filters' => false ) );
+	$product_args = array( 'post_type' => $type, 'post_status' => 'publish', 's' => $q, 'posts_per_page' => 3, 'suppress_filters' => false );
+	if ( 'product' === $type && taxonomy_exists( 'product_visibility' ) ) {
+		// Leave out products hidden from search (catalog visibility "Shop only" / "Hidden").
+		$product_args['tax_query'] = array( array( 'taxonomy' => 'product_visibility', 'field' => 'name', 'terms' => array( 'exclude-from-search' ), 'operator' => 'NOT IN' ) ); // phpcs:ignore
+	}
+	$products = get_posts( $product_args );
 
 	$terms = array();
 	if ( taxonomy_exists( 'product_cat' ) ) {
