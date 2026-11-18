@@ -312,6 +312,107 @@ add_action( 'admin_init', function () {
 }, 30 );
 
 /**
+ * New multi-shot videos for Kahn-vahl, Arvon and Zay-ab (user, 2026-11-18): the old video of each
+ * product on the homepage is replaced by the new one (first slot linked to that product), extra old
+ * slots of the same product are removed, and the product gets a new slot when it had none.
+ */
+define( 'MRZAIB_MAIN_VIDEOS_V', 1 );
+
+function mrzaib_replace_main_videos() {
+	if ( ! function_exists( 'wc_get_product' ) ) {
+		return 0;
+	}
+	$count  = (int) get_theme_mod( 'mrzaib_video_count', 4 );
+	$others = array_merge( mrzaib_product_video_list(), array( 'mr-zaib-collection', 'mr-zaib-gift' ) );
+	$slots  = array();
+	for ( $i = 1; $i <= $count; $i++ ) {
+		$slots[] = array(
+			'v' => (string) get_theme_mod( 'mrzaib_video_' . $i, mrzaib_video_default( $i ) ),
+			'c' => (string) get_theme_mod( 'mrzaib_video_poster_' . $i, mrzaib_video_default( $i, 'jpg' ) ),
+			'p' => (int) get_theme_mod( 'mrzaib_video_product_' . $i, mrzaib_video_default_product( $i ) ),
+		);
+	}
+	$n     = 0;
+	$after = -1;
+	foreach ( array( 'kahn-vahl', 'arvon', 'zay-ab' ) as $slug ) {
+		$pid = 0;
+		foreach ( array( $slug . '-perfume', $slug ) as $sl ) {
+			$po = get_page_by_path( $sl, OBJECT, 'product' );
+			if ( $po && 'publish' === $po->post_status ) {
+				$pid = (int) $po->ID;
+				break;
+			}
+		}
+		if ( ! $pid ) {
+			continue;
+		}
+		$name = get_the_title( $pid );
+		$vid  = mrzaib_sideload_theme_file( 'assets/video/' . $slug . '-v2.mp4', 'MR ZAIB ' . $name . ' Video' );
+		$pos  = mrzaib_sideload_theme_file( 'assets/video/' . $slug . '-v2.jpg', 'MR ZAIB ' . $name . ' Video Cover' );
+		if ( ! $vid ) {
+			continue;
+		}
+		if ( $pos ) {
+			update_post_meta( $pos, '_wp_attachment_image_alt', $name . ' perfume by MR ZAIB' );
+		}
+		$new   = array( 'v' => wp_get_attachment_url( $vid ), 'c' => $pos ? wp_get_attachment_url( $pos ) : '', 'p' => $pid );
+		$first = -1;
+		foreach ( $slots as $k => $sl ) {
+			if ( $sl['p'] !== $pid ) {
+				continue;
+			}
+			$fn = basename( (string) strtok( $sl['v'], '?' ) );
+			$other = false;
+			foreach ( $others as $o ) {
+				if ( false !== strpos( $fn, $o ) ) {
+					$other = true;
+				}
+			}
+			if ( $other ) {
+				continue; // Another product's / collection video that only carries this badge.
+			}
+			if ( $first < 0 ) {
+				$first       = $k;
+				$slots[ $k ] = $new;
+			} else {
+				unset( $slots[ $k ] );
+			}
+		}
+		$slots = array_values( $slots );
+		if ( $first < 0 ) {
+			array_splice( $slots, $after + 1, 0, array( $new ) );
+			$after++;
+		} else {
+			$after = array_search( $new, $slots, true );
+		}
+		$n++;
+	}
+	$slots = array_values( $slots );
+	$max   = defined( 'MRZAIB_VIDEO_MAX' ) ? MRZAIB_VIDEO_MAX : 24;
+	$slots = array_slice( $slots, 0, $max );
+	foreach ( $slots as $i => $sl ) {
+		set_theme_mod( 'mrzaib_video_' . ( $i + 1 ), $sl['v'] );
+		set_theme_mod( 'mrzaib_video_poster_' . ( $i + 1 ), $sl['c'] );
+		set_theme_mod( 'mrzaib_video_product_' . ( $i + 1 ), $sl['p'] );
+	}
+	for ( $i = count( $slots ) + 1; $i <= $count; $i++ ) {
+		remove_theme_mod( 'mrzaib_video_' . $i );
+		remove_theme_mod( 'mrzaib_video_poster_' . $i );
+		remove_theme_mod( 'mrzaib_video_product_' . $i );
+	}
+	set_theme_mod( 'mrzaib_video_count', count( $slots ) );
+	update_option( 'mrzaib_main_videos_v', MRZAIB_MAIN_VIDEOS_V );
+	return $n;
+}
+
+add_action( 'admin_init', function () {
+	if ( ! mrzaib_data_ready() || (int) get_option( 'mrzaib_main_videos_v' ) >= MRZAIB_MAIN_VIDEOS_V || ! current_user_can( 'upload_files' ) || wp_doing_ajax() ) {
+		return;
+	}
+	mrzaib_replace_main_videos();
+}, 35 );
+
+/**
  * Hero reset (user, 2026-11-18): all 13 built-in perfume slides in order (collection slide removed),
  * with the current podium banners and prices. Slides that still hold an older theme banner are
  * replaced; the admin's own slide images are kept and moved after the 14 built-in slides.

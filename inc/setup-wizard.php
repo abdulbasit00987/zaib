@@ -83,11 +83,89 @@ function mrzaib_setup_configure() {
 	if ( function_exists( 'mrzaib_wf_active' ) && mrzaib_wf_active() ) {
 		$log[] = mrzaib_wf_configure();
 	}
+	$imp = mrzaib_setup_import_settings();
+	if ( $imp ) {
+		$log[] = sprintf( '%d plugin settings copied from the live store.', $imp );
+	}
 	update_option( 'permalink_structure', '/%postname%/' );
 	flush_rewrite_rules();
 	update_option( 'mrzaib_plugins_done', time() );
 	return implode( ' ', array_filter( $log ) );
 }
+
+/* ---------- Plugin settings: export from the live store, bundled into the theme ---------- */
+
+/** Option names that must never travel between sites (IDs, versions, secrets, internal state). */
+function mrzaib_settings_skip( $name ) {
+	return (bool) preg_match( '/(version|_page_id|_db_|install|notice|admin_|onboarding|task_list|tracker|tracking|queue|_id$|_ids$|secret|token|key|pass|cache|transient|last_|timestamp|maxmind|remote|marketplace|inbox|navigation|feature|schedule|cron|guid|lock|migration|usage|telemetry|activated|activation|redirect|_hash|nonce|stats|count|custom_orders_table|hpos|placeholder_image|taxonomy_meta|sent_data|imported|_ver$|email_improvements_first|^wpseo$)/i', $name );
+}
+
+function mrzaib_settings_strip( $v ) {
+	if ( is_array( $v ) ) {
+		foreach ( $v as $k => $x ) {
+			if ( is_string( $k ) && preg_match( '/(pass|secret|token|api_key|apikey|access|refresh|client_id|client_secret|license)/i', $k ) ) {
+				unset( $v[ $k ] );
+			} else {
+				$v[ $k ] = mrzaib_settings_strip( $x );
+			}
+		}
+	}
+	return $v;
+}
+
+/** The store's plugin + WooCommerce settings (no passwords, keys or page IDs). */
+function mrzaib_settings_collect() {
+	global $wpdb;
+	$out   = array();
+	$names = $wpdb->get_col( "SELECT option_name FROM {$wpdb->options} WHERE option_name LIKE 'woocommerce\_%' OR option_name LIKE 'wpseo%' OR option_name LIKE 'ig\_es\_%' OR option_name LIKE 'aws\_%' OR option_name IN ('_sp_wqvpro_options','wpgs_form','wp_mail_smtp','mrzaib_forms','mrzaib_dtime_karachi','mrzaib_dtime_rest','mrzaib_newsletter')" ); // phpcs:ignore
+	foreach ( $names as $n ) {
+		if ( 0 !== strpos( $n, '_sp_' ) && 0 !== strpos( $n, 'mrzaib_' ) && mrzaib_settings_skip( $n ) ) {
+			continue;
+		}
+		$v = get_option( $n );
+		if ( is_object( $v ) ) {
+			continue;
+		}
+		$out[ $n ] = mrzaib_settings_strip( $v );
+	}
+	return $out;
+}
+
+/** Copy the bundled settings (assets/data/plugin-settings.json) into this site. */
+function mrzaib_setup_import_settings() {
+	$file = MRZAIB_DIR . '/assets/data/plugin-settings.json';
+	if ( ! file_exists( $file ) ) {
+		return 0;
+	}
+	$data = json_decode( (string) file_get_contents( $file ), true ); // phpcs:ignore
+	if ( ! is_array( $data ) || empty( $data['options'] ) ) {
+		return 0;
+	}
+	$n = 0;
+	foreach ( $data['options'] as $name => $v ) {
+		if ( ! is_string( $name ) || ( 0 !== strpos( $name, '_sp_' ) && 0 !== strpos( $name, 'mrzaib_' ) && mrzaib_settings_skip( $name ) ) ) {
+			continue;
+		}
+		$old = get_option( $name );
+		if ( is_array( $old ) && is_array( $v ) ) {
+			$v = array_replace_recursive( $old, $v ); // keeps this site's own passwords / IDs.
+		}
+		update_option( $name, $v );
+		$n++;
+	}
+	return $n;
+}
+
+add_action( 'admin_post_mrzaib_export_settings', function () {
+	if ( ! current_user_can( 'manage_options' ) || ! check_admin_referer( 'mrzaib_export_settings' ) ) {
+		wp_die( 'No permission.' );
+	}
+	nocache_headers();
+	header( 'Content-Type: application/json; charset=utf-8' );
+	header( 'Content-Disposition: attachment; filename=mrzaib-plugin-settings.json' );
+	echo wp_json_encode( array( 'site' => home_url(), 'date' => gmdate( 'c' ), 'options' => mrzaib_settings_collect() ), JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE );
+	exit;
+} );
 
 /** The parts of "Add All Data", in order. */
 function mrzaib_setup_data_steps() {
@@ -174,7 +252,9 @@ function mrzaib_setup_run_step( $step ) {
 			$h = mrzaib_reset_hero_banners();
 			return sprintf( 'Homepage media added (%d files), %d hero banners in order.', (int) $n, (int) $h );
 		case 'data:videos':
-			return sprintf( '%d product videos added to the homepage.', (int) mrzaib_add_product_videos() );
+			$a = (int) mrzaib_add_product_videos();
+			$b = (int) mrzaib_replace_main_videos();
+			return sprintf( '%d product videos added to the homepage.', $a + $b );
 		case 'data:finish':
 			update_option( 'mrzaib_data_done', time() );
 			update_option( 'mrzaib_demo_imported', time() );
@@ -259,6 +339,9 @@ function mrzaib_setup_wizard_page() {
 				<p><button type="button" class="button button-primary button-hero" id="mz-run-plugins">Install &amp; Activate All Plugins</button></p>
 			<?php endif; ?>
 			<p class="description">Wordfence license (API key): open Wordfence &rarr; Resume Installation and get the free key with your own account.</p>
+			<?php if ( $ok ) : ?>
+				<p><a class="button" href="<?php echo esc_url( wp_nonce_url( admin_url( 'admin-post.php?action=mrzaib_export_settings' ), 'mrzaib_export_settings' ) ); ?>">Export plugin settings (.json)</a> <span class="description">Downloads this store's WooCommerce and plugin settings (no passwords).</span></p>
+			<?php endif; ?>
 		</div>
 
 		<?php if ( $ok && ! $data ) : ?>
