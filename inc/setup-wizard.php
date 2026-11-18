@@ -97,7 +97,7 @@ function mrzaib_setup_configure() {
 
 /** Option names that must never travel between sites (IDs, versions, secrets, internal state). */
 function mrzaib_settings_skip( $name ) {
-	return (bool) preg_match( '/(version|_page_id|_db_|install|notice|admin_|onboarding|task_list|tracker|tracking|queue|_id$|_ids$|secret|token|key|pass|cache|transient|last_|timestamp|maxmind|remote|marketplace|inbox|navigation|feature|schedule|cron|guid|lock|migration|usage|telemetry|activated|activation|redirect|_hash|nonce|stats|count|custom_orders_table|hpos|placeholder_image|taxonomy_meta|sent_data|imported|_ver$|email_improvements_first|^wpseo$)/i', $name );
+	return (bool) preg_match( '/(version|_page_id|_db_|install|notice|admin_|onboarding|task_list|tracker|tracking|queue|_id$|_ids$|secret|token|key|pass|cache|transient|last_|timestamp|maxmind|remote|marketplace|inbox|navigation|feature|schedule|cron|guid|lock|migration|usage|telemetry|activated|activation|redirect|_hash|nonce|stats|count|custom_orders_table|hpos|placeholder_image|taxonomy_meta|sent_data|imported|_ver$|email_improvements_first|^wpseo$|_\d+_settings$|ces_shown|tour_shown|sales_record|state_snapshots|header_image|campaign_error|test_mailbox|ssl_checkout)/i', $name );
 }
 
 function mrzaib_settings_strip( $v ) {
@@ -131,6 +131,17 @@ function mrzaib_settings_collect() {
 	return $out;
 }
 
+function mrzaib_settings_swap_url( $v, $from, $to ) {
+	if ( is_array( $v ) ) {
+		foreach ( $v as $k => $x ) {
+			$v[ $k ] = mrzaib_settings_swap_url( $x, $from, $to );
+		}
+	} elseif ( is_string( $v ) ) {
+		$v = str_replace( $from, $to, $v );
+	}
+	return $v;
+}
+
 /** Copy the bundled settings (assets/data/plugin-settings.json) into this site. */
 function mrzaib_setup_import_settings() {
 	$file = MRZAIB_DIR . '/assets/data/plugin-settings.json';
@@ -141,8 +152,13 @@ function mrzaib_setup_import_settings() {
 	if ( ! is_array( $data ) || empty( $data['options'] ) ) {
 		return 0;
 	}
-	$n = 0;
+	$from = isset( $data['site'] ) ? untrailingslashit( (string) $data['site'] ) : '';
+	$to   = untrailingslashit( home_url() );
+	$n    = 0;
 	foreach ( $data['options'] as $name => $v ) {
+		if ( $from && $from !== $to ) {
+			$v = mrzaib_settings_swap_url( $v, $from, $to );
+		}
 		if ( ! is_string( $name ) || ( 0 !== strpos( $name, '_sp_' ) && 0 !== strpos( $name, 'mrzaib_' ) && mrzaib_settings_skip( $name ) ) ) {
 			continue;
 		}
@@ -273,6 +289,7 @@ function mrzaib_setup_run_step( $step ) {
 			if ( defined( 'WPSEO_VERSION' ) && function_exists( 'mrzaib_configure_yoast' ) ) {
 				mrzaib_configure_yoast();
 			}
+			mrzaib_setup_import_settings(); // the live store's own settings win.
 			update_option( 'woocommerce_coming_soon', 'no' );
 			update_option( 'permalink_structure', '/%postname%/' );
 			flush_rewrite_rules();
