@@ -144,7 +144,7 @@ if ( ! defined( 'MRZAIB_VIDEO_MAX' ) ) {
 }
 if ( ! defined( 'MRZAIB_HERO_MAX' ) ) {
 	// 16, or more when the hero reset needed room to keep all of the admin's own slides.
-	define( 'MRZAIB_HERO_MAX', max( 16, (int) get_option( 'mrzaib_hero_max', 16 ) ) );
+	define( 'MRZAIB_HERO_MAX', max( 20, (int) get_option( 'mrzaib_hero_max', 20 ) ) );
 }
 
 /** Built-in hero slides (desktop, mobile, link, alt). */
@@ -164,8 +164,12 @@ function mrzaib_hero_defaults() {
 		12 => array( mrzaib_img( 'hero-12-desktop.jpg' ), mrzaib_img( 'hero-12-mobile.jpg' ), mrzaib_product_slug_link( 'dazor-perfume', 'men' ), 'Dazor long lasting fresh fruity perfume for men by MR ZAIB' ),
 		13 => array( mrzaib_img( 'hero-13-desktop.jpg' ), mrzaib_img( 'hero-13-mobile.jpg' ), mrzaib_product_slug_link( 'brave-perfume', 'men' ), 'Brave long lasting fresh fruity perfume for men by MR ZAIB' ),
 		14 => array( mrzaib_img( 'hero-14-desktop.jpg' ), mrzaib_img( 'hero-14-mobile.jpg' ), mrzaib_product_slug_link( 'baraan-perfume', 'men' ), 'Baraan long lasting amber woody bakhoor perfume for men by MR ZAIB' ),
+		15 => array( mrzaib_img( 'hero-15-desktop.jpg' ), mrzaib_img( 'hero-15-mobile.jpg' ), mrzaib_product_slug_link( 'tusqan-perfume', 'men' ), 'Tusqan long lasting leather saffron perfume for men by MR ZAIB inspired by Tuscan Leather' ),
+		16 => array( mrzaib_img( 'hero-16-desktop.jpg' ), mrzaib_img( 'hero-16-mobile.jpg' ), mrzaib_product_slug_link( 'obsession-perfume', 'unisex' ), 'Obsession long lasting sweet vanilla amber unisex perfume by MR ZAIB' ),
+		17 => array( mrzaib_img( 'hero-17-desktop.jpg' ), mrzaib_img( 'hero-17-mobile.jpg' ), mrzaib_product_slug_link( 'elara-perfume', 'unisex' ), 'Elara long lasting fresh citrus woody unisex perfume by MR ZAIB' ),
+		18 => array( mrzaib_img( 'hero-18-desktop.jpg' ), mrzaib_img( 'hero-18-mobile.jpg' ), mrzaib_product_slug_link( 'aura-perfume', 'men' ), 'Aura long lasting fresh woody office perfume for men by MR ZAIB' ),
 	);
-	unset( $d[3] ); // Collection slide removed by user (2026-11-18): 13 perfume slides only.
+	unset( $d[3] ); // Collection slide removed by user (2026-11-18). 17 perfume slides (Tusqan, Obsession, Elara, Aura added 2026-11-21).
 	return array_combine( range( 1, count( $d ) ), array_values( $d ) );
 }
 
@@ -270,13 +274,13 @@ add_action( 'init', function () {
 	}
 	$c = get_theme_mod( 'mrzaib_hero_count' );
 	if ( false === $c || in_array( (int) $c, array( 3, 5, 7 ), true ) ) {
-		set_theme_mod( 'mrzaib_hero_count', 13 );
+		set_theme_mod( 'mrzaib_hero_count', 17 );
 	}
 	update_option( 'mrzaib_hero_v', '14' );
 } );
 
 function mrzaib_hero_count() {
-	return max( 1, min( MRZAIB_HERO_MAX, (int) get_theme_mod( 'mrzaib_hero_count', 13 ) ) );
+	return max( 1, min( MRZAIB_HERO_MAX, (int) get_theme_mod( 'mrzaib_hero_count', 17 ) ) );
 }
 
 /** Slides to render: [desktop, mobile, link, alt]; slides without a desktop image are skipped. */

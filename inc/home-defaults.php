@@ -6,7 +6,7 @@
  */
 
 function mrzaib_seo_default_intro() {
-	return '<strong>MR ZAIB Luxury Perfumes</strong> is a Pakistani perfume brand creating <strong>long lasting perfumes</strong> for men, women and unisex lovers. Our promise is simple: <em>Leave Your Presence</em>. Choose from thirteen signature 50ml fragrances: <strong>perfumes for men</strong> like Kahn-vahl, Zay-ab, RAAZ, ZAUQ, Mehfil, Dazor, Brave and Baraan, <strong>perfumes for women</strong> like Hoor and Kireza, and <strong>unisex perfumes</strong> like Arvon, Velora and OUD X, with prices from Rs. 2,000 and Cash on Delivery all over Pakistan. Whether you want a fresh everyday scent, an <strong>oud perfume</strong>, a bakhoor-style Arabic fragrance, a wedding perfume or a thoughtful gift, MR ZAIB has the <strong>best perfume in Pakistan</strong> for you.';
+	return '<strong>MR ZAIB Luxury Perfumes</strong> is a Pakistani perfume brand creating <strong>long lasting perfumes</strong> for men, women and unisex lovers. Our promise is simple: <em>Leave Your Presence</em>. Choose from seventeen signature 50ml fragrances: <strong>perfumes for men</strong> like Kahn-vahl, Zay-ab, RAAZ, ZAUQ, Mehfil, Dazor, Brave, Baraan, Tusqan and Aura, <strong>perfumes for women</strong> like Hoor and Kireza, and <strong>unisex perfumes</strong> like Arvon, Velora, OUD X, Obsession and Elara, with prices from Rs. 2,000 and Cash on Delivery all over Pakistan. Whether you want a fresh everyday scent, an <strong>office perfume</strong>, a <strong>leather perfume</strong>, a sweet <strong>vanilla perfume</strong>, an <strong>oud perfume</strong>, a bakhoor-style Arabic fragrance, a wedding perfume or a thoughtful gift, MR ZAIB has the <strong>best perfume in Pakistan</strong> for you.';
 }
 
 function mrzaib_seo_default_more() {
@@ -23,6 +23,8 @@ function mrzaib_seo_default_more() {
 		'<p>' . $p( 'dazor-perfume', 'Dazor perfume for men' ) . ', inspired by Dunhill Desire, is fresh and fruity with apple, lemon, bergamot and orange blossom, rose, teak wood and patchouli, and a smooth vanilla musk finish. A great daily perfume for office and university.</p>' .
 		'<p>' . $p( 'brave-perfume', 'Brave perfume for men' ) . ' is a juicy, fearless fragrance of lemon, mandarin, guava and peach, licorice and white flowers, and a creamy sandalwood, musk and cedar base. Perfect for summer and parties.</p>' .
 		'<p>' . $p( 'baraan-perfume', 'Baraan perfume for men' ) . ', inspired by Bakhour, brings the warmth of traditional bakhoor in amber, woods and vanilla with a soft floral fruity glow. A rich Arabic-style perfume for Eid, Jummah and weddings.</p>' .
+		'<p>' . $p( 'tusqan-perfume', 'Tusqan perfume for men' ) . ', inspired by Tuscan Leather, is a bold <strong>leather perfume</strong> of raspberry, saffron and thyme, olibanum and jasmine, on suede, leather, woods and amber. A luxurious evening and winter scent.</p>' .
+		'<p>' . $p( 'aura-perfume', 'Aura perfume for men' ) . ', inspired by Office for Men, is a clean <strong>office perfume for men</strong> of ambroxan, bergamot and orris root, with woods, ambergris, amber and jasmine over musk, patchouli and cashalox. Fresh and professional all day.</p>' .
 		'<h3>Best Long Lasting Perfumes for Women in Pakistan</h3>' .
 		'<p>' . $p( 'hoor-perfume', 'Hoor perfume for women' ) . ', inspired by Myton Floral, is a sweet fruity floral scent in a pink bottle: black currant, pineapple and red apple bloom into rose, freesia and peony over musk, iris and sandalwood.</p>' .
 		'<p>' . $p( 'kireza-perfume', 'Kireza perfume for women' ) . ', inspired by Megamari, is a bold, glamorous fragrance of raspberry, rose and black currant with a fresh marine heart and a musk, ambroxan and cedar base, made for parties, weddings and evenings out.</p>' .
@@ -30,6 +32,8 @@ function mrzaib_seo_default_more() {
 		'<p>' . $p( 'arvon-perfume', 'Arvon unisex perfume' ) . ' blends pineapple, red apple and spice with Moroccan rose, jasmine and iris, finishing on cacao, vanilla, white musk and amber.</p>' .
 		'<p>' . $p( 'velora-perfume', 'Velora unisex perfume' ) . ', inspired by Bidford, is a dark rose and leather scent: tomato leaf, spices and tuberose, dried rose and iris, on amber, metallic notes and leather.</p>' .
 		'<p>' . $p( 'oud-x-perfume', 'OUD X unisex oud perfume' ) . ', inspired by Ouray, blends bergamot and citrus with cinnamon and apple, drying down to ambergris, musk and rich woods, a modern oud-style fragrance for men and women.</p>' .
+		'<p>' . $p( 'obsession-perfume', 'Obsession unisex perfume' ) . ', inspired by Forbidden Craving, is a sweet <strong>vanilla amber perfume</strong>: blood orange, bergamot and cardamom, red apple, peach and rose, on vanilla absolute, amber, benzoin, sandalwood and musk.</p>' .
+		'<p>' . $p( 'elara-perfume', 'Elara unisex perfume' ) . ', inspired by Alpena, is a <strong>fresh citrus woody perfume</strong> of lemon, bergamot and grapefruit, thyme, jasmine and orchid, drying down to oakmoss, myrrh, cedar, sandalwood and musk. A clean everyday scent for men and women.</p>' .
 		'<h3>Shop Perfumes by Category</h3>' .
 		'<p>Explore <a href="' . esc_url( mrzaib_cat_link( 'men' ) ) . '">perfumes for men</a>, <a href="' . esc_url( mrzaib_cat_link( 'women' ) ) . '">perfumes for women</a> and <a href="' . esc_url( mrzaib_cat_link( 'unisex' ) ) . '">unisex perfumes</a>, traditional <a href="' . esc_url( mrzaib_cat_link( 'attar' ) ) . '">Attar</a>, and perfume <a href="' . esc_url( mrzaib_cat_link( 'tester' ) ) . '">Testers</a> to try a scent before buying the full bottle.</p>' .
 		'<h3>Easy Returns and Cash on Delivery</h3>' .
@@ -45,11 +49,11 @@ function mrzaib_seo_text_norm( $v ) {
 	return trim( preg_replace( '/\s+/u', ' ', $v ) );
 }
 
-/* SEO text v4 (13 perfumes): a saved Customizer value that is exactly an older theme text
+/* SEO text v5 (17 perfumes): a saved Customizer value that is exactly an older theme text
    (all earlier theme versions, compared in full) is cleared once, so the new text shows.
    Any text the admin edited, even partly, is left alone. */
 add_action( 'init', function () {
-	if ( (int) get_option( 'mrzaib_seo_text_v' ) >= 4 ) {
+	if ( (int) get_option( 'mrzaib_seo_text_v' ) >= 5 ) {
 		return;
 	}
 	$legacy = array(
@@ -62,7 +66,7 @@ add_action( 'init', function () {
 			remove_theme_mod( $mod );
 		}
 	}
-	update_option( 'mrzaib_seo_text_v', 4 );
+	update_option( 'mrzaib_seo_text_v', 5 );
 }, 20 );
 
 /** Theme icon file for feature N (1-4). */
@@ -106,7 +110,7 @@ function mrzaib_video_product( $n ) {
  * as real media (with previews) and can be picked again from Media.
  * Only fields still using the theme default (or empty) are changed.
  */
-define( 'MRZAIB_HOME_MEDIA_V', 10 );
+define( 'MRZAIB_HOME_MEDIA_V', 11 );
 
 function mrzaib_home_media_items() {
 	$items = array();
@@ -120,9 +124,9 @@ function mrzaib_home_media_items() {
 		$items[ 'hero_img_' . $i ] = array( 'assets/images/' . basename( strtok( $d[0], '?' ) ), $d[0], $tag );
 		$items[ 'hero_mob_' . $i ] = array( 'assets/images/' . basename( strtok( $d[1], '?' ) ), $d[1], $tag );
 	}
-	/* Third value = version tag: a new tag imports the updated file again (v7 = 13 bottles on marble riser, band background kept). */
-	$items['promo_img_d'] = array( 'assets/images/promo-band-desktop.jpg', MRZAIB_URI . '/assets/images/promo-band-desktop.jpg', 'v7' );
-	$items['promo_img_m'] = array( 'assets/images/promo-band-mobile.jpg', MRZAIB_URI . '/assets/images/promo-band-mobile.jpg', 'v7' );
+	/* Third value = version tag: a new tag imports the updated file again (v8 = 17 bottles on marble riser, band background kept). */
+	$items['promo_img_d'] = array( 'assets/images/promo-band-desktop.jpg', MRZAIB_URI . '/assets/images/promo-band-desktop.jpg', 'v8' );
+	$items['promo_img_m'] = array( 'assets/images/promo-band-mobile.jpg', MRZAIB_URI . '/assets/images/promo-band-mobile.jpg', 'v8' );
 	return $items;
 }
 
@@ -480,7 +484,7 @@ add_action( 'admin_init', function () {
  * replaced; the admin's own slide images are kept and moved after the 14 built-in slides.
  * Runs once automatically (MRZAIB_HERO_RESET_V) and from Appearance > MR ZAIB Setup.
  */
-define( 'MRZAIB_HERO_RESET_V', 3 ); // v2: collection slide removed, 13 perfume slides.
+define( 'MRZAIB_HERO_RESET_V', 4 ); // v4: 17 perfume slides (Tusqan, Obsession, Elara, Aura added).
 
 function mrzaib_is_theme_hero( $url ) {
 	$b = basename( (string) strtok( (string) $url, '?' ) );
@@ -495,7 +499,7 @@ function mrzaib_reset_hero_banners() {
 	require_once ABSPATH . 'wp-admin/includes/media.php';
 	require_once ABSPATH . 'wp-admin/includes/image.php';
 	$hd   = mrzaib_hero_defaults();
-	$old  = max( 1, (int) get_theme_mod( 'mrzaib_hero_count', 13 ) );
+	$old  = max( 1, (int) get_theme_mod( 'mrzaib_hero_count', 17 ) );
 	$own  = array(); // Admin's visible slides: moved after the built-in ones.
 	$hid  = array(); // Admin's slides beyond the slide count: kept, still hidden.
 	$last = MRZAIB_HERO_MAX;
