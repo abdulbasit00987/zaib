@@ -8,7 +8,7 @@
 
 defined( 'ABSPATH' ) || exit;
 
-define( 'MRZAIB_BLOG_V', 10 );
+define( 'MRZAIB_BLOG_V', 11 );
 
 /** Fragrance-notes block used inside the articles. */
 function mrzaib_blog_notes_html( $top, $heart, $base ) {
@@ -436,6 +436,30 @@ function mrzaib_blog_posts() {
 					'Is Elara for men or women?' => 'Elara is a unisex perfume, made to suit both men and women.',
 				),
 				'end'   => '<h2>The Verdict</h2><p><strong>Elara</strong> is fresh, clean and elegant, an easy everyday scent for him and her. If you love citrus with a refined woody finish, Elara belongs in your collection.</p>',
+			),
+		),
+		array(
+			'slug'    => 'aura-fresh-woody-office-perfume-for-men',
+			'title'   => 'Aura: The Fresh Woody Office Perfume for Men',
+			'product' => 'aura-perfume',
+			'name'    => 'Aura',
+			'image'   => 'blog-aura.jpg',
+			'alt'     => 'Aura fresh woody office perfume for men by MR ZAIB inspired by Office for Men',
+			'excerpt' => 'Clean ambroxan and bergamot, a smooth amber woody heart and a soft musky base. Aura is a polished office perfume for men, inspired by Office for Men.',
+			'tags'    => array( 'Aura', 'Perfume for Men', 'Office Perfume', 'Fresh Perfume', 'Office for Men Inspired' ),
+			'seo'     => array( 'Aura Fresh Woody Office Perfume for Men | MR ZAIB Blog', 'Aura by MR ZAIB is a long lasting fresh woody office perfume for men inspired by Office for Men, with ambroxan, bergamot, amber, jasmine and musk.', 'Aura perfume' ),
+			'body'    => array(
+				'intro' => '<p>Your workday scent should feel clean, confident and never too loud. <strong>Aura by MR ZAIB</strong> is a <strong>long lasting fresh woody perfume for men</strong>, inspired by Office for Men, made to keep you sharp from the first meeting to the drive home, in a sleek black bottle with a gold label.</p>',
+				'notes' => array( 'Ambroxan, Bergamot, Orris Root', 'Woody Notes, Floral Notes, Ambergris, Amber, Jasmine', 'Woody Notes, Musk, Patchouli, Cashalox' ),
+				'story' => '<h2>What Aura Smells Like</h2><p>Aura opens crisp and radiant with <strong>ambroxan</strong> and fresh <strong>bergamot</strong>, plus a soft powdery touch of <strong>orris root</strong>.</p><p>The heart is smooth and warm: <strong>woody</strong> and <strong>floral notes</strong> blend with <strong>ambergris</strong>, <strong>amber</strong> and a hint of <strong>jasmine</strong>.</p><p>In the dry-down, <strong>woods</strong>, clean <strong>musk</strong>, <strong>patchouli</strong> and cosy <strong>cashalox</strong> leave a soft, skin-like trail that lasts all day.</p>',
+				'wear'  => '<h2>When to Wear Aura</h2><ul><li><strong>Office and meetings:</strong> clean, professional and pleasant up close.</li><li><strong>Interviews:</strong> a confident, polished first impression.</li><li><strong>University and daily wear:</strong> fresh enough for every day.</li><li><strong>Casual evenings:</strong> the amber woody base keeps it smart after work.</li></ul>',
+				'tip'   => '<strong>Two sprays before work are enough.</strong> Aura is made to stay close and clean; add one spray on the shirt collar for a trail that lasts through the day.',
+				'faq'   => array(
+					'What does Aura smell like?' => 'Aura is fresh and woody: ambroxan, bergamot and orris root on top, woods, florals, ambergris, amber and jasmine in the heart, and woods, musk, patchouli and cashalox in the base.',
+					'Is Aura inspired by Office for Men?' => 'Yes. Aura by MR ZAIB is inspired by Office for Men, with the same clean, professional character at an affordable price in Pakistan.',
+					'Is Aura good for the office?' => 'Yes. Aura was made for work: fresh, clean and long lasting without being overpowering.',
+				),
+				'end'   => '<h2>The Verdict</h2><p><strong>Aura</strong> is clean, polished and confident, the perfect office perfume for men. If you want a fresh woody scent for every workday, Aura belongs in your collection.</p>',
 			),
 		),
 	);

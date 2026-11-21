@@ -632,6 +632,44 @@ function mrzaib_store_products() {
 				'keywords' => 'Elara perfume, Elara unisex perfume, MR ZAIB Elara, unisex perfume Pakistan, perfume for men and women, long lasting unisex perfume, fresh perfume, citrus perfume, woody perfume, chypre perfume, oakmoss perfume, summer perfume, office perfume, inspired by Alpena, Alpena inspired perfume Pakistan, everyday perfume, best unisex perfume in Pakistan, gift for him, gift for her',
 			),
 		),
+		array(
+			'name'     => 'Aura',
+			'slug'     => 'aura-perfume',
+			'subtitle' => 'Long Lasting Fresh Woody Office Perfume for Men | Inspired by Office for Men | 50ml',
+			'sku'      => 'MZ-AURA-50',
+			'regular'  => '2499',
+			'sale'     => '2000',
+			'cats'     => array( 'men' ),
+			'images'   => array( 'aura-main.jpg', 'aura-banner.jpg', 'aura-notes-top.jpg', 'aura-notes-middle.jpg', 'aura-notes-base.jpg' ),
+			'alts'     => array( 'Aura long lasting office perfume for men by MR ZAIB 50ml inspired by Office for Men', 'MR ZAIB Aura perfume for men fragrance notes', 'Aura top notes ambroxan bergamot orris root', 'Aura middle notes woody floral ambergris amber jasmine', 'Aura base notes woody notes musk patchouli cashalox' ),
+			'notes'    => array(
+				'Top Notes'    => 'Ambroxan, Bergamot, Orris Root',
+				'Middle Notes' => 'Woody Notes, Floral Notes, Ambergris, Amber, Jasmine',
+				'Base Notes'   => 'Woody Notes, Musk, Patchouli, Cashalox',
+			),
+			'short'    => '<p><strong>Aura by MR ZAIB</strong> is a long lasting fresh woody perfume for men, inspired by Office for Men. It opens with clean <strong>ambroxan, bergamot and orris root</strong>, moves into a smooth heart of <strong>woody and floral notes, ambergris, amber and jasmine</strong>, and settles on a soft base of <strong>woods, musk, patchouli and cashalox</strong>. A polished, professional scent made for the office and every day.</p>'
+				. '<ul><li><strong>Top Notes:</strong> Ambroxan, Bergamot, Orris Root</li><li><strong>Middle Notes:</strong> Woody Notes, Floral Notes, Ambergris, Amber, Jasmine</li><li><strong>Base Notes:</strong> Woody Notes, Musk, Patchouli, Cashalox</li><li><strong>Size:</strong> 50ml</li><li><strong>For:</strong> Men</li></ul>',
+			'long'     => '<h2>Aura: Long Lasting Fresh Woody Office Perfume for Men in Pakistan</h2>'
+				. '<p><strong>Aura</strong> is a premium perfume for men from <strong>MR ZAIB Luxury Perfumes</strong>, inspired by Office for Men. Clean ambroxan and citrus, a smooth ambery woody heart and a soft musky base make it a confident, professional scent that feels fresh from morning meetings to evening plans, made to <em>leave your presence</em>.</p>'
+				. '<h3>Fragrance Notes of Aura</h3>'
+				. '<p><strong>Top Notes: Ambroxan, Bergamot and Orris Root.</strong> A crisp, clean opening of radiant ambroxan and fresh bergamot with a powdery touch of orris.</p>'
+				. '<p><strong>Middle Notes: Woody Notes, Floral Notes, Ambergris, Amber and Jasmine.</strong> A smooth, warm heart where woods and ambergris meet soft jasmine and florals.</p>'
+				. '<p><strong>Base Notes: Woody Notes, Musk, Patchouli and Cashalox.</strong> A soft, long lasting dry-down of cashmere woods, clean musk and earthy patchouli.</p>'
+				. '<h3>Fragrance Profile</h3>'
+				. '<ul><li><strong>Family:</strong> Fresh, Woody, Amber, Musky</li><li><strong>Character:</strong> Clean, polished, confident, professional</li><li><strong>Best season:</strong> All year round</li><li><strong>Occasions:</strong> Office, meetings, interviews, university and daily wear</li></ul>'
+				. '<h3>Why Choose MR ZAIB Aura?</h3>'
+				. '<ul><li>Clean ambroxan and woody blend inspired by Office for Men</li><li>Long lasting men\'s perfume that stays fresh all day</li><li>Sleek 50ml black glass bottle with gold label, a perfect gift for him</li><li>Premium quality at Rs. 2,000</li><li>Cash on Delivery all over Pakistan</li></ul>'
+				. '<h3>How to Apply</h3>'
+				. '<p>Spray 2 to 3 times on pulse points (neck, wrists and chest) from about 15 cm. Apply on clean, moisturised skin and do not rub, so the fragrance lasts longer. One spray on your shirt collar keeps the fresh trail through the workday.</p>'
+				. '<p>Looking for the <strong>best long lasting office perfume for men in Pakistan</strong> or an <strong>Office for Men inspired perfume</strong>? Order <strong>Aura by MR ZAIB</strong> online today.</p>',
+			'tags'     => array( 'Aura', 'Aura Perfume', 'Perfume for Men', 'Men Perfume Pakistan', 'Long Lasting Perfume for Men', 'Office Perfume for Men', 'Fresh Perfume for Men', 'Woody Perfume', 'Ambroxan Perfume', 'Musk Perfume', 'Amber Perfume', 'Inspired by Office for Men', 'Office for Men Inspired Perfume', 'Everyday Perfume', 'Daily Wear Perfume', 'Gift for Him', 'Luxury Perfume', 'MR ZAIB' ),
+			'seo'      => array(
+				'title'    => 'Aura Office Perfume for Men 50ml | Office for Men Inspired | MR ZAIB',
+				'desc'     => 'Shop Aura by MR ZAIB, a long lasting fresh woody office perfume for men inspired by Office for Men, with ambroxan, bergamot, amber, jasmine, musk and woods. 50ml, Rs. 2,000. COD in Pakistan.',
+				'focus'    => 'Aura perfume for men',
+				'keywords' => 'Aura perfume, Aura perfume for men, MR ZAIB Aura, perfume for men, men perfume Pakistan, long lasting perfume for men, office perfume for men, fresh perfume for men, woody perfume for men, ambroxan perfume, musk perfume for men, amber perfume, inspired by Office for Men, Office for Men inspired perfume Pakistan, everyday perfume for men, best perfume for men in Pakistan, gift for him',
+			),
+		),
 	);
 }
 
