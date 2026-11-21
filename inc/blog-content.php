@@ -8,7 +8,7 @@
 
 defined( 'ABSPATH' ) || exit;
 
-define( 'MRZAIB_BLOG_V', 7 );
+define( 'MRZAIB_BLOG_V', 8 );
 
 /** Fragrance-notes block used inside the articles. */
 function mrzaib_blog_notes_html( $top, $heart, $base ) {
@@ -364,6 +364,30 @@ function mrzaib_blog_posts() {
 					'Is Baraan a winter perfume?' => 'It shines most in autumn and winter and on cool evenings, but a light application works all year.',
 				),
 				'end'   => '<h2>The Verdict</h2><p><strong>Baraan</strong> is warm, smoky and smooth, the comfort of bakhoor in a modern perfume. If you love amber, woods and vanilla, Baraan belongs in your collection.</p>',
+			),
+		),
+		array(
+			'slug'    => 'tusqan-leather-saffron-perfume-for-men',
+			'title'   => 'Tusqan: A Rich Leather and Saffron Perfume for Men',
+			'product' => 'tusqan-perfume',
+			'name'    => 'Tusqan',
+			'image'   => 'blog-tusqan.jpg',
+			'alt'     => 'Tusqan leather saffron perfume for men by MR ZAIB inspired by Tuscan Leather',
+			'excerpt' => 'Juicy raspberry and saffron, smoky olibanum and a deep base of leather, suede and amber. Tusqan is a bold leather perfume for men, inspired by Tuscan Leather.',
+			'tags'    => array( 'Tusqan', 'Perfume for Men', 'Leather Perfume', 'Saffron Perfume', 'Tuscan Leather Inspired' ),
+			'seo'     => array( 'Tusqan Leather Saffron Perfume for Men | MR ZAIB Blog', 'Tusqan by MR ZAIB is a long lasting leather perfume for men inspired by Tuscan Leather, with raspberry, saffron, olibanum, suede and amber.', 'Tusqan perfume' ),
+			'body'    => array(
+				'intro' => '<p>Some scents simply say <strong>confidence</strong>. Leather is one of them. <strong>Tusqan by MR ZAIB</strong> is a <strong>long lasting leather perfume for men</strong>, inspired by Tuscan Leather, that wraps polished leather in saffron, raspberry and amber, in a glowing amber glass bottle with a crystal cap.</p>',
+				'notes' => array( 'Raspberry, Saffron, Thyme', 'Olibanum, Jasmine', 'Leather, Suede, Woody Notes, Amber' ),
+				'story' => '<h2>What Tusqan Smells Like</h2><p>Tusqan opens with a juicy <strong>raspberry</strong> that is instantly warmed by precious <strong>saffron</strong>, with a fresh herbal edge of <strong>thyme</strong>.</p><p>In the heart, smoky <strong>olibanum</strong> (frankincense) and smooth <strong>jasmine</strong> add an elegant, oriental depth.</p><p>The dry-down is where Tusqan shines: rich <strong>leather</strong>, soft <strong>suede</strong>, dry <strong>woods</strong> and glowing <strong>amber</strong> that stay on skin and clothes for hours.</p>',
+				'wear'  => '<h2>When to Wear Tusqan</h2><ul><li><strong>Weddings and baraat:</strong> rich, bold and noticed in a crowd.</li><li><strong>Dinners and parties:</strong> seductive leather and saffron for the evening.</li><li><strong>Winter days:</strong> leather and amber feel perfect in cool weather.</li><li><strong>Important meetings:</strong> one or two sprays give a confident, polished presence.</li></ul>',
+				'tip'   => '<strong>Less is more: two or three sprays are enough.</strong> Tusqan is rich and projects well; a spray on a jacket or shawl keeps the leather trail all day.',
+				'faq'   => array(
+					'What does Tusqan smell like?' => 'Tusqan is a rich leather scent: raspberry, saffron and thyme on top, olibanum and jasmine in the heart, and leather, suede, woods and amber in the base.',
+					'Is Tusqan inspired by Tuscan Leather?' => 'Yes. Tusqan by MR ZAIB is inspired by Tuscan Leather, with the same bold saffron, raspberry and leather character at an affordable price in Pakistan.',
+					'Is Tusqan a winter perfume?' => 'It shines most in autumn, winter and on evenings, but a light application works all year round.',
+				),
+				'end'   => '<h2>The Verdict</h2><p><strong>Tusqan</strong> is bold, rich and seductive, a true leather perfume for men. If you love saffron, leather and amber, Tusqan belongs in your collection.</p>',
 			),
 		),
 	);

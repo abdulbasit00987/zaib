@@ -518,6 +518,44 @@ function mrzaib_store_products() {
 				'keywords' => 'Baraan perfume, Baraan perfume for men, MR ZAIB Baraan, perfume for men, men perfume Pakistan, long lasting perfume for men, bakhoor perfume, amber perfume for men, woody perfume for men, vanilla perfume for men, oriental perfume, arabic perfume Pakistan, winter perfume for men, inspired by Bakhour, Eid perfume for men, wedding perfume for men, best perfume for men in Pakistan, gift for him',
 			),
 		),
+		array(
+			'name'     => 'Tusqan',
+			'slug'     => 'tusqan-perfume',
+			'subtitle' => 'Long Lasting Leather Perfume for Men | Inspired by Tuscan Leather | 50ml',
+			'sku'      => 'MZ-TUSQAN-50',
+			'regular'  => '2499',
+			'sale'     => '2000',
+			'cats'     => array( 'men' ),
+			'images'   => array( 'tusqan-main.jpg', 'tusqan-banner.jpg', 'tusqan-notes-top.jpg', 'tusqan-notes-middle.jpg', 'tusqan-notes-base.jpg' ),
+			'alts'     => array( 'Tusqan long lasting leather perfume for men by MR ZAIB 50ml inspired by Tuscan Leather', 'MR ZAIB Tusqan leather perfume for men fragrance notes', 'Tusqan top notes raspberry saffron thyme', 'Tusqan middle notes olibanum jasmine', 'Tusqan base notes leather suede woody notes amber' ),
+			'notes'    => array(
+				'Top Notes'    => 'Raspberry, Saffron, Thyme',
+				'Middle Notes' => 'Olibanum, Jasmine',
+				'Base Notes'   => 'Leather, Suede, Woody Notes, Amber',
+			),
+			'short'    => '<p><strong>Tusqan by MR ZAIB</strong> is a long lasting leather perfume for men, inspired by Tuscan Leather. It opens with juicy <strong>raspberry, saffron and thyme</strong>, warms into a smoky heart of <strong>olibanum and jasmine</strong>, and dries down to rich <strong>leather, suede, woods and amber</strong>. A bold, luxurious and seductive scent for men who want to be remembered.</p>'
+				. '<ul><li><strong>Top Notes:</strong> Raspberry, Saffron, Thyme</li><li><strong>Middle Notes:</strong> Olibanum, Jasmine</li><li><strong>Base Notes:</strong> Leather, Suede, Woody Notes, Amber</li><li><strong>Size:</strong> 50ml</li><li><strong>For:</strong> Men</li></ul>',
+			'long'     => '<h2>Tusqan: Long Lasting Leather Perfume for Men in Pakistan</h2>'
+				. '<p><strong>Tusqan</strong> is a premium leather perfume for men from <strong>MR ZAIB Luxury Perfumes</strong>, inspired by Tuscan Leather. Fruity saffron on top, smoky olibanum in the heart and a deep base of leather, suede and amber make it a rich, confident signature scent to <em>leave your presence</em>.</p>'
+				. '<h3>Fragrance Notes of Tusqan</h3>'
+				. '<p><strong>Top Notes: Raspberry, Saffron and Thyme.</strong> A sweet, juicy raspberry lifted by warm, precious saffron and a fresh herbal touch of thyme.</p>'
+				. '<p><strong>Middle Notes: Olibanum and Jasmine.</strong> Smoky frankincense (olibanum) and smooth white jasmine give the heart an elegant, oriental depth.</p>'
+				. '<p><strong>Base Notes: Leather, Suede, Woody Notes and Amber.</strong> A rich, long lasting dry-down of polished leather, soft suede, dry woods and glowing amber.</p>'
+				. '<h3>Fragrance Profile</h3>'
+				. '<ul><li><strong>Family:</strong> Leather, Spicy, Woody, Amber</li><li><strong>Character:</strong> Bold, rich, seductive, masculine</li><li><strong>Best season:</strong> Autumn and winter, evenings all year</li><li><strong>Occasions:</strong> Weddings, dinners, parties, office evenings and special events</li></ul>'
+				. '<h3>Why Choose MR ZAIB Tusqan?</h3>'
+				. '<ul><li>Luxurious saffron and leather blend inspired by Tuscan Leather</li><li>Long lasting men\'s perfume with strong projection and a rich trail</li><li>Elegant 50ml amber glass bottle with crystal cap and gold collar, a perfect gift for him</li><li>Premium quality at Rs. 2,000</li><li>Cash on Delivery all over Pakistan</li></ul>'
+				. '<h3>How to Apply</h3>'
+				. '<p>Spray 2 to 3 times on pulse points (neck, wrists and chest) from about 15 cm. Apply on clean, moisturised skin and do not rub, so the fragrance lasts longer. One spray on a jacket or shawl keeps the leather trail all day.</p>'
+				. '<p>Looking for the <strong>best long lasting leather perfume for men in Pakistan</strong> or a <strong>Tuscan Leather inspired perfume</strong>? Order <strong>Tusqan by MR ZAIB</strong> online today.</p>',
+			'tags'     => array( 'Tusqan', 'Tusqan Perfume', 'Perfume for Men', 'Men Perfume Pakistan', 'Long Lasting Perfume for Men', 'Leather Perfume', 'Leather Perfume for Men', 'Saffron Perfume', 'Suede Perfume', 'Amber Perfume', 'Woody Perfume', 'Inspired by Tuscan Leather', 'Tuscan Leather Inspired Perfume', 'Winter Perfume for Men', 'Wedding Perfume', 'Evening Perfume', 'Gift for Him', 'Luxury Perfume', 'MR ZAIB' ),
+			'seo'      => array(
+				'title'    => 'Tusqan Leather Perfume for Men 50ml | Tuscan Leather Inspired | MR ZAIB',
+				'desc'     => 'Shop Tusqan by MR ZAIB, a long lasting leather perfume for men inspired by Tuscan Leather, with raspberry, saffron, olibanum, leather, suede and amber. 50ml, Rs. 2,000. COD in Pakistan.',
+				'focus'    => 'Tusqan perfume for men',
+				'keywords' => 'Tusqan perfume, Tusqan perfume for men, MR ZAIB Tusqan, leather perfume for men, perfume for men, men perfume Pakistan, long lasting perfume for men, saffron perfume for men, suede perfume, amber perfume for men, woody perfume for men, inspired by Tuscan Leather, Tuscan Leather inspired perfume Pakistan, Tom Ford Tuscan Leather alternative, winter perfume for men, wedding perfume for men, best perfume for men in Pakistan, gift for him',
+			),
+		),
 	);
 }
 
