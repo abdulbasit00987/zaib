@@ -8,7 +8,7 @@
 
 defined( 'ABSPATH' ) || exit;
 
-define( 'MRZAIB_BLOG_V', 8 );
+define( 'MRZAIB_BLOG_V', 9 );
 
 /** Fragrance-notes block used inside the articles. */
 function mrzaib_blog_notes_html( $top, $heart, $base ) {
@@ -388,6 +388,30 @@ function mrzaib_blog_posts() {
 					'Is Tusqan a winter perfume?' => 'It shines most in autumn, winter and on evenings, but a light application works all year round.',
 				),
 				'end'   => '<h2>The Verdict</h2><p><strong>Tusqan</strong> is bold, rich and seductive, a true leather perfume for men. If you love saffron, leather and amber, Tusqan belongs in your collection.</p>',
+			),
+		),
+		array(
+			'slug'    => 'obsession-sweet-vanilla-amber-unisex-perfume',
+			'title'   => 'Obsession: A Sweet Vanilla Amber Perfume for Him and Her',
+			'product' => 'obsession-perfume',
+			'name'    => 'Obsession',
+			'image'   => 'blog-obsession.jpg',
+			'alt'     => 'Obsession sweet vanilla amber unisex perfume by MR ZAIB inspired by Forbidden Craving',
+			'excerpt' => 'Zesty blood orange, juicy apple, peach and rose, and a creamy base of vanilla and amber. Obsession is a sweet, addictive unisex perfume inspired by Forbidden Craving.',
+			'tags'    => array( 'Obsession', 'Unisex Perfume', 'Vanilla Perfume', 'Sweet Perfume', 'Forbidden Craving Inspired' ),
+			'seo'     => array( 'Obsession Sweet Vanilla Amber Unisex Perfume | MR ZAIB Blog', 'Obsession by MR ZAIB is a long lasting sweet unisex perfume inspired by Forbidden Craving, with blood orange, apple, peach, rose, vanilla and amber.', 'Obsession perfume' ),
+			'body'    => array(
+				'intro' => '<p>Some perfumes you like. Others you cannot stop wearing. <strong>Obsession by MR ZAIB</strong> is the second kind: a <strong>long lasting sweet unisex perfume</strong>, inspired by Forbidden Craving, with juicy fruit, romantic rose and a creamy vanilla amber base, in a clean clear bottle with a black cap.</p>',
+				'notes' => array( 'Blood Orange, Bergamot, Cardamom', 'Red Apple, Peach, Margarita, Rose', 'Vanilla Absolute, Amber, Cedarwood, Musk, Benzoin, Sandalwood' ),
+				'story' => '<h2>What Obsession Smells Like</h2><p>Obsession opens bright and zesty with <strong>blood orange</strong> and <strong>bergamot</strong>, softened by a warm hint of <strong>cardamom</strong>.</p><p>The heart turns juicy and playful: crisp <strong>red apple</strong>, ripe <strong>peach</strong> and a fun <strong>margarita</strong> accord around a romantic <strong>rose</strong>.</p><p>In the dry-down, <strong>vanilla absolute</strong>, <strong>amber</strong>, <strong>benzoin</strong>, <strong>musk</strong>, <strong>cedarwood</strong> and <strong>sandalwood</strong> melt into a creamy, addictive trail that lasts for hours.</p>',
+				'wear'  => '<h2>When to Wear Obsession</h2><ul><li><strong>Date nights:</strong> sweet, warm and close to the skin in the best way.</li><li><strong>Parties and weddings:</strong> fruity and vanilla notes that get noticed.</li><li><strong>Winter evenings:</strong> vanilla and amber feel cosy in cool weather.</li><li><strong>Everyday wear:</strong> one or two sprays for a light, pleasant aura.</li></ul>',
+				'tip'   => '<strong>Share it.</strong> Obsession is unisex, so it works for him and her. Spray on pulse points and a little on hair or a scarf for a sweet trail all day.',
+				'faq'   => array(
+					'What does Obsession smell like?' => 'Obsession is sweet and fruity: blood orange, bergamot and cardamom on top, apple, peach, margarita and rose in the heart, and vanilla, amber, musk and woods in the base.',
+					'Is Obsession inspired by Forbidden Craving?' => 'Yes. Obsession by MR ZAIB is inspired by Forbidden Craving, with the same sweet, addictive vanilla amber feel at an affordable price in Pakistan.',
+					'Is Obsession for men or women?' => 'Obsession is a unisex perfume, made to suit both men and women.',
+				),
+				'end'   => '<h2>The Verdict</h2><p><strong>Obsession</strong> is sweet, juicy and seductive, a unisex scent that is hard to forget. If you love fruity notes and creamy vanilla, Obsession belongs in your collection.</p>',
 			),
 		),
 	);

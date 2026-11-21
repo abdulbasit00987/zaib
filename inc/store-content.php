@@ -556,6 +556,44 @@ function mrzaib_store_products() {
 				'keywords' => 'Tusqan perfume, Tusqan perfume for men, MR ZAIB Tusqan, leather perfume for men, perfume for men, men perfume Pakistan, long lasting perfume for men, saffron perfume for men, suede perfume, amber perfume for men, woody perfume for men, inspired by Tuscan Leather, Tuscan Leather inspired perfume Pakistan, Tom Ford Tuscan Leather alternative, winter perfume for men, wedding perfume for men, best perfume for men in Pakistan, gift for him',
 			),
 		),
+		array(
+			'name'     => 'Obsession',
+			'slug'     => 'obsession-perfume',
+			'subtitle' => 'Long Lasting Sweet Vanilla Amber Unisex Perfume | Inspired by Forbidden Craving | 50ml',
+			'sku'      => 'MZ-OBSESSION-50',
+			'regular'  => '2499',
+			'sale'     => '2000',
+			'cats'     => array( 'unisex' ),
+			'images'   => array( 'obsession-main.jpg', 'obsession-banner.jpg', 'obsession-notes-top.jpg', 'obsession-notes-middle.jpg', 'obsession-notes-base.jpg' ),
+			'alts'     => array( 'Obsession long lasting unisex perfume by MR ZAIB 50ml inspired by Forbidden Craving', 'MR ZAIB Obsession unisex perfume fragrance notes', 'Obsession top notes blood orange bergamot cardamom', 'Obsession middle notes red apple peach margarita rose', 'Obsession base notes vanilla absolute amber cedarwood musk benzoin sandalwood' ),
+			'notes'    => array(
+				'Top Notes'    => 'Blood Orange, Bergamot, Cardamom',
+				'Middle Notes' => 'Red Apple, Peach, Margarita, Rose',
+				'Base Notes'   => 'Vanilla Absolute, Amber, Cedarwood, Musk, Benzoin, Sandalwood',
+			),
+			'short'    => '<p><strong>Obsession by MR ZAIB</strong> is a long lasting sweet unisex perfume, inspired by Forbidden Craving. It opens with zesty <strong>blood orange, bergamot and cardamom</strong>, blooms into a juicy heart of <strong>red apple, peach, margarita and rose</strong>, and settles on a warm, addictive base of <strong>vanilla absolute, amber, cedarwood, musk, benzoin and sandalwood</strong>. A seductive, crave-worthy scent for him and her.</p>'
+				. '<ul><li><strong>Top Notes:</strong> Blood Orange, Bergamot, Cardamom</li><li><strong>Middle Notes:</strong> Red Apple, Peach, Margarita, Rose</li><li><strong>Base Notes:</strong> Vanilla Absolute, Amber, Cedarwood, Musk, Benzoin, Sandalwood</li><li><strong>Size:</strong> 50ml</li><li><strong>For:</strong> Unisex (Men and Women)</li></ul>',
+			'long'     => '<h2>Obsession: Long Lasting Sweet Vanilla Amber Unisex Perfume in Pakistan</h2>'
+				. '<p><strong>Obsession</strong> is a premium unisex perfume from <strong>MR ZAIB Luxury Perfumes</strong>, inspired by Forbidden Craving. Bright citrus and spice, a juicy fruity rose heart and a creamy vanilla amber base make it a sweet, seductive scent that people remember, made to <em>leave your presence</em>.</p>'
+				. '<h3>Fragrance Notes of Obsession</h3>'
+				. '<p><strong>Top Notes: Blood Orange, Bergamot and Cardamom.</strong> A sparkling, zesty citrus opening warmed by a soft touch of green cardamom.</p>'
+				. '<p><strong>Middle Notes: Red Apple, Peach, Margarita and Rose.</strong> Crisp red apple, ripe peach and a playful margarita accord wrapped around a romantic rose.</p>'
+				. '<p><strong>Base Notes: Vanilla Absolute, Amber, Cedarwood, Musk, Benzoin and Sandalwood.</strong> A rich, creamy and long lasting dry-down that feels warm, sweet and addictive.</p>'
+				. '<h3>Fragrance Profile</h3>'
+				. '<ul><li><strong>Family:</strong> Sweet, Fruity, Amber, Vanilla</li><li><strong>Character:</strong> Seductive, warm, juicy, addictive</li><li><strong>Best season:</strong> All year, especially autumn and winter evenings</li><li><strong>Occasions:</strong> Date nights, parties, weddings, dinners and everyday wear</li></ul>'
+				. '<h3>Why Choose MR ZAIB Obsession?</h3>'
+				. '<ul><li>Sweet citrus, fruity rose and vanilla amber blend inspired by Forbidden Craving</li><li>Long lasting unisex perfume with great projection and a creamy trail</li><li>Elegant 50ml clear glass bottle with a black cap, a perfect gift for him or her</li><li>Premium quality at Rs. 2,000</li><li>Cash on Delivery all over Pakistan</li></ul>'
+				. '<h3>How to Apply</h3>'
+				. '<p>Spray 2 to 3 times on pulse points (neck, wrists and chest) from about 15 cm. Apply on clean, moisturised skin and do not rub, so the fragrance lasts longer. A light spray on hair or clothes keeps the sweet vanilla trail all day.</p>'
+				. '<p>Looking for the <strong>best long lasting sweet unisex perfume in Pakistan</strong> or a <strong>Forbidden Craving inspired perfume</strong>? Order <strong>Obsession by MR ZAIB</strong> online today.</p>',
+			'tags'     => array( 'Obsession', 'Obsession Perfume', 'Unisex Perfume', 'Perfume for Men and Women', 'Unisex Perfume Pakistan', 'Long Lasting Perfume', 'Sweet Perfume', 'Vanilla Perfume', 'Amber Perfume', 'Fruity Perfume', 'Rose Perfume', 'Citrus Perfume', 'Inspired by Forbidden Craving', 'Forbidden Craving Inspired Perfume', 'Date Night Perfume', 'Party Perfume', 'Gift for Him', 'Gift for Her', 'Luxury Perfume', 'MR ZAIB' ),
+			'seo'      => array(
+				'title'    => 'Obsession Unisex Perfume 50ml | Forbidden Craving Inspired | MR ZAIB',
+				'desc'     => 'Shop Obsession by MR ZAIB, a long lasting sweet unisex perfume inspired by Forbidden Craving, with blood orange, apple, peach, rose, vanilla and amber. 50ml, Rs. 2,000. COD in Pakistan.',
+				'focus'    => 'Obsession unisex perfume',
+				'keywords' => 'Obsession perfume, Obsession unisex perfume, MR ZAIB Obsession, unisex perfume Pakistan, perfume for men and women, long lasting unisex perfume, sweet perfume, vanilla perfume, vanilla amber perfume, fruity perfume, rose perfume, blood orange perfume, inspired by Forbidden Craving, Forbidden Craving inspired perfume Pakistan, date night perfume, party perfume, best unisex perfume in Pakistan, gift for him, gift for her',
+			),
+		),
 	);
 }
 
