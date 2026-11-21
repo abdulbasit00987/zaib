@@ -1883,3 +1883,15 @@ html[data-mzview="list"] .mzshop-main .card-info{padding-right:56px}
   .mzb-grid{grid-template-columns:1fr;gap:36px}
   .mzb-foot{flex-direction:column;align-items:flex-start}
 }
+
+/* Hero mobile: progress line + counter replaces dots (user 2026-11-21) */
+.slider-progress{display:none}
+@media(max-width:768px){
+.hero .slider-dots{display:none}
+.hero .slider-progress{display:flex;align-items:center;gap:12px;position:absolute;left:20px;right:20px;bottom:14px;z-index:3;pointer-events:none}
+.hero .sp-num{font-family:inherit;font-size:12px;letter-spacing:1.5px;color:rgba(255,255,255,.65);white-space:nowrap;line-height:1}
+.hero .sp-num b{color:#deba68;font-weight:600;margin-right:4px}
+.hero .sp-num em{font-style:normal}
+.hero .sp-track{position:relative;flex:1;height:2px;background:rgba(255,255,255,.22);border-radius:2px;overflow:hidden}
+.hero .sp-track i{position:absolute;left:0;top:0;bottom:0;width:0;background:#deba68;border-radius:2px;transition:width .5s ease}
+}

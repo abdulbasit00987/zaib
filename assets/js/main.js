@@ -438,10 +438,16 @@
     var $s = $(this), $slides = $s.find('.slide'), $dots = $s.find('.slider-dots'), i = 0, t;
     if ($slides.length < 2) { $s.find('.slider-arrow,.slider-dots').hide(); return; }
     $slides.each(function (n) { $dots.append('<button aria-label="Slide ' + (n + 1) + '"' + (n === 0 ? ' class="is-active"' : '') + '></button>'); });
+    /* Mobile: slim gold progress line + 01 / 17 counter instead of the dots (user 2026-11-21). */
+    var pad = function (v) { return (v < 10 ? '0' : '') + v; };
+    var $prog = $('<div class="slider-progress" aria-hidden="true"><span class="sp-num"><b>01</b><em>/ ' + pad($slides.length) + '</em></span><span class="sp-track"><i></i></span></div>').appendTo($s);
+    function prog() { $prog.find('b').text(pad(i + 1)); $prog.find('i').css('width', ((i + 1) * 100 / $slides.length) + '%'); }
+    prog();
     function go(n) {
       $slides.eq(i).removeClass('is-active'); $dots.children().eq(i).removeClass('is-active');
       i = (n + $slides.length) % $slides.length;
       $slides.eq(i).addClass('is-active'); $dots.children().eq(i).addClass('is-active');
+      prog();
     }
     var hyd = false;
     function hydrate() {
