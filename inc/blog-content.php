@@ -8,7 +8,7 @@
 
 defined( 'ABSPATH' ) || exit;
 
-define( 'MRZAIB_BLOG_V', 9 );
+define( 'MRZAIB_BLOG_V', 10 );
 
 /** Fragrance-notes block used inside the articles. */
 function mrzaib_blog_notes_html( $top, $heart, $base ) {
@@ -412,6 +412,30 @@ function mrzaib_blog_posts() {
 					'Is Obsession for men or women?' => 'Obsession is a unisex perfume, made to suit both men and women.',
 				),
 				'end'   => '<h2>The Verdict</h2><p><strong>Obsession</strong> is sweet, juicy and seductive, a unisex scent that is hard to forget. If you love fruity notes and creamy vanilla, Obsession belongs in your collection.</p>',
+			),
+		),
+		array(
+			'slug'    => 'elara-fresh-citrus-woody-unisex-perfume',
+			'title'   => 'Elara: A Fresh Citrus Woody Perfume for Him and Her',
+			'product' => 'elara-perfume',
+			'name'    => 'Elara',
+			'image'   => 'blog-elara.jpg',
+			'alt'     => 'Elara fresh citrus woody unisex perfume by MR ZAIB inspired by Alpena',
+			'excerpt' => 'Sparkling lemon and grapefruit, an aromatic heart of thyme, jasmine and orchid, and a mossy woody base. Elara is a clean, elegant unisex perfume inspired by Alpena.',
+			'tags'    => array( 'Elara', 'Unisex Perfume', 'Fresh Perfume', 'Citrus Perfume', 'Alpena Inspired' ),
+			'seo'     => array( 'Elara Fresh Citrus Woody Unisex Perfume | MR ZAIB Blog', 'Elara by MR ZAIB is a long lasting fresh unisex perfume inspired by Alpena, with lemon, bergamot, grapefruit, jasmine, oakmoss and sandalwood.', 'Elara perfume' ),
+			'body'    => array(
+				'intro' => '<p>Looking for one perfume that feels fresh in the morning and still elegant at night? <strong>Elara by MR ZAIB</strong> is a <strong>long lasting fresh unisex perfume</strong>, inspired by Alpena, with sparkling citrus, soft florals and a smooth mossy woody base, in a smoky glass bottle with a wood-effect cap.</p>',
+				'notes' => array( 'Lemon, Bergamot, Grapefruit, Rose', 'Thyme, Orange, Jasmine, Orchid', 'Oakmoss, Myrrh, Cedar, Sandalwood, Patchouli, Musk' ),
+				'story' => '<h2>What Elara Smells Like</h2><p>Elara opens with a bright burst of <strong>lemon</strong>, <strong>bergamot</strong> and juicy <strong>grapefruit</strong>, softened by a fresh <strong>rose</strong>.</p><p>The heart is aromatic and graceful: herbal <strong>thyme</strong> and sweet <strong>orange</strong> meet white <strong>jasmine</strong> and exotic <strong>orchid</strong>.</p><p>In the dry-down, <strong>oakmoss</strong>, <strong>myrrh</strong>, <strong>cedar</strong>, <strong>sandalwood</strong>, <strong>patchouli</strong> and <strong>musk</strong> leave a clean, earthy and refined trail.</p>',
+				'wear'  => '<h2>When to Wear Elara</h2><ul><li><strong>Office and university:</strong> fresh, clean and never too loud.</li><li><strong>Summer days:</strong> citrus notes feel cool in Pakistani heat.</li><li><strong>Outings and brunch:</strong> light, happy and easy to wear.</li><li><strong>Casual evenings:</strong> the mossy woody base adds quiet elegance.</li></ul>',
+				'tip'   => '<strong>Refresh in the afternoon.</strong> Citrus scents shine brightest when fresh; keep Elara handy for one extra spray after lunch on hot days.',
+				'faq'   => array(
+					'What does Elara smell like?' => 'Elara is fresh and elegant: lemon, bergamot, grapefruit and rose on top, thyme, orange, jasmine and orchid in the heart, and oakmoss, myrrh, cedar, sandalwood, patchouli and musk in the base.',
+					'Is Elara inspired by Alpena?' => 'Yes. Elara by MR ZAIB is inspired by Alpena, with a fresh citrus woody character at an affordable price in Pakistan.',
+					'Is Elara for men or women?' => 'Elara is a unisex perfume, made to suit both men and women.',
+				),
+				'end'   => '<h2>The Verdict</h2><p><strong>Elara</strong> is fresh, clean and elegant, an easy everyday scent for him and her. If you love citrus with a refined woody finish, Elara belongs in your collection.</p>',
 			),
 		),
 	);

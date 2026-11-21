@@ -594,6 +594,44 @@ function mrzaib_store_products() {
 				'keywords' => 'Obsession perfume, Obsession unisex perfume, MR ZAIB Obsession, unisex perfume Pakistan, perfume for men and women, long lasting unisex perfume, sweet perfume, vanilla perfume, vanilla amber perfume, fruity perfume, rose perfume, blood orange perfume, inspired by Forbidden Craving, Forbidden Craving inspired perfume Pakistan, date night perfume, party perfume, best unisex perfume in Pakistan, gift for him, gift for her',
 			),
 		),
+		array(
+			'name'     => 'Elara',
+			'slug'     => 'elara-perfume',
+			'subtitle' => 'Long Lasting Fresh Citrus Woody Unisex Perfume | Inspired by Alpena | 50ml',
+			'sku'      => 'MZ-ELARA-50',
+			'regular'  => '2499',
+			'sale'     => '2000',
+			'cats'     => array( 'unisex' ),
+			'images'   => array( 'elara-main.jpg', 'elara-notes-top.jpg', 'elara-notes-middle.jpg', 'elara-notes-base.jpg' ),
+			'alts'     => array( 'Elara long lasting fresh unisex perfume by MR ZAIB 50ml inspired by Alpena', 'Elara top notes lemon bergamot grapefruit rose', 'Elara middle notes thyme orange jasmine orchid', 'Elara base notes oakmoss myrrh cedar sandalwood patchouli musk' ),
+			'notes'    => array(
+				'Top Notes'    => 'Lemon, Bergamot, Grapefruit, Rose',
+				'Middle Notes' => 'Thyme, Orange, Jasmine, Orchid',
+				'Base Notes'   => 'Oakmoss, Myrrh, Cedar, Sandalwood, Patchouli, Musk',
+			),
+			'short'    => '<p><strong>Elara by MR ZAIB</strong> is a long lasting fresh unisex perfume, inspired by Alpena. It opens with sparkling <strong>lemon, bergamot, grapefruit and rose</strong>, flows into an aromatic floral heart of <strong>thyme, orange, jasmine and orchid</strong>, and rests on a refined base of <strong>oakmoss, myrrh, cedar, sandalwood, patchouli and musk</strong>. A clean, elegant citrus woody scent for him and her.</p>'
+				. '<ul><li><strong>Top Notes:</strong> Lemon, Bergamot, Grapefruit, Rose</li><li><strong>Middle Notes:</strong> Thyme, Orange, Jasmine, Orchid</li><li><strong>Base Notes:</strong> Oakmoss, Myrrh, Cedar, Sandalwood, Patchouli, Musk</li><li><strong>Size:</strong> 50ml</li><li><strong>For:</strong> Unisex (Men and Women)</li></ul>',
+			'long'     => '<h2>Elara: Long Lasting Fresh Citrus Woody Unisex Perfume in Pakistan</h2>'
+				. '<p><strong>Elara</strong> is a premium unisex perfume from <strong>MR ZAIB Luxury Perfumes</strong>, inspired by Alpena. Bright citrus, an aromatic floral heart and a smooth mossy woody base make it fresh enough for every day and elegant enough for special moments, a scent to <em>leave your presence</em>.</p>'
+				. '<h3>Fragrance Notes of Elara</h3>'
+				. '<p><strong>Top Notes: Lemon, Bergamot, Grapefruit and Rose.</strong> A sparkling, juicy citrus burst softened by a fresh touch of rose.</p>'
+				. '<p><strong>Middle Notes: Thyme, Orange, Jasmine and Orchid.</strong> Herbal thyme and sweet orange meet white jasmine and exotic orchid for a graceful, aromatic heart.</p>'
+				. '<p><strong>Base Notes: Oakmoss, Myrrh, Cedar, Sandalwood, Patchouli and Musk.</strong> A refined, long lasting chypre-style dry-down that feels clean, earthy and warm.</p>'
+				. '<h3>Fragrance Profile</h3>'
+				. '<ul><li><strong>Family:</strong> Citrus, Aromatic, Floral, Woody, Chypre</li><li><strong>Character:</strong> Fresh, clean, elegant, versatile</li><li><strong>Best season:</strong> Spring and summer, and all year round</li><li><strong>Occasions:</strong> Office, daily wear, university, outings and casual evenings</li></ul>'
+				. '<h3>Why Choose MR ZAIB Elara?</h3>'
+				. '<ul><li>Fresh citrus, floral and mossy woody blend inspired by Alpena</li><li>Long lasting unisex perfume that suits men and women</li><li>Elegant 50ml smoky glass bottle with a wood-effect cap and gold collar, a perfect gift</li><li>Premium quality at Rs. 2,000</li><li>Cash on Delivery all over Pakistan</li></ul>'
+				. '<h3>How to Apply</h3>'
+				. '<p>Spray 2 to 3 times on pulse points (neck, wrists and chest) from about 15 cm. Apply on clean, moisturised skin and do not rub, so the fragrance lasts longer. A light spray on clothes keeps the fresh trail all day.</p>'
+				. '<p>Looking for the <strong>best long lasting fresh unisex perfume in Pakistan</strong> or an <strong>Alpena inspired perfume</strong>? Order <strong>Elara by MR ZAIB</strong> online today.</p>',
+			'tags'     => array( 'Elara', 'Elara Perfume', 'Unisex Perfume', 'Perfume for Men and Women', 'Unisex Perfume Pakistan', 'Long Lasting Perfume', 'Fresh Perfume', 'Citrus Perfume', 'Woody Perfume', 'Chypre Perfume', 'Floral Perfume', 'Summer Perfume', 'Office Perfume', 'Inspired by Alpena', 'Alpena Inspired Perfume', 'Everyday Perfume', 'Gift for Him', 'Gift for Her', 'Luxury Perfume', 'MR ZAIB' ),
+			'seo'      => array(
+				'title'    => 'Elara Fresh Unisex Perfume 50ml | Alpena Inspired | MR ZAIB',
+				'desc'     => 'Shop Elara by MR ZAIB, a long lasting fresh unisex perfume inspired by Alpena, with lemon, bergamot, grapefruit, jasmine, oakmoss, sandalwood and musk. 50ml, Rs. 2,000. COD in Pakistan.',
+				'focus'    => 'Elara unisex perfume',
+				'keywords' => 'Elara perfume, Elara unisex perfume, MR ZAIB Elara, unisex perfume Pakistan, perfume for men and women, long lasting unisex perfume, fresh perfume, citrus perfume, woody perfume, chypre perfume, oakmoss perfume, summer perfume, office perfume, inspired by Alpena, Alpena inspired perfume Pakistan, everyday perfume, best unisex perfume in Pakistan, gift for him, gift for her',
+			),
+		),
 	);
 }
 
